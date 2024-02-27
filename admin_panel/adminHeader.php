@@ -1,11 +1,12 @@
 <?php
-  // session_start();
+   session_start();
+   include_once "./config/dbconnect.php";
 
 ?>
        
        <nav class="navbar navbar-expand-lg navbar-light px-5" style="background-color: #f0f0f0;">
     <a class="navbar-brand ml-5" href="./index.php">
-        <img src="image/logo.png" width="80" height="80" alt="Swiss Collection">
+        <img src="./assets/images/logo.png" width="80" height="80" alt="Swiss Collection">
     </a>
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0"></ul>
     <div class="user-cart">  
