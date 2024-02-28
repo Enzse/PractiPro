@@ -8,10 +8,10 @@
 <hr style="border:1px solid; background-color:#8a7b6d; border-color:#3B3131;">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
     <a href="./index.php" ><i class="fa fa-home"></i> Dashboard</a>
-    <a href="#sizes"   onclick="showSizes()" ><i class="fa fa-th"></i> Admin Profiles</a>
-    <a href="#customers"  onclick="showCustomers()" ><i class="fa fa-users"></i> Student Information</a>
-    <a href="#category"   onclick="showCategory()" ><i class="fa fa-th-large"></i> Documents</a>
-    <a href="#sizes"   onclick="showSizes()" ><i class="fa fa-th"></i> Active Students</a>
+    <a href="#admin"   onclick="showAdmin()" ><i class="fa fa-th"></i> Admin Profiles</a>
+    <a href="#student"  onclick="showStudent_Profile()" ><i class="fa fa-users"></i> Student Information</a>
+    <a href="#documents"   onclick="showDocuments()" ><i class="fa fa-th-large"></i> Documents</a>
+    <a href="#activeandinactive"   onclick="showActive_Students()" ><i class="fa fa-th"></i> Active Students</a>
     
   <!---->
 </div>

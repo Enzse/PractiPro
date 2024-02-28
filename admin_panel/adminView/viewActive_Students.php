@@ -1,6 +1,6 @@
 PractiPro
 <div >
-  <h2>Student Profiles</h2>
+  <h2>Active and Inactive Profiles</h2>
   <table class="table ">
     <thead>
       <tr>

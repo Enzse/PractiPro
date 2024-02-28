@@ -1,4 +1,4 @@
-viewSizes
+PractiPro
 
 <div>
     <h3>Admin Profiles</h3>
