@@ -5,6 +5,7 @@
     font-family: 'Work Sans', sans-serif;
     font-size: 18px;
 }
+/*********** admin dashboard styling **********/
 
 
 /*********** admin dashboard styling **********/
@@ -57,8 +58,8 @@
     .sidebar .closebtn {
       position: absolute;
       top: 0;
-      right: 2px;
-      font-size: 34px;
+      right: 20px;
+      font-size: 30px;
       margin-left: 50px;
     }
     
