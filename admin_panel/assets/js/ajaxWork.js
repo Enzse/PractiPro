@@ -1,8 +1,8 @@
-//SA SIDEBAR ITO
+//SA SIDEBAR ITO connected to AJAXWORK.JS
 
-function showCategory(){  
+function showDocuments(){  
     $.ajax({
-        url:"./adminView/viewCategories.php",
+        url:"./adminView/viewDocuments.php",
         method:"post",
         data:{record:1},
         success:function(data){
@@ -10,9 +10,9 @@ function showCategory(){
         }
     });
 }
-function showSizes(){  
+function showAdmin(){  
     $.ajax({
-        url:"./adminView/viewSizes.php",
+        url:"./adminView/viewAdmin_Profiles.php",
         method:"post",
         data:{record:1},
         success:function(data){
@@ -20,9 +20,9 @@ function showSizes(){
         }
     });
 }
-function showProductSizes(){  
+function showActive_Students(){  
     $.ajax({
-        url:"./adminView/viewProductSizes.php",
+        url:"./adminView/viewActive_Students.php",
         method:"post",
         data:{record:1},
         success:function(data){
@@ -31,9 +31,9 @@ function showProductSizes(){
     });
 }
 
-function showCustomers(){
+function showStudent_Profile(){
     $.ajax({
-        url:"./adminView/viewCustomers.php",
+        url:"./adminView/viewStudent_Profiles.php",
         method:"post",
         data:{record:1},
         success:function(data){
@@ -59,24 +59,6 @@ function showOrders(){
 
 
 
-
-//delete product data
-
-
-
-
-
-
-
-//delete category data
-
-//delete size data
-
-
-
-
-
-//update variation after submit
 
 
 

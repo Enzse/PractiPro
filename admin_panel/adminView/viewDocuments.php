@@ -1,11 +1,14 @@
+PractiPro
+
 
 <div >
-  <h3>Category Items</h3>
+  <h3>Documents</h3>
   <table class="table ">
     <thead>
       <tr>
-        <th class="text-center">S.N.</th>
-        <th class="text-center">Category Name</th>
+      <th class="text-center">Student ID Number</th>
+        <th class="text-center">Student Name</th>
+        <th class="text-center">Email</th>
         <th class="text-center" colspan="2">Action</th>
       </tr>
     </thead>
