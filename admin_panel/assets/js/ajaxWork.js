@@ -2,7 +2,7 @@
 
 function showCategory(){  
     $.ajax({
-        url:"./adminView/viewCategories.php",
+        url:"./adminView/viewDocuments.php",
         method:"post",
         data:{record:1},
         success:function(data){
@@ -33,7 +33,7 @@ function showProductSizes(){
 
 function showCustomers(){
     $.ajax({
-        url:"./adminView/viewCustomers.php",
+        url:"./adminView/viewStudent_Profiles.php",
         method:"post",
         data:{record:1},
         success:function(data){
@@ -59,24 +59,6 @@ function showOrders(){
 
 
 
-
-//delete product data
-
-
-
-
-
-
-
-//delete category data
-
-//delete size data
-
-
-
-
-
-//update variation after submit
 
 
 
