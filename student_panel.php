@@ -24,6 +24,3 @@ PractiPro
   </li>
 </ul>
 <div >
-  
-   
-    
