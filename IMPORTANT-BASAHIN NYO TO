@@ -1,0 +1,19 @@
+Hello guys, Denzel to,
+
+Para maorganize ang project natin into a proper Angular app, nireorganize ko ang repository
+the way an actual Angular app is supposed to be. 
+
+(If pinanood nyo Demo ni sir Loudel na nakaupload sa google drive, magegets nyo yung layout.)
+
+
+Pag binuksan nyo ang PractiProAngular folder, may makikita kayong maraming files, isa don ang "src" folder.
+
+--------->    Sa "src" folder mangyayari LAHAT ng coding natin,    <-----------
+--------->    kaya doon nyo rin ilalagay ang mga dinadagdag nyo.   <-----------
+
+
+
+Sa loob ng src folder merong "app" folder at "assets" folder, built in yon sa layout ng angular:
+
+sa "assets" folder nakalagay ang mga media na gamit ng application natin (for example, logos, images, icons, etc.)
+sa "app" folder nakalagay mga components ng app(not sure how that works yet, uupdate ko nalang kayo sa gc).
