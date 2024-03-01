@@ -3,6 +3,7 @@
 <div class="side-header">
     <img src="./assets/images/logo.png" width="150" height="150" alt="Swiss Collection"> 
     <div class="container">
+        
     <h5 class="resizable">PractiPro</h5>
 </div>
 
