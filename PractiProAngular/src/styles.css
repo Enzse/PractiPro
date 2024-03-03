@@ -2,3 +2,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.button {
+    display: flex;
+    align-items: center;
+    padding: 0.3rem;
+    color: white;
+    border-radius: 0.5rem;
+}
+
+.button:hover {
+    background-color: #312e81;
+}
+/* "flex items-center p-2 text-white rounded-lg  hover:bg-hover-side" */
