@@ -1,0 +1,35 @@
+<div>
+    <span>Trainer name: <input type="text" [(ngModel)]="trainerName" /></span>
+</div>
+<br>
+<div>
+    <button (click)="showTeam()" type="button"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Show
+        Team</button>
+    @if(teamVisible){
+    <div>
+        <h2>{{trainerName}}'s Team:</h2>
+        <div *ngFor="let teampokemon of team">
+            <span>{{teampokemon.name}}</span>
+        </div>
+    </div>
+    }
+</div>
+<br>
+<div>
+    <button (click)="walkAround()" type="button"
+        class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Walk
+        Around</button>
+
+    @if(pokemonAppeared){
+    <div>
+        <p>{{pokemon}}</p>
+        <h2>{{ encounter }}</h2>
+        <button (click)="catchPokemon()" type="button"
+            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Throw
+            Pokeball</button>
+    </div>
+    }@else{
+    <h2>No Pokemon found. Keep searching...</h2>
+    }
+</div>
