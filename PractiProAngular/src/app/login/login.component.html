@@ -1,55 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body>
 
-    <div class="product absolute right-0 bottom-0 flex items-left lg:justify-left w-full opacity-50 lg:opacity-100">
 
-        <img src="./assets/logo.png" alt="product" class="-mb-5 lg:mb-0 -ml- lg:ml-0 product h-[50px] xl:h-[300px] 2xl:h-[500px] w-auto object-cover transform group-hover:translate-x-26 2xl:group-hover:translate-x-48 transition-all duration-1000 lg:duration-700 ease-in-out">
-        <!-- product image -->
 
-        <div class="shadow w-full h-5 bg-black bg-opacity-25 filter blur absolute bottom-0 lg:bottom-14 left-0 lg:left-24 rounded-full transform skew-x-10"></div>
-        <!-- product shadow -->
-      </div>
-<!-- page -->
-<main class="flex min-h-screen items-center justify-center  text-white">
-  <!-- component -->
-  <section class="flex flex-col space-y-10 w-[30rem]">
-    <div class="text-right text-4xl font-medium  text-black" >Log In</div>
-
-    <div class="w-full transform border-b-2 bg-transparent text-lg duration-300 focus-within:border-indigo-500">
-      <input
-        type="text"
-        placeholder="Student Email"
-        class="w-full border-none bg-transparent outline-none placeholder-italic focus:outline-none"
-      />
-    </div>
-
-    <div class="w-full transform border-b-2 bg-transparent text-lg duration-300 focus-within:border-indigo-500 ">
-      <input
-        type="password"
-        placeholder="Password"
-        class="w-full border-none bg-transparent outline-none placeholder-italic focus:outline-none"
-      />
-    </div>
-    <a href="#" class="transform text- font-semibold text-black duration-300 hover:text-gray-300 text-right ">FORGOT PASSWORD?</a>
-
-    <button class="transform rounded-sm bg-gray-900 py-5 font-bold duration-300 hover:bg-indigo-100 ">
-      LOG IN
-    </button>
-
+  <div class="product relative flex items-left lg:justify-right opacity-50 lg:opacity-100">
    
-    <p class="text-center text-lg text-black">
-      No account?
-      <a href="#" class="font-medium text-indigo-500 underline-offset-4 hover:underline ">Create One</a>
-    </p>
-  </section>
-</main>
+    <div class="shadow-container">
+      <div class="shadow w-full h-5 bg-black bg-opacity-25 filter blur absolute bottom-0 lg:bottom-14 right-0 lg:right-24 rounded-full transform skew-x-10"></div>
+      <!-- product shadow -->
+    </div>
+  </div>
 
-</body>
-</html>
+  
+
+<div class="flex items-center justify-center py-4 md:py-8 flex-wrap">
+  
+  <button type="button" class="text-gray-900 border border-white hover:border-gray-200 dark:border-gray-900 dark:bg-gray-900 dark:hover:border-gray-700 bg-white focus:ring-4 focus:outline-none focus:ring-gray-300 rounded-full text-base font-medium px-5 py-2.5 text-center me-3 mb-3 dark:text-white dark:focus:ring-gray-800">PractiPro</button>
+ 
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+  
+  <div>
+      <img class="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/square/image-4.jpg" alt="">
+  </div>
+ 
+
+
+  <form class="max-w-md mx-auto w-full lg:w-auto">
+    <div class="relative z-0 w-full mb-5 group">
+      <input type="email" name="floating_email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-black-300 appearance-none dark:text-white dark:border-black-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+      <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"> Student Email</label>
+    </div>
+    
+    <div class="relative z-0 w-full mb-4 group"> <!-- Added margin-bottom -->
+      <input type="password" name="floating_password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-black bg-transparent border-0 border-b-2 border-black-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+      <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-black-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
+  </div>
+  
+    
+    <div class="flex items-center justify-end mb-4"> <!-- Added margin-bottom -->
+      <a href="#" class=" font-semibold text-xs text-gray-900 tracking-tighter hover:text-gray-300 text-right">FORGOT PASSWORD?</a>
+    </div>
+    
+    
+    <div class="flex justify-center mb-4"> <!-- Added margin-bottom -->
+      <button type="submit" class="text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm w-full sm:w-auto px-5 py-1.5 text-center dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800">Log In</button>
+    </div>
+    
+
+ 
+      <p class="text-center text-lg text-black mb-4"> <!-- Added margin-bottom -->
+          No account? 
+          <a href="#" class="font-medium text-indigo-500 underline hover:text-indigo-700 hover:underline">Create One</a>
+      </p>
+  
+      <div class="flex items-center justify-end mb-4"> <!-- Added margin-bottom -->
+        <a href="#" class=" font-semibold text-xs text-gray-900 tracking-tighter hover:text-gray-300 text-right">Help</a>
+        <a href="#" class=" font-semibold text-xs text-gray-900 tracking-tighter hover:text-gray-300 text-right">About</a>
+      </div>
+
+  
