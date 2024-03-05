@@ -3,8 +3,8 @@ import { RouterOutlet } from '@angular/router';
 import { TestComponent } from './test/test.component';
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
-import { LoginComponent } from './login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { LoginComponent } from './components/login/login.component';
 
 
 @Component({
