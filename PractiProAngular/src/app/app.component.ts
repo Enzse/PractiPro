@@ -6,12 +6,12 @@ import { initFlowbite } from 'flowbite';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-
+import { FeedbackComponent } from './components/feedback/feedback.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TestComponent, LoginComponent, DashboardComponent, SidebarComponent],
+  imports: [RouterOutlet, TestComponent, LoginComponent, DashboardComponent, SidebarComponent, FeedbackComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
