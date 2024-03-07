@@ -1,0 +1,15 @@
+.h2feedback {
+    color: #ff5722;
+    font-size: 19px;
+    text-decoration: underline #555555;
+    text-decoration-thickness: 3px;
+}
+
+form {
+    border-radius: 20px;
+    background-color: gray;
+    padding: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
