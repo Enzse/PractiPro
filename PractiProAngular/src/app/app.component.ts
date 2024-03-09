@@ -8,11 +8,12 @@ import { LoginComponent } from './components/login/login.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { AboutusComponent } from './components/aboutus/aboutus.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TestComponent, LoginComponent, DashboardComponent, SidebarComponent, FeedbackComponent,AboutusComponent],
+  imports: [RouterOutlet, TestComponent, LoginComponent, DashboardComponent, SidebarComponent, FeedbackComponent,AboutusComponent, NavbarComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

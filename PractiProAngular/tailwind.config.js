@@ -7,7 +7,9 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        
+        neon: '#51abcb',
+        darkblue: '#000136',
+        navbar: '#2187ab',
       },
       backgroundColor: {
         'dash-b': '#1e1b4b',
