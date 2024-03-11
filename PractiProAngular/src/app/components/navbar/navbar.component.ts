@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
-  selector: 'app-aboutus',
+  selector: 'app-navbar',
   standalone: true,
   imports: [SidebarComponent],
-  templateUrl: './aboutus.component.html',
-  styleUrl: './aboutus.component.css'
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.css'
 })
-export class AboutusComponent {
+export class NavbarComponent {
 
 }
