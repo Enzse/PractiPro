@@ -1,3 +1,4 @@
+ /*
 body {
     display: flex;
     justify-content: center;
@@ -7,10 +8,10 @@ body {
   .card {
     width: 1000px;
     height: 500px;
-    overflow-x: auto; /* corrected semicolon */
+    overflow-x: auto; 
     background-color: #808080;
     border-radius: 3%;
-    position: relative; /* added position */
+    position: relative; 
   }
   
   .card-content {
@@ -25,10 +26,10 @@ body {
   
   .uploadbtn {
     background-color: blue;
-    color: #fff; /* corrected color value */
+    color: #fff; 
     font-size: 13px;
     font-weight: 600;
-    position: absolute; /* changed position to absolute */
+    position: absolute; 
     outline: none;
     border-radius: 50px;
     display: flex;
@@ -37,9 +38,9 @@ body {
     cursor: pointer;
     height: 30px;
     width: 165px;
-    bottom: -35px; /* adjusted position */
-    left: 90%; /* adjusted position */
-    transform: translateX(-50%); /* center horizontally */
+    bottom: -35px;
+    left: 90%; /
+    transform: translateX(-50%); 
   }
   .blue-square{
     position: absolute;
@@ -54,13 +55,13 @@ body {
   .blue-square img {
     width: 200px;
     position: absolute;
-    top: 50%; /* adjusted top */
-    left: 50%; /* adjusted left */
-    transform: translate(-50%, -50%); /* corrected missing colon */
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
   }
   
   
-  /*SCROLLER */
+ 
   
   
   
@@ -81,3 +82,6 @@ body {
   }
   }
 }
+
+*/
+
