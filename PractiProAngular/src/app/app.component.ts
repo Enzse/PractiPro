@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
@@ -9,6 +9,7 @@ import { FeedbackComponent } from './components/feedback/feedback.component';
 import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -18,10 +19,23 @@ import { ProfileComponent } from './components/profile/profile.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, DoCheck {
   title = 'PractiProAngular';
+  ismenurequired=false;
+  constructor(private router:Router){
+    
+  }
 
   ngOnInit(): void {
     initFlowbite();
+  }
+
+  ngDoCheck(): void {
+    let currenturl=this.router.url;
+    if(currenturl=='/login' || currenturl=='/registration'){
+      this.ismenurequired=false;
+    }else{
+      this.ismenurequired=true;
+    }
   }
 }
