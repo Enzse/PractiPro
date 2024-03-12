@@ -13,6 +13,20 @@
       "password": "123",
       "role": "admin",
       "isActive": true
+    },
+    {
+      "id": "4601",
+      "firstName": "Shawn Tyrone",
+      "lastName": "Rada",
+      "studentId": "202211558",
+      "phoneNumber": "09255662628",
+      "program": "CS",
+      "block": "D",
+      "year": 2,
+      "email": "shawnrada@gmail.com",
+      "password": "123",
+      "role": "",
+      "isActive": false
     }
   ]
 }

@@ -35,7 +35,7 @@ export class LoginComponent {
         if (this.userdata.isActive) {
           sessionStorage.setItem('email',this.userdata.email);
           sessionStorage.setItem('userrole',this.userdata.email);
-          this.router.navigate(['dashboard']);
+          this.router.navigate(['users']);
           this.service.isLoggedIn=true;
         } else {
           console.error("Inactive user. Please contact admin.");
