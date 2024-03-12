@@ -1,0 +1,18 @@
+{
+  "user": [
+    {
+      "id": "0e76",
+      "firstName": "Denzel Manz",
+      "lastName": "Perez",
+      "studentId": "202211557",
+      "phoneNumber": "09255662628",
+      "program": "BSCS",
+      "block": "D",
+      "year": 1,
+      "email": "denztest@gmail.com",
+      "password": "123",
+      "role": "admin",
+      "isActive": true
+    }
+  ]
+}

@@ -7,12 +7,14 @@ max-sm:mx-auto">
         <img src="../../../assets/logo.png" alt="" />
         <h1 class="text-center -mt-5 text-4xl font-mono">Practi<span class="text-orange-500">Pro</span></h1>
     </div>
+
+
     <div class="flex m-auto items-center w-3/5">
-        <form class="max-w-md w-full">
+        <form [formGroup]="loginform" (ngSubmit)="proceedlogin()" class="max-w-md w-full">
             <!-- email -->
             <div class="relative z-0 w-full mb-5 group">
                 <input type="email" name="floating_email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bgtransparent border-0 border-b-2 border-slate-600 appearance-none 0
-focus:outline-none focus:ring-0 focus:border-slate-500 peer" placeholder=" " required />
+focus:outline-none focus:ring-0 focus:border-slate-500 peer" placeholder=" " formControlName="email" required  />
                 <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-
 [0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peerfocus:left-auto peer-focus:text-slate peer-placeholder-shown:scale-100
 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Student Email</label>
@@ -20,27 +22,40 @@ peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y
             <!-- password -->
             <div class="relative z-0 w-full mb-5 group">
                 <input type="password" name="floating_password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bgtransparent border-0 border-b-2 border-slate-600 appearance-none 0
-focus:outline-none focus:ring-0 focus:border-slate-500 peer" placeholder=" " required />
+focus:outline-none focus:ring-0 focus:border-slate-500 peer" placeholder=" " formControlName="password" required />
                 <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-
 [0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peerfocus:left-auto peer-focus:text-slate peer-placeholder-shown:scale-100
 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Password</label>
             </div>
+            <!-- register -->
             <div class="flex items-end justify-end mb-5 gap-1">
-                <div class="flex items-center h-5">
-                    <input id="terms" type="checkbox" value="" class="w-4 h-4
-border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-slate400" required />
-                </div>
-                <label for="#">Forget Password</label>
+                <a href="registration" routerLinkActive="active">
+                    <span>Register</span>
+                </a>
             </div>
-            <!-- button -->
+            <!-- login -->
             <button type="submit"
-                class="block mx-auto text-white bg-slate-600 hover:bg-slate700 focus:outline-none focus:bg-slate-800 font-medium rounded-3xl textsm w-full sm:w-auto px-8 py-2 text-center mb-10">
-                Login
-            </button>
+                class="block mx-auto text-white bg-slate-600 hover:bg-slate700 focus:outline-none focus:bg-slate-800 font-medium rounded-3xl textsm w-full sm:w-auto px-8 py-2 text-center mb-10">Login</button>
         </form>
-    </div>
-    <div class="absolute bottom-10 right-20 flex gap-5 max-sm:-bottom5 max-sm:left-60">
-        <a href="#" class="text-lg font-medium text-slate-700">Help</a>
-        <a href="" class="text-lg font-medium text-slate-700">About</a>
-    </div>
+    </div>    
 </div>
+
+<div class="toast-container">
+
+    <div *ngIf="loginfail" id="toast-warning" class="flex items-center w-full max-w-xs p-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-orange-500 bg-orange-100 rounded-lg dark:bg-orange-700 dark:text-orange-200">
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM10 15a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm1-4a1 1 0 0 1-2 0V6a1 1 0 0 1 2 0v5Z"/>
+            </svg>
+            <span class="sr-only">Warning icon</span>
+        </div>
+        <div class="ms-3 text-sm font-normal">Login failed</div>
+        <button type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-warning" aria-label="Close" (click)="closeFailToast()">
+            <span class="sr-only">Close</span>
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+        </button>
+    </div>
+    
+    </div>

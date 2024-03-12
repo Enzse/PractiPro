@@ -1,0 +1,87 @@
+ /*
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card {
+    width: 1000px;
+    height: 500px;
+    overflow-x: auto; 
+    background-color: #808080;
+    border-radius: 3%;
+    position: relative; 
+  }
+  
+  .card-content {
+    width: 1000px;
+  }
+  
+  .card h2 {
+    color: black;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .uploadbtn {
+    background-color: blue;
+    color: #fff; 
+    font-size: 13px;
+    font-weight: 600;
+    position: absolute; 
+    outline: none;
+    border-radius: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 30px;
+    width: 165px;
+    bottom: -35px;
+    left: 90%; /
+    transform: translateX(-50%); 
+  }
+  .blue-square{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    height: 420px;
+    background-color: #8EA0E2;  
+  }
+  
+  .blue-square img {
+    width: 200px;
+    position: absolute;
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+  }
+  
+  
+ 
+  
+  
+  
+  
+  @supports (scrollbar-width: auto) {
+    .scroller {
+      scrollbar-color: var(--scrollbar-color-thumb) var(--scrollbar-color-track);
+    }
+  .scroller {
+    width: 100%;
+    height: 50vh;
+    position: relative;
+  
+    &:has(.card) {
+      background: white;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+  }
+  }
+}
+
+*/
+
