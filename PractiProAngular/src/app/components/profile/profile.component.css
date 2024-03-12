@@ -36,16 +36,4 @@ table{
     width:100%;
 }
 
-button {
-    position: relative;
-    left: 1000px;
-    bottom: 20px;
-}
 
-.profile {
-    background-color: rgb(235, 240, 240);
-}
-
-.info {
-    background-color: rgb(235, 240, 240);
-}

@@ -1,3 +1,4 @@
+/*
 .h2feedback {
     color: #ff5722;
     font-size: 19px;
@@ -6,10 +7,11 @@
 }
 
 form {
-    border-radius: 20px;
-    background-color: gray;
+    border-radius: 5px;
+    background-color: rgb(182, 182, 182);
     padding: 20px;
     padding-left: 40px;
     padding-right: 40px;
 }
 
+*/
