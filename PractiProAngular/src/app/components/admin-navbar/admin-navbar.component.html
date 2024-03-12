@@ -1,6 +1,6 @@
-<!-- <div *ngIf="authService.isLoggedIn"> -->
-  <div class="sm:ml-56">    
-    <app-sidebar></app-sidebar>
+<div class="sm:ml-56">    
+
+    <app-admin-sidebar></app-admin-sidebar>
 
     <div class="flex bg-white shadow-lg border border-gray-200 justify-between w-full h-auto py-5 pl-3">
       <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
@@ -20,7 +20,7 @@
       <div class="">
         <button id="dropdownHoverButton" data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover"
           class="text-gray-800 bg-white hover:rounded-lg hover:bg-gray-400 hover:text-white focus:ring-4 focus:outline-none focus:rounded-lg focus:ring-gray-200 font-medium text-sm px-5 py-2.5 mr-4 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-          type="button">Student Name<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          type="button">Admin Name<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
             fill="none" viewBox="0 0 10 6">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="m1 1 4 4 4-4" />
@@ -29,12 +29,13 @@
 
         <div id="dropdownHover"
           class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-          
-              <a routerLink="../login" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-100 dark:hover:text-white">Sign
+          <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
+            <li>
+              <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-100 dark:hover:text-white">Sign
                 out</a>
-            
+            </li>
+          </ul>
         </div>
       </div>
     </div>
   </div>  
-<!-- </div> -->

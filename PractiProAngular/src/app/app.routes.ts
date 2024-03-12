@@ -8,6 +8,7 @@ import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { authGuard } from './guard/auth.guard';
+import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 
 export const routes: Routes = [    
     {path: '', component:DashboardComponent, canActivate: [authGuard]},
@@ -19,5 +20,6 @@ export const routes: Routes = [
     {path: 'aboutus', component: AboutusComponent, title: 'About us', canActivate: [authGuard]},
     {path: 'dashboard', component: DashboardComponent, title: 'Dashboard', canActivate: [authGuard]},
     {path: 'registration', component: RegistrationComponent, title: 'Registration'},
+    {path: 'users', component: AdminUsersComponent, title: 'Users'}
 ];
 
