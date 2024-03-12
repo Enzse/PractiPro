@@ -20,6 +20,7 @@ export class LoginComponent {
 
   userdata: any;
   loginfail = false;  
+  inactive = false;  
 
 
   loginform = this.builder.group({
@@ -34,12 +35,16 @@ export class LoginComponent {
       if (this.userdata.password === this.loginform.value.password) {
         if (this.userdata.isActive) {
           sessionStorage.setItem('email',this.userdata.email);
-          sessionStorage.setItem('userrole',this.userdata.email);
-          this.router.navigate(['users']);
+          sessionStorage.setItem('userrole',this.userdata.role);
+          if (this.service.GetUserRole() === 'admin'){
+            this.router.navigate(['users']);
+          } else if (this.service.GetUserRole() === 'student'){
+            this.router.navigate(['dashboard']);
+          }          
           this.service.isLoggedIn=true;
         } else {
           console.error("Inactive user. Please contact admin.");
-          this.loginfail = true;
+          this.inactive = true;
         }
       } else {
         console.error("Invalid credentials!");

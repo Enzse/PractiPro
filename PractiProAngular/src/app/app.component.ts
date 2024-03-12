@@ -10,6 +10,8 @@ import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { Router } from '@angular/router';
+import { authGuard } from './guard/auth.guard';
+import { AuthService } from './services/auth.service';
 
 
 @Component({
@@ -22,7 +24,8 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit, DoCheck {
   title = 'PractiProAngular';
   ismenurequired=false;
-  constructor(private router:Router){
+  isadminuser=false;
+  constructor(private router:Router, private service: AuthService){
     
   }
 
@@ -36,6 +39,11 @@ export class AppComponent implements OnInit, DoCheck {
       this.ismenurequired=false;
     }else{
       this.ismenurequired=true;
+    }
+    if(this.service.GetUserRole()==='admin'){
+      this.isadminuser=true;
+    }else{
+      this.isadminuser=false;
     }
   }
 }

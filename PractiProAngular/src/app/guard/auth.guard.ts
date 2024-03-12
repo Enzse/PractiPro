@@ -18,7 +18,23 @@ export class authGuard implements CanActivate {
     state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
 
     if (this.service.IsLoggedIn()) {
-      return true;
+      if (route.url.length > 0) {
+        let menu = route.url[0].path;
+        if (menu == 'users') {
+          if (this.service.GetUserRole() === 'admin'){
+            return true;
+          } else {
+            console.log("You don't have access.");
+            this.router.navigate(['login']);
+            return false;
+          }
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
+
     } else {
       this.router.navigate(['login']);
       return false;

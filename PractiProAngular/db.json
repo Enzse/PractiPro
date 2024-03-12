@@ -25,8 +25,34 @@
       "year": 2,
       "email": "shawnrada@gmail.com",
       "password": "123",
-      "role": "",
-      "isActive": false
+      "role": "student",
+      "isActive": true
+    },
+    {
+      "id": "f06a",
+      "firstName": "RJ",
+      "lastName": "Verceles",
+      "studentId": "202211558",
+      "phoneNumber": "09255662628",
+      "program": "CS",
+      "block": "D",
+      "year": 2,
+      "email": "rj@gmail.com",
+      "password": "123",
+      "role": "student",
+      "isActive": true
+    }
+  ],
+  "role": [
+    {
+      "code": "admin",
+      "name": "Admin",
+      "id": "b7bc"
+    },
+    {
+      "code": "student",
+      "name": "Student",
+      "id": "1e81"
     }
   ]
 }

@@ -19,6 +19,9 @@ export class AuthService {
   Getbycode(code:any){
     return this.http.get(this.apiurl+'/'+code);
   }
+  GetAllRoles(){
+    return this.http.get('http://localhost:3000/role');
+  }
   Proceedregister(inputdata:any){
     return this.http.post(this.apiurl, inputdata);
   }
