@@ -7,16 +7,17 @@ import { FeedbackComponent } from './components/feedback/feedback.component';
 import { AboutusComponent } from './components/aboutus/aboutus.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { authGuard } from './guard/auth.guard';
 
-export const routes: Routes = [
-    {path: '', redirectTo: 'login', pathMatch: 'full'},
+export const routes: Routes = [    
+    {path: '', component:DashboardComponent, canActivate: [authGuard]},
     {path: 'login', component: LoginComponent, title: 'Login'},
-    {path: 'profile', component: ProfileComponent, title: 'Profile'},
-    {path: 'submission', component: SubmissionComponent, title: 'Submit a File'},
-    {path: 'documentation', component: DocumentationComponent, title: 'Documentation'},
-    {path: 'feedback', component: FeedbackComponent, title: 'Feedback'},
-    {path: 'aboutus', component: AboutusComponent, title: 'About us'},
-    {path: 'dashboard', component: DashboardComponent, title: 'Dashboard'},
+    {path: 'profile', component: ProfileComponent, title: 'Profile', canActivate: [authGuard]},
+    {path: 'submission', component: SubmissionComponent, title: 'Submit a File', canActivate: [authGuard]},
+    {path: 'documentation', component: DocumentationComponent, title: 'Documentation', canActivate: [authGuard]},
+    {path: 'feedback', component: FeedbackComponent, title: 'Feedback', canActivate: [authGuard]},
+    {path: 'aboutus', component: AboutusComponent, title: 'About us', canActivate: [authGuard]},
+    {path: 'dashboard', component: DashboardComponent, title: 'Dashboard', canActivate: [authGuard]},
     {path: 'registration', component: RegistrationComponent, title: 'Registration'},
 ];
 

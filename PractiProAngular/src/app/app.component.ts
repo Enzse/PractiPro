@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TestComponent } from './test(unimportant)/test.component';
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
@@ -15,7 +14,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, TestComponent, LoginComponent, DashboardComponent, SidebarComponent, FeedbackComponent,AboutusComponent, NavbarComponent,ProfileComponent,],
+  imports: [RouterOutlet, LoginComponent, DashboardComponent, SidebarComponent, FeedbackComponent,AboutusComponent, NavbarComponent,ProfileComponent,],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
