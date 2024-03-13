@@ -2,24 +2,30 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../services/auth.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-submission',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule],
+  imports: [NavbarComponent, MatTabsModule, CommonModule],
   templateUrl: './submission.component.html',
   styleUrl: './submission.component.css'
 })
 export class SubmissionComponent {
-  constructor(private service: AuthService) {
+  constructor(private authService: AuthService) { }
+  successtoast = false;
 
+  selectedTabLabel: string = 'Resume';
+  onTabChange(event: MatTabChangeEvent) {
+    this.selectedTabLabel = event.tab.textLabel.split(" ").join("");
   }
 
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
-    const user_id = this.service.getCurrentUserId();
+    const userId = this.authService.getCurrentUserId();
 
-    if (!user_id) {
+    if (!userId) {
       console.error('User ID not found.');
       return;
     }
@@ -27,10 +33,11 @@ export class SubmissionComponent {
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
-        this.service.uploadFile(user_id, file).subscribe(
+        this.authService.uploadFile(userId, file, this.selectedTabLabel).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
-            // Handle success, e.g., show a success message to the user
+            this.successtoast = true;
+            setTimeout(() => this.successtoast = false, 3000);
           },
           error => {
             console.error('Error uploading file:', error);

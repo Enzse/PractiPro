@@ -44,10 +44,10 @@ export class AuthService {
     return id ? +id : null; // Convert to number or return null if not found
   }
 
-  uploadFile(inputdata: any, file: File) {
+  uploadFile(userId: number, file: File, submissionName: string) {
     const formData = new FormData();
     formData.append('file', file);
-
-    return this.http.post('http://localhost/PractiPro/backend/api/uploadfile' + '/' + inputdata, formData);
+  
+    return this.http.post(`http://localhost/PractiPro/backend/api/uploadfile/${userId}/${submissionName}`, formData);
   }
 }

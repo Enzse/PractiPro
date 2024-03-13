@@ -118,7 +118,7 @@ class Post extends GlobalMethods
     }
 
 
-    public function upload_file($data)
+    public function upload_file($data, $category)
     {
         $fileName = basename($_FILES["file"]["name"]);
         $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
@@ -126,12 +126,13 @@ class Post extends GlobalMethods
         $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
 
 
-        $sql = "INSERT INTO submissions (user_id, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO submissions (user_id, submission_name, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?, ?)";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
                     $data,
+                    $category,
                     $fileName,
                     $fileType,
                     $fileSize,
