@@ -6,45 +6,48 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  
-  constructor(private http:HttpClient) { }
 
-  isLoggedIn=false;
-  apiurl='http://localhost/PractiPro/backend/api/user';
+  constructor(private http: HttpClient) { }
+
+  isLoggedIn = false;
+  apiurl = 'http://localhost/PractiPro/backend/api/user';
 
 
   getAllUsers() {
     return this.http.get('http://localhost/PractiPro/backend/api/user');
   }
-  
-  GetAll(){
+
+  GetAll() {
     return this.http.get<any[]>(this.apiurl);
   }
-  Getbycode(code:any){
-    return this.http.get(this.apiurl+'/'+code);
+  Getbycode(code: any) {
+    return this.http.get(this.apiurl + '/' + code);
   }
-  GetAllRoles(){
+  GetAllRoles() {
     return this.http.get('http://localhost/PractiPro/backend/api/role');
   }
-  Proceedregister(inputdata:any){
+  Proceedregister(inputdata: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/adduser', inputdata);
   }
-  Updateuser(inputdata: any, code: any){
-    return this.http.post('http://localhost/PractiPro/backend/api/edituser'+'/'+inputdata, code, );
+  Updateuser(inputdata: any, code: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code,);
   }
 
   IsLoggedIn() {
-    return sessionStorage.getItem('email') != null;
+    return sessionStorage.getItem('id') != null;
   }
-  GetUserRole(){
-    return sessionStorage.getItem('userrole')!=null?sessionStorage.getItem('userrole')?.toString():'';
+  GetUserRole() {
+    return sessionStorage.getItem('userrole') != null ? sessionStorage.getItem('userrole')?.toString() : '';
+  }
+  getCurrentUserId(): number | null {
+    const id = sessionStorage.getItem('id');
+    return id ? +id : null; // Convert to number or return null if not found
   }
 
-  uploadFile(user_id: number, file: File) {
+  uploadFile(inputdata: any, file: File) {
     const formData = new FormData();
-    formData.append('user_id', user_id.toString());
     formData.append('file', file);
 
-    return this.http.post('http://localhost/PractiPro/backend/api/uploadfile', formData);
+    return this.http.post('http://localhost/PractiPro/backend/api/uploadfile' + '/' + inputdata, formData);
   }
 }

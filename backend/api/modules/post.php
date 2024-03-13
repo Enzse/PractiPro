@@ -131,11 +131,11 @@ class Post extends GlobalMethods
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
-                    $data->user_id,
+                    $data,
                     $fileName,
                     $fileType,
                     $fileSize,
-                    $fileData
+                    $fileData                    
                 ]
             );
             return $this->sendPayload(null, "success", "Successfully uploaded file", 200);

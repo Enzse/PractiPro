@@ -33,12 +33,12 @@ export class LoginComponent implements OnInit {
 
 
   loginform = this.builder.group({
-    email: this.builder.control('', Validators.required),
+    id: this.builder.control('', Validators.required),
     password: this.builder.control('', Validators.required)
   })
 
   proceedlogin() {    
-  this.service.Getbycode(this.loginform.value.email).subscribe(res => {
+  this.service.Getbycode(this.loginform.value.id).subscribe(res => {
     this.userdata = res;
     console.log(this.userdata);
     // Check if payload array is not empty
@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
       const user = this.userdata.payload[0]; // Get the first user in the payload array
       if (user.password === this.loginform.value.password) {
         if (user.isActive) {
-          sessionStorage.setItem('email', user.email);
+          sessionStorage.setItem('id', user.id);
           sessionStorage.setItem('userrole', user.role);
           if (this.service.GetUserRole() === 'admin'){
             this.router.navigate(['users']);
