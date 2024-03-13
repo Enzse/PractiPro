@@ -39,4 +39,12 @@ export class AuthService {
   GetUserRole(){
     return sessionStorage.getItem('userrole')!=null?sessionStorage.getItem('userrole')?.toString():'';
   }
+
+  uploadFile(user_id: number, file: File) {
+    const formData = new FormData();
+    formData.append('user_id', user_id.toString());
+    formData.append('file', file);
+
+    return this.http.post('http://localhost/PractiPro/backend/api/uploadfile', formData);
+  }
 }
