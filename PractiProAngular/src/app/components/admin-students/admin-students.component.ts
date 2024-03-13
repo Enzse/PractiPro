@@ -8,11 +8,12 @@ import { initFlowbite } from 'flowbite';
 import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { ViewsubmissionsComponent } from '../viewsubmissions/viewsubmissions.component';
 
 @Component({
   selector: 'app-admin-students',
   standalone: true,
-  imports: [AdminNavbarComponent, CommonModule],
+  imports: [AdminNavbarComponent, CommonModule, ViewsubmissionsComponent],
   templateUrl: './admin-students.component.html',
   styleUrl: './admin-students.component.css'
 })
@@ -38,19 +39,6 @@ export class AdminStudentsComponent implements OnInit {
     });
   }
 
-  // displayedColumns: string[] = [
-  //   'id',
-  //   'firstName',
-  //   'lastName',
-  //   'studentId',
-  //   'phoneNumber',
-  //   'program',
-  //   'block',
-  //   'year',
-  //   'email',
-  //   'isActive',
-  //   'role',
-  //   'action'];
 
   closeModal() {
     // Add code to close the modal here
@@ -59,7 +47,7 @@ export class AdminStudentsComponent implements OnInit {
   }
 
   Updateuser(code: any) {
-    const popup = this.dialog.open(UpdatepopupComponent, {
+    const popup = this.dialog.open(ViewsubmissionsComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
       width: "50%",
