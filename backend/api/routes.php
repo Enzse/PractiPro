@@ -98,7 +98,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             case 'uploadfile':
                 // Return JSON-encoded data for uploading files
-                echo json_encode($post->upload_file($request[1]));
+                echo json_encode($post->upload_file($request[1], $request[2]));
                 break;
 
             default:
