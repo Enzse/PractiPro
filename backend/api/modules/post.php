@@ -50,19 +50,19 @@ class Post extends GlobalMethods
      */
     public function add_user($data)
     {
-        $sql = "INSERT INTO user(firstName, lastName, studentId, phoneNumber, program, block, year, email, password)
-        VALUES (?, ?, ?, ? ,? , ? , ? , ? ,?)";
+        $sql = "INSERT INTO user(firstName, lastName, email, password)
+        VALUES (?, ?, ? ,?)";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
                     $data->firstName,
                     $data->lastName,
-                    $data->studentId,
-                    $data->phoneNumber,
-                    $data->program,
-                    $data->block,
-                    $data->year,
+                    // $data->studentId,
+                    // $data->phoneNumber,
+                    // $data->program,
+                    // $data->block,
+                    // $data->year,
                     $data->email,
                     $data->password
                 ]

@@ -69,6 +69,28 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'student_requirements':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_student_requirements($request[1]));
+                } else {
+                    echo json_encode($get->get_student_requirements());
+                }
+                break;
+
+            case 'student':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_student($request[1]));
+                } else {
+                    echo json_encode($get->get_student());
+                }
+                break;
+
+            case 'admin':
+
+                echo json_encode($get->get_admins());
+
+                break;
+
             default:
                 // Return a 403 response for unsupported requests
                 echo "This is forbidden";

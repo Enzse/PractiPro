@@ -10,42 +10,47 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'app-admin-admins',
+  selector: 'app-admin-students',
   standalone: true,
-  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent],
-  templateUrl: './admin-admins.component.html',
-  styleUrl: './admin-admins.component.css'
+  imports: [AdminNavbarComponent, CommonModule],
+  templateUrl: './admin-students.component.html',
+  styleUrl: './admin-students.component.css'
 })
-export class AdminAdminsComponent implements OnInit {
+export class AdminStudentsComponent implements OnInit {
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.Loaduser();
   }
+  students:any;
   ngOnInit(): void {
     initFlowbite();
-  }
-  userlist: any;
+    this.service.getAllStudents().subscribe(res => {
+      this.students = res;
+      console.log(this.students);
+    });
+   }
+  studentlist: any;
   dataSource: any;
 
   Loaduser() {
-    this.service.getAllAdmins().subscribe(res => {
-      this.userlist = res;
-      this.dataSource = new MatTableDataSource(this.userlist);
+    this.service.getAllStudents().subscribe(res => {
+      this.studentlist = res;
+      this.dataSource = new MatTableDataSource(this.studentlist);
     });
   }
 
-  displayedColumns: string[] = [
-    'id',
-    'firstName',
-    'lastName',
-    'studentId',
-    'phoneNumber',
-    'program',
-    'block',
-    'year',
-    'email',
-    'isActive',
-    'role',
-    'action'];
+  // displayedColumns: string[] = [
+  //   'id',
+  //   'firstName',
+  //   'lastName',
+  //   'studentId',
+  //   'phoneNumber',
+  //   'program',
+  //   'block',
+  //   'year',
+  //   'email',
+  //   'isActive',
+  //   'role',
+  //   'action'];
 
   closeModal() {
     // Add code to close the modal here
@@ -63,9 +68,10 @@ export class AdminAdminsComponent implements OnInit {
       }
     })
     popup.afterClosed().subscribe(res => {
-      this.Loaduser()
+        this.Loaduser()      
     });
 
-  }
+  }  
 
 }
+

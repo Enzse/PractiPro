@@ -9,25 +9,33 @@
             <div class="grid grid-cols-1  gap-5 sm:gap-5">
                 <div class="bg-slate-200 overflow-x-hidden h-auto items-center justify-center rounded-lg shadow-lg border border-gray-200 shadow-gray-500">
                     <img src="\assets\logo.png" alt="profile" class="center">
-                    <div class="border-b border-gray-300 w-auto ml-10 mr-10"></div>
+                    <div *ngIf="studentProfile && studentProfile.length > 0"  class="border-b border-gray-300 w-auto ml-10 mr-10"></div>
                     <div class="pt-2 pl-4 pr-4 text-xs mb-3">
                     <table>
                     <tbody>
                         <tr>
                             <td><b>Full Name</b></td>
-                            <td><b class="name">Student's Full Name</b></td>
+                            <td><b class="name">{{studentProfile[0]?.firstName}} {{studentProfile[0]?.lastName}}</b></td>
                         </tr>
                         <tr>
-                            <td><b>Student Number</b></td>
-                            <td><p>202454321</td>
+                            <td><b>Student ID</b></td>
+                            <td><p>{{studentProfile[0]?.studentId}}</td>
                         </tr>
                         <tr>
                             <td><b>College/Program</b></td>
-                            <td><p>CSS/BSCS</p></td>
+                            <td><p>{{studentProfile[0]?.program}}</p></td>
+                        </tr>
+                        <tr>
+                            <td><b>Block</b></td>
+                            <td><p>{{studentProfile[0]?.block}}</p></td>
+                        </tr>
+                        <tr>
+                            <td><b>Year</b></td>
+                            <td><p>{{studentProfile[0]?.year}}/BSCS</p></td>
                         </tr>
                         <tr>
                             <td><b>Email Address (Domain)</b></td>
-                            <td><p>202454321&#64;gordoncollege.edu.ph</p></td>
+                            <td><p>{{studentProfile[0]?.email}}</p></td>
                         </tr>
                     </tbody>
                     </table>
@@ -41,28 +49,17 @@
                     <tbody>
                         <tr>
                             <td><b>Contact Number</b></td>
-                            <td><p>09876543211</p></td>
+                            <td><p>{{studentProfile[0]?.phoneNumber}}</p></td>
                         </tr>
                         <tr>
                             <td><b>Address</b></td>
-                            <td><p>Gordon College</p></td>
+                            <td><p>{{studentProfile[0]?.address}}</p></td>
                         </tr>
                         <tr>
                             <td><b>Date of Birth</b></td>
-                            <td><p>February 24,1999</p></td>
-                        </tr>
-                        <tr>
-                            <td><b>Status</b></td>
-                            <td><p>Single</p></td>
-                        </tr>
-                        <tr>
-                            <td><b>Personal Email</b></td>
-                            <td><p>personal&#64;gmail.com</p></td>
-                        </tr>
-                        <tr>
-                            <td><b>Gender</b></td>
-                            <td><p>Male</p></td>
-                        </tr>
+                            <td><p>{{studentProfile[0]?.dateOfBirth}}</p></td>
+                        </tr>                       
+                                            
                     </tbody>
                     </table>
                     </div>

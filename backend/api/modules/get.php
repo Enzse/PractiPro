@@ -43,7 +43,7 @@ class Get extends GlobalMethods
             return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
         }
         return $this->sendPayload(null, 'failed', "Failed to retrieve data.", $result['code']);
-    }    
+    }
 
     //nageexecute ng query
     private function executeQuery($sql)
@@ -85,7 +85,13 @@ class Get extends GlobalMethods
         }
         return $this->get_records('user', $condition);
     }
+    public function get_admins()
+    {
 
+        $condition = "role= 'admin'";
+
+        return $this->get_records('user', $condition);
+    }
     /**
      * Retrieve a list of jobs.
      *
@@ -101,6 +107,45 @@ class Get extends GlobalMethods
         return $this->get_records('role', $condition);
     }
 
+
+    public function get_student_requirements($userId = null)
+    {
+        $condition = ($userId !== null) ? "student_id = $userId" : null;
+        $result = $this->get_records('student_requirements', $condition);
+
+        if ($result['status']['remarks'] === 'success') {
+
+            $payloadData = $result['payload'];
+
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
+        }
+    }
+    public function get_student($userId = null)
+    {
+        $condition = ($userId !== null) ? "id = $userId" : null;
+        $result = $this->get_records('students', $condition);
+
+        if ($result['status']['remarks'] === 'success') {
+
+            $payloadData = $result['payload'];
+
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
+        }
+    }
 
     /**
      * Retrieve a list of jobs.

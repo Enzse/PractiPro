@@ -12,27 +12,22 @@ export class AuthService {
   isLoggedIn = false;
   apiurl = 'http://localhost/PractiPro/backend/api/user';
 
-
-  getAllUsers() {
-    return this.http.get('http://localhost/PractiPro/backend/api/user');
-  }
-
+  //Get handlers.
   GetAll() {
     return this.http.get<any[]>(this.apiurl);
   }
   Getbycode(code: any) {
     return this.http.get(this.apiurl + '/' + code);
   }
-  GetAllRoles() {
-    return this.http.get('http://localhost/PractiPro/backend/api/role');
-  }
+
+
+  //Registration handler.
   Proceedregister(inputdata: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/adduser', inputdata);
   }
-  Updateuser(inputdata: any, code: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code,);
-  }
 
+
+  //Login handler.
   IsLoggedIn() {
     return sessionStorage.getItem('id') != null;
   }
@@ -41,9 +36,35 @@ export class AuthService {
   }
   getCurrentUserId(): number | null {
     const id = sessionStorage.getItem('id');
-    return id ? +id : null; // Convert to number or return null if not found
+    return id ? +id : null;
   }
 
+
+  //Admin features.
+  GetAllRoles() {
+    return this.http.get('http://localhost/PractiPro/backend/api/role');
+  }
+  getAllUsers() {
+    return this.http.get('http://localhost/PractiPro/backend/api/user');
+  }
+  getAllStudents() {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/student`);
+  }
+  getAllAdmins() {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/admin`);
+  }
+  Updateuser(inputdata: any, code: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code,);
+  }
+
+
+  //Student features.
+  getStudentRequirements(userId: number) {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/student_requirements/${userId}`);
+  }
+  getStudentProfile(userId: number) {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/student/${userId}`);
+  }
   uploadFile(userId: number, file: File, submissionName: string) {
     const formData = new FormData();
     formData.append('file', file);
