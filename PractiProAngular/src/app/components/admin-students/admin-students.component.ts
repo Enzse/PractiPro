@@ -9,11 +9,12 @@ import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../viewsubmissions/viewsubmissions.component';
+import { ReviewsubmissionsComponent } from '../reviewsubmissions/reviewsubmissions.component';
 
 @Component({
   selector: 'app-admin-students',
   standalone: true,
-  imports: [AdminNavbarComponent, CommonModule, ViewsubmissionsComponent],
+  imports: [AdminNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent],
   templateUrl: './admin-students.component.html',
   styleUrl: './admin-students.component.css'
 })
@@ -51,6 +52,21 @@ export class AdminStudentsComponent implements OnInit {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
       width: "50%",
+      data: {
+        usercode: code
+      }
+    })
+    popup.afterClosed().subscribe(res => {
+        this.Loaduser()      
+    });
+
+  }  
+
+  viewSubmissions(code: any) {
+    const popup = this.dialog.open(ReviewsubmissionsComponent, {
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
       data: {
         usercode: code
       }

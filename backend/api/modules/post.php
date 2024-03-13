@@ -58,11 +58,6 @@ class Post extends GlobalMethods
                 [
                     $data->firstName,
                     $data->lastName,
-                    // $data->studentId,
-                    // $data->phoneNumber,
-                    // $data->program,
-                    // $data->block,
-                    // $data->year,
                     $data->email,
                     $data->password
                 ]
@@ -117,6 +112,21 @@ class Post extends GlobalMethods
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
+    public function toggleRequirementStatus($studentId, $requirement, $status)
+    {
+        $sql = "UPDATE student_requirements SET $requirement = ? WHERE student_id = ?";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$status, $studentId]);
+            return $this->sendPayload(null, "success", "Successfully updated requirement status", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
+
 
     public function upload_file($data, $category)
     {
@@ -136,7 +146,7 @@ class Post extends GlobalMethods
                     $fileName,
                     $fileType,
                     $fileSize,
-                    $fileData                    
+                    $fileData
                 ]
             );
             return $this->sendPayload(null, "success", "Successfully uploaded file", 200);

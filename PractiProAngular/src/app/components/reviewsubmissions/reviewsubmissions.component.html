@@ -1,0 +1,53 @@
+<div class="p-3 rounded-md shadow-xl">
+    <h1 class="mb-2 text-orange-500 font-bold ml-1">Submission List</h1>
+    <div class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
+        <table mat-table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3">
+                        Submission ID
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Requirement
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        File Name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        File Type
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        File Size
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        File Data
+                    </th>                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let submission of studentSubmissions"
+                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {{ submission.submission_id }}
+                    </th>
+                    <td class="px-6 py-4">
+                        {{ submission.submission_name }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ submission.file_name }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ submission.file_type }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ submission.file_size }}
+                    </td>
+                    <td class="px-6 py-4">
+                        <a
+                        class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Download</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

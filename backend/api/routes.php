@@ -91,6 +91,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
                 break;
 
+            case 'submission':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_submission($request[1]));
+                } else {
+                    echo json_encode($get->get_submission());
+                }
+                break;;
+
             default:
                 // Return a 403 response for unsupported requests
                 echo "This is forbidden";
@@ -122,6 +130,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for uploading files
                 echo json_encode($post->upload_file($request[1], $request[2]));
                 break;
+            case 'toggleRequirementStatus':
+                // Toggle the requirement status
+                echo json_encode($post->toggleRequirementStatus($data->studentId, $data->requirement, $data->status));
+                break;
+
 
             default:
                 // Return a 403 response for unsupported requests

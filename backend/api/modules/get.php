@@ -147,14 +147,28 @@ class Get extends GlobalMethods
         }
     }
 
-    /**
-     * Retrieve a list of jobs.
-     *
-     * @return string
-     *   A string representing the list of jobs.
-     */
-    public function get_jobs()
+    public function get_submission($id = null)
     {
-        return $this->get_records('jobs');
+        $condition = null;
+        if ($id != null) {
+            $condition = "user_id=$id";
+        }
+        $result = $this->get_records('submissions', $condition);
+
+        if ($result['status']['remarks'] === 'success') {
+
+            $payloadData = $result['payload'];
+
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
+        }
     }
+
+
 }

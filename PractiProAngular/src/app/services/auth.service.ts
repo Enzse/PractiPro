@@ -56,6 +56,9 @@ export class AuthService {
   Updateuser(inputdata: any, code: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code,);
   }
+  getStudentSubmissions(userId: number) {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/submission/${userId}`);
+  }
   toggleRequirementStatus(data: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/toggleRequirementStatus', data);
   }
