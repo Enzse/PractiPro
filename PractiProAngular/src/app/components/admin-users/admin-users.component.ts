@@ -20,9 +20,14 @@ export class AdminUsersComponent implements OnInit {
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.Loaduser();
   }
+  users:any;
   ngOnInit(): void {
     initFlowbite();
-  }
+    this.service.getAllUsers().subscribe(res => {
+      this.users = res;
+      console.log(this.users);
+    });
+   }
   userlist: any;
   dataSource: any;
 

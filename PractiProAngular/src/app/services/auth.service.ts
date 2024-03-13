@@ -10,23 +10,27 @@ export class AuthService {
   constructor(private http:HttpClient) { }
 
   isLoggedIn=false;
-  apiurl='http://localhost:3000/user';
+  apiurl='http://localhost/PractiPro/backend/api/user';
 
 
+  getAllUsers() {
+    return this.http.get('http://localhost/PractiPro/backend/api/user');
+  }
+  
   GetAll(){
-    return this.http.get(this.apiurl);
+    return this.http.get<any[]>(this.apiurl);
   }
   Getbycode(code:any){
     return this.http.get(this.apiurl+'/'+code);
   }
   GetAllRoles(){
-    return this.http.get('http://localhost:3000/role');
+    return this.http.get('http://localhost/PractiPro/backend/api/role');
   }
   Proceedregister(inputdata:any){
-    return this.http.post(this.apiurl, inputdata);
+    return this.http.post('http://localhost/PractiPro/backend/api/adduser', inputdata);
   }
-  Updateuser(code: any, inputdata: any){
-    return this.http.put(this.apiurl+'/'+code, inputdata);
+  Updateuser(inputdata: any, code: any){
+    return this.http.post('http://localhost/PractiPro/backend/api/edituser'+'/'+inputdata, code, );
   }
 
   IsLoggedIn() {
