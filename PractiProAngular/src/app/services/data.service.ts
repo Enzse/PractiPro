@@ -8,7 +8,7 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  private apiURL = "https://pokeapi.co/api/v2/";
+  private apiURL = "https://";
 
   sendRequest(endpoint: string){
     const result = this.http.get(this.apiURL + endpoint);
