@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
@@ -8,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-reviewsubmissions',
@@ -16,7 +18,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   templateUrl: './reviewsubmissions.component.html',
   styleUrl: './reviewsubmissions.component.css'
 })
-export class ReviewsubmissionsComponent implements OnInit{
+export class ReviewsubmissionsComponent implements OnInit {
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ReviewsubmissionsComponent>) { }
 
@@ -37,5 +39,14 @@ export class ReviewsubmissionsComponent implements OnInit{
     }
   }
 
-
+  downloadSubmission(submissionId: number) {
+    this.service.downloadSubmission(submissionId).subscribe(
+      (data: Blob) => {
+        saveAs(data, `submission_${submissionId}.pdf`);
+      },
+      (error: any) => {
+        console.error('Error downloading submission:', error);
+      }
+    );
+  }
 }

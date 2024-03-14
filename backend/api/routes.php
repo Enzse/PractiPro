@@ -97,7 +97,30 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 } else {
                     echo json_encode($get->get_submission());
                 }
-                break;;
+                break;
+
+            case 'download':
+                // Ensure that a submission ID is provided
+                if (isset($request[1])) {
+                    $submissionId = $request[1];
+                    // Retrieve the PDF file data for the given submission ID
+                    $fileData = $get->get_file_data($submissionId);
+                    // Return the file data as a binary response
+                    if ($fileData) {
+                        header('Content-Type: application/pdf');
+                        header('Content-Disposition: attachment; filename="submission_' . $submissionId . '.pdf"');
+                        echo $fileData;
+                        exit();
+                    } else {
+                        echo "File not found";
+                        http_response_code(404);
+                    }
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
 
             default:
                 // Return a 403 response for unsupported requests

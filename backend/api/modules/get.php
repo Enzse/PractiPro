@@ -1,23 +1,4 @@
 <?php
-/**
- * Get Class
- *
- * This PHP class provides methods for retrieving data related to employees and jobs.
- *
- * Usage:
- * 1. Include this class in your project.
- * 2. Create an instance of the class to access the provided methods.
- * 3. Call the appropriate method to retrieve the desired data.
- *
- * Example Usage:
- * ```
- * $get = new Get();
- * $employeesData = $get->get_employees();
- * $jobsData = $get->get_jobs();
- * ```
- *
- * Note: Customize the methods as needed to fetch data from your actual data source (e.g., database, API).
- */
 
 require_once 'global.php';
 
@@ -40,7 +21,12 @@ class Get extends GlobalMethods
         $result = $this->executeQuery($sqlStr);
 
         if ($result['code'] == 200) {
-            return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
+            // Check if the table contains BLOB data
+            if ($table == 'submissions' && isset($result['data'][0]['file_data'])) {
+                return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code'], true);
+            } else {
+                return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
+            }
         }
         return $this->sendPayload(null, 'failed', "Failed to retrieve data.", $result['code']);
     }
@@ -53,19 +39,25 @@ class Get extends GlobalMethods
         $code = 0;
 
         try {
-            if ($result = $this->pdo->query($sql)->fetchAll()) {
+            $statement = $this->pdo->query($sql);
+            if ($statement) {
+                $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($result as $record) {
+                    // Handle BLOB data
+                    if (isset($record['file_data'])) {
+
+                        $record['file_data'] = base64_encode($record['file_data']);
+                    }
                     array_push($data, $record);
                 }
                 $code = 200;
-                $result = null;
                 return array("code" => $code, "data" => $data);
             } else {
                 $errmsg = "No data found.";
                 $code = 404;
             }
         } catch (\PDOException $e) {
-            $errmsh = $e->getMessage();
+            $errmsg = $e->getMessage();
             $code = 403;
         }
         return array("code" => $code, "errmsg" => $errmsg);
@@ -170,5 +162,27 @@ class Get extends GlobalMethods
         }
     }
 
+    public function get_file_data($id = null)
+    {
+        $condition = null;
+        if ($id != null) {
+            $condition = "submission_id=$id";
+        }
+        $result = $this->get_records('submissions', $condition);
 
+        if ($result['status']['remarks'] === 'success') {
+
+            $payloadData = $result['payload'];
+
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
+        }
+    }
+    
 }

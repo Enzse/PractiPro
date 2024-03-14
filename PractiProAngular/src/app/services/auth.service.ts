@@ -62,6 +62,9 @@ export class AuthService {
   toggleRequirementStatus(data: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/toggleRequirementStatus', data);
   }
+  downloadSubmission(submissionId: number) {
+    return this.http.get(`http://localhost/PractiPro/backend/api/download/${submissionId}`, { responseType: 'blob' });
+  }
   
 
 
