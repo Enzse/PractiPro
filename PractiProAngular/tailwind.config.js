@@ -9,9 +9,15 @@ module.exports = {
       colors: {
         
       },
+
       backgroundColor: {
         'dash-b': '#1e1b4b',
         'hover-side' : '#312e81'
+      },
+
+      // custom-margin
+      spacing: {
+        '-100' : '-36rem',
       }
 
     },

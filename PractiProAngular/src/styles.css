@@ -15,3 +15,9 @@
     background-color: #312e81;
 }
 /* "flex items-center p-2 text-white rounded-lg  hover:bg-hover-side" */
+
+@media (min-width: 640px) {
+    .sm:-ml-100{
+        margin-left: -30rem;
+    }
+}
