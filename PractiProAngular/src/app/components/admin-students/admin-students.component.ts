@@ -24,11 +24,11 @@ export class AdminStudentsComponent implements OnInit {
   }
   students:any;
   ngOnInit(): void {
-    initFlowbite();
-    this.service.getAllStudents().subscribe(res => {
-      this.students = res;
-      console.log(this.students);
-    });
+    // initFlowbite();
+    // this.service.getAllStudents().subscribe(res => {
+    //   this.students = res;
+    //   console.log(this.students);
+    // });
    }
   studentlist: any;
   dataSource: any;
@@ -37,6 +37,7 @@ export class AdminStudentsComponent implements OnInit {
     this.service.getAllStudents().subscribe(res => {
       this.studentlist = res;
       this.dataSource = new MatTableDataSource(this.studentlist);
+      console.log(this.students);
     });
   }
 
