@@ -50,11 +50,14 @@ export class AuthService {
   getAllStudents() {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student`);
   }
+  getStudent(Id: number) {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/student/${Id}`);
+  }
   getAllAdmins() {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/admin`);
   }
   Updateuser(inputdata: any, code: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code,);
+    return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code);
   }
   getStudentSubmissions(userId: number) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/submission/${userId}`);
@@ -64,6 +67,9 @@ export class AuthService {
   }
   downloadSubmission(submissionId: number) {
     return this.http.get(`http://localhost/PractiPro/backend/api/download/${submissionId}`, { responseType: 'blob' });
+  }
+  editStudentInfo(inputdata: any, code: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/editstudentinfo' + '/' + inputdata, code);
   }
   
 

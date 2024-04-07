@@ -15,12 +15,16 @@ import { EditinformationpopupComponent } from '../editinformationpopup/editinfor
 export class ProfileComponent implements OnInit {
   studentProfile: any[] = [];
 
-  constructor(private service: AuthService, private dialog: MatDialog) {}
+  constructor(private service: AuthService, private dialog: MatDialog) { }
 
+  userId = this.service.getCurrentUserId();
   ngOnInit(): void {
-    const userId = this.service.getCurrentUserId();
-    if (userId) {
-      this.service.getStudentProfile(userId).subscribe(
+    this.loadInfo();
+  }
+
+  loadInfo() {
+    if (this.userId) {
+      this.service.getStudentProfile(this.userId).subscribe(
         (data: any[]) => {
           this.studentProfile = data;
           console.log(this.studentProfile)
@@ -40,6 +44,9 @@ export class ProfileComponent implements OnInit {
       data: {
         usercode: code
       }
-    })   
+    });
+    popup.afterClosed().subscribe(res => {
+      this.loadInfo()
+    });
   }
 }

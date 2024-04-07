@@ -34,7 +34,7 @@ $get = new Get($pdo);
 $post = new Post($pdo);
 
 // Check if 'request' parameter is set in the request
-if (isset($_REQUEST['request'])) {
+if (isset ($_REQUEST['request'])) {
     // Split the request into an array based on '/'
     $request = explode('/', $_REQUEST['request']);
 } else {
@@ -101,7 +101,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             case 'download':
                 // Ensure that a submission ID is provided
-                if (isset($request[1])) {
+                if (isset ($request[1])) {
                     $submissionId = $request[1];
                     // Retrieve the PDF file data for the given submission ID
                     $fileData = $get->get_file_data($submissionId);
@@ -158,6 +158,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode($post->toggleRequirementStatus($data->studentId, $data->requirement, $data->status));
                 break;
 
+            case 'editstudentinfo':
+                // Return JSON-encoded data for editing users
+                echo json_encode($post->edit_student_info($data, $request[1]));
+                break;
 
             default:
                 // Return a 403 response for unsupported requests

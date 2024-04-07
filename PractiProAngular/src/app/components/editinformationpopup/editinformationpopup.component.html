@@ -1,5 +1,5 @@
 <div class="p-10">
-    <form>
+    <form [formGroup]="editForm" (ngSubmit)="editInformation()">
         <div class="grid gap-2 mb-6 md:grid-cols-2">
             <div>
                 <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
@@ -59,13 +59,13 @@
                 <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
                 <input type="tel" id="phone"
                     class="bg-transparent border-0 border-b-2  border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Culis, Hermosa, Bataan" formControlName="phoneNumber" />
+                    placeholder="Culis, Hermosa, Bataan" formControlName="address" />
             </div>
             <div>
                 <label for="dateofbirth" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of Birth</label>
                 <input type="tel" id="phone"
                     class="bg-transparent border-0 border-b-2  border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="D-MM-YYYY" formControlName="phoneNumber" />
+                    placeholder="YYYY-MM-DD" formControlName="dateOfBirth" />
             </div>
         </div>
         <!-- <div class="mb-6">

@@ -21,6 +21,7 @@ export class AdminUsersComponent implements OnInit {
     this.Loaduser();
   }
   users:any;
+
   ngOnInit(): void {
     initFlowbite();
     this.service.getAllUsers().subscribe(res => {
@@ -28,6 +29,7 @@ export class AdminUsersComponent implements OnInit {
       console.log(this.users);
     });
    }
+   
   userlist: any;
   dataSource: any;
 

@@ -77,6 +77,7 @@ class Get extends GlobalMethods
         }
         return $this->get_records('user', $condition);
     }
+
     public function get_admins()
     {
 
