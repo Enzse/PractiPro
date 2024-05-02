@@ -1,4 +1,4 @@
-import { Component, DoCheck } from '@angular/core';
+import { Component, DoCheck, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { authGuard } from './guard/auth.guard';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
 
 
 @Component({
@@ -26,12 +27,13 @@ export class AppComponent implements OnInit, DoCheck {
   title = 'PractiProAngular';
   ismenurequired = false;
   isadminuser = false;
-  constructor(private router: Router, private service: AuthService) {
+  constructor(private router: Router, private service: AuthService, 
+    @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
 
   ngOnInit(): void {
-    initFlowbite();
+    if (isPlatformBrowser(this.platformId)) initFlowbite();
   }
 
   ngDoCheck(): void {
@@ -47,4 +49,6 @@ export class AppComponent implements OnInit, DoCheck {
       this.isadminuser = false;
     }
   }
+
+
 }

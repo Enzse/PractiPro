@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
+import { isPlatformBrowser } from '@angular/common';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-admin-navbar',
@@ -8,6 +10,13 @@ import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component'
   templateUrl: './admin-navbar.component.html',
   styleUrl: './admin-navbar.component.css'
 })
-export class AdminNavbarComponent {
+export class AdminNavbarComponent implements OnInit {
+
+  constructor( @Inject(PLATFORM_ID) private platformId: Object) {
+  }
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) initFlowbite();
+  }
+
 
 }

@@ -22,6 +22,8 @@
     "@angular/router": "^17.2.0",
     "file-saver": "^2.0.5",
     "flowbite": "^2.3.0",
+    "ngx-extended-pdf-viewer": "^20.0.1",
+    "ngx-file-drop": "^16.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
