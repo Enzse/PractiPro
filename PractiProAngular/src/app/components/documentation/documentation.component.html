@@ -3,6 +3,7 @@
         <div>
             <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1">Documentation</h1>
             <div class="border-b border-gray-300"></div>
+<<<<<<< Updated upstream
             <p class="text-gray-800"><b>Upload a clear copy of all the required documents here. All documents should be in (.pdf, .jpg, .png) format</b></p>
         <br>
         </div>
@@ -25,3 +26,43 @@
             </div>
         </div>
         
+=======
+            <br>
+        </div>
+        <p class="text-gray-800">Upload a clear copy of all required documents here. All documents should be in <b>image format (.pdf, .jpg, .png).</b></p>
+        <br>
+
+        <div class="bg-slate-200 shadow-xl border border-gray-200 shadow-gray-500 rounded-lg pt-1 px-8 mb-5">
+            <div class="p-2">
+              <p class="ml-2 text-sm font-medium text-gray-600 dark:text-white" style="font-family: 'Roboto', sans-serif; font-size: 14px;">Documentation</p>            
+            </div>
+            <div class="bg-blue-200 h-auto w-auto flex justify-center p-auto py-28">
+                <form class="max-w-lg mx-auto">
+                    <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="user_avatar"></label>
+                    <input class="block w-full text-sm text-gray-900  cursor-pointer dark:text-gray-400 focus:outline-none dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="user_avatar" type="file" multiple>
+                    <div class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="user_avatar_help"></div>
+                </form>              
+            </div>            
+
+            <div class="flex justify-end pt-2">
+                <label for="uploadfile" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none">
+                    Upload Files
+                </label>
+                <input id="uploadfile" type="file" class="hidden" multiple>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="toast-container">
+    <div *ngIf="successtoast" id="toast-success" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+        <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+            </svg>
+            <span class="sr-only">Warning icon</span>
+        </div>
+        <div class="ms-3 text-sm font-normal">Successfully submitted!</div>
+    </div>
+</div>
+>>>>>>> Stashed changes
