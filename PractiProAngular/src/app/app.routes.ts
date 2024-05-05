@@ -15,6 +15,7 @@ import { WeeklyAccomplishmentRepComponent } from './components/weekly-accomplish
 import { CoordinatorSubmissionComponent } from './components/coordinator-submission/coordinator-submission.component';
 import { CoordAccomplishmentReportComponent } from './components/coord-accomplishment-report/coord-accomplishment-report.component';
 import { CoordDtrComponent } from './components/coord-dtr/coord-dtr.component';
+import { ExitPollComponent } from './exit-poll/exit-poll.component';
 
 export const routes: Routes = [    
     {path: '', component:DashboardComponent, canActivate: [authGuard]},
@@ -33,6 +34,8 @@ export const routes: Routes = [
     {path: 'student-submissions', component: CoordinatorSubmissionComponent, title:'Student Submissions', canActivate: [authGuard]},
     {path: 'accomplishment-reports', component: CoordAccomplishmentReportComponent, title:'Student Reports', canActivate: [authGuard]},
     {path: 'students-dtr', component: CoordDtrComponent, title:'Daily Time Record', canActivate: [authGuard]},
+    {path: 'exit-poll', component: ExitPollComponent, title:'Exit Poll', canActivate: [authGuard]},
+
 
     
 ];
