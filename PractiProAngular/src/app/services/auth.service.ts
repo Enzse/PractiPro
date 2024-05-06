@@ -15,9 +15,9 @@ export class AuthService {
   //Get handlers.
   GetAll() {
     return this.http.get<any[]>(this.apiurl);
-  }
-  Getbycode(code: any) {
-    return this.http.get(this.apiurl + '/' + code);
+  }  
+  getUser(code: any){
+    return this.http.get(`http://localhost/PractiPro/backend/api/user/${code}`);
   }
 
 

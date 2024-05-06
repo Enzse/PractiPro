@@ -28,7 +28,7 @@ export class UpdatepopupComponent implements OnInit {
       this.rolelist = res;
     })
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.Getbycode(this.data.usercode).subscribe((res: any) => {
+      this.service.getUser(this.data.usercode).subscribe((res: any) => {
         this.editdata = res.payload[0]; // Access data from the payload property
         this.updateform.setValue({
           id: this.editdata.id,

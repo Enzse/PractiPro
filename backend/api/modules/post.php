@@ -25,18 +25,22 @@ class Post extends GlobalMethods
      * @return array|object
      *   The added employee data.
      */
+
     public function add_user($data)
     {
         $sql = "INSERT INTO user(firstName, lastName, email, password)
         VALUES (?, ?, ? ,?)";
         try {
+            //hash the password.
+            $hashed_password = password_hash($data->password, PASSWORD_DEFAULT);
+
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
                     $data->firstName,
                     $data->lastName,
                     $data->email,
-                    $data->password
+                    $hashed_password
                 ]
             );
             return $this->sendPayload(null, "success", "Successfully created a new record", 200);
@@ -169,4 +173,3 @@ class Post extends GlobalMethods
 }
 
 
- 

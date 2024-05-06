@@ -4,28 +4,14 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 /**
  * API Endpoint Router
- *
  * This PHP script serves as a simple API endpoint router, handling GET and POST requests for specific resources.
- *
- *
- * Usage:
- * 1. Include this script in your project.
- * 2. Define resource-specific logic in the 'get.php' and 'post.php' modules.
- * 3. Send requests to the appropriate endpoints defined in the 'switch' cases below.
- *
- * Example Usage:
- * - API_URL: http://localhost/demoproject/api
- * - GET request for employees: API_URL/employees
- * - GET request for jobs: API_URL/jobs
- * - POST request for adding employees: API_URL/addemployee (with JSON data in the request body)
- * - POST request for adding jobs: API_URL/addjob (with JSON data in the request body)
- *
  */
 
-// Include required modules
 require_once "./modules/get.php";
 require_once "./modules/post.php";
 require_once "./config/database.php";
+require_once __DIR__ . '/bootstrap.php';
+require_once "./src/Jwt.php";
 
 // Initialize Get and Post objects
 $con = new Connection();
@@ -34,7 +20,7 @@ $get = new Get($pdo);
 $post = new Post($pdo);
 
 // Check if 'request' parameter is set in the request
-if (isset ($_REQUEST['request'])) {
+if (isset($_REQUEST['request'])) {
     // Split the request into an array based on '/'
     $request = explode('/', $_REQUEST['request']);
 } else {
@@ -58,6 +44,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_users($request[1]));
                 } else {
                     echo json_encode($get->get_users());
+                }
+                break;
+
+            case 'email':
+                if (count($request) > 1) {
+                    echo json_encode($get->getByEmail($request[1]));
+                } else {
+                    echo json_encode($get->getByEmail());
                 }
                 break;
 
@@ -101,7 +95,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             case 'download':
                 // Ensure that a submission ID is provided
-                if (isset ($request[1])) {
+                if (isset($request[1])) {
                     $submissionId = $request[1];
                     // Retrieve the PDF file data for the given submission ID
                     $fileData = $get->get_file_data($submissionId);
@@ -134,6 +128,45 @@ switch ($_SERVER['REQUEST_METHOD']) {
         // Retrieves JSON-decoded data from php://input using file_get_contents
         $data = json_decode(file_get_contents("php://input"));
         switch ($request[0]) {
+
+            case 'login':
+                $data = json_decode(file_get_contents('php://input'), true);
+
+                if (!isset($data['email']) || !isset($data['password'])) {
+                    http_response_code(400);
+                    echo json_encode(["message" => "Missing login credentials"]);
+                    exit();
+                }
+
+                $user = $get->getByEmail($data['email']);
+
+                if ($user !== false && isset($user['password'])) {
+
+                    // Verify the password
+                    if (!password_verify($data['password'], $user['password'])) {
+                        http_response_code(401);
+                        echo json_encode(["message" => "Invalid Credentials!"]);
+                        exit;
+                    }
+                    echo "Credentials Matched!";
+
+                    // Generate JWT token
+                    $JwtController = new Jwt($_ENV["SECRET_KEY"]);
+                    $token = $JwtController->encode([
+                        "id" => $user['id'],
+                        "email" => $user['email']
+                    ]);
+
+                    // Respond with the generated token
+                    echo json_encode(["token" => $token]);
+                } else {
+                    // User not found or password not set
+                    http_response_code(404);
+                    echo json_encode(["message" => "User not found or invalid credentials"]);
+                    exit;
+                }
+                break;
+
             case 'adduser':
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->add_user($data));

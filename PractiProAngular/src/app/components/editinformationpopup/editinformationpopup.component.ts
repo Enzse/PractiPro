@@ -19,15 +19,19 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 })
 export class EditinformationpopupComponent implements OnInit {
 
+  //Constructor
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditinformationpopupComponent>) { }
 
+
+
+  //This dynamically displays the data according to changes.
   editdata?: any;
   ngOnInit(): void {
     const userId = this.service.getCurrentUserId();
     if (userId) {
       this.service.getStudent(userId).subscribe((res: any) => {
-        console.log(userId);        
+        console.log(userId);
         console.log("API response:", res);
         console.log(res);
         this.editdata = res;
@@ -48,8 +52,9 @@ export class EditinformationpopupComponent implements OnInit {
     }
   }
 
+  //This serves as a placeholder for the student data.
   editForm = this.builder.group({
-    firstName: this.builder.control(''), // Remove the initial empty string
+    firstName: this.builder.control(''),
     lastName: this.builder.control(''),
     studentId: this.builder.control(''),
     program: this.builder.control(''),
@@ -61,6 +66,7 @@ export class EditinformationpopupComponent implements OnInit {
     dateOfBirth: this.builder.control(''),
   });
 
+  //This is for the Submit button functionality.
   editInformation() {
     if (this.editForm.valid) {
       this.service.editStudentInfo(this.service.getCurrentUserId(), this.editForm.value).subscribe(res => {

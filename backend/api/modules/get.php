@@ -69,6 +69,31 @@ class Get extends GlobalMethods
      * @return string
      *   A string representing the list of employees.
      */
+
+    public function getByEmail(string $email = null): array|false
+    {
+        // $condition = null;
+        // if ($email != null) {
+        //     $condition = "email='$email'";
+        // }
+        // return $this->get_records('user', $condition);
+        // $sql = 'SELECT * FROM user WHERE email = :email';
+
+        // $stmt = $this->conn->prepare($sql);
+        // $stmt->bindValue(':email', $email, PDO::PARAM_STR);
+
+        // $stmt->execute();
+
+        // return $stmt->fetch(PDO::FETCH_ASSOC);
+        $condition = ($email !== null) ? "email = '$email'" : null;
+        $result = $this->get_records('user', $condition);
+
+        if ($result['status']['remarks'] === 'success' && !empty($result['payload'])) {
+            return $result['payload'][0]; // Return the first user record
+        } else {
+            return false; // Return false if no user found
+        }
+    }
     public function get_users($id = null)
     {
         $condition = null;
@@ -185,5 +210,5 @@ class Get extends GlobalMethods
             return array();
         }
     }
-    
+
 }

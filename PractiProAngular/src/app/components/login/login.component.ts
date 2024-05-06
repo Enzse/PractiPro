@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
   })
 
   proceedlogin() {    
-  this.service.Getbycode(this.loginform.value.id).subscribe(res => {
+  this.service.getUser(this.loginform.value.id).subscribe(res => {
     this.userdata = res;
     console.log(this.userdata);
     // Check if payload array is not empty
@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
           } else if (this.service.GetUserRole() === 'student'){
             this.router.navigate(['dashboard']);
           }          
-          this.service.isLoggedIn=true;
+          // this.service.isLoggedIn=true;
         } else {
           console.error("Inactive user. Please contact admin.");
           this.inactive = true;
