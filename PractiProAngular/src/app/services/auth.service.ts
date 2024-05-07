@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   isLoggedIn = false;
   apiurl = 'http://localhost/PractiPro/backend/api/user';
@@ -22,22 +21,49 @@ export class AuthService {
 
 
   //Registration handler.
-  Proceedregister(inputdata: any) {
+  proceedRegister(inputdata: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/adduser', inputdata);
   }
 
 
   //Login handler.
-  IsLoggedIn() {
-    return sessionStorage.getItem('id') != null;
+  proceedLogin(inputdata: any){
+    return this.http.post('http://localhost/PractiPro/backend/api/login', inputdata);
   }
-  GetUserRole() {
-    return sessionStorage.getItem('userrole') != null ? sessionStorage.getItem('userrole')?.toString() : '';
+  IsLoggedIn(): boolean {
+    const myToken = sessionStorage.getItem('token');
+    return !this.jwtHelper.isTokenExpired(myToken);
+  }
+  //Decode Token Data
+  GetUserRole(): string | null {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      return decodedToken.role;
+    }
+    return null;
   }
   getCurrentUserId(): number | null {
-    const id = sessionStorage.getItem('id');
-    return id ? +id : null;
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      return decodedToken.userId;
+    }
+    return null;
   }
+
+  //FORMER FUNCTIONS
+
+  // IsLoggedIn() {
+  //   return sessionStorage.getItem('id') != null;
+  // }
+  // GetUserRole() {
+  //   return sessionStorage.getItem('userrole') != null ? sessionStorage.getItem('userrole')?.toString() : '';
+  // }
+  // getCurrentUserId(): number | null {
+  //   const id = sessionStorage.getItem('id');
+  //   return id ? +id : null;
+  // }
 
 
   //Admin features.

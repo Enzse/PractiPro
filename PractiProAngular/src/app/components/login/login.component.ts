@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
+import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { JwtService } from '../../services/jwt.service';
 
 @Component({
   selector: 'app-login',
@@ -13,64 +13,72 @@ import { CommonModule } from '@angular/common';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit {
-  constructor(private builder: FormBuilder, private service: AuthService, private router: Router) {
+export class LoginComponent {
+  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private jwtservice: JwtService) {
     sessionStorage.clear();
   }
-  //testing purposes
-  users:any;
-  ngOnInit(): void {
-    this.service.getAllUsers().subscribe(res => {
-      this.users = res;
-      console.log(this.users);
-    });
-   }
-   //testing purposes
-   
-  userdata: any;
-  loginfail = false;  
-  inactive = false;  
 
-
+  //FormBuilder
   loginform = this.builder.group({
-    id: this.builder.control('', Validators.required),
+    email: this.builder.control('', Validators.required),
     password: this.builder.control('', Validators.required)
   })
 
-  proceedlogin() {    
-  this.service.getUser(this.loginform.value.id).subscribe(res => {
-    this.userdata = res;
-    console.log(this.userdata);
-    // Check if payload array is not empty
-    if (this.userdata.payload.length > 0) {
-      const user = this.userdata.payload[0]; // Get the first user in the payload array
-      if (user.password === this.loginform.value.password) {
-        if (user.isActive) {
-          sessionStorage.setItem('id', user.id);
-          sessionStorage.setItem('userrole', user.role);
-          if (this.service.GetUserRole() === 'admin'){
-            this.router.navigate(['users']);
-          } else if (this.service.GetUserRole() === 'student'){
-            this.router.navigate(['dashboard']);
-          }          
-          // this.service.isLoggedIn=true;
-        } else {
-          console.error("Inactive user. Please contact admin.");
-          this.inactive = true;
+  onLogin2() {
+
+    this.service.proceedLogin(this.loginform.value).subscribe((res: any) => {
+      if (res.token) {
+        sessionStorage.setItem('token', res.token);
+        
+        switch (this.jwtservice.GetUserRole()) {
+          case 'admin':
+            this.router.navigate(['admin-users']);
+            break;
+          case 'student':
+            this.router.navigate(['student-dashboard']);
+            break;
+          default:
+            alert("User's role is unassigned, please contact admin to resolve this issue.")
         }
       } else {
-        console.error("Invalid credentials!");
-        this.loginfail = true;
+        alert("Invalid Credentials, please try again.");
       }
-    } else {
-      console.error("User not found!");
-      this.loginfail = true;
-    }
-  });
-}
-  closeFailToast() {
-    this.loginfail = false;
+    });
   }
-
-
 }
+
+//WALA NA TO
+
+// userdata: any;
+// onLogin() {
+//   this.service.getUser(this.loginform.value.email).subscribe(res => {
+//     this.userdata = res;
+//     console.log(this.userdata);
+//     if (this.userdata.payload.length > 0) {
+//       const user = this.userdata.payload[0];
+//       if (user.password === this.loginform.value.password) {
+//         if (user.isActive) {
+//           sessionStorage.setItem('email', user.email);
+//           sessionStorage.setItem('userrole', user.role);
+//           if (this.service.GetUserRole() === 'admin') {
+//             this.router.navigate(['users']);
+//           } else if (this.service.GetUserRole() === 'student') {
+//             this.router.navigate(['dashboard']);
+//           }
+//         } else {
+//           alert("Inactive user. Please contact admin.");
+//           // this.inactive = true;
+//         }
+//       } else {
+//         alert("Invalid credentials!");
+//       }
+//     } else {
+//       alert("User not found!");
+//     }
+//   });
+// }
+
+
+
+
+

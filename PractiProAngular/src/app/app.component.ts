@@ -14,6 +14,7 @@ import { authGuard } from './guard/auth.guard';
 import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common';
+import { JwtService } from './services/jwt.service';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class AppComponent implements OnInit, DoCheck {
   ismenurequired = false;
   isadminuser = false;
   constructor(private router: Router, private service: AuthService, 
-    @Inject(PLATFORM_ID) private platformId: Object) {
+    @Inject(PLATFORM_ID) private platformId: Object, private jwtservice: JwtService) {
 
   }
 
@@ -43,7 +44,7 @@ export class AppComponent implements OnInit, DoCheck {
     } else {
       this.ismenurequired = true;
     }
-    if (this.service.GetUserRole() === 'admin') {
+    if (this.jwtservice.GetUserRole() === 'admin') {
       this.isadminuser = true;
     } else {
       this.isadminuser = false;

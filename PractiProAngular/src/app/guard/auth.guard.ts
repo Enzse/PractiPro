@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { JwtService } from '../services/jwt.service';
 
 
 @Injectable({
@@ -10,22 +11,23 @@ import { AuthService } from '../services/auth.service';
 })
 
 export class authGuard implements CanActivate {
-  constructor(private service: AuthService, private router: Router) {
+  constructor(private service: AuthService, private router: Router, private jwtservice: JwtService) {
 
   }
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
 
-    if (this.service.IsLoggedIn()) {
+    if (this.jwtservice.IsLoggedIn()) {
       if (route.url.length > 0) {
         let menu = route.url[0].path;
         if (menu == 'users') {
-          if (this.service.GetUserRole() === 'admin'){
+          if (this.jwtservice.GetUserRole() === 'admin'){
             return true;
           } else {
-            console.log("You don't have access.");
+            console.log(this.jwtservice.GetUserRole())
             this.router.navigate(['login']);
+            alert("You don't have access.");
             return false;
           }
         } else {

@@ -19,6 +19,7 @@ $pdo = $con->connect();
 $get = new Get($pdo);
 $post = new Post($pdo);
 
+
 // Check if 'request' parameter is set in the request
 if (isset($_REQUEST['request'])) {
     // Split the request into an array based on '/'
@@ -148,13 +149,18 @@ switch ($_SERVER['REQUEST_METHOD']) {
                         echo json_encode(["message" => "Invalid Credentials!"]);
                         exit;
                     }
-                    echo "Credentials Matched!";
-
+                    // Verify if account is active
+                    if ($user['isActive'] === 0) {
+                        http_response_code(401);
+                        echo json_encode(["message" => "Matching credentials, but inactive account!"]);
+                        exit;
+                    }
                     // Generate JWT token
                     $JwtController = new Jwt($_ENV["SECRET_KEY"]);
                     $token = $JwtController->encode([
                         "id" => $user['id'],
-                        "email" => $user['email']
+                        "email" => $user['email'],
+                        "role" => $user['role'],
                     ]);
 
                     // Respond with the generated token
