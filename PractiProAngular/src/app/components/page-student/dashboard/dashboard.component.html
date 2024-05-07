@@ -1,0 +1,110 @@
+<!-- <app-navbar></app-navbar> -->
+<div class="p-2 sm:ml-60">
+  <div class="p-1 xl:p-10 ">
+    <div>
+      <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1">Dashboard</h1>
+      <div class="border-b border-gray-300"></div>
+      <br>
+    </div>
+    <div class="overflow-x-hidden text-center bg-white h-auto items-center justify-center rounded-lg shadow-lg border border-gray-300 shadow-gray-400">
+      <h1 class="text-gray-800 mb-auto mt-3 inline-block border-b-8 rounded-b-md border-orange-500 w-4/5">
+        <b>REGISTRATION STATUS</b>
+      </h1>
+      <div class="pt-2 pl-4 pr-4 text-xs mb-3">
+        <table class="w-full">
+          <thead>
+            <tr>
+              <th class="text-center font-bold border border-darkblue w-1/2">TO DO</th>
+              <th class="text-center font-bold border border-darkblue w-1/2">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="pl-4 text-left border border-darkblue">RESUME</td>
+              <td class="text-center border border-darkblue">
+                <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].resume" class="text-green-600">
+                  CLEARED</p>
+                <p *ngIf="studentRequirements.length > 0 && !studentRequirements[0].resume" class="text-orange-500">
+                  NOT CLEARED</p>
+              </td>
+            </tr>
+            <!-- Repeat the above pattern for other requirements -->
+            <tr>
+              <td class="pl-4 text-left border border-darkblue">APPLICATION LETTER</td>
+              <td class="text-center border border-darkblue">
+                <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].application_letter"
+                  class="text-green-600">CLEARED</p>
+                <p *ngIf="studentRequirements.length > 0 && !studentRequirements[0].application_letter"
+                  class="text-orange-500">NOT CLEARED</p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pl-4 text-left border border-darkblue">ACCEPTANCE LETTER</td>
+              <td class="text-center border border-darkblue">
+                <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].acceptance_letter"
+                  class="text-green-600">CLEARED</p>
+                <p *ngIf="studentRequirements.length > 0 && !studentRequirements[0].acceptance_letter"
+                  class="text-orange-500">NOT CLEARED</p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pl-4 text-left border border-darkblue">ENDORSEMENT LETTER</td>
+              <td class="text-center border border-darkblue">
+                <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].endorsement_letter"
+                  class="text-green-600">CLEARED</p>
+                <p *ngIf="studentRequirements.length > 0 && !studentRequirements[0].endorsement_letter"
+                  class="text-orange-500">NOT CLEARED</p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pl-4 text-left border border-darkblue">PARENT'S/GUARDIAN'S WAIVER</td>
+              <td class="text-center border border-darkblue">
+                <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].guardians_waiver"
+                  class="text-green-600">CLEARED</p>
+                <p *ngIf="studentRequirements.length > 0 && !studentRequirements[0].guardians_waiver"
+                  class="text-orange-500">NOT CLEARED</p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pl-4 text-left border border-darkblue">VACCINATION CARD</td>
+              <td class="text-center border border-darkblue">
+                <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].vaccination_card"
+                  class="text-green-600">CLEARED</p>
+                <p *ngIf="studentRequirements.length > 0 && !studentRequirements[0].vaccination_card"
+                  class="text-orange-500">NOT CLEARED</p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pl-4 text-left border border-darkblue">BARANGGAY CLEARANCE</td>
+              <td class="text-center border border-darkblue">
+                <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].barangay_clearance"
+                  class="text-green-600">CLEARED</p>
+                <p *ngIf="studentRequirements.length > 0 && !studentRequirements[0].barangay_clearance"
+                  class="text-orange-500">NOT CLEARED</p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="pl-4 text-left border border-darkblue">MEDICAL CERTIFICATE</td>
+              <td class="text-center border border-darkblue">
+                <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].medical_certificate"
+                  class="text-green-600">CLEARED</p>
+                <p *ngIf="studentRequirements.length > 0 && !studentRequirements[0].medical_certificate"
+                  class="text-orange-500">NOT CLEARED</p>
+              </td>
+            </tr>
+            <!-- Repeat for other requirements -->
+          </tbody>
+        </table>
+        <p class="mt-4 text-xs text-red-700">** If your status was marked as "NOT CLEARED", you need to proceed to
+          the respective office for your registration status. You will not be able to proceed with
+          enlistment/enrollment until you have been cleared in all <b>OJT</b> requirements.</p>
+      </div>
+    </div>
+  </div>
+</div>

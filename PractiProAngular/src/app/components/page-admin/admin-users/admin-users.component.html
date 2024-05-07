@@ -1,0 +1,64 @@
+<div class="p-4 sm:ml-56">
+
+    <div class=" p-3 rounded-md shadow-xl">
+        <h1 class="mb-2 text-orange-500 font-bold ml-1">User List</h1>
+        <div class="relative overflow-x-auto shadow-md shadow-slate-400 sm:rounded-lg">
+            <table mat-table  class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            ID
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            First Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Last Name
+                        </th>                        
+                        <th scope="col" class="px-6 py-3">
+                            Email
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            isActive
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Role
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let user of userlist?.payload" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ user.id }}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{ user.firstName }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ user.lastName }}
+                        </td>                        
+                        <td class="px-6 py-4">
+                            {{ user.email }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ user.isActive }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ user.role }}
+                        </td>
+                        <td class="px-6 py-4">                                                     
+                            <a (click)="Updateuser(user.id)" class="focus:outline-none text-white bg-blue-900 hover:bg-blue-950 focus:ring-4 focus:ring-yellow-300 font-medium rounded-3xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Update</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+</div>

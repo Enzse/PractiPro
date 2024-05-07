@@ -1,0 +1,76 @@
+<!-- <app-navbar></app-navbar> -->
+<div class="p-2 sm:ml-60">
+    <div class="p-1 xl:p-10 ">
+        <div>
+            <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1">Profile</h1>
+            <div class="border-b border-gray-300"></div>
+        <br>
+        </div>
+            <div class="grid grid-cols-1  gap-5 sm:gap-5">
+                <div class="bg-slate-200 overflow-x-hidden h-auto items-center justify-center rounded-lg shadow-lg border border-gray-200 shadow-gray-500">
+                    <img src="\assets\logo.png" alt="profile" class="center">
+                    <div *ngIf="studentProfile && studentProfile.length > 0"  class="border-b border-gray-300 w-auto ml-10 mr-10"></div>
+                    <div class="pt-2 pl-4 pr-4 text-xs mb-3">
+                    <table>
+                    <tbody>
+                        <tr>
+                            <td><b>Full Name</b></td>
+                            <td><b class="name">{{studentProfile[0]?.firstName}} {{studentProfile[0]?.lastName}}</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>Student ID</b></td>
+                            <td><p>{{studentProfile[0]?.studentId}}</td>
+                        </tr>
+                        <tr>
+                            <td><b>College/Program</b></td>
+                            <td><p>{{studentProfile[0]?.program}}</p></td>
+                        </tr>
+                        <tr>
+                            <td><b>Block</b></td>
+                            <td><p>{{studentProfile[0]?.block}}</p></td>
+                        </tr>
+                        <tr>
+                            <td><b>Year</b></td>
+                            <td><p>{{studentProfile[0]?.year}}/BSCS</p></td>
+                        </tr>
+                        <tr>
+                            <td><b>Email Address (Domain)</b></td>
+                            <td><p>{{studentProfile[0]?.email}}</p></td>
+                        </tr>
+                    </tbody>
+                    </table>
+                    </div>
+                </div>
+
+                <div class="bg-slate-200 pt-3 h-auto items-center overflow-x-hidden justify-center rounded-lg shadow-lg border border-gray-200 shadow-gray-500">
+                    <h1><b class="personal">Personal Information</b></h1>
+                    <div class="pt-2 pl-4 pr-4 w-full text-xs mb-3">
+                    <table>
+                    <tbody>
+                        <tr>
+                            <td><b>Contact Number</b></td>
+                            <td><p>{{studentProfile[0]?.phoneNumber}}</p></td>
+                        </tr>
+                        <tr>
+                            <td><b>Address</b></td>
+                            <td><p>{{studentProfile[0]?.address}}</p></td>
+                        </tr>
+                        <tr>
+                            <td><b>Date of Birth</b></td>
+                            <td><p>{{studentProfile[0]?.dateOfBirth}}</p></td>
+                        </tr>                       
+                                            
+                    </tbody>
+                    </table>
+                    </div>
+
+                    <div class="flex justify-end pb-4 pr-4">
+                    <button (click)="editInfo(studentProfile)" type="button" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-dash-b rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                        Edit Information
+                    </button>
+                    </div>
+
+                </div>  
+            </div>  
+    </div>
+</div>

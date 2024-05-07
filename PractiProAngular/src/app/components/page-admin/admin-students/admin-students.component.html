@@ -1,0 +1,88 @@
+<div class="p-4 sm:ml-56">
+
+    <div class=" p-3 rounded-md shadow-xl">
+        <h1 class="mb-2 text-orange-500 font-bold ml-1">Student List</h1>
+        <div class="relative overflow-x-auto shadow-md shadow-slate-400 sm:rounded-lg">
+            <table mat-table  class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            ID
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            First Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Last Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Student ID
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Phone Number
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Program
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Block
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Year
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Email
+                        </th>                        
+                        <th scope="col" class="px-6 py-3">
+                            Submissions
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Requirements Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let students of studentlist" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            {{ students.id }}
+                        </th>
+                        <td class="px-6 py-4">
+                            {{ students.firstName }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ students.lastName }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ students.studentId }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ students.phoneNumber }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ students.program }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ students.block }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ students.year }}
+                        </td>
+                        <td class="px-6 py-4">
+                            {{ students.email }}
+                        </td>  
+                        <td class="px-6 py-4">                                                     
+                            <a (click)="viewSubmissions(students.id)" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">View</a>
+                        </td>                      
+                        <td class="px-6 py-4">                                                     
+                            <a (click)="Updateuser(students.id)" class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Update</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+
+</div>

@@ -1,0 +1,106 @@
+<!-- <app-navbar></app-navbar> -->
+<div class="p-2 sm:ml-60">
+  <div class="p-1 xl:p-10">
+    <div>
+      <h1 class="text-orange-500 ml-5 text-lg font-bold mb-2">Submission</h1>
+      <div class="border-b border-gray-300"></div>
+      <br />
+    </div>
+
+    <p class="text-gray-800">
+      Upload a clear of all the required documents here. All documents should be
+      in <b>portable document format or image format (.pdf, .jpg, .png).</b>
+    </p>
+    <br />
+
+    <div class="">
+      <p></p>
+      <div class="">
+        <div
+          class="bg-slate-200 rounded-lg w-auto p-5 shadow-xl shadow-gray-500 border border-gray-200"
+        >
+        <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
+            <mat-tab label="Resume">
+              <form
+                class="h-96 w-auto flex justify-center pt-40 pb-auto bg-blue-200"
+              >
+                <input type="file" id="resumeFile" name="resumeFile" />
+              </form>
+            </mat-tab>
+            <mat-tab label="Application Letter">
+              <form
+                class="h-96 w-auto flex justify-center pt-40 pb-auto bg-blue-200"
+              >
+                <input type="file" id="applicationLetterFile" name="applicationLetterFile" />
+              </form>
+            </mat-tab>
+            <mat-tab label="Acceptance Letter">
+              <form
+                class="h-96 w-auto flex justify-center pt-40 pb-auto bg-blue-200"
+              >
+                <input type="file" id="acceptanceLetterFile" name="acceptanceLetterFile" />
+              </form>
+            </mat-tab>
+            <mat-tab label="Endorsement Letter">
+              <form
+                class="h-96 w-auto flex justify-center pt-40 pb-auto bg-blue-200"
+              >
+                <input type="file" id="endorsementLetterFile" name="endorsementLetterFile" />
+              </form>
+            </mat-tab>
+            <mat-tab label="Parent's/Guardian's Waiver">
+              <form
+                class="h-96 w-auto flex justify-center pt-40 pb-auto bg-blue-200"
+              >
+                <input type="file" id="pgWaiverFile" name="pgWaiverFile" />
+              </form>
+            </mat-tab>
+            <mat-tab label="Vaccination Card">
+              <form
+                class="h-96 w-auto flex justify-center pt-40 pb-auto bg-blue-200"
+              >
+                <input type="file" id="vaccinationCardFile" name="vaccinationCardFile" />
+              </form>
+            </mat-tab>
+            <mat-tab label="Barangay Clearance">
+              <form
+                class="h-96 w-auto flex justify-center pt-40 pb-auto bg-blue-200"
+              >
+                <input type="file" id="brgyClearanceFile" name="brgyClearanceFile" />
+              </form>
+            </mat-tab>
+            <mat-tab label="Medical Certificate">
+              <form
+                class="h-96 w-auto flex justify-center pt-40 pb-auto bg-blue-200"
+              >
+                <input type="file" id="medCertFile" name="medCertFile" />
+              </form>
+            </mat-tab>
+          </mat-tab-group>
+          <div class="flex justify-end mr-0 pt-3">
+            <button
+              type="button" (click)="submitFiles()"
+              class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none"
+            >
+              Submit File
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container">
+
+  <div *ngIf="successtoast" id="toast-success" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+    <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"/>
+        </svg>
+          <span class="sr-only">Warning icon</span>
+      </div>
+      <div class="ms-3 text-sm font-normal">Successfully submitted!</div>
+  </div>
+  
+  </div>
