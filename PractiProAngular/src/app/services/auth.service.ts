@@ -47,23 +47,10 @@ export class AuthService {
     const token = sessionStorage.getItem('token');
     if (token) {
       const decodedToken = this.jwtHelper.decodeToken(token);
-      return decodedToken.userId;
+      return decodedToken.id;
     }
     return null;
   }
-
-  //FORMER FUNCTIONS
-
-  // IsLoggedIn() {
-  //   return sessionStorage.getItem('id') != null;
-  // }
-  // GetUserRole() {
-  //   return sessionStorage.getItem('userrole') != null ? sessionStorage.getItem('userrole')?.toString() : '';
-  // }
-  // getCurrentUserId(): number | null {
-  //   const id = sessionStorage.getItem('id');
-  //   return id ? +id : null;
-  // }
 
 
   //Admin features.

@@ -29,8 +29,8 @@ export class LoginComponent {
     this.service.proceedLogin(this.loginform.value).subscribe((res: any) => {
       if (res.token) {
         sessionStorage.setItem('token', res.token);
-        
-        switch (this.jwtservice.GetUserRole()) {
+
+        switch (this.jwtservice.getUserRole()) {
           case 'admin':
             this.router.navigate(['admin-users']);
             break;

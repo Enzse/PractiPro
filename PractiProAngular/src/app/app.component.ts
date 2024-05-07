@@ -44,7 +44,7 @@ export class AppComponent implements OnInit, DoCheck {
     } else {
       this.ismenurequired = true;
     }
-    if (this.jwtservice.GetUserRole() === 'admin') {
+    if (this.jwtservice.getUserRole() === 'admin') {
       this.isadminuser = true;
     } else {
       this.isadminuser = false;

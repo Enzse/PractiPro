@@ -12,12 +12,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-  studentRequirements: any[] = [];
-
+  
   constructor(private service: AuthService) {}
-
+  
+  studentRequirements: any[] = [];
   ngOnInit(): void {
     const userId = this.service.getCurrentUserId();
+    console.log(userId);
+    
     if (userId) {
       this.service.getStudentRequirements(userId).subscribe(
         (data: any[]) => {

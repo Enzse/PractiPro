@@ -22,10 +22,10 @@ export class authGuard implements CanActivate {
       if (route.url.length > 0) {
         let menu = route.url[0].path;
         if (menu == 'users') {
-          if (this.jwtservice.GetUserRole() === 'admin'){
+          if (this.jwtservice.getUserRole() === 'admin'){
             return true;
           } else {
-            console.log(this.jwtservice.GetUserRole())
+            console.log(this.jwtservice.getUserRole())
             this.router.navigate(['login']);
             alert("You don't have access.");
             return false;

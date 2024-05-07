@@ -104,7 +104,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     if ($fileData) {
                         header('Content-Type: application/pdf');
                         header('Content-Disposition: attachment; filename="submission_' . $submissionId . '.pdf"');
-                        echo $fileData;
+                        // echo $fileData;
                         exit();
                     } else {
                         echo "File not found";

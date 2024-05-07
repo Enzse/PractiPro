@@ -13,7 +13,7 @@ export class JwtService {
     return !this.jwtHelper.isTokenExpired(myToken);
   }
   //Decode Token Data
-  GetUserRole(): string | null {
+  getUserRole(): string | null {
     const token = sessionStorage.getItem('token');
     if (token) {
       const decodedToken = this.jwtHelper.decodeToken(token);
