@@ -12,21 +12,16 @@ class Get extends GlobalMethods
 
 
     //naghahandle ng sql statements
-    private function get_records($table, $conditions = null)
+    private function get_records($table, $conditions = null, $columns = '*')
     {
-        $sqlStr = "SELECT * FROM $table";
+        $sqlStr = "SELECT $columns FROM $table";
         if ($conditions != null) {
-            $sqlStr = $sqlStr . " WHERE " . $conditions;
+            $sqlStr .= " WHERE " . $conditions;
         }
         $result = $this->executeQuery($sqlStr);
 
         if ($result['code'] == 200) {
-            // Check if the table contains BLOB data
-            if ($table == 'submissions' && isset($result['data'][0]['file_data'])) {
-                return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
-            } else {
-                return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
-            }
+            return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
         }
         return $this->sendPayload(null, 'failed', "Failed to retrieve data.", $result['code']);
     }
@@ -72,19 +67,7 @@ class Get extends GlobalMethods
 
     public function getByEmail(string $email = null): array|false
     {
-        // $condition = null;
-        // if ($email != null) {
-        //     $condition = "email='$email'";
-        // }
-        // return $this->get_records('user', $condition);
-        // $sql = 'SELECT * FROM user WHERE email = :email';
 
-        // $stmt = $this->conn->prepare($sql);
-        // $stmt->bindValue(':email', $email, PDO::PARAM_STR);
-
-        // $stmt->execute();
-
-        // return $stmt->fetch(PDO::FETCH_ASSOC);
         $condition = ($email !== null) ? "email = '$email'" : null;
         $result = $this->get_records('user', $condition);
 
@@ -196,6 +179,19 @@ class Get extends GlobalMethods
 
     public function get_submission($id = null)
     {
+        $columns = "submission_id, submission_name, file_name, file_type, file_size, user_id";
+        $condition = ($id != null) ? "submission_id=$id" : null;
+        $result = $this->get_records('submissions', $condition, $columns);
+
+        if ($result['status']['remarks'] === 'success') {
+            return $result['payload'];
+        } else {
+            return array();
+        }
+    }
+
+    public function get_submissionByStudent($id = null)
+    {
         $condition = null;
         if ($id != null) {
             $condition = "user_id=$id";
@@ -217,15 +213,20 @@ class Get extends GlobalMethods
         }
     }
 
+
+    //FOR PDF DOWNLOADS
     public function download_file($submissionId)
     {
-        // Retrieve the PDF file data for the given submission ID
-        $fileData = $this->get_file_data($submissionId);
+        $fileInfo = $this->get_file_data($submissionId);
 
-        // Return the file data as a binary response
-        if ($fileData) {
+        // Check if file info exists
+        if ($fileInfo) {
+            $fileData = $fileInfo['file_data'];
+            $fileName = $fileInfo['file_name'];
+
+            // Set headers for file download
             header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment; filename="downloaded_file.pdf"');
+            header('Content-Disposition: attachment; filename="' . $fileName . '"');
             echo $fileData;
             exit();
         } else {
@@ -242,7 +243,9 @@ class Get extends GlobalMethods
         $result = $this->get_records('submissions', $condition);
 
         if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
-            return base64_decode($result['payload'][0]['file_data']);
+            $fileData = base64_decode($result['payload'][0]['file_data']);
+            $fileName = $result['payload'][0]['file_name']; // Retrieve the file name
+            return array("file_data" => $fileData, "file_name" => $fileName);
         } else {
             return false;
         }

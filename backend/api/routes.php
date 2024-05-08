@@ -108,9 +108,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
-            case 'download':                
+            case 'student-submission':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_submissionByStudent($request[1]));
+                } else {
+                    echo json_encode($get->get_submissionByStudent());
+                }
+                break;
+
+            case 'download':
                 if (isset($request[1])) {
-                    $submissionId = $request[1];                                
+                    $submissionId = $request[1];
                     $get->download_file($submissionId);
                 } else {
                     echo "Submission ID not provided";
@@ -118,14 +126,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
-            default:                
+            default:
                 echo "This is forbidden";
                 http_response_code(403);
                 break;
         }
         break;
-      
-        
+
+
     case 'POST':
         // Retrieves JSON-decoded data from php://input using file_get_contents
         $data = json_decode(file_get_contents("php://input"));
