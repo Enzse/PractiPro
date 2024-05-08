@@ -80,9 +80,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'coordinator-students':
+                if (count($request) > 1) {
+                    echo json_encode($get->getStudentsByCoordinatorId($request[1]));
+                } else {
+                    echo json_encode($get->get_student());
+                }
+                break;
+
             case 'admin':
 
                 echo json_encode($get->get_admins());
+
+                break;
+
+            case 'coordinator':
+
+                echo json_encode($get->get_coordinators());
 
                 break;
 
@@ -94,37 +108,24 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
-            case 'download':
-                // Ensure that a submission ID is provided
+            case 'download':                
                 if (isset($request[1])) {
-                    $submissionId = $request[1];
-                    // Retrieve the PDF file data for the given submission ID
-                    $fileData = $get->get_file_data($submissionId);
-                    // Return the file data as a binary response
-                    if ($fileData) {
-                        header('Content-Type: application/pdf');
-                        header('Content-Disposition: attachment; filename="submission_' . $submissionId . '.pdf"');
-                        // echo $fileData;
-                        exit();
-                    } else {
-                        echo "File not found";
-                        http_response_code(404);
-                    }
+                    $submissionId = $request[1];                                
+                    $get->download_file($submissionId);
                 } else {
                     echo "Submission ID not provided";
                     http_response_code(400);
                 }
                 break;
 
-
-            default:
-                // Return a 403 response for unsupported requests
+            default:                
                 echo "This is forbidden";
                 http_response_code(403);
                 break;
         }
         break;
-    // Handle POST requests    
+      
+        
     case 'POST':
         // Retrieves JSON-decoded data from php://input using file_get_contents
         $data = json_decode(file_get_contents("php://input"));

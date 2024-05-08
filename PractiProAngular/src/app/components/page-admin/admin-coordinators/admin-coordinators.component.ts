@@ -10,13 +10,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
-  selector: 'app-admin-admins',
+  selector: 'app-admin-coordinators',
   standalone: true,
   imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent],
-  templateUrl: './admin-admins.component.html',
-  styleUrl: './admin-admins.component.css'
+  templateUrl: './admin-coordinators.component.html',
+  styleUrl: './admin-coordinators.component.css'
 })
-export class AdminAdminsComponent implements OnInit {
+export class AdminCoordinatorsComponent {
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.Loaduser();
   }
@@ -27,12 +27,25 @@ export class AdminAdminsComponent implements OnInit {
   dataSource: any;
 
   Loaduser() {
-    this.service.getAllAdmins().subscribe(res => {
+    this.service.getAllCoordinators().subscribe(res => {
       this.userlist = res;
       this.dataSource = new MatTableDataSource(this.userlist);
     });
   }
 
+  displayedColumns: string[] = [
+    'id',
+    'firstName',
+    'lastName',
+    'studentId',
+    'phoneNumber',
+    'program',
+    'block',
+    'year',
+    'email',
+    'isActive',
+    'role',
+    'action'];
 
   closeModal() {
     // Add code to close the modal here

@@ -57,17 +57,27 @@ export class AuthService {
   GetAllRoles() {
     return this.http.get('http://localhost/PractiPro/backend/api/role');
   }
+  //Get Users
   getAllUsers() {
     return this.http.get('http://localhost/PractiPro/backend/api/user');
   }
+  //Get Students
   getAllStudents() {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student`);
+  }
+  getStudentsByCoordinator(Id: number) {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator-students/${Id}`);
   }
   getStudent(Id: number) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student/${Id}`);
   }
+  //Get Admins
   getAllAdmins() {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/admin`);
+  }
+  //Get Coordinators
+  getAllCoordinators() {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator`);
   }
   Updateuser(inputdata: any, code: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code);

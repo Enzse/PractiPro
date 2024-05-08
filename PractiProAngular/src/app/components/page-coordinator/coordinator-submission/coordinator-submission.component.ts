@@ -19,23 +19,20 @@ import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/r
 export class CoordinatorSubmissionComponent {
 
   constructor(private service: AuthService, private dialog: MatDialog) {
-    this.Loaduser();
+    this.loadHeldStudents();
+
   }
-  students:any;
-  ngOnInit(): void {
-    // initFlowbite();
-    // this.service.getAllStudents().subscribe(res => {
-    //   this.students = res;
-    //   console.log(this.students);
-    // });
-   }
+  Coordinator: any;
+  students: any;
   studentlist: any;
   dataSource: any;
 
-  Loaduser() {
-    this.service.getAllStudents().subscribe(res => {
-      this.studentlist = res;
-      console.log(this.students);
+  loadHeldStudents() {
+    this.Coordinator = this.service.getCurrentUserId();
+    this.service.getStudentsByCoordinator(this.Coordinator).subscribe(res => {
+      console.log(res);
+      this.studentlist = res.payload;
+      // console.log(this.students);
       this.dataSource = new MatTableDataSource(this.studentlist);
     });
   }
@@ -57,10 +54,10 @@ export class CoordinatorSubmissionComponent {
       }
     })
     popup.afterClosed().subscribe(res => {
-        this.Loaduser()      
+      this.loadHeldStudents()
     });
 
-  }  
+  }
 
   viewSubmissions(code: any) {
     const popup = this.dialog.open(ReviewsubmissionsComponent, {
@@ -72,9 +69,9 @@ export class CoordinatorSubmissionComponent {
       }
     })
     popup.afterClosed().subscribe(res => {
-        this.Loaduser()      
+      this.loadHeldStudents()
     });
 
-  }  
+  }
 
 }

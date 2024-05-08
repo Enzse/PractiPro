@@ -23,7 +23,7 @@ class Get extends GlobalMethods
         if ($result['code'] == 200) {
             // Check if the table contains BLOB data
             if ($table == 'submissions' && isset($result['data'][0]['file_data'])) {
-                return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code'], true);
+                return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
             } else {
                 return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
             }
@@ -110,6 +110,13 @@ class Get extends GlobalMethods
 
         return $this->get_records('user', $condition);
     }
+    public function get_coordinators()
+    {
+
+        $condition = "role= 'coordinator'";
+
+        return $this->get_records('user', $condition);
+    }
     /**
      * Retrieve a list of jobs.
      *
@@ -164,6 +171,28 @@ class Get extends GlobalMethods
             return array();
         }
     }
+    public function getStudentsByCoordinatorId($coordinatorId)
+    {
+        $sql = "SELECT s.id, s.firstName, s.lastName, s.studentId, s.block
+            FROM coordinators c
+            JOIN class_blocks cb ON c.id = cb.coordinator_id
+            JOIN student_class_blocks scb ON cb.block_name = cb.block_name
+            JOIN students s ON scb.student_id = s.id
+            WHERE c.id = :coordinatorId";
+
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':coordinatorId', $coordinatorId, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($result)) {
+                return $this->sendPayload(null, 'failed', "No students found for coordinator ID $coordinatorId.", 404);
+            }
+            return $this->sendPayload($result, 'success', "Successfully retrieved students.", 200);
+        } catch (PDOException $e) {
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
 
     public function get_submission($id = null)
     {
@@ -188,6 +217,22 @@ class Get extends GlobalMethods
         }
     }
 
+    public function download_file($submissionId)
+    {
+        // Retrieve the PDF file data for the given submission ID
+        $fileData = $this->get_file_data($submissionId);
+
+        // Return the file data as a binary response
+        if ($fileData) {
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: attachment; filename="downloaded_file.pdf"');
+            echo $fileData;
+            exit();
+        } else {
+            echo "File not found";
+            http_response_code(404);
+        }
+    }
     public function get_file_data($id = null)
     {
         $condition = null;
@@ -196,18 +241,10 @@ class Get extends GlobalMethods
         }
         $result = $this->get_records('submissions', $condition);
 
-        if ($result['status']['remarks'] === 'success') {
-
-            $payloadData = $result['payload'];
-
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
+        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
+            return base64_decode($result['payload'][0]['file_data']);
         } else {
-            return array();
+            return false;
         }
     }
 

@@ -16,25 +16,20 @@ import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/r
   styleUrl: './coord-accomplishment-report.component.css'
 })
 export class CoordAccomplishmentReportComponent {
-
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.Loaduser();
   }
-  students:any;
-  ngOnInit(): void {
-    // initFlowbite();
-    // this.service.getAllStudents().subscribe(res => {
-    //   this.students = res;
-    //   console.log(this.students);
-    // });
-   }
+  Coordinator: any;
+  students: any;  
   studentlist: any;
   dataSource: any;
 
   Loaduser() {
-    this.service.getAllStudents().subscribe(res => {
-      this.studentlist = res;
-      console.log(this.students);
+    this.Coordinator = this.service.getCurrentUserId();
+    this.service.getStudentsByCoordinator(this.Coordinator).subscribe(res => {
+      console.log(res);
+      this.studentlist = res.payload;
+      // console.log(this.students);
       this.dataSource = new MatTableDataSource(this.studentlist);
     });
   }
@@ -56,10 +51,10 @@ export class CoordAccomplishmentReportComponent {
       }
     })
     popup.afterClosed().subscribe(res => {
-        this.Loaduser()      
+      this.Loaduser()
     });
 
-  }  
+  }
 
   viewSubmissions(code: any) {
     const popup = this.dialog.open(ReviewsubmissionsComponent, {
@@ -71,10 +66,10 @@ export class CoordAccomplishmentReportComponent {
       }
     })
     popup.afterClosed().subscribe(res => {
-        this.Loaduser()      
+      this.Loaduser()
     });
 
-  }  
+  }
 
 
 }

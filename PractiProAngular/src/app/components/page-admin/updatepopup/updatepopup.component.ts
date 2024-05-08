@@ -17,11 +17,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
   styleUrl: './updatepopup.component.css'
 })
 export class UpdatepopupComponent implements OnInit {
-  rolelist: any;
-  registrationfail = false;
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<UpdatepopupComponent>) { }
 
+  rolelist: any;
+  registrationfail = false;
   editdata: any;
   ngOnInit(): void {
     this.service.GetAllRoles().subscribe(res => {
@@ -33,7 +33,7 @@ export class UpdatepopupComponent implements OnInit {
         this.updateform.setValue({
           id: this.editdata.id,
           firstName: this.editdata.firstName,
-          lastName: this.editdata.lastName,          
+          lastName: this.editdata.lastName,
           email: this.editdata.email,
           password: this.editdata.password,
           role: this.editdata.role,
@@ -48,7 +48,7 @@ export class UpdatepopupComponent implements OnInit {
   updateform = this.builder.group({
     id: this.builder.control(''),
     firstName: this.builder.control(''),
-    lastName: this.builder.control(''),    
+    lastName: this.builder.control(''),
     email: this.builder.control(''),
     password: this.builder.control(''),
     role: this.builder.control('', Validators.required),
@@ -62,7 +62,7 @@ export class UpdatepopupComponent implements OnInit {
         this.dialog.close();
       })
     } else {
-      console.log("Please Select Role.");
+      alert("Please Select Role.");
     }
   }
 

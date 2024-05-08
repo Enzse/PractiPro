@@ -27,6 +27,7 @@ export class RegistrationComponent {
       this.service.proceedRegister(this.registerform.value).subscribe(res => {
         console.log("Registered Successfully, please contact Admin for approval.")        
         this.router.navigate(['login']);
+        alert("Registration Successful! Please contact the admin for activation.")
       });
     } else {
       alert("Please enter valid data");      

@@ -37,6 +37,9 @@ export class LoginComponent {
           case 'student':
             this.router.navigate(['student-dashboard']);
             break;
+          case 'coordinator':
+            this.router.navigate(['coord-submissions']);
+            break;
           default:
             alert("User's role is unassigned, please contact admin to resolve this issue.")
         }
