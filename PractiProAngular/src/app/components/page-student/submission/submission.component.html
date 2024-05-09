@@ -8,18 +8,16 @@
     </div>
 
     <p class="text-gray-800">
-      Upload a clear of all the required documents here. All documents should be
+      Upload clear documents of all your <b>Requirement Documents</b> here. All documents should be
       in <b>Portable Document Format(.pdf).</b>
     </p>
     <br />
 
-    <div class="">
-      <p></p>
-      <div class="">
+    
         <div class="bg-slate-200 rounded-lg w-auto p-5 shadow-xl shadow-gray-500 border border-gray-200">
           <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
             <mat-tab label="Resume">
-              <form class="h-96 w-auto flex justify-center pt-40 pb-auto bg-blue-200">
+              <form class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto bg-blue-200">
                 <input type="file" id="resumeFile" name="resumeFile" />
               </form>
             </mat-tab>
@@ -66,12 +64,11 @@
             </button>
           </div>
         </div>
-      </div>
-    </div>
+      
 
     <div class="mt-20">
       <div class="border-b border-gray-300"></div>
-      <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4">Your Submitted Requirements</h1>
+      <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4">Your Submitted Requirements:</h1>
       
       <br>
     </div>
@@ -82,7 +79,7 @@
             
             
             <th scope="col" class="px-6 py-3">
-              Week
+              Requirement
             </th>
             <th scope="col" class="px-6 py-3">
               File name

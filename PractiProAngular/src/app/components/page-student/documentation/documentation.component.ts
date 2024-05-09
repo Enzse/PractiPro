@@ -70,6 +70,8 @@ export class DocumentationComponent implements OnInit {
         );
       }
     });
+
+    // this.loadData();
   }
 
 

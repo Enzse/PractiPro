@@ -4,6 +4,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import saveAs from 'file-saver';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -14,17 +17,18 @@ import { CommonModule } from '@angular/common';
   styleUrl: './weekly-accomplishment-rep.component.css'
 })
 export class WeeklyAccomplishmentRepComponent {
-  constructor(private authService: AuthService) { }
+  constructor(private service: AuthService, private dialog: MatDialog) {
+    this.loadData();
+  }
 
   successtoast = false;
   tabWeekNumbers: number[] = [];
 
   ngOnInit() {
-    const userId = this.authService.getCurrentUserId();
+    const userId = this.service.getCurrentUserId();
     console.log(userId);
-    this.authService.getMaxDocsWeeks(userId).subscribe(
+    this.service.getMaxWarWeeks(userId).subscribe(
       weekNumbers => {
-        console.log('Week numbers:', weekNumbers);
         this.tabWeekNumbers = weekNumbers;
       },
       error => {
@@ -45,7 +49,7 @@ export class WeeklyAccomplishmentRepComponent {
 
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
-    const userId = this.authService.getCurrentUserId();
+    const userId = this.service.getCurrentUserId();
 
     if (!userId) {
       console.error('User ID not found.');
@@ -55,7 +59,7 @@ export class WeeklyAccomplishmentRepComponent {
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
-        this.authService.uploadDocumentation(userId, file, this.selectedTabLabel).subscribe(
+        this.service.uploadWar(userId, file, this.selectedTabLabel).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
             this.successtoast = true;
@@ -67,6 +71,36 @@ export class WeeklyAccomplishmentRepComponent {
         );
       }
     });
+
+    // this.loadData();
+  }
+
+
+
+  user: any;
+  students: any;
+  datalist: any;
+  dataSource: any;
+
+  loadData() {
+    this.user = this.service.getCurrentUserId();
+    this.service.getWarByUser(this.user).subscribe(res => {
+      console.log(res);
+      this.datalist = res;
+      // console.log(this.students);
+      this.dataSource = new MatTableDataSource(this.datalist);
+    });
+  }
+
+  downloadWar(submissionId: number, fileName: string) {
+    this.service.downloadWar(submissionId).subscribe(
+      (data: any) => {
+        saveAs(data, fileName);
+      },
+      (error: any) => {
+        console.error('Error downloading submission:', error);
+      }
+    );
   }
 
 }

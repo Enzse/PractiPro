@@ -89,19 +89,59 @@ export class AuthService {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-submission/${userId}`);
   }
   getDocumentationsByUser(Id: any) {
-    if(Id){
+    if (Id) {
       return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-documentation/${Id}`);
     }
-    else{
+    else {
       return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-documentation`);
     }
   }
+  getDtrByUser(Id: any) {
+    if (Id) {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-dtr/${Id}`);
+    }
+    else {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-dtr`);
+    }
+  }
+  getWarByUser(Id: any) {
+    if (Id) {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-war/${Id}`);
+    }
+    else {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-war`);
+    }
+  }
+  getFinalReportByUser(Id: any) {
+    if (Id) {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-finalreport/${Id}`);
+    }
+    else {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-finalreport`);
+    }
+  }
   getMaxDocsWeeks(Id: any) {
-    if(Id){
+    if (Id) {
       return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdocsweeks/${Id}`);
     }
-    else{
+    else {
       return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdocsweeks`);
+    }
+  }
+  getMaxDtrWeeks(Id: any) {
+    if (Id) {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdtrweeks/${Id}`);
+    }
+    else {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdtrweeks`);
+    }
+  }
+  getMaxWarWeeks(Id: any) {
+    if (Id) {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxwarweeks/${Id}`);
+    }
+    else {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxwarweeks`);
     }
   }
   toggleRequirementStatus(data: any) {
@@ -112,6 +152,15 @@ export class AuthService {
   }
   downloadDocumentation(submissionId: number) {
     return this.http.get(`http://localhost/PractiPro/backend/api/downloaddocumentation/${submissionId}`, { responseType: 'blob' });
+  }
+  downloadDtr(submissionId: number) {
+    return this.http.get(`http://localhost/PractiPro/backend/api/downloaddtr/${submissionId}`, { responseType: 'blob' });
+  }
+  downloadWar(submissionId: number) {
+    return this.http.get(`http://localhost/PractiPro/backend/api/downloadwar/${submissionId}`, { responseType: 'blob' });
+  }
+  downloadFinalReport(submissionId: number) {
+    return this.http.get(`http://localhost/PractiPro/backend/api/downloadfinalreport/${submissionId}`, { responseType: 'blob' });
   }
   editStudentInfo(inputdata: any, code: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/editstudentinfo' + '/' + inputdata, code);
@@ -137,5 +186,23 @@ export class AuthService {
     formData.append('file', file);
 
     return this.http.post(`http://localhost/PractiPro/backend/api/uploaddocumentation/${userId}/${submissionName}`, formData);
+  }
+  uploadDtr(userId: number, file: File, submissionName: number) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`http://localhost/PractiPro/backend/api/uploaddtr/${userId}/${submissionName}`, formData);
+  }
+  uploadWar(userId: number, file: File, submissionName: number) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`http://localhost/PractiPro/backend/api/uploadwar/${userId}/${submissionName}`, formData);
+  }
+  uploadFinalReport(userId: number, file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`http://localhost/PractiPro/backend/api/uploadfinalreport/${userId}`, formData);
   }
 }

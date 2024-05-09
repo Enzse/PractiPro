@@ -1,26 +1,50 @@
-import { Component} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import saveAs from 'file-saver';
 import { MatTableDataSource } from '@angular/material/table';
-
+import { saveAs } from 'file-saver';
 
 @Component({
-  selector: 'app-exit-poll',
+  selector: 'app-dtr',
   standalone: true,
   imports: [NavbarComponent, MatTabsModule, CommonModule],
-  templateUrl: './exit-poll.component.html',
-  styleUrl: './exit-poll.component.css'
+  templateUrl: './dtr.component.html',
+  styleUrl: './dtr.component.css'
 })
-export class ExitPollComponent {
+export class DtrComponent {
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.loadData();
   }
 
-  successtoast = false;  
+  successtoast = false;
+  tabWeekNumbers: number[] = [];
+
+  ngOnInit() {
+    const userId = this.service.getCurrentUserId();
+    console.log(userId);
+    this.service.getMaxDtrWeeks(userId).subscribe(
+      weekNumbers => {
+        this.tabWeekNumbers = weekNumbers;
+      },
+      error => {
+        console.error('Error fetching week numbers:', error);
+      }
+    );
+  }
+  addNewTab() {
+    const nextWeekNumber = this.tabWeekNumbers[this.tabWeekNumbers.length - 1] + 1;
+    this.tabWeekNumbers.push(nextWeekNumber);
+  }
+
+  selectedTabLabel: number = 1;
+  onTabChange(event: MatTabChangeEvent) {
+
+    this.selectedTabLabel = parseInt(event.tab.textLabel.replace('Week ', ''), 10);
+  }
 
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
@@ -34,7 +58,7 @@ export class ExitPollComponent {
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
-        this.service.uploadFinalReport(userId, file).subscribe(
+        this.service.uploadDtr(userId, file, this.selectedTabLabel).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
             this.successtoast = true;
@@ -59,16 +83,16 @@ export class ExitPollComponent {
 
   loadData() {
     this.user = this.service.getCurrentUserId();
-    this.service.getFinalReportByUser(this.user).subscribe(res => {
+    this.service.getDtrByUser(this.user).subscribe(res => {
       console.log(res);
       this.datalist = res;
-      
+      // console.log(this.students);
       this.dataSource = new MatTableDataSource(this.datalist);
     });
   }
 
-  downloadFinalReport(submissionId: number, fileName: string) {
-    this.service.downloadFinalReport(submissionId).subscribe(
+  downloadDtr(submissionId: number, fileName: string) {
+    this.service.downloadDtr(submissionId).subscribe(
       (data: any) => {
         saveAs(data, fileName);
       },
@@ -77,4 +101,6 @@ export class ExitPollComponent {
       }
     );
   }
+
+
 }

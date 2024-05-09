@@ -123,12 +123,49 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_documentationByStudent());
                 }
                 break;
+            case 'student-dtr':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_dtrByStudent($request[1]));
+                } else {
+                    echo json_encode($get->get_dtrByStudent());
+                }
+                break;
+            case 'student-war':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_warByStudent($request[1]));
+                } else {
+                    echo json_encode($get->get_warByStudent());
+                }
+                break;
+            case 'student-finalreport':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_finalReportByStudent($request[1]));
+                } else {
+                    echo json_encode($get->get_finalReportByStudent());
+                }
+                break;
 
             case 'student-maxdocsweeks':
                 if (count($request) > 1) {
-                    echo json_encode($get->get_studentMaxDocWeeks($request[1]));
+                    echo json_encode($get->get_studentMaxDocsWeeks($request[1]));
                 } else {
-                    echo json_encode($get->get_studentMaxDocWeeks());
+                    echo json_encode($get->get_studentMaxDocsWeeks());
+                }
+                break;
+
+            case 'student-maxdtrweeks':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_studentMaxDtrWeeks($request[1]));
+                } else {
+                    echo json_encode($get->get_studentMaxDtrWeeks());
+                }
+                break;
+
+            case 'student-maxwarweeks':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_studentMaxWarWeeks($request[1]));
+                } else {
+                    echo json_encode($get->get_studentMaxWarWeeks());
                 }
                 break;
 
@@ -145,6 +182,33 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 if (isset($request[1])) {
                     $submissionId = $request[1];
                     $get->downloadDocumentation($submissionId);
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'downloaddtr':
+                if (isset($request[1])) {
+                    $submissionId = $request[1];
+                    $get->downloadDtr($submissionId);
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'downloadwar':
+                if (isset($request[1])) {
+                    $submissionId = $request[1];
+                    $get->downloadWar($submissionId);
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'downloadfinalreport':
+                if (isset($request[1])) {
+                    $submissionId = $request[1];
+                    $get->downloadFinalReport($submissionId);
                 } else {
                     echo "Submission ID not provided";
                     http_response_code(400);
@@ -229,6 +293,18 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'uploaddocumentation':
                 // Return JSON-encoded data for uploading files
                 echo json_encode($post->upload_documentation($request[1], $request[2]));
+                break;
+            case 'uploaddtr':
+                // Return JSON-encoded data for uploading files
+                echo json_encode($post->upload_dtr($request[1], $request[2]));
+                break;
+            case 'uploadwar':
+                // Return JSON-encoded data for uploading files
+                echo json_encode($post->upload_war($request[1], $request[2]));
+                break;
+            case 'uploadfinalreport':
+                // Return JSON-encoded data for uploading files
+                echo json_encode($post->upload_finalReport($request[1]));
                 break;
             case 'toggleRequirementStatus':
                 // Toggle the requirement status

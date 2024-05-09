@@ -5,7 +5,7 @@
   
       
       <div>
-        <h1 class="text-orange-500 ml-5 text-lg font-bold mb-2">Final Report</h1>
+        <h1 class="text-orange-500 ml-5 text-lg font-bold mb-2">Daily Time Records</h1>
         <div class="border-b border-gray-300"></div>
         <br />
       </div>
@@ -14,36 +14,45 @@
   
   
       <p class="text-gray-800">
-        Upload a clear document of your <b>Final Report (Exit Poll)</b> here. All documents should be
+        Upload clear documents of all your <b>Daily Time Records</b> documents here. All documents should be
         in <b>Portable Document Format(.pdf).</b>
       </p>
       <br />
   
       
       
-      <div class="bg-slate-200 rounded-lg w-auto p-5 shadow-xl shadow-gray-500 border border-gray-200">
-        <mat-tab-group #tabGroup>
-          <mat-tab label="Final Report">
-
-
-            <form class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto bg-blue-200">
-              <input type="file" id="FinalReport" name="FinalReport" />
-            </form>
-          </mat-tab>
-
-          
-        </mat-tab-group>
-        <div class="flex justify-end mr-0 pt-3">
-          <button type="button" (click)="submitFiles()"
-            class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
-            Submit File
-          </button>
-        </div>
-      </div>
+          <div class="bg-slate-200 rounded-lg w-auto p-5 shadow-xl shadow-gray-500 border border-gray-200">
+            <mat-tab-group (selectedTabChange)="onTabChange($event)">
+              <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
+  
+                
+                  
+                
+                  
+  
+                    <form class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto bg-blue-200 mt-8">
+                      <input type="file" [id]="'week' + weekNumber" [name]="'week' + weekNumber" />
+                    </form>
+  
+  
+  
+                
+              </mat-tab>
+            </mat-tab-group>
+            <div class="flex justify-end mr-0 pt-3">
+              <button type="button" (click)="addNewTab()"
+                class="text-white p-2 px-5 bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg focus:outline-none mr-5">
+                Add New Week</button>
+              <button type="button" (click)="submitFiles()"
+                class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
+                Submit File
+              </button>
+            </div>
+          </div>
         
           <div class="mt-20">
             <div class="border-b border-gray-300"></div>
-            <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4">Your Submitted Final Reports:</h1>
+            <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4">Your Submitted Records:</h1>
             
             <br>
           </div>
@@ -51,8 +60,11 @@
             <table mat-table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
               <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                                  
-                
+                  
+                  
+                  <th scope="col" class="px-6 py-3">
+                    Week
+                  </th>
                   <th scope="col" class="px-6 py-3">
                     File name
                   </th>
@@ -68,7 +80,10 @@
                 <tr *ngFor="let data of datalist"
                   class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   
-                                    
+                  
+                  <td class="px-6 py-4">
+                    Week {{ data.week }}
+                  </td>
                   <td class="px-6 py-4">
                     {{ data.file_name }}
                   </td>
@@ -76,7 +91,7 @@
                     {{ data.created_at }}
                   </td>
                   <td class="px-6 py-4">
-                    <a (click)="downloadFinalReport(data.report_id, data.file_name)"
+                    <a (click)="downloadDtr(data.dtr_id, data.file_name)"
                       class="focus:outline-none text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-orange-900">Download</a>
                   </td>
                 </tr>

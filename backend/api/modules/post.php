@@ -198,6 +198,94 @@ class Post extends GlobalMethods
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
+    public function upload_dtr($data, $category)
+    {
+        $fileName = basename($_FILES["file"]["name"]);
+        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileSize = $_FILES["file"]["size"];
+        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
+
+
+        $sql = "INSERT INTO dtr (user_id, week, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data,
+                    $category,
+                    $fileName,
+                    $fileType,
+                    $fileSize,
+                    $fileData
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
+
+    public function upload_war($data, $category)
+    {
+        $fileName = basename($_FILES["file"]["name"]);
+        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileSize = $_FILES["file"]["size"];
+        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
+
+
+        $sql = "INSERT INTO war (user_id, week, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data,
+                    $category,
+                    $fileName,
+                    $fileType,
+                    $fileSize,
+                    $fileData
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
+
+    public function upload_finalReport($data)
+    {
+        $fileName = basename($_FILES["file"]["name"]);
+        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileSize = $_FILES["file"]["size"];
+        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
+
+
+        $sql = "INSERT INTO finalreports (user_id, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?)";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data,
+                    $fileName,
+                    $fileType,
+                    $fileSize,
+                    $fileData
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
 
 }
 
