@@ -213,11 +213,72 @@ class Get extends GlobalMethods
         }
     }
 
-
-    //FOR PDF DOWNLOADS
-    public function download_file($submissionId)
+    public function get_documentationByStudent($id = null)
     {
-        $fileInfo = $this->get_file_data($submissionId);
+        $columns = "doc_id, user_id, week, file_name, created_at";
+        $condition = ($id != null) ? "user_id=$id" : null;
+        $result = $this->get_records('documentations', $condition, $columns);
+
+        if ($result['status']['remarks'] === 'success') {
+            return $result['payload'];
+        } else {
+            return array();
+        }
+    }
+
+    public function get_documentation($id = null)
+    {
+        $columns = "doc_id, user_id, week, file_name, file_type, file_size, created_at";
+        $condition = ($id != null) ? "doc_id=$id" : null;
+
+        // Fetch the maximum week number from the database
+        $maxWeekQuery = "SELECT MAX(week) AS max_week FROM documentations";
+        $maxWeekResult = $this->executeQuery($maxWeekQuery);
+        $maxWeek = $maxWeekResult['data'][0]['max_week'];
+
+        // If maxWeek is null, set it to 0
+        if ($maxWeek === null) {
+            $maxWeek = 0;
+        }
+
+        // Generate an array of week numbers from 1 to maxWeek
+        $weekNumbers = range(1, $maxWeek);
+
+        // Return the array directly
+        return $weekNumbers;
+    }
+    public function get_studentMaxDocWeeks($id = null)
+    {
+        $columns = "doc_id, user_id, week, file_name, file_type, file_size, created_at";
+        $condition = ($id != null) ? "user_id=$id" : null;
+
+        // Fetch the maximum week number from the database
+        $maxWeekQuery = "SELECT MAX(week) AS max_week FROM documentations";
+
+        if ($id != null) {
+            $maxWeekQuery .= " WHERE user_id = $id";
+        }
+        $maxWeekResult = $this->executeQuery($maxWeekQuery);
+        $maxWeek = $maxWeekResult['data'][0]['max_week'];
+
+        // If maxWeek is null, set it to 0
+        if ($maxWeek === null) {
+            $weekNumbers = [1];
+        } else {
+            $weekNumbers = range(1, $maxWeek);
+
+        }
+
+        // Generate an array of week numbers from 1 to maxWeek
+
+        // Return the array directly
+        return $weekNumbers;
+    }
+
+    //FOR PDF REQUIREMENT DOWNLOADS
+    public function downloadRequirement($submissionId)
+    {
+        $fileInfo = $this->getRequirementData($submissionId);
 
         // Check if file info exists
         if ($fileInfo) {
@@ -234,7 +295,7 @@ class Get extends GlobalMethods
             http_response_code(404);
         }
     }
-    public function get_file_data($id = null)
+    public function getRequirementData($id = null)
     {
         $condition = null;
         if ($id != null) {
@@ -250,5 +311,44 @@ class Get extends GlobalMethods
             return false;
         }
     }
+
+
+    //FOR DOCUMENTATIONS
+    public function downloadDocumentation($submissionId)
+    {
+        $fileInfo = $this->getDocumentationData($submissionId);
+
+        // Check if file info exists
+        if ($fileInfo) {
+            $fileData = $fileInfo['file_data'];
+            $fileName = $fileInfo['file_name'];
+
+            // Set headers for file download
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: attachment; filename="' . $fileName . '"');
+            echo $fileData;
+            exit();
+        } else {
+            echo "File not found";
+            http_response_code(404);
+        }
+    }
+    public function getDocumentationData($id = null)
+    {
+        $condition = null;
+        if ($id != null) {
+            $condition = "doc_id=$id";
+        }
+        $result = $this->get_records('documentations', $condition);
+
+        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
+            $fileData = base64_decode($result['payload'][0]['file_data']);
+            $fileName = $result['payload'][0]['file_name']; // Retrieve the file name
+            return array("file_data" => $fileData, "file_name" => $fileName);
+        } else {
+            return false;
+        }
+    }
+
 
 }

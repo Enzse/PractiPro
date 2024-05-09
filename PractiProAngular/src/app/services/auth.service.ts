@@ -14,8 +14,8 @@ export class AuthService {
   //Get handlers.
   GetAll() {
     return this.http.get<any[]>(this.apiurl);
-  }  
-  getUser(code: any){
+  }
+  getUser(code: any) {
     return this.http.get(`http://localhost/PractiPro/backend/api/user/${code}`);
   }
 
@@ -27,7 +27,7 @@ export class AuthService {
 
 
   //Login handler.
-  proceedLogin(inputdata: any){
+  proceedLogin(inputdata: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/login', inputdata);
   }
   IsLoggedIn(): boolean {
@@ -82,22 +82,41 @@ export class AuthService {
   Updateuser(inputdata: any, code: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code);
   }
-  getStudentSubmission(Id: number) {
+  getRequirementSubmission(Id: number) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/submission/${Id}`);
   }
-  getStudentSubmissionsByUser(userId: number) {
+  getRequirementSubmissionsByUser(userId: number) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-submission/${userId}`);
+  }
+  getDocumentationsByUser(Id: any) {
+    if(Id){
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-documentation/${Id}`);
+    }
+    else{
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-documentation`);
+    }
+  }
+  getMaxDocsWeeks(Id: any) {
+    if(Id){
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdocsweeks/${Id}`);
+    }
+    else{
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdocsweeks`);
+    }
   }
   toggleRequirementStatus(data: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/toggleRequirementStatus', data);
   }
-  downloadSubmission(submissionId: number) {
-    return this.http.get(`http://localhost/PractiPro/backend/api/download/${submissionId}`, { responseType: 'blob' });
+  downloadRequirement(submissionId: number) {
+    return this.http.get(`http://localhost/PractiPro/backend/api/downloadrequirement/${submissionId}`, { responseType: 'blob' });
+  }
+  downloadDocumentation(submissionId: number) {
+    return this.http.get(`http://localhost/PractiPro/backend/api/downloaddocumentation/${submissionId}`, { responseType: 'blob' });
   }
   editStudentInfo(inputdata: any, code: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/editstudentinfo' + '/' + inputdata, code);
   }
-  
+
 
 
   //Student features.
@@ -107,10 +126,16 @@ export class AuthService {
   getStudentProfile(userId: number) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student/${userId}`);
   }
-  uploadFile(userId: number, file: File, submissionName: string) {
+  uploadRequirement(userId: number, file: File, submissionName: string) {
     const formData = new FormData();
     formData.append('file', file);
-  
-    return this.http.post(`http://localhost/PractiPro/backend/api/uploadfile/${userId}/${submissionName}`, formData);
+
+    return this.http.post(`http://localhost/PractiPro/backend/api/uploadrequirement/${userId}/${submissionName}`, formData);
+  }
+  uploadDocumentation(userId: number, file: File, submissionName: number) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`http://localhost/PractiPro/backend/api/uploaddocumentation/${userId}/${submissionName}`, formData);
   }
 }

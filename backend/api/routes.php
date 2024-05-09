@@ -116,10 +116,35 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
-            case 'download':
+            case 'student-documentation':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_documentationByStudent($request[1]));
+                } else {
+                    echo json_encode($get->get_documentationByStudent());
+                }
+                break;
+
+            case 'student-maxdocsweeks':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_studentMaxDocWeeks($request[1]));
+                } else {
+                    echo json_encode($get->get_studentMaxDocWeeks());
+                }
+                break;
+
+            case 'downloadrequirement':
                 if (isset($request[1])) {
                     $submissionId = $request[1];
-                    $get->download_file($submissionId);
+                    $get->downloadRequirement($submissionId);
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'downloaddocumentation':
+                if (isset($request[1])) {
+                    $submissionId = $request[1];
+                    $get->downloadDocumentation($submissionId);
                 } else {
                     echo "Submission ID not provided";
                     http_response_code(400);
@@ -197,9 +222,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode($post->delete_user($request[1]));
                 break;
 
-            case 'uploadfile':
+            case 'uploadrequirement':
                 // Return JSON-encoded data for uploading files
-                echo json_encode($post->upload_file($request[1], $request[2]));
+                echo json_encode($post->upload_requirement($request[1], $request[2]));
+                break;
+            case 'uploaddocumentation':
+                // Return JSON-encoded data for uploading files
+                echo json_encode($post->upload_documentation($request[1], $request[2]));
                 break;
             case 'toggleRequirementStatus':
                 // Toggle the requirement status

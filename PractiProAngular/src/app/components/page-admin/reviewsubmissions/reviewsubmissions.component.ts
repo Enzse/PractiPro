@@ -27,7 +27,7 @@ export class ReviewsubmissionsComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.data.usercode)
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getStudentSubmissionsByUser(this.data.usercode).subscribe(
+      this.service.getRequirementSubmissionsByUser(this.data.usercode).subscribe(
         (data: any[]) => {
           this.studentSubmissions = data;
           console.log(this.studentSubmissions);
@@ -39,15 +39,10 @@ export class ReviewsubmissionsComponent implements OnInit {
     }
   }
 
-  downloadSubmission(submissionId: number) {
-    this.service.downloadSubmission(submissionId).subscribe(
+  downloadRequirement(submissionId: number, submissionName: string) {
+    this.service.downloadRequirement(submissionId).subscribe(
       (data: any) => {
-        this.service.getStudentSubmission(submissionId).subscribe(
-          (res: any) => {
-            const fileName = res[0].file_name;
-            saveAs(data, fileName);
-          }
-        );
+        saveAs(data, submissionName);
       },
       (error: any) => {
         console.error('Error downloading submission:', error);

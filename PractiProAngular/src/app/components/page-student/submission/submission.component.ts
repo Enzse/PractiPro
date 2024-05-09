@@ -4,6 +4,8 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
+import { MatTableDataSource } from '@angular/material/table';
+import saveAs from 'file-saver';
 
 @Component({
   selector: 'app-submission',
@@ -13,7 +15,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './submission.component.css'
 })
 export class SubmissionComponent {
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    this.loadData();
+  }
   successtoast = false;
 
   selectedTabLabel: string = 'Resume';
@@ -33,7 +37,7 @@ export class SubmissionComponent {
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
-        this.authService.uploadFile(userId, file, this.selectedTabLabel).subscribe(
+        this.authService.uploadRequirement(userId, file, this.selectedTabLabel).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
             this.successtoast = true;
@@ -47,4 +51,34 @@ export class SubmissionComponent {
       }
     });
   }
+
+
+
+  user: any;
+  students: any;
+  datalist: any;
+  dataSource: any;
+
+  loadData() {
+    this.user = this.authService.getCurrentUserId();
+    this.authService.getRequirementSubmissionsByUser(this.user).subscribe(res => {
+      console.log(res);
+      this.datalist = res;
+      // console.log(this.students);
+      this.dataSource = new MatTableDataSource(this.datalist);
+    });
+  }
+
+  downloadRequirement(submissionId: number, fileName: string) {
+    this.authService.downloadRequirement(submissionId).subscribe(
+      (data: any) => {
+        saveAs(data, fileName);
+      },
+      (error: any) => {
+        console.error('Error downloading submission:', error);
+      }
+    );
+  }
+
+
 }

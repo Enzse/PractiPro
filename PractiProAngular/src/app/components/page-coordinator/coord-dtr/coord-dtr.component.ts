@@ -9,7 +9,7 @@ import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/views
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
 
 @Component({
-  selector: 'app-coord-accomplishment-report',
+  selector: 'app-coord-dtr',
   standalone: true,
   imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent],
   templateUrl: './coord-dtr.component.html',
