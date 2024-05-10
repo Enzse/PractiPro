@@ -18,7 +18,6 @@ export class DashboardComponent implements OnInit {
   studentRequirements: any[] = [];
   ngOnInit(): void {
     const userId = this.service.getCurrentUserId();
-    console.log(userId);
     
     if (userId) {
       this.service.getStudentRequirements(userId).subscribe(

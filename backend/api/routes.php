@@ -79,6 +79,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_student());
                 }
                 break;
+            case 'getavatar':
+                if (isset($request[1])) {
+                    $get->get_avatar($request[1]);
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
 
             case 'coordinator-students':
                 if (count($request) > 1) {
@@ -229,47 +237,46 @@ switch ($_SERVER['REQUEST_METHOD']) {
         switch ($request[0]) {
 
             case 'login':
-                $data = json_decode(file_get_contents('php://input'), true);
+                try {
+                    $data = json_decode(file_get_contents('php://input'), true);
 
-                if (!isset($data['email']) || !isset($data['password'])) {
-                    http_response_code(400);
-                    echo json_encode(["message" => "Missing login credentials"]);
-                    exit();
-                }
-
-                $user = $get->getByEmail($data['email']);
-
-                if ($user !== false && isset($user['password'])) {
-
-                    // Verify the password
-                    if (!password_verify($data['password'], $user['password'])) {
-                        http_response_code(401);
-                        echo json_encode(["message" => "Invalid Credentials!"]);
-                        exit;
+                    if (!isset($data['email']) || !isset($data['password'])) {
+                        throw new Exception("Missing login credentials", 400);
                     }
-                    // Verify if account is active
-                    if ($user['isActive'] === 0) {
-                        http_response_code(401);
-                        echo json_encode(["message" => "Matching credentials, but inactive account!"]);
-                        exit;
-                    }
-                    // Generate JWT token
-                    $JwtController = new Jwt($_ENV["SECRET_KEY"]);
-                    $token = $JwtController->encode([
-                        "id" => $user['id'],
-                        "firstName" => $user['firstName'],
-                        "lastName" => $user['lastName'],
-                        "email" => $user['email'],
-                        "role" => $user['role'],
-                    ]);
 
-                    // Respond with the generated token
-                    echo json_encode(["token" => $token]);
-                } else {
-                    // User not found or password not set
-                    http_response_code(404);
-                    echo json_encode(["message" => "User not found or invalid credentials"]);
-                    exit;
+                    $user = $get->getByEmail($data['email']);
+
+                    if ($user !== false && isset($user['password'])) {
+                        // Verify the password
+                        if (!password_verify($data['password'], $user['password'])) {
+                            throw new Exception("Invalid credentials", 401);
+                        }
+                        // Verify if account is active
+                        if ($user['isActive'] === 0) {
+                            throw new Exception("Inactive account", 401);
+                        }
+                        // Generate JWT token
+                        $JwtController = new Jwt($_ENV["SECRET_KEY"]);
+                        $token = $JwtController->encode([
+                            "id" => $user['id'],
+                            "firstName" => $user['firstName'],
+                            "lastName" => $user['lastName'],
+                            "email" => $user['email'],
+                            "role" => $user['role'],
+                        ]);
+
+                        // Respond with the generated token
+                        http_response_code(200);
+                        echo json_encode(["token" => $token]);
+                    } else {
+                        // User not found or password not set
+                        throw new Exception("User not found or invalid credentials", 404);
+                    }
+                } catch (Exception $e) {
+                    // Handle exceptions
+                    $statusCode = $e->getCode() ?: 500;
+                    http_response_code($statusCode);
+                    echo json_encode(["message" => "An error occurred: " . $e->getMessage()]);
                 }
                 break;
 
@@ -343,7 +350,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             default:
                 // Return a 403 response for unsupported requests
-                echo "This is forbidden";
+                echo "No Such Request";
                 http_response_code(403);
                 break;
         }

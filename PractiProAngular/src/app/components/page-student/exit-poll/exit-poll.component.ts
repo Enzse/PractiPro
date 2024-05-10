@@ -56,7 +56,7 @@ export class ExitPollComponent {
 
   user: any;
   students: any;
-  datalist: any;
+  datalist: any[] = [];
   dataSource: any;
 
   loadData() {

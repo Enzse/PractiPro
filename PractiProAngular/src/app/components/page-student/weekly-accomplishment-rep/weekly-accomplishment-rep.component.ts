@@ -26,7 +26,6 @@ export class WeeklyAccomplishmentRepComponent {
 
   ngOnInit() {
     const userId = this.service.getCurrentUserId();
-    console.log(userId);
     this.service.getMaxWarWeeks(userId).subscribe(
       weekNumbers => {
         this.tabWeekNumbers = weekNumbers;
@@ -78,13 +77,12 @@ export class WeeklyAccomplishmentRepComponent {
 
   user: any;
   students: any;
-  datalist: any;
+  datalist: any[] = [];
   dataSource: any;
 
   loadData() {
     this.user = this.service.getCurrentUserId();
     this.service.getWarByUser(this.user).subscribe(res => {
-      console.log(res);
       this.datalist = res;
       // console.log(this.students);
       this.dataSource = new MatTableDataSource(this.datalist);

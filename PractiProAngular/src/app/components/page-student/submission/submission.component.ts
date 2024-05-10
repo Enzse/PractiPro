@@ -57,16 +57,21 @@ export class SubmissionComponent {
 
   user: any;
   students: any;
-  datalist: any;
+  datalist: any[] = [];
   dataSource: any;
 
   loadData() {
     this.user = this.authService.getCurrentUserId();
     this.authService.getRequirementSubmissionsByUser(this.user).subscribe(res => {
-      console.log(res);
-      this.datalist = res;
-      // console.log(this.students);
-      this.dataSource = new MatTableDataSource(this.datalist);
+      if(res){
+        this.datalist = res;
+        // console.log(this.students);
+        this.dataSource = new MatTableDataSource(this.datalist);
+      }else{
+        console.log("No submissions yet.")
+      }
+    }, error => {
+      console.log(error);
     });
   }
 

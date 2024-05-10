@@ -235,4 +235,8 @@ export class AuthService {
 
     return this.http.post(`http://localhost/PractiPro/backend/api/uploadavatar/${userId}`, formData);
   }
+  getAvatar(userId: number) {
+    return this.http.get(`http://localhost/PractiPro/backend/api/getavatar/${userId}`, { responseType: 'blob' });
+  }
+
 }

@@ -26,7 +26,6 @@ export class AdminUsersComponent implements OnInit {
     initFlowbite();
     this.service.getAllUsers().subscribe(res => {
       this.users = res;
-      console.log(this.users);
     });
    }
    

@@ -27,7 +27,6 @@ export class CoordDtrComponent {
   Loaduser() {
     this.Coordinator = this.service.getCurrentUserId();
     this.service.getStudentsByCoordinator(this.Coordinator).subscribe(res => {
-      console.log(res);
       this.datalist = res.payload;
       // console.log(this.students);
       this.dataSource = new MatTableDataSource(this.datalist);

@@ -25,7 +25,6 @@ export class DocumentationComponent implements OnInit {
 
   ngOnInit() {
     const userId = this.service.getCurrentUserId();
-    console.log(userId);
     this.service.getMaxDocsWeeks(userId).subscribe(
       weekNumbers => {
         this.tabWeekNumbers = weekNumbers;
@@ -79,13 +78,12 @@ export class DocumentationComponent implements OnInit {
 
   user: any;
   students: any;
-  datalist: any;
+  datalist: any[] = [];
   dataSource: any;
 
   loadData() {
     this.user = this.service.getCurrentUserId();
     this.service.getDocumentationsByUser(this.user).subscribe(res => {
-      console.log(res);
       this.datalist = res;
       // console.log(this.students);
       this.dataSource = new MatTableDataSource(this.datalist);

@@ -74,7 +74,7 @@ class Get extends GlobalMethods
         if ($result['status']['remarks'] === 'success' && !empty($result['payload'])) {
             return $result['payload'][0]; // Return the first user record
         } else {
-            return false; // Return false if no user found
+            return array();
         }
     }
     public function get_users($id = null)
@@ -137,7 +137,7 @@ class Get extends GlobalMethods
     }
     public function get_student($userId = null)
     {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation"; // List all columns except 'avatar'
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
         $condition = ($userId !== null) ? "id = $userId" : null;
         $result = $this->get_records('students', $condition, $columns);
 
@@ -151,6 +151,36 @@ class Get extends GlobalMethods
             }
         } else {
             return array();
+        }
+    }
+    public function get_avatar($id)
+    {
+        $fileInfo = $this->get_imageData($id);
+
+        // Check if file info exists
+        if ($fileInfo) {
+            $fileData = $fileInfo['avatar'];
+
+            // Set headers for file download
+            header('Content-Type: image/png');            
+            echo $fileData;
+            exit();
+        } else {
+            echo "User has not uploaded an avatar yet.";
+            http_response_code(404);
+        }
+    }
+    public function get_imageData($userId = null)
+    {
+        $columns = "avatar"; 
+        $condition = ($userId !== null) ? "id = $userId" : null;
+        $result = $this->get_records('students', $condition, $columns);
+
+        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['avatar'])) {
+            $fileData = $result['payload'][0]['avatar'];            
+            return array("avatar" => $fileData);
+        } else {
+            return array("avatar" => null);
         }
     }
     public function getStudentsByCoordinatorId($coordinatorId)

@@ -33,19 +33,7 @@ export class AdminCoordinatorsComponent {
     });
   }
 
-  displayedColumns: string[] = [
-    'id',
-    'firstName',
-    'lastName',
-    'studentId',
-    'phoneNumber',
-    'program',
-    'block',
-    'year',
-    'email',
-    'isActive',
-    'role',
-    'action'];
+ 
 
   closeModal() {
     // Add code to close the modal here

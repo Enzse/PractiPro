@@ -31,7 +31,6 @@ export class CoordinatorSubmissionComponent {
   loadHeldStudents() {
     this.Coordinator = this.service.getCurrentUserId();
     this.service.getStudentsByCoordinator(this.Coordinator).subscribe(res => {
-      console.log(res);
       this.studentlist = res.payload;
       // console.log(this.students);
       this.dataSource = new MatTableDataSource(this.studentlist);

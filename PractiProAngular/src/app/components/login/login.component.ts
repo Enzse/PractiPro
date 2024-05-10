@@ -29,7 +29,7 @@ export class LoginComponent {
     this.service.proceedLogin(this.loginform.value).subscribe((res: any) => {
       if (res.token) {
         sessionStorage.setItem('token', res.token);
-
+        console.clear();
         switch (this.jwtservice.getUserRole()) {
           case 'admin':
             this.router.navigate(['admin-users']);
@@ -46,40 +46,18 @@ export class LoginComponent {
       } else {
         alert("Invalid Credentials, please try again.");
       }
+    }, error => {
+      if(error.status == 401){
+        alert("Invalid Credentials. Please try again.");
+      };
+      if(error.status == 404){
+        alert("User does not exist. Please try again.");
+      };
     });
   }
 }
 
-//WALA NA TO
 
-// userdata: any;
-// onLogin() {
-//   this.service.getUser(this.loginform.value.email).subscribe(res => {
-//     this.userdata = res;
-//     console.log(this.userdata);
-//     if (this.userdata.payload.length > 0) {
-//       const user = this.userdata.payload[0];
-//       if (user.password === this.loginform.value.password) {
-//         if (user.isActive) {
-//           sessionStorage.setItem('email', user.email);
-//           sessionStorage.setItem('userrole', user.role);
-//           if (this.service.GetUserRole() === 'admin') {
-//             this.router.navigate(['users']);
-//           } else if (this.service.GetUserRole() === 'student') {
-//             this.router.navigate(['dashboard']);
-//           }
-//         } else {
-//           alert("Inactive user. Please contact admin.");
-//           // this.inactive = true;
-//         }
-//       } else {
-//         alert("Invalid credentials!");
-//       }
-//     } else {
-//       alert("User not found!");
-//     }
-//   });
-// }
 
 
 

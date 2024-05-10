@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { EditinformationpopupComponent } from '../editinformationpopup/editinformationpopup.component';
 import { MatIconModule } from '@angular/material/icon';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -16,15 +17,16 @@ import { MatIconModule } from '@angular/material/icon';
 export class ProfileComponent implements OnInit {
   studentProfile: any[] = [];
   userId = this.service.getCurrentUserId();
+  avatarUrl?: SafeUrl;
 
-  constructor(private service: AuthService, private dialog: MatDialog) {
-    this.userId = this.service.getCurrentUserId();
-    console.log(this.userId);
+  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
+    this.userId = this.service.getCurrentUserId();    
   }
 
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.loadInfo();
+    this.loadAvatar();
   }
 
 
@@ -38,13 +40,15 @@ export class ProfileComponent implements OnInit {
       if (files.length > 0) {
         this.file = files[0];
         console.log(this.file);
-        this.service.uploadAvatar(this.userId, this.file).subscribe((data:any) =>{
+        this.service.uploadAvatar(this.userId, this.file).subscribe((data: any) => {
           console.log("File Uploaded Successfully");
+          this.loadAvatar();
           this.resetInput();
         });
       }
     }
   }
+
   resetInput() {
     const input = document.getElementById('avatar-input-file') as HTMLInputElement;
     if (input) {
@@ -54,12 +58,35 @@ export class ProfileComponent implements OnInit {
   }
 
 
+  loadAvatar() {
+    if (this.userId) {
+      this.service.getAvatar(this.userId).subscribe(
+        blob => {
+          if (blob.size > 0) { 
+            const url = URL.createObjectURL(blob);
+            this.avatarUrl = this.sanitizer.bypassSecurityTrustUrl(url);
+          } else {
+            console.log("User has not uploaded an avatar yet.");
+            this.avatarUrl = undefined;
+          }
+        },
+        error => {
+          if (error.status === 404) {
+            console.log('No avatar found for the user.');
+            this.avatarUrl = undefined;
+          } else {
+            console.error('Failed to load avatar:', error);
+          }
+        }
+      );
+    }
+  }
+
   loadInfo() {
     if (this.userId) {
       this.service.getStudentProfile(this.userId).subscribe(
         (data: any[]) => {
           this.studentProfile = data;
-          console.log(this.studentProfile)
         },
         (error: any) => {
           console.error('Error fetching student requirements:', error);
