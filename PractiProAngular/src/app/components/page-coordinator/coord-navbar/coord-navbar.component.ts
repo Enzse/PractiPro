@@ -3,6 +3,7 @@ import { CoordSidebarComponent } from '../coord-sidebar/coord-sidebar.component'
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 import { RouterOutlet } from '@angular/router';
+import { JwtService } from '../../../services/jwt.service';
 
 @Component({
   selector: 'app-coord-navbar',
@@ -13,7 +14,9 @@ import { RouterOutlet } from '@angular/router';
 })
 export class CoordNavbarComponent {
 
-  constructor( @Inject(PLATFORM_ID) private platformId: Object) {
+  data: any;
+  constructor( @Inject(PLATFORM_ID) private platformId: Object, private jwt: JwtService) {
+    this.data = jwt.getUserName();    
   }
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) initFlowbite();

@@ -29,4 +29,16 @@ export class JwtService {
     }
     return null;
   }
+  getUserName(): any {
+    const token = sessionStorage.getItem('token');
+    if (token) {
+      const decodedToken = this.jwtHelper.decodeToken(token);
+      const userName = {
+        firstName: decodedToken.firstName,
+        lastName: decodedToken.lastName
+      }
+      return userName;
+    }
+    return null;
+  }
 }

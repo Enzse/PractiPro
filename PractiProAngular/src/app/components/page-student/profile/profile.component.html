@@ -9,6 +9,7 @@
             <div class="grid grid-cols-1  gap-5 sm:gap-5">
                 <div class="bg-slate-200 overflow-x-hidden h-auto items-center justify-center rounded-lg shadow-lg border border-gray-200 shadow-gray-500">
                     <img src="\assets\logo.png" alt="profile" class="center">
+                    
                     <div *ngIf="studentProfile && studentProfile.length > 0"  class="border-b border-gray-300 w-auto ml-10 mr-10"></div>
                     <div class="pt-2 pl-4 pr-4 text-xs mb-3">
                     <table>
@@ -31,7 +32,7 @@
                         </tr>
                         <tr>
                             <td><b>Year</b></td>
-                            <td><p>{{studentProfile[0]?.year}}/BSCS</p></td>
+                            <td><p>{{studentProfile[0]?.year}}</p></td>
                         </tr>
                         <tr>
                             <td><b>Email Address (Domain)</b></td>

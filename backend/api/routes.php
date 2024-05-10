@@ -257,6 +257,8 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $JwtController = new Jwt($_ENV["SECRET_KEY"]);
                     $token = $JwtController->encode([
                         "id" => $user['id'],
+                        "firstName" => $user['firstName'],
+                        "lastName" => $user['lastName'],
                         "email" => $user['email'],
                         "role" => $user['role'],
                     ]);
