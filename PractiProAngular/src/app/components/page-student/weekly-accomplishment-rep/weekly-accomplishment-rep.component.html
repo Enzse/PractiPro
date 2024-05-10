@@ -56,7 +56,7 @@
           
           <br>
         </div>
-        <div class="relative overflow-x-auto shadow-md shadow-slate-400 sm:rounded-lg">
+        <div *ngIf="datalist.length > 0 else noDataMessage" class="relative overflow-x-auto shadow-md shadow-slate-400 sm:rounded-lg">
           <table mat-table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
@@ -102,7 +102,9 @@
   </div>
 
 
-
+  <ng-template #noDataMessage>
+    <h1 class="text-center">You have not submitted any files yet.</h1>
+</ng-template>
   
 </div>
 

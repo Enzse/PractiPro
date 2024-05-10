@@ -45,7 +45,7 @@ export class ViewsubmissionsComponent implements OnInit {
       requirement: requirement,
       status: newValue
     };
-
+    console.log(requestData);
     this.service.toggleRequirementStatus(requestData).subscribe(
       (response) => {
         console.log('Requirement status toggled successfully:', response);

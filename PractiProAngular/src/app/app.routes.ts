@@ -18,13 +18,14 @@ import { AdminNavbarComponent } from './components/page-admin/admin-navbar/admin
 import { AdminUsersComponent } from './components/page-admin/admin-users/admin-users.component';
 import { AdminAdminsComponent } from './components/page-admin/admin-admins/admin-admins.component';
 import { AdminStudentsComponent } from './components/page-admin/admin-students/admin-students.component';
+import { AdminCoordinatorsComponent } from './components/page-admin/admin-coordinators/admin-coordinators.component';
 //Coordinator Imports
 import { CoordNavbarComponent } from './components/page-coordinator/coord-navbar/coord-navbar.component';
 import { CoordinatorSubmissionComponent } from './components/page-coordinator/coordinator-submission/coordinator-submission.component';
 import { CoordAccomplishmentReportComponent } from './components/page-coordinator/coord-accomplishment-report/coord-accomplishment-report.component';
 import { CoordDtrComponent } from './components/page-coordinator/coord-dtr/coord-dtr.component';
-import { AdminCoordinatorsComponent } from './components/page-admin/admin-coordinators/admin-coordinators.component';
-
+import { CoordDocumentationComponent } from './components/page-coordinator/coord-documentation/coord-documentation.component';
+import { CoordFinalreportComponent } from './components/page-coordinator/coord-finalreport/coord-finalreport.component';
 
 export const routes: Routes = [
 
@@ -65,8 +66,10 @@ export const routes: Routes = [
         component: CoordNavbarComponent,
         children: [
             { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Submissions', canActivate: [authGuard] },
-            { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports', canActivate: [authGuard] },
+            { path: 'coord-documentations', component: CoordDocumentationComponent, title: 'Documentations', canActivate: [authGuard] },
             { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Record', canActivate: [authGuard] },
+            { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports', canActivate: [authGuard] },
+            { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports', canActivate: [authGuard] },
         ]
     }
 

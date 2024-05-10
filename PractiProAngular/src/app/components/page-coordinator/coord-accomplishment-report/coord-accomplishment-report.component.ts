@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
+import { WarpopupcomponentComponent } from '../../popups/warpopupcomponent/warpopupcomponent.component';
 
 @Component({
   selector: 'app-coord-accomplishment-report',
@@ -41,23 +42,8 @@ export class CoordAccomplishmentReportComponent {
     modal?.classList.add('hidden');
   }
 
-  Updateuser(code: any) {
-    const popup = this.dialog.open(ViewsubmissionsComponent, {
-      enterAnimationDuration: "1000ms",
-      exitAnimationDuration: "500ms",
-      width: "50%",
-      data: {
-        usercode: code
-      }
-    })
-    popup.afterClosed().subscribe(res => {
-      this.Loaduser()
-    });
-
-  }
-
   viewSubmissions(code: any) {
-    const popup = this.dialog.open(ReviewsubmissionsComponent, {
+    const popup = this.dialog.open(WarpopupcomponentComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "80%",

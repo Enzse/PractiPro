@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
+import { RequirementspopupComponent } from '../../popups/requirementspopup/requirementspopup.component';
 
 
 @Component({
@@ -60,7 +61,7 @@ export class CoordinatorSubmissionComponent {
   }
 
   viewSubmissions(code: any) {
-    const popup = this.dialog.open(ReviewsubmissionsComponent, {
+    const popup = this.dialog.open(RequirementspopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "80%",

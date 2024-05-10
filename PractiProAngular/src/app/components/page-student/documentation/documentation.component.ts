@@ -63,6 +63,7 @@ export class DocumentationComponent implements OnInit {
             console.log('File uploaded successfully:', response);
             this.successtoast = true;
             setTimeout(() => this.successtoast = false, 3000);
+            this.loadData();
           },
           error => {
             console.error('Error uploading file:', error);
@@ -71,7 +72,7 @@ export class DocumentationComponent implements OnInit {
       }
     });
 
-    // this.loadData();
+  
   }
 
 

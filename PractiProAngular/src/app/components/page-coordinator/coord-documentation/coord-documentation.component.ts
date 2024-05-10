@@ -7,30 +7,31 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
-import { DtrpopupcomponentComponent } from '../../popups/dtrpopupcomponent/dtrpopupcomponent.component';
+import { DocumentationpopupComponent } from '../../popups/documentationpopup/documentationpopup.component';
 
 @Component({
-  selector: 'app-coord-dtr',
+  selector: 'app-coord-documentation',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent],
-  templateUrl: './coord-dtr.component.html',
-  styleUrl: './coord-dtr.component.css'
+  imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent],
+  templateUrl: './coord-documentation.component.html',
+  styleUrl: './coord-documentation.component.css'
 })
-export class CoordDtrComponent {
+export class CoordDocumentationComponent {
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.Loaduser();
   }
   Coordinator: any;
-  datalist: any;
+  students: any;
+  studentlist: any;
   dataSource: any;
 
   Loaduser() {
     this.Coordinator = this.service.getCurrentUserId();
     this.service.getStudentsByCoordinator(this.Coordinator).subscribe(res => {
       console.log(res);
-      this.datalist = res.payload;
+      this.studentlist = res.payload;
       // console.log(this.students);
-      this.dataSource = new MatTableDataSource(this.datalist);
+      this.dataSource = new MatTableDataSource(this.studentlist);
     });
   }
 
@@ -42,7 +43,7 @@ export class CoordDtrComponent {
   }
 
   Updateuser(code: any) {
-    const popup = this.dialog.open(DtrpopupcomponentComponent, {
+    const popup = this.dialog.open(DocumentationpopupComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
       width: "50%",
@@ -57,7 +58,7 @@ export class CoordDtrComponent {
   }
 
   viewSubmissions(code: any) {
-    const popup = this.dialog.open(DtrpopupcomponentComponent, {
+    const popup = this.dialog.open(DocumentationpopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "80%",
@@ -70,6 +71,4 @@ export class CoordDtrComponent {
     });
 
   }
-
-
 }

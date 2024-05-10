@@ -137,6 +137,54 @@ class Post extends GlobalMethods
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
+    public function toggleSubmissionRemark($submissionId, $newRemark, $table)
+    {
+        $file_id = null;
+        switch ($table) {
+            case 'submissions':
+                $file_id = 'submission_id';
+                break;
+            case 'documentations':
+                $file_id = 'doc_id';
+                break;
+            case 'dtr':
+                $file_id = 'dtr_id';
+                break;
+            case 'war':
+                $file_id = 'war_id';
+                break;
+            case 'finalreports':
+                $file_id = 'report_id';
+                break;
+            default:
+                $file_id = 'id';
+                break;
+
+        }
+        $sql = "UPDATE $table SET remarks = ? WHERE $file_id = ?";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$newRemark, $submissionId]);
+            return $this->sendPayload(null, "success", "Remark toggled successfully", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            return $this->sendPayload(null, "failed", $errmsg, 400);
+        }
+    }
+    public function toggleStudentEvaluation($id, $newRemark,)
+    {
+        
+        $sql = "UPDATE students SET evaluation = ? WHERE id = ?";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$newRemark, $id]);
+            return $this->sendPayload(null, "success", "Remark toggled successfully", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            return $this->sendPayload(null, "failed", $errmsg, 400);
+        }
+    }
+
 
     public function upload_requirement($data, $category)
     {

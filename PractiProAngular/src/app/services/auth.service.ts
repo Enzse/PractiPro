@@ -86,7 +86,12 @@ export class AuthService {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/submission/${Id}`);
   }
   getRequirementSubmissionsByUser(userId: number) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-submission/${userId}`);
+    if (userId) {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-submission/${userId}`);
+    }
+    else {
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-submission`);
+    }
   }
   getDocumentationsByUser(Id: any) {
     if (Id) {
@@ -147,6 +152,25 @@ export class AuthService {
   toggleRequirementStatus(data: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/toggleRequirementStatus', data);
   }
+  toggleReqRemark(data: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/togglerequirementsremark', data);
+  }
+  toggleDocRemark(data: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/toggledocsremark', data);
+  }
+  toggleDtrRemark(data: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/toggledtrremark', data);
+  }
+  toggleWarRemark(data: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/togglewarremark', data);
+  }
+  toggleFrRemark(data: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/togglefinalreportsremark', data);
+  }
+  toggleStudentEvaluation(data: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/togglestudentevaluation', data);
+  }
+
   downloadRequirement(submissionId: number) {
     return this.http.get(`http://localhost/PractiPro/backend/api/downloadrequirement/${submissionId}`, { responseType: 'blob' });
   }

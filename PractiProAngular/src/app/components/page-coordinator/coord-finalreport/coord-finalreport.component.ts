@@ -7,30 +7,41 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
-import { DtrpopupcomponentComponent } from '../../popups/dtrpopupcomponent/dtrpopupcomponent.component';
+import { RequirementspopupComponent } from '../../popups/requirementspopup/requirementspopup.component';
+import { FinalreportpopupComponent } from '../../popups/finalreportpopup/finalreportpopup.component';
+
+interface Student {
+  id: number;
+  // Add other properties here...
+}
 
 @Component({
-  selector: 'app-coord-dtr',
+  selector: 'app-coord-finalreport',
   standalone: true,
   imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent],
-  templateUrl: './coord-dtr.component.html',
-  styleUrl: './coord-dtr.component.css'
+  templateUrl: './coord-finalreport.component.html',
+  styleUrl: './coord-finalreport.component.css'
 })
-export class CoordDtrComponent {
+export class CoordFinalreportComponent {
+
   constructor(private service: AuthService, private dialog: MatDialog) {
-    this.Loaduser();
+    this.loadHeldStudents();
+
   }
+  
   Coordinator: any;
-  datalist: any;
+  students: any;
+  studentlist: any[] = [];
   dataSource: any;
 
-  Loaduser() {
+  
+  loadHeldStudents() {
     this.Coordinator = this.service.getCurrentUserId();
     this.service.getStudentsByCoordinator(this.Coordinator).subscribe(res => {
       console.log(res);
-      this.datalist = res.payload;
+      this.studentlist = res.payload;
       // console.log(this.students);
-      this.dataSource = new MatTableDataSource(this.datalist);
+      this.dataSource = new MatTableDataSource(this.studentlist);
     });
   }
 
@@ -41,8 +52,8 @@ export class CoordDtrComponent {
     modal?.classList.add('hidden');
   }
 
-  Updateuser(code: any) {
-    const popup = this.dialog.open(DtrpopupcomponentComponent, {
+  evaluateStudent(code: any) {
+    const popup = this.dialog.open(ViewsubmissionsComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
       width: "50%",
@@ -51,13 +62,13 @@ export class CoordDtrComponent {
       }
     })
     popup.afterClosed().subscribe(res => {
-      this.Loaduser()
+      this.loadHeldStudents()
     });
 
   }
 
   viewSubmissions(code: any) {
-    const popup = this.dialog.open(DtrpopupcomponentComponent, {
+    const popup = this.dialog.open(FinalreportpopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "80%",
@@ -66,10 +77,34 @@ export class CoordDtrComponent {
       }
     })
     popup.afterClosed().subscribe(res => {
-      this.Loaduser()
+      this.loadHeldStudents()
     });
 
   }
+
+
+  
+  toggleEvaluation(id: number, currentValue: boolean) {
+    const newValue = currentValue ? 0 : 1; // Toggle the current value
+    const requestData = {
+      id: id,
+      newEvaluation: newValue
+    };
+  
+    this.service.toggleStudentEvaluation(requestData).subscribe(
+      (response) => {
+        console.log('Evaluation toggled successfully:', response);
+        // Find the student in the array and update their evaluation status
+        const studentIndex = this.studentlist.findIndex(student => student.id === id);
+        if (studentIndex !== -1) {
+          this.studentlist[studentIndex].evaluation = newValue;
+        }
+      },
+      (error) => console.error('Error toggling evaluation:', error)
+    );
+  }
+
+
 
 
 }

@@ -156,7 +156,7 @@ class Get extends GlobalMethods
     }
     public function getStudentsByCoordinatorId($coordinatorId)
     {
-        $sql = "SELECT s.id, s.firstName, s.lastName, s.studentId, s.block
+        $sql = "SELECT s.id, s.firstName, s.lastName, s.studentId, s.block, s.evaluation
             FROM coordinators c
             JOIN class_blocks cb ON c.id = cb.coordinator_id
             JOIN student_class_blocks scb ON cb.block_name = cb.block_name
@@ -215,7 +215,7 @@ class Get extends GlobalMethods
 
     public function get_documentationByStudent($id = null)
     {
-        $columns = "doc_id, user_id, week, file_name, created_at";
+        $columns = "doc_id, user_id, week, file_name, created_at, remarks";
         $condition = ($id != null) ? "user_id=$id" : null;
         $result = $this->get_records('documentations', $condition, $columns);
 
@@ -227,7 +227,7 @@ class Get extends GlobalMethods
     }
     public function get_dtrByStudent($id = null)
     {
-        $columns = "dtr_id, user_id, week, file_name, created_at";
+        $columns = "dtr_id, user_id, week, file_name, created_at, remarks";
         $condition = ($id != null) ? "user_id=$id" : null;
         $result = $this->get_records('dtr', $condition, $columns);
 
@@ -239,7 +239,7 @@ class Get extends GlobalMethods
     }
     public function get_warByStudent($id = null)
     {
-        $columns = "war_id, user_id, week, file_name, created_at";
+        $columns = "war_id, user_id, week, file_name, created_at, remarks";
         $condition = ($id != null) ? "user_id=$id" : null;
         $result = $this->get_records('war', $condition, $columns);
 
@@ -252,7 +252,7 @@ class Get extends GlobalMethods
 
     public function get_finalReportByStudent($id = null)
     {
-        $columns = "report_id, user_id, file_name, created_at";
+        $columns = "report_id, user_id, file_name, created_at, remarks";
         $condition = ($id != null) ? "user_id=$id" : null;
         $result = $this->get_records('finalreports', $condition, $columns);
 

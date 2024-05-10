@@ -311,6 +311,25 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode($post->toggleRequirementStatus($data->studentId, $data->requirement, $data->status));
                 break;
 
+            case 'togglerequirementsremark':
+                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'submissions'));
+                break;
+            case 'toggledocsremark':
+                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'documentations'));
+                break;
+            case 'toggledtrremark':
+                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'dtr'));
+                break;
+            case 'togglewarremark':
+                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'war'));
+                break;
+            case 'togglefinalreportsremark':
+                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'finalreports'));
+                break;
+            case 'togglestudentevaluation':
+                echo json_encode($post->toggleStudentEvaluation($data->id, $data->newEvaluation));
+                break;
+
             case 'editstudentinfo':
                 // Return JSON-encoded data for editing users
                 echo json_encode($post->edit_student_info($data, $request[1]));
