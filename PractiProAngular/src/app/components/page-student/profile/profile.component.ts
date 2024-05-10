@@ -4,23 +4,55 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { EditinformationpopupComponent } from '../editinformationpopup/editinformationpopup.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, EditinformationpopupComponent],
+  imports: [NavbarComponent, CommonModule, EditinformationpopupComponent, MatIconModule],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
   studentProfile: any[] = [];
-
-  constructor(private service: AuthService, private dialog: MatDialog) { }
-
   userId = this.service.getCurrentUserId();
-  ngOnInit(): void {
+
+  constructor(private service: AuthService, private dialog: MatDialog) {
+    this.userId = this.service.getCurrentUserId();
+    console.log(this.userId);
+  }
+
+
+  ngOnInit(): void {    
     this.loadInfo();
   }
+
+
+  file: any;
+
+
+  onFileChange(event: any) {
+    if (this.userId) {
+      const files = event.target.files as FileList;
+
+      if (files.length > 0) {
+        this.file = files[0];
+        console.log(this.file);
+        this.service.uploadAvatar(this.userId, this.file).subscribe((data:any) =>{
+          console.log("File Uploaded Successfully");
+          this.resetInput();
+        });
+      }
+    }
+  }
+  resetInput() {
+    const input = document.getElementById('avatar-input-file') as HTMLInputElement;
+    if (input) {
+      input.value = "";
+    }
+
+  }
+
 
   loadInfo() {
     if (this.userId) {

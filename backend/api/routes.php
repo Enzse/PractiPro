@@ -308,6 +308,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for uploading files
                 echo json_encode($post->upload_finalReport($request[1]));
                 break;
+            case 'uploadavatar':
+                // Return JSON-encoded data for uploading files
+                echo json_encode($post->uploadAvatar($request[1]));
+                break;
             case 'toggleRequirementStatus':
                 // Toggle the requirement status
                 echo json_encode($post->toggleRequirementStatus($data->studentId, $data->requirement, $data->status));

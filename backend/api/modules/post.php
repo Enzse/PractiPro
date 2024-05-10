@@ -335,6 +335,28 @@ class Post extends GlobalMethods
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
+    public function uploadAvatar($id)
+    {        
+        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
+
+
+        $sql = "UPDATE students SET avatar = ? WHERE id = $id";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [                                      
+                    $fileData
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
+
 }
 
 

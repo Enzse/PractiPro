@@ -33,6 +33,7 @@ export class ExitPollComponent {
 
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
+      console.log(file);
       if (file) {
         this.service.uploadFinalReport(userId, file).subscribe(
           response => {
@@ -61,10 +62,10 @@ export class ExitPollComponent {
   loadData() {
     this.user = this.service.getCurrentUserId();
     this.service.getFinalReportByUser(this.user).subscribe(res => {
-      console.log(res);
+      if(res){
       this.datalist = res;
-      
       this.dataSource = new MatTableDataSource(this.datalist);
+      }
     });
   }
 

@@ -1,7 +1,10 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Node
-practipro-edb55cab2005.json
+/vendor/
+
+# Ignore the composer lock file
+/composer.lock
 
 
 

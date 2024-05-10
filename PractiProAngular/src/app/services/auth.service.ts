@@ -229,4 +229,10 @@ export class AuthService {
 
     return this.http.post(`http://localhost/PractiPro/backend/api/uploadfinalreport/${userId}`, formData);
   }
+  uploadAvatar(userId: number, file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`http://localhost/PractiPro/backend/api/uploadavatar/${userId}`, formData);
+  }
 }

@@ -137,13 +137,12 @@ class Get extends GlobalMethods
     }
     public function get_student($userId = null)
     {
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation"; // List all columns except 'avatar'
         $condition = ($userId !== null) ? "id = $userId" : null;
-        $result = $this->get_records('students', $condition);
+        $result = $this->get_records('students', $condition, $columns);
 
         if ($result['status']['remarks'] === 'success') {
-
             $payloadData = $result['payload'];
-
 
             if (is_array($payloadData)) {
                 return $payloadData;
