@@ -8,12 +8,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
 import { RequirementspopupComponent } from '../../popups/requirementspopup/requirementspopup.component';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../filter.pipe';
 
 
 @Component({
   selector: 'app-coordinator-submission',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent],
+  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe],
   templateUrl: './coordinator-submission.component.html',
   styleUrl: './coordinator-submission.component.css'
 })
@@ -27,6 +29,7 @@ export class CoordinatorSubmissionComponent {
   students: any;
   studentlist: any;
   dataSource: any;
+  searchtext: any;
 
   loadHeldStudents() {
     this.Coordinator = this.service.getCurrentUserId();

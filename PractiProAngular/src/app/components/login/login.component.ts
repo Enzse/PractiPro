@@ -50,6 +50,9 @@ export class LoginComponent {
       if(error.status == 401){
         alert("Invalid Credentials. Please try again.");
       };
+      if(error.status == 403){
+        alert("User is inactive. Please contact the admin for support.");
+      };
       if(error.status == 404){
         alert("User does not exist. Please try again.");
       };

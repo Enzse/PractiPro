@@ -77,6 +77,24 @@ class Get extends GlobalMethods
             return array();
         }
     }
+    public function getEmails($id = null)
+    {
+        $columns = "email";
+        $condition = ($id !== null) ? "id = $id" : null;
+        $result = $this->get_records('user', $condition, $columns);
+
+        if ($result['status']['remarks'] === 'success') {
+            $payloadData = $result['payload'];
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
+        }
+    }
     public function get_users($id = null)
     {
         $condition = null;
@@ -93,12 +111,32 @@ class Get extends GlobalMethods
 
         return $this->get_records('user', $condition);
     }
-    public function get_coordinators()
+
+    // public function get_coordinators($id = null)
+    // {
+    //     $condition = null;
+    //     if ($id != null) {
+    //         $condition = "id=$id";
+    //     }
+    //     return $this->get_records('coordinators', $condition);
+    // }
+    public function get_coordinators($id = null)
     {
 
-        $condition = "role= 'coordinator'";
+        $condition = ($id !== null) ? "id = $id" : null;
+        $result = $this->get_records('coordinators', $condition);
 
-        return $this->get_records('user', $condition);
+        if ($result['status']['remarks'] === 'success') {
+            $payloadData = $result['payload'];
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
+        }
     }
     /**
      * Retrieve a list of jobs.
@@ -114,7 +152,31 @@ class Get extends GlobalMethods
         }
         return $this->get_records('role', $condition);
     }
+    public function get_departments($id = null)
+    {
+        $condition = null;
+        if ($id != null) {
+            $condition = "id=$id";
+        }
+        return $this->get_records('departments', $condition);
+    }
+    public function get_classes($id = null)
+    {
+        $condition = ($id !== null) ? "block_name = $id" : null;
+        $result = $this->get_records('class_blocks', $condition);
 
+        if ($result['status']['remarks'] === 'success') {
+            $payloadData = $result['payload'];
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
+        }
+    }
 
     public function get_student_requirements($userId = null)
     {
@@ -162,7 +224,7 @@ class Get extends GlobalMethods
             $fileData = $fileInfo['avatar'];
 
             // Set headers for file download
-            header('Content-Type: image/png');            
+            header('Content-Type: image/png');
             echo $fileData;
             exit();
         } else {
@@ -172,12 +234,12 @@ class Get extends GlobalMethods
     }
     public function get_imageData($userId = null)
     {
-        $columns = "avatar"; 
+        $columns = "avatar";
         $condition = ($userId !== null) ? "id = $userId" : null;
         $result = $this->get_records('students', $condition, $columns);
 
         if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['avatar'])) {
-            $fileData = $result['payload'][0]['avatar'];            
+            $fileData = $result['payload'][0]['avatar'];
             return array("avatar" => $fileData);
         } else {
             return array("avatar" => null);

@@ -24,13 +24,23 @@ export class RegistrationComponent {
 
   proceedregistration() {
     if (this.registerform.valid) {
-      this.service.proceedRegister(this.registerform.value).subscribe(res => {
-        console.log("Registered Successfully, please contact Admin for approval.")        
-        this.router.navigate(['login']);
-        alert("Registration Successful! Please contact the admin for activation.")
+      const email = this.registerform.value;
+      console.log(email);
+      // Check if the email already exists in the database
+      this.service.doesEmailExist(email).subscribe((res: any) => {
+        if (res) {
+          alert('Email already exists. Please use a different email address.');
+        } else {
+          // Proceed with registration if email is not already registered
+          this.service.proceedRegister(this.registerform.value).subscribe(() => {
+            console.log('Registered successfully. Please contact admin for activation.');
+            this.router.navigate(['login']);
+            alert('Registration successful! Please contact the admin for activation.');
+          });
+        }
       });
     } else {
-      alert("Please enter valid data");      
+      alert('Please enter valid data');
     }
   }
 

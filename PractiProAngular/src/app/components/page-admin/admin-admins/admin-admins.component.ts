@@ -8,11 +8,14 @@ import { initFlowbite } from 'flowbite';
 import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../filter.pipe';
+
 
 @Component({
   selector: 'app-admin-admins',
   standalone: true,
-  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent],
+  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe],
   templateUrl: './admin-admins.component.html',
   styleUrl: './admin-admins.component.css'
 })
@@ -25,6 +28,7 @@ export class AdminAdminsComponent implements OnInit {
   }
   userlist: any;
   dataSource: any;
+  searchtext: any;
 
   Loaduser() {
     this.service.getAllAdmins().subscribe(res => {

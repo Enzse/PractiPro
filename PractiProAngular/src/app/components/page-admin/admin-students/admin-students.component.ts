@@ -10,11 +10,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../viewsubmissions/viewsubmissions.component';
 import { ReviewsubmissionsComponent } from '../reviewsubmissions/reviewsubmissions.component';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../filter.pipe';
 
 @Component({
   selector: 'app-admin-students',
   standalone: true,
-  imports: [AdminNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent],
+  imports: [AdminNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe],
   templateUrl: './admin-students.component.html',
   styleUrl: './admin-students.component.css'
 })
@@ -23,15 +25,12 @@ export class AdminStudentsComponent implements OnInit {
     this.Loaduser();
   }
   students:any;
-  ngOnInit(): void {
-    // initFlowbite();
-    // this.service.getAllStudents().subscribe(res => {
-    //   this.students = res;
-    //   console.log(this.students);
-    // });
-   }
   studentlist: any;
   dataSource: any;
+  searchtext: any;
+  ngOnInit(): void {
+   
+   }
 
   Loaduser() {
     this.service.getAllStudents().subscribe(res => {

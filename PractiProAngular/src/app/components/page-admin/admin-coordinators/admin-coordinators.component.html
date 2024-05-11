@@ -1,7 +1,10 @@
 <div class="p-4 sm:ml-56">
 
     <div class=" p-3 rounded-md shadow-xl">
-        <h1 class="mb-2 text-orange-500 font-bold ml-1">Admin List</h1>
+        <h1 class="mb-2 text-orange-500 font-bold ml-1">Coordinator List</h1>
+        <div class="form-outline mt-3">
+            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="search" [(ngModel)]="searchtext" id="form1" class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search coordinators for any text..." aria-label="search">
+        </div>
         <div class="relative overflow-x-auto shadow-md shadow-slate-400 sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -16,10 +19,10 @@
                             Email
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            isActive
+                            Department
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Role
+                            Classes Held
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -27,24 +30,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let user of userlist?.payload" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr *ngFor="let user of userlist|filter:searchtext" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ user.id }}
                         </th>
                         <td class="px-6 py-4">
-                            {{user.lastName}}, {{ user.firstName }}
+                            {{user.last_name}}, {{ user.first_name }}
                         </td>                        
                         <td class="px-6 py-4">
                             {{ user.email }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ user.isActive }}
+                            {{user.department}}
                         </td>
                         <td class="px-6 py-4">
                             {{ user.role }}
                         </td>
                         <td class="px-6 py-4">                                                     
-                            <a (click)="Updateuser(user.id)" class="focus:outline-none text-white bg-blue-900 hover:bg-blue-950 focus:ring-4 focus:ring-yellow-300 font-medium rounded-3xl text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Update</a>
+                            <a (click)="deptPopup(user.id)" class="focus:outline-none text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-orange-900">Update</a>
+                            
                         </td>
                     </tr>
                 </tbody>

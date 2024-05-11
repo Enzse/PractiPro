@@ -9,6 +9,8 @@ import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/views
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
 import { RequirementspopupComponent } from '../../popups/requirementspopup/requirementspopup.component';
 import { FinalreportpopupComponent } from '../../popups/finalreportpopup/finalreportpopup.component';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../filter.pipe';
 
 interface Student {
   id: number;
@@ -18,7 +20,7 @@ interface Student {
 @Component({
   selector: 'app-coord-finalreport',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent],
+  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe],
   templateUrl: './coord-finalreport.component.html',
   styleUrl: './coord-finalreport.component.css'
 })
@@ -33,6 +35,7 @@ export class CoordFinalreportComponent {
   students: any;
   studentlist: any[] = [];
   dataSource: any;
+  searchtext: any;
 
   
   loadHeldStudents() {

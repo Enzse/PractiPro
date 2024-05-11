@@ -26,6 +26,20 @@ class Post extends GlobalMethods
      *   The added employee data.
      */
 
+     public function doesEmailExist($email)
+     {
+         $sql = "SELECT email FROM user WHERE email = ?";
+         try {
+             $stmt = $this->pdo->prepare($sql);
+             $stmt->execute([$email]);
+             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+             return $result; // Return email or null
+         } catch (PDOException $e) {
+             // Handle database error
+             return array();
+         }
+     }
+
     public function add_user($data)
     {
         $sql = "INSERT INTO user(firstName, lastName, email, password)
@@ -61,6 +75,25 @@ class Post extends GlobalMethods
                 [
                     $data->role,
                     $data->isActive,
+                    $id
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully updated record", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
+    public function edit_coordinator($data, $id)
+    {
+        $sql = "UPDATE coordinators SET department = ? WHERE id = ?";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->department,
                     $id
                 ]
             );
@@ -171,9 +204,9 @@ class Post extends GlobalMethods
             return $this->sendPayload(null, "failed", $errmsg, 400);
         }
     }
-    public function toggleStudentEvaluation($id, $newRemark,)
+    public function toggleStudentEvaluation($id, $newRemark, )
     {
-        
+
         $sql = "UPDATE students SET evaluation = ? WHERE id = ?";
         try {
             $stmt = $this->pdo->prepare($sql);
@@ -336,7 +369,7 @@ class Post extends GlobalMethods
     }
 
     public function uploadAvatar($id)
-    {        
+    {
         $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
 
 
@@ -344,7 +377,7 @@ class Post extends GlobalMethods
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
-                [                                      
+                [
                     $fileData
                 ]
             );

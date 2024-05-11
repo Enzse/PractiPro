@@ -26,7 +26,7 @@ export class UpdatepopupComponent implements OnInit {
   ngOnInit(): void {
     this.service.GetAllRoles().subscribe(res => {
       this.rolelist = res;
-    })
+    });
     if (this.data.usercode != null && this.data.usercode != '') {
       this.service.getUser(this.data.usercode).subscribe((res: any) => {
         this.editdata = res.payload[0]; // Access data from the payload property
@@ -60,6 +60,8 @@ export class UpdatepopupComponent implements OnInit {
       this.service.Updateuser(this.updateform.value.id, this.updateform.value).subscribe(res => {
         console.log("Updated successfully.");
         this.dialog.close();
+      }, error => {
+          alert("Unable to change user role. User might have dependent properties.")
       })
     } else {
       alert("Please Select Role.");

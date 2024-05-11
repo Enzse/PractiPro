@@ -8,11 +8,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
 import { DtrpopupcomponentComponent } from '../../popups/dtrpopupcomponent/dtrpopupcomponent.component';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../filter.pipe';
 
 @Component({
   selector: 'app-coord-dtr',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent],
+  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe],
   templateUrl: './coord-dtr.component.html',
   styleUrl: './coord-dtr.component.css'
 })
@@ -23,6 +25,7 @@ export class CoordDtrComponent {
   Coordinator: any;
   datalist: any;
   dataSource: any;
+  searchtext: any;
 
   Loaduser() {
     this.Coordinator = this.service.getCurrentUserId();
