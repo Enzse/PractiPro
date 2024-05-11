@@ -52,7 +52,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 if (count($request) > 1) {
                     echo json_encode($get->getByEmail($request[1]));
                 } else {
-                    echo json_encode($get->getByEmail());
+                    echo json_encode($get->getEmails());
                 }
                 break;
 
@@ -61,6 +61,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_roles($request[1]));
                 } else {
                     echo json_encode($get->get_roles());
+                }
+                break;
+            case 'departments':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_departments($request[1]));
+                } else {
+                    echo json_encode($get->get_departments());
+                }
+                break;
+            case 'classes':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_classes($request[1]));
+                } else {
+                    echo json_encode($get->get_classes());
                 }
                 break;
 
@@ -104,7 +118,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             case 'coordinator':
 
-                echo json_encode($get->get_coordinators());
+                if (count($request) > 1) {
+                    echo json_encode($get->get_coordinators($request[1]));
+                } else {
+                    echo json_encode($get->get_coordinators());
+                }
+
 
                 break;
 
@@ -236,6 +255,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data = json_decode(file_get_contents("php://input"));
         switch ($request[0]) {
 
+
+            case 'emailcheck':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->doesEmailExist($data->email));
+                break;
+
             case 'login':
                 try {
                     $data = json_decode(file_get_contents('php://input'), true);
@@ -253,7 +278,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                         }
                         // Verify if account is active
                         if ($user['isActive'] === 0) {
-                            throw new Exception("Inactive account", 401);
+                            throw new Exception("Inactive account", 403);
                         }
                         // Generate JWT token
                         $JwtController = new Jwt($_ENV["SECRET_KEY"]);
@@ -288,6 +313,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'edituser':
                 // Return JSON-encoded data for editing users
                 echo json_encode($post->edit_user($data, $request[1]));
+                break;
+            case 'editcoordinator':
+                // Return JSON-encoded data for editing users
+                echo json_encode($post->edit_coordinator($data, $request[1]));
                 break;
 
             case 'deleteuser':

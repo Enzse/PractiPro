@@ -8,11 +8,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
 import { WarpopupcomponentComponent } from '../../popups/warpopupcomponent/warpopupcomponent.component';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../filter.pipe';
 
 @Component({
   selector: 'app-coord-accomplishment-report',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent],
+  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe],
   templateUrl: './coord-accomplishment-report.component.html',
   styleUrl: './coord-accomplishment-report.component.css'
 })
@@ -24,6 +26,7 @@ export class CoordAccomplishmentReportComponent {
   students: any;  
   studentlist: any;
   dataSource: any;
+  searchtext: any;
 
   Loaduser() {
     this.Coordinator = this.service.getCurrentUserId();

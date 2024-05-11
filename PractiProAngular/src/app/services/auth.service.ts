@@ -21,6 +21,9 @@ export class AuthService {
 
 
   //Registration handler.
+  doesEmailExist(inputdata: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/emailcheck', inputdata);
+  }
   proceedRegister(inputdata: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/adduser', inputdata);
   }
@@ -65,6 +68,9 @@ export class AuthService {
   getAllStudents() {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student`);
   }
+  getEmails(){
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/email`);
+  }
   getStudentsByCoordinator(Id: number) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator-students/${Id}`);
   }
@@ -76,11 +82,28 @@ export class AuthService {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/admin`);
   }
   //Get Coordinators
-  getAllCoordinators() {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator`);
+  getCoordinator(id: any = null) {
+    if(id){
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator/${id}`);
+    }else{
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator`);
+    }
+  }
+  getClasses(block: any = null) {
+    if(block){
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/classes/${block}`);
+    }else{
+      return this.http.get<any>(`http://localhost/PractiPro/backend/api/classes`);
+    }
+  }
+  getAllDepartments() {
+    return this.http.get('http://localhost/PractiPro/backend/api/departments');
   }
   Updateuser(inputdata: any, code: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code);
+  }
+  UpdateCoordinator(inputdata: any, code: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/editcoordinator' + '/' + inputdata, code);
   }
   getRequirementSubmission(Id: number) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/submission/${Id}`);

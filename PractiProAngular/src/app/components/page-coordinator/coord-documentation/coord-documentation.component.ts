@@ -8,11 +8,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
 import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
 import { DocumentationpopupComponent } from '../../popups/documentationpopup/documentationpopup.component';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../filter.pipe';
 
 @Component({
   selector: 'app-coord-documentation',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent],
+  imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe],
   templateUrl: './coord-documentation.component.html',
   styleUrl: './coord-documentation.component.css'
 })
@@ -24,6 +26,7 @@ export class CoordDocumentationComponent {
   students: any;
   studentlist: any;
   dataSource: any;
+  searchtext: any;
 
   Loaduser() {
     this.Coordinator = this.service.getCurrentUserId();

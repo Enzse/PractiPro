@@ -5,6 +5,9 @@
             <div class="border-b border-gray-300"></div>
             <br>
         </div>
+        <div class="form-outline mt-3">
+            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="search" [(ngModel)]="searchtext" id="form1" class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search students for text..." aria-label="search">
+        </div>
         <div class="relative overflow-x-auto shadow-md shadow-slate-400 sm:rounded-lg">
             <table mat-table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -30,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let students of studentlist"
+                    <tr *ngFor="let students of studentlist|filter:searchtext"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ students.studentId }}

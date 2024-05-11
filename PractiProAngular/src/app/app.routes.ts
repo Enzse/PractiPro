@@ -26,6 +26,7 @@ import { CoordAccomplishmentReportComponent } from './components/page-coordinato
 import { CoordDtrComponent } from './components/page-coordinator/coord-dtr/coord-dtr.component';
 import { CoordDocumentationComponent } from './components/page-coordinator/coord-documentation/coord-documentation.component';
 import { CoordFinalreportComponent } from './components/page-coordinator/coord-finalreport/coord-finalreport.component';
+import { AdminClassesComponent } from './components/page-admin/admin-classes/admin-classes.component';
 
 export const routes: Routes = [
 
@@ -58,6 +59,7 @@ export const routes: Routes = [
             { path: 'admin-admins', component: AdminAdminsComponent, title: 'Admins', canActivate: [authGuard] },
             { path: 'admin-students', component: AdminStudentsComponent, title: 'Students', canActivate: [authGuard] },
             { path: 'admin-coordinators', component: AdminCoordinatorsComponent, title: 'Coordinators', canActivate: [authGuard] },
+            { path: 'admin-classes', component: AdminClassesComponent, title: 'Classes', canActivate: [authGuard] },
         ]
     },
     //Coordinator Pages
