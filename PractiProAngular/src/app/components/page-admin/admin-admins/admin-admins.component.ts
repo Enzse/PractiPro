@@ -24,7 +24,7 @@ export class AdminAdminsComponent implements OnInit {
     this.Loaduser();
   }
   ngOnInit(): void {
-    initFlowbite();
+  
   }
   userlist: any;
   dataSource: any;

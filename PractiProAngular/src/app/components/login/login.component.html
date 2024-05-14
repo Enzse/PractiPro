@@ -1,27 +1,27 @@
 <!-- background -->
 <div class="background"></div>
 <!-- content -->
-<div class="h-screen grid place-content-center grid-cols-2 maxsm:flex max-sm:flex-col max-sm:mb-10">
-    <div class="h-screen flex mx-auto justify-center mr-5 flex-col
-max-sm:mx-auto">
-        <img src="../../../assets/logo.png" alt="" />
-        <h1 class="text-center -mt-5 text-4xl font-mono">Practi<span class="text-orange-500">Pro</span></h1>
+<div class="h-screen grid place-content-center grid-cols-2 maxsm:flex max-sm:flex-col max-sm:mb-10 max-sm:flex" >
+    <div class="h-screen flex mx-auto justify-center mr-5 flex-col max-sm:w-7/12 
+max-sm:mx-auto max-sm:h-3/6">
+        <img class="max-sm:sm:mb-3 max-sm:mt-16" src="../../../assets/logo.png" alt="" />
+        <h1 class="text-center -mt-5 text-4xl font-mono max-sm:text-3xl"  >Practi<span class="text-orange-500">Pro</span></h1>
     </div>
 
 
     <div class="flex m-auto items-center w-3/5">
-        <form [formGroup]="loginform" (ngSubmit)="onLogin2()" class="max-w-md w-full">
+        <form [formGroup]="loginform" (ngSubmit)="onLogin2()" class="max-w-md w-full max-sm:mb-24">
             <!-- email -->
             <div class="relative z-0 w-full mb-5 group">
-                <input type="email" name="floating_email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bgtransparent border-0 border-b-2 border-slate-600 appearance-none 0
-focus:outline-none focus:ring-0 focus:border-slate-500 peer" placeholder=" " formControlName="email" required />
+                <input type="email" name="floating_email" id="floating_email" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-slate-600 appearance-none 0
+focus:outline-none focus:ring-0 focus:border-slate-500 peer " placeholder=" " formControlName="email" required />
                 <label for="floating_email" class="peer-focus:font-medium absolute text-sm text-gray500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-
 [0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peerfocus:left-auto peer-focus:text-slate peer-placeholder-shown:scale-100
 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
             </div>
             <!-- password -->
             <div class="relative z-0 w-full mb-5 group">
-                <input type="password" name="floating_password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bgtransparent border-0 border-b-2 border-slate-600 appearance-none 0
+                <input type="password" name="floating_password" id="floating_password" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-slate-600 appearance-none 0
 focus:outline-none focus:ring-0 focus:border-slate-500 peer" placeholder=" " formControlName="password" required />
                 <label for="floating_password" class="peer-focus:font-medium absolute text-sm text-gray500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin-
 [0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peerfocus:left-auto peer-focus:text-slate peer-placeholder-shown:scale-100

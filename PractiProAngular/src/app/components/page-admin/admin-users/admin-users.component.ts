@@ -26,7 +26,6 @@ export class AdminUsersComponent implements OnInit {
   searchtext: any;
 
   ngOnInit(): void {
-    initFlowbite();
     this.service.getAllUsers().subscribe(res => {
       this.users = res;
     });
