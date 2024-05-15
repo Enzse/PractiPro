@@ -24,7 +24,7 @@ export class AdminCoordinatorsComponent {
     this.Loaduser();
   }
   ngOnInit(): void {
-    initFlowbite();
+    
   }
   userlist: any;
   dataSource: any;
