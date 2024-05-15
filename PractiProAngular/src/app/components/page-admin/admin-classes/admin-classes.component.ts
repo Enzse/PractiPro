@@ -10,6 +10,8 @@ import { DocumentationpopupComponent } from '../../popups/documentationpopup/doc
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
+import { ClassesStudentpopupComponent } from '../../popups/classes-studentpopup/classes-studentpopup.component';
+import { AddclassespopupComponent } from '../../popups/addclassespopup/addclassespopup.component';
 
 @Component({
   selector: 'app-admin-classes',
@@ -22,45 +24,24 @@ export class AdminClassesComponent {
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.Loaduser();
   }
-  Coordinator: any;
-  students: any;
+  classes: any;
   datalist: any;
+  coordinatorName: any;
   dataSource: any;
   searchtext: any;
 
   Loaduser() {
-    this.Coordinator = this.service.getCurrentUserId();
+    this.classes = this.service.getCurrentUserId();
     this.service.getClasses().subscribe(res => {
-      this.datalist = res
-      // console.log(this.students);
-      this.dataSource = new MatTableDataSource(this.datalist);
+      this.datalist = res;
+      this.service.getCoordinator(this.datalist.coordinator_id).subscribe(res =>{
+        this.datalist[0].coordinator_id = `${res[0].first_name} ${res[0].last_name}`;
+      })
     });
   }
 
-
-  closeModal() {
-    // Add code to close the modal here
-    const modal = document.getElementById('crud-modal');
-    modal?.classList.add('hidden');
-  }
-
-  Updateuser(code: any) {
-    const popup = this.dialog.open(DocumentationpopupComponent, {
-      enterAnimationDuration: "1000ms",
-      exitAnimationDuration: "500ms",
-      width: "50%",
-      data: {
-        usercode: code
-      }
-    })
-    popup.afterClosed().subscribe(res => {
-      this.Loaduser()
-    });
-
-  }
-
-  viewSubmissions(code: any) {
-    const popup = this.dialog.open(DocumentationpopupComponent, {
+  viewData(code: any) {
+    const popup = this.dialog.open(ClassesStudentpopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "80%",
@@ -73,4 +54,20 @@ export class AdminClassesComponent {
     });
 
   }
+
+  addClasses() {
+    const popup = this.dialog.open(AddclassespopupComponent, {
+      enterAnimationDuration: "500ms",
+      exitAnimationDuration: "500ms",
+      width: "60%",
+      data: {
+        // usercode: code
+      }
+    })
+    popup.afterClosed().subscribe(res => {
+      this.Loaduser()
+    });
+
+  }
+
 }

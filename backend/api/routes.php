@@ -77,6 +77,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_classes());
                 }
                 break;
+            case 'class-students':
+                if (isset($request[1])) {
+                    echo json_encode($get->get_studentsFromClasses($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
 
             case 'student_requirements':
                 if (count($request) > 1) {
@@ -308,6 +316,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'adduser':
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->add_user($data));
+                break;
+            case 'addclass':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->add_class($data));
                 break;
 
             case 'edituser':

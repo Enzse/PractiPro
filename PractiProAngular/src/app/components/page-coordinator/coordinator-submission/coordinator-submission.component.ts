@@ -35,6 +35,7 @@ export class CoordinatorSubmissionComponent {
     this.Coordinator = this.service.getCurrentUserId();
     this.service.getStudentsByCoordinator(this.Coordinator).subscribe(res => {
       this.studentlist = res.payload;
+      console.log(this.studentlist);
       // console.log(this.students);
       this.dataSource = new MatTableDataSource(this.studentlist);
     });

@@ -177,6 +177,24 @@ class Get extends GlobalMethods
             return array();
         }
     }
+    public function get_studentsFromClasses($block)
+{   
+    $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
+    $condition = "block = '$block'";
+    $result = $this->get_records('students', $condition, $columns);
+
+    if ($result['status']['remarks'] === 'success') {
+        $payloadData = $result['payload'];
+
+        if (is_array($payloadData)) {
+            return $payloadData;
+        } else {
+            return array();
+        }
+    } else {
+        return array();
+    }
+}
 
     public function get_student_requirements($userId = null)
     {
@@ -246,13 +264,12 @@ class Get extends GlobalMethods
         }
     }
     public function getStudentsByCoordinatorId($coordinatorId)
-    {
+    {   
         $sql = "SELECT s.id, s.firstName, s.lastName, s.studentId, s.block, s.evaluation
-            FROM coordinators c
-            JOIN class_blocks cb ON c.id = cb.coordinator_id
-            JOIN student_class_blocks scb ON cb.block_name = cb.block_name
-            JOIN students s ON scb.student_id = s.id
-            WHERE c.id = :coordinatorId";
+        FROM coordinators c
+        JOIN class_blocks cb ON c.id = cb.coordinator_id
+        JOIN students s ON cb.block_name = s.block
+        WHERE c.id = :coordinatorId";
 
         try {
             $stmt = $this->pdo->prepare($sql);

@@ -65,6 +65,29 @@ class Post extends GlobalMethods
 
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
+    public function add_class($data)
+    {
+        $sql = "INSERT INTO class_blocks(block_name, department, course, year_level, coordinator_id)
+        VALUES (?, ?, ? ,?, ?)";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->block_name,
+                    $data->department,
+                    $data->course,
+                    $data->year_level,
+                    $data->coordinator_id
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully created a new record", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
 
     public function edit_user($data, $id)
     {

@@ -68,6 +68,9 @@ export class AuthService {
   getAllStudents() {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student`);
   }
+  getAllStudentsFromClass(block: any) {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/class-students/${block}`);
+  }
   getEmails(){
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/email`);
   }
@@ -95,6 +98,9 @@ export class AuthService {
     }else{
       return this.http.get<any>(`http://localhost/PractiPro/backend/api/classes`);
     }
+  }
+  addClass(inputdata: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/addclass', inputdata);
   }
   getAllDepartments() {
     return this.http.get('http://localhost/PractiPro/backend/api/departments');

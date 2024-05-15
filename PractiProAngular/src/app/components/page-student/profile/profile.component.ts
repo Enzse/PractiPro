@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { EditinformationpopupComponent } from '../editinformationpopup/editinformationpopup.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -10,7 +10,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, EditinformationpopupComponent, MatIconModule],
+  imports: [NavbarComponent, CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
