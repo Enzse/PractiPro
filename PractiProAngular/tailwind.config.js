@@ -1,26 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{html,ts}",
-    "./node_modules/flowbite/**/*.js"
-  ],
+  content: ["./src/**/*.{html,ts}", "./node_modules/flowbite/**/*.js"],
   theme: {
     extend: {
       colors: {
-        neon: '#51abcb',
-        darkblue: '#000136',
-        navbar: '#2187ab',
+        neon: "#51abcb",
+        darkblue: "#000136",
+        navbar: "#2187ab",
       },
       backgroundColor: {
-        'dash-b': '#1e1b4b',
-        'hover-side' : '#312e81'
-      }
-
+        "dash-b": "#1e1b4b",
+        "hover-side": "#312e81",
+      },
+      fontFamily: {
+        primary: "Poppins",
+        secondary: "Nunito",
+      },
     },
   },
-  plugins: [
-    require('flowbite/plugin')
-  ],
-}
-
-
+  plugins: [require("flowbite/plugin")],
+};
