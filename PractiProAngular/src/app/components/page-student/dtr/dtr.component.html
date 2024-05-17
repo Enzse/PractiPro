@@ -1,50 +1,52 @@
 <!-- <app-navbar></app-navbar> -->
 <div class="p-2 sm:ml-60">
   <div class="p-1 xl:p-10">
-
-
-
     <div>
-      <h1 class="text-orange-500 ml-5 text-lg font-bold mb-2">Daily Time Records</h1>
+      <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
+        Daily Time Records
+      </h1>
       <div class="border-b border-gray-300"></div>
       <br />
     </div>
 
-
-
-
-    <p class="text-gray-800">
-      Upload clear documents of all your <b>Daily Time Records</b> documents here. All documents should be
-      in <b>Portable Document Format(.pdf).</b>
+    <p class="text-gray-800 font-secondary">
+      Upload clear documents of all your <b>Daily Time Records</b> documents
+      here. All documents should be in <b>Portable Document Format(.pdf).</b>
     </p>
     <br />
 
-
-
-    <div class="bg-slate-200 rounded-lg w-auto p-5 shadow-xl shadow-gray-500 border border-gray-200">
+    <div
+      class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200"
+    >
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
-        <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
-
-
-
-
-
-
-          <form class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto bg-blue-200 mt-8">
-            <input type="file" [id]="'week' + weekNumber" [name]="'week' + weekNumber" />
+        <mat-tab
+          *ngFor="let weekNumber of tabWeekNumbers"
+          [label]="'Week ' + weekNumber"
+        >
+          <form
+            class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto mt-8"
+          >
+            <input
+              type="file"
+              [id]="'week' + weekNumber"
+              [name]="'week' + weekNumber"
+            />
           </form>
-
-
-
-
         </mat-tab>
       </mat-tab-group>
       <div class="flex justify-end mr-0 pt-3">
-        <button type="button" (click)="addNewTab()"
-          class="text-white p-2 px-5 bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg focus:outline-none mr-5">
-          Add New Week</button>
-        <button type="button" (click)="submitFiles()"
-          class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
+        <button
+          type="button"
+          (click)="addNewTab()"
+          class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg focus:outline-none mr-5"
+        >
+          Add New Week
+        </button>
+        <button
+          type="button"
+          (click)="submitFiles()"
+          class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none"
+        >
           Submit File
         </button>
       </div>
@@ -52,38 +54,36 @@
 
     <div class="mt-20">
       <div class="border-b border-gray-300"></div>
-      <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4">Your Submitted Records:</h1>
+      <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4 font-primary">
+        Your Submitted Records:
+      </h1>
 
-      <br>
+      <br />
     </div>
-    <div *ngIf="datalist.length > 0 else noDataMessage"
-      class="relative overflow-x-auto shadow-md shadow-slate-400 sm:rounded-lg">
-      <table mat-table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+    <div
+      *ngIf="datalist.length > 0; else noDataMessage"
+      class="relative overflow-x-auto shadow-md border border-gray-200 sm:rounded-lg"
+    >
+      <table
+        mat-table
+        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+      >
+        <thead
+          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+        >
           <tr>
-
-
-            <th scope="col" class="px-6 py-3">
-              Week
-            </th>
-            <th scope="col" class="px-6 py-3">
-              File name
-            </th>
-            <th scope="col" class="px-6 py-3">
-              Date Uploaded
-            </th>
-            <th scope="col" class="px-6 py-3">
-              Status
-            </th>
+            <th scope="col" class="px-6 py-3 font-secondary">Week</th>
+            <th scope="col" class="px-6 py-3 font-secondary">File name</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Status</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of datalist" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
-
-            <td class="px-6 py-4">
-              Week {{ data.week }}
-            </td>
+          <tr
+            *ngFor="let data of datalist"
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+          >
+            <td class="px-6 py-4">Week {{ data.week }}</td>
             <td class="px-6 py-4">
               {{ data.file_name }}
             </td>
@@ -91,41 +91,46 @@
               {{ data.created_at }}
             </td>
             <td class="px-6 py-4">
-              <a (click)="downloadDtr(data.dtr_id, data.file_name)"
-                class="focus:outline-none text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-orange-900">Download</a>
+              <a
+                (click)="downloadDtr(data.dtr_id, data.file_name)"
+                class="focus:outline-none text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-orange-900"
+                >Download</a
+              >
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-
   </div>
 
   <ng-template #noDataMessage>
     <h1 class="text-center">You have not submitted any files yet.</h1>
   </ng-template>
-
-
 </div>
 
-
-
-
 <div class="toast-container">
-
-  <div *ngIf="successtoast" id="toast-success"
+  <div
+    *ngIf="successtoast"
+    id="toast-success"
     class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-    role="alert">
+    role="alert"
+  >
     <div
-      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
-      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-        viewBox="0 0 20 20">
+      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200"
+    >
+      <svg
+        class="w-5 h-5"
+        aria-hidden="true"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
         <path
-          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
+        />
       </svg>
       <span class="sr-only">Warning icon</span>
     </div>
     <div class="ms-3 text-sm font-normal">Successfully submitted!</div>
   </div>
-
 </div>
