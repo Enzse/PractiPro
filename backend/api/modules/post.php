@@ -11,20 +11,7 @@ class Post extends GlobalMethods
         $this->pdo = $pdo;
     }
 
-    public function add_record()
-    {
-
-    }
-
-    /**
-     * Add a new employee with the provided data.
-     *
-     * @param array|object $data
-     *   The data representing the new employee.
-     *
-     * @return array|object
-     *   The added employee data.
-     */
+  
 
      public function doesEmailExist($email)
      {
@@ -67,8 +54,8 @@ class Post extends GlobalMethods
     }
     public function add_class($data)
     {
-        $sql = "INSERT INTO class_blocks(block_name, department, course, year_level, coordinator_id)
-        VALUES (?, ?, ? ,?, ?)";
+        $sql = "INSERT INTO class_blocks(block_name, department, course, year_level)
+        VALUES (?, ?, ? ,?)";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
@@ -77,7 +64,6 @@ class Post extends GlobalMethods
                     $data->department,
                     $data->course,
                     $data->year_level,
-                    $data->coordinator_id
                 ]
             );
             return $this->sendPayload(null, "success", "Successfully created a new record", 200);
@@ -88,6 +74,29 @@ class Post extends GlobalMethods
 
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
+
+
+    public function assignClassCoordinator($data)
+    {
+        $sql = "INSERT INTO rl_class_coordinators(coordinator_id, block_name)
+        VALUES (?, ?)";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->coordinator_id,
+                    $data->block_name                   
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully created a new record", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
+
 
     public function edit_user($data, $id)
     {
@@ -158,25 +167,6 @@ class Post extends GlobalMethods
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
-
-    public function delete_user($id)
-    {
-        $sql = "DELETE FROM user WHERE id = ?";
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(
-                [
-                    $id
-                ]
-            );
-            return $this->sendPayload(null, "success", "Successfully deleted record", 200);
-        } catch (PDOException $e) {
-            $errmsg = $e->getMessage();
-            $code = 400;
-        }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
-    }
 
     public function toggleRequirementStatus($studentId, $requirement, $status)
     {
@@ -412,7 +402,9 @@ class Post extends GlobalMethods
 
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
-
 }
+
+
+
 
 

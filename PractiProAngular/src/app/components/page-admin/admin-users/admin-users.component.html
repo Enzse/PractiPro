@@ -1,15 +1,19 @@
 <div class="p-4 sm:ml-56">
 
-<!-- <input type="text" [(ngModel)]="searchTerm" (keyup)="filterUsers()"> -->
-    
 
-<div class=" p-3 rounded-md shadow-xl">
-    <h1 class="mb-2 text-orange-500 font-bold ml-1">User List</h1>
-    <div class="form-outline mt-3">
-        <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="search" [(ngModel)]="searchtext" id="form1" class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search users for any text..." aria-label="search">
-    </div>
+    <div class=" p-3 rounded-md shadow-xl">
+        <h1 class="mb-2 text-orange-500 font-bold ml-1">User List</h1>
+        <div class="form-outline mt-3">
+            <input
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                type="search" [(ngModel)]="searchtext" id="form1"
+                class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search users for any text..." aria-label="search">
+        </div>
+
+
         <div class="relative overflow-x-auto shadow-md shadow-slate-400 sm:rounded-lg">
-            <table mat-table  class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -20,7 +24,7 @@
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Last Name
-                        </th>                        
+                        </th>
                         <th scope="col" class="px-6 py-3">
                             Email
                         </th>
@@ -36,7 +40,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let user of userlist?.payload|filter:searchtext" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr *ngIf="(userlist?.payload | filter:searchtext)?.length === 0">
+                        <td colspan="7" class="px-6 py-4 text-center text-red-500">
+                            No Data Found
+                        </td>
+                    </tr>
+                    <tr *ngFor="let user of userlist?.payload|filter:searchtext"
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ user.id }}
                         </th>
@@ -45,18 +55,22 @@
                         </td>
                         <td class="px-6 py-4">
                             {{ user.lastName }}
-                        </td>                        
+                        </td>
                         <td class="px-6 py-4">
                             {{ user.email }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ user.isActive }}
+                            <p *ngIf="user.isActive === 1" class="text-green-600">
+                                ACTIVE</p>
+                            <p *ngIf="user.isActive === 0" class="text-orange-500">
+                                INACTIVE</p>
                         </td>
                         <td class="px-6 py-4">
                             {{ user.role }}
                         </td>
-                        <td class="px-6 py-4">                                                     
-                            <a (click)="Updateuser(user.id)" class="focus:outline-none text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Update</a>
+                        <td class="px-6 py-4">
+                            <a (click)="Updateuser(user.id)"
+                                class="focus:outline-none text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Update</a>
                         </td>
                     </tr>
                 </tbody>

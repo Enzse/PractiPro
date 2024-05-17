@@ -9,14 +9,20 @@ export class AuthService {
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   isLoggedIn = false;
-  apiurl = 'http://localhost/PractiPro/backend/api/user';
+  apiurl = 'http://localhost/PractiPro/backend/api/';
 
-  //Get handlers.
-  GetAll() {
-    return this.http.get<any[]>(this.apiurl);
+  //User Handlers handlers. 
+  getUser(id: any) {
+    return this.http.get(`http://localhost/PractiPro/backend/api/user/${id}`);
   }
-  getUser(code: any) {
-    return this.http.get(`http://localhost/PractiPro/backend/api/user/${code}`);
+  getAllUsers() {
+    return this.http.get('http://localhost/PractiPro/backend/api/user');
+  } 
+  deleteUser(id: any) {
+    return this.http.delete(`http://localhost/PractiPro/backend/api/deleteuser/${id}`);
+  }
+  unassignCoordinator(id: number, block: string) {
+    return this.http.delete(`http://localhost/PractiPro/backend/api/unassigncoordinator/${id}/${block}`);
   }
 
 
@@ -60,10 +66,6 @@ export class AuthService {
   GetAllRoles() {
     return this.http.get('http://localhost/PractiPro/backend/api/role');
   }
-  //Get Users
-  getAllUsers() {
-    return this.http.get('http://localhost/PractiPro/backend/api/user');
-  }
   //Get Students
   getAllStudents() {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student`);
@@ -71,7 +73,7 @@ export class AuthService {
   getAllStudentsFromClass(block: any) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/class-students/${block}`);
   }
-  getEmails(){
+  getEmails() {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/email`);
   }
   getStudentsByCoordinator(Id: number) {
@@ -86,19 +88,23 @@ export class AuthService {
   }
   //Get Coordinators
   getCoordinator(id: any = null) {
-    if(id){
+    if (id) {
       return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator/${id}`);
-    }else{
+    } else {
       return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator`);
     }
   }
   getClasses(block: any = null) {
-    if(block){
+    if (block) {
       return this.http.get<any>(`http://localhost/PractiPro/backend/api/classes/${block}`);
-    }else{
+    } else {
       return this.http.get<any>(`http://localhost/PractiPro/backend/api/classes`);
     }
   }
+  getClassesByCoordinator(Id: number) {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/classesbycoordinator/${Id}`);
+  }
+
   addClass(inputdata: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/addclass', inputdata);
   }
@@ -264,6 +270,11 @@ export class AuthService {
 
     return this.http.post(`http://localhost/PractiPro/backend/api/uploadavatar/${userId}`, formData);
   }
+  assignClassCoordinator(inputdata: any) {
+    return this.http.post('http://localhost/PractiPro/backend/api/assignclasscoordinator', inputdata);
+  }
+
+
   getAvatar(userId: number) {
     return this.http.get(`http://localhost/PractiPro/backend/api/getavatar/${userId}`, { responseType: 'blob' });
   }

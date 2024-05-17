@@ -2,16 +2,25 @@
 
     <div class=" p-3 rounded-md shadow-xl">
         <h1 class="mb-2 text-orange-500 font-bold ml-1">Student List</h1>
-        <div class="form-outline mt-3">
-            <input class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" type="search" [(ngModel)]="searchtext" id="form1" class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search students for any text..." aria-label="search">
+
+        <div class="flex items-center space-x-4 mb-3">
+            <div class="form-outline flex-grow">
+                <input
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search students for any text..."
+                    aria-label="search">
+            </div>
+
+            <button (click)="assignStudents()"
+                class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-500 focus:ring-4 focus:ring-orange-300"
+                type="button">
+                Assign into Classes
+            </button>
         </div>
         <div class="relative overflow-x-auto shadow-md shadow-slate-400 sm:rounded-lg">
-            <table mat-table  class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">
-                            ID
-                        </th>
                         <th scope="col" class="px-6 py-3">
                             First Name
                         </th>
@@ -21,34 +30,36 @@
                         <th scope="col" class="px-6 py-3">
                             Student ID
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Phone Number
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Program
-                        </th>
+
                         <th scope="col" class="px-6 py-3">
                             Block
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Year
+                            Year Level
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Email
-                        </th>                        
+                            Profile Information
+                        </th>
                         <th scope="col" class="px-6 py-3">
                             Submissions
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Requirements Status
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Practicum Status
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let students of studentlist|filter:searchtext" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                            {{ students.id }}
-                        </th>
+                    <tr *ngIf="(studentlist | filter:searchtext)?.length === 0">
+                        <td colspan="7" class="px-6 py-4 text-center text-red-500">
+                            No Data Found
+                        </td>
+                    </tr>
+                    <tr *ngFor="let students of studentlist|filter:searchtext"
+                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
                         <td class="px-6 py-4">
                             {{ students.firstName }}
                         </td>
@@ -56,28 +67,37 @@
                             {{ students.lastName }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ students.studentId }}
+                            {{ (students.studentId ? (students.studentId) : 'Not set')}}
                         </td>
                         <td class="px-6 py-4">
-                            {{ students.phoneNumber }}
+                            {{ (students.block ? (students.block) : 'Not set')}}
+                        </td>
+                        <td class="px-6 py-4 text-nowrap">
+                            {{ (students.year ? (students.year | ordinal) + ' Year' : 'Not set') }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ students.program }}
+                            <a (click)="viewInfo(students.id)"
+                                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Inspect</a>
                         </td>
                         <td class="px-6 py-4">
-                            {{ students.block }}
+                            <a (click)="viewSubmissions(students.id)"
+                                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">View</a>
                         </td>
                         <td class="px-6 py-4">
-                            {{ students.year }}
+                            <a (click)="Updateuser(students.id)"
+                                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</a>
                         </td>
                         <td class="px-6 py-4">
-                            {{ students.email }}
-                        </td>  
-                        <td class="px-6 py-4">                                                     
-                            <a (click)="viewSubmissions(students.id)" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">View</a>
-                        </td>                      
-                        <td class="px-6 py-4">                                                     
-                            <a (click)="Updateuser(students.id)" class="focus:outline-none text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-orange-900">Update</a>
+
+                            <button (click)="toggleEvaluation(students.id, students.evaluation)" class="btn-toggle">
+                                <p *ngIf="students.evaluation" class="text-green-600 text-center">
+                                    <b>FINISHED!</b>
+                                </p>
+                                <p *ngIf="!students.evaluation" class="text-blue-900 text-center">
+                                    <b>IN PROGRESS</b>
+                                </p>
+                            </button>
+
                         </td>
                     </tr>
                 </tbody>

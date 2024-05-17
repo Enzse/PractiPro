@@ -3,20 +3,18 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
-import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
 import { DocumentationpopupComponent } from '../../popups/documentationpopup/documentationpopup.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { ClassesStudentpopupComponent } from '../../popups/classes-studentpopup/classes-studentpopup.component';
 import { AddclassespopupComponent } from '../../popups/addclassespopup/addclassespopup.component';
+import { OrdinalPipe } from '../../../ordinal.pipe';
 
 @Component({
   selector: 'app-admin-classes',
   standalone: true,
-  imports: [AdminNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe],
+  imports: [AdminNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, OrdinalPipe],
   templateUrl: './admin-classes.component.html',
   styleUrl: './admin-classes.component.css'
 })
@@ -35,7 +33,7 @@ export class AdminClassesComponent {
     this.service.getClasses().subscribe(res => {
       this.datalist = res;
       this.service.getCoordinator(this.datalist.coordinator_id).subscribe(res =>{
-        this.datalist[0].coordinator_id = `${res[0].first_name} ${res[0].last_name}`;
+        // this.datalist[0].coordinator_id = `${res[0].first_name} ${res[0].last_name}`;
       })
     });
   }

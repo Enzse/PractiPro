@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-updatepopup',
@@ -23,9 +24,12 @@ export class UpdatepopupComponent implements OnInit {
   rolelist: any;
   registrationfail = false;
   editdata: any;
+
+
   ngOnInit(): void {
     this.service.GetAllRoles().subscribe(res => {
       this.rolelist = res;
+      console.log("Current user ID: " + this.data.usercode);
     });
     if (this.data.usercode != null && this.data.usercode != '') {
       this.service.getUser(this.data.usercode).subscribe((res: any) => {
@@ -41,6 +45,10 @@ export class UpdatepopupComponent implements OnInit {
         });
 
       })
+
+    }
+    else {
+      alert("No user selected.");
     }
   }
 
@@ -61,13 +69,52 @@ export class UpdatepopupComponent implements OnInit {
         console.log("Updated successfully.");
         this.dialog.close();
       }, error => {
-          alert("Unable to change user role. User might have dependent properties.")
+        alert("Unable to change user role. User might have dependent properties.")
       })
     } else {
       alert("Please Select Role.");
     }
   }
 
+  deleteUser() {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "Deleting a user is not reversible!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#20284a",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dialog.close();
+        const userId = this.data.usercode;
+        console.log('Deleting user with ID:', userId);
+        this.service.deleteUser(userId).subscribe(
+          res => {
+          }, error => {
+            if (error.status == 404) {
+              console.log('Successfully deleted user ID:', userId);
+              Swal.fire({
+                title: "Deleted!",
+                text: "The user has been deleted.",
+                icon: "success"
+              });
+              
+            }
+          });
+      }
+    });
+  }
+
+  // this.service.Updateuser(this.updateform.value.id, this.updateform.value).subscribe(res => {
+  //   console.log("Updated successfully.");
+  //   this.dialog.close();
+  // }, error => {
+  //   alert("Unable to change user role. User might have dependent properties.")
+  // })
 
 }
+
+
 

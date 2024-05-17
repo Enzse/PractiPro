@@ -9,6 +9,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 require_once "./modules/get.php";
 require_once "./modules/post.php";
+require_once "./modules/delete.php";
 require_once "./config/database.php";
 require_once __DIR__ . '/bootstrap.php';
 require_once "./src/Jwt.php";
@@ -18,6 +19,7 @@ $con = new Connection();
 $pdo = $con->connect();
 $get = new Get($pdo);
 $post = new Post($pdo);
+$delete = new Delete($pdo);
 
 
 // Check if 'request' parameter is set in the request
@@ -77,12 +79,27 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_classes());
                 }
                 break;
+            case 'classesbycoordinator':
+                if (isset($request[1])) {
+                    echo json_encode($get->get_classes_ByCoordinator($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
             case 'class-students':
                 if (isset($request[1])) {
                     echo json_encode($get->get_studentsFromClasses($request[1]));
                 } else {
                     echo "ID not provided";
                     http_response_code(400);
+                }
+                break;
+            case 'class-coordinators':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_classCoordinators($request[1]));
+                } else {
+                    echo json_encode($get->get_classCoordinators());
                 }
                 break;
 
@@ -131,8 +148,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 } else {
                     echo json_encode($get->get_coordinators());
                 }
-
-
                 break;
 
             case 'submission':
@@ -331,11 +346,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode($post->edit_coordinator($data, $request[1]));
                 break;
 
-            case 'deleteuser':
-                // Return JSON-encoded data for deleting users
-                echo json_encode($post->delete_user($request[1]));
+            case 'assignclasscoordinator':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->assignClassCoordinator($data));
                 break;
-
             case 'uploadrequirement':
                 // Return JSON-encoded data for uploading files
                 echo json_encode($post->upload_requirement($request[1], $request[2]));
@@ -396,6 +410,34 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
         }
         break;
+
+    case 'DELETE':
+        switch ($request[0]) {
+            case 'deleteuser':
+                if (isset($request[1])) {
+                    echo json_encode($delete->delete_user($request[1]));
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'unassigncoordinator':
+                if (isset($request[1])) {
+                    $delete->unassignCoordinatorFromClass($request[1], $request[2]);
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
+            default:
+                // Return a 403 response for unsupported requests
+                echo "No Such Request";
+                http_response_code(403);
+                break;
+        }
+
     default:
         // Return a 404 response for unsupported HTTP methods
         echo "Method not available";

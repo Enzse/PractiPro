@@ -8,7 +8,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { saveAs } from 'file-saver';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-addclassespopup',
@@ -27,15 +28,18 @@ export class AddclassespopupComponent {
     block_name: this.builder.control('', Validators.required),
     department: this.builder.control('', Validators.required),
     course: this.builder.control('', Validators.required),
-    year_level: this.builder.control('', Validators.required),
-    coordinator_id: this.builder.control('', Validators.required)
+    year_level: this.builder.control('', Validators.required)
   });
 
   submitForm() {
     if (this.insertform.valid) {
-
       this.service.addClass(this.insertform.value).subscribe(() => {
-        alert('Registration successful! Please contact the admin for activation.');
+        this.dialog.close();
+        Swal.fire({
+          title: "Success!",
+          text: `The class ${this.insertform.value.block_name} has been successfully added to the database.`,
+          icon: "success"
+        });
       });
 
     } else {

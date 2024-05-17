@@ -35,7 +35,7 @@ export class AdminUsersComponent implements OnInit {
   dataSource: any;
 
   Loaduser() {
-    this.service.GetAll().subscribe(res => {
+    this.service.getAllUsers().subscribe(res => {
       this.userlist = res;
       this.dataSource = new MatTableDataSource(this.userlist);
     });

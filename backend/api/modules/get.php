@@ -10,8 +10,7 @@ class Get extends GlobalMethods
         $this->pdo = $pdo;
     }
 
-
-    //naghahandle ng sql statements
+    //ESSENTIALS
     private function get_records($table, $conditions = null, $columns = '*')
     {
         $sqlStr = "SELECT $columns FROM $table";
@@ -25,8 +24,6 @@ class Get extends GlobalMethods
         }
         return $this->sendPayload(null, 'failed', "Failed to retrieve data.", $result['code']);
     }
-
-    //nageexecute ng query
     private function executeQuery($sql)
     {
         $data = array();
@@ -58,13 +55,9 @@ class Get extends GlobalMethods
         return array("code" => $code, "errmsg" => $errmsg);
     }
 
-    /**
-     * Retrieve a list of employees.
-     *
-     * @return string
-     *   A string representing the list of employees.
-     */
 
+
+    //LOGIN FUNCTIONS
     public function getByEmail(string $email = null): array|false
     {
 
@@ -95,6 +88,11 @@ class Get extends GlobalMethods
             return array();
         }
     }
+
+
+
+
+    //ADMIN: GET USERS
     public function get_users($id = null)
     {
         $condition = null;
@@ -106,25 +104,15 @@ class Get extends GlobalMethods
 
     public function get_admins()
     {
-
         $condition = "role= 'admin'";
 
         return $this->get_records('user', $condition);
     }
-
-    // public function get_coordinators($id = null)
-    // {
-    //     $condition = null;
-    //     if ($id != null) {
-    //         $condition = "id=$id";
-    //     }
-    //     return $this->get_records('coordinators', $condition);
-    // }
-    public function get_coordinators($id = null)
+    public function get_student($userId = null)
     {
-
-        $condition = ($id !== null) ? "id = $id" : null;
-        $result = $this->get_records('coordinators', $condition);
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
+        $condition = ($userId !== null) ? "id = $userId" : null;
+        $result = $this->get_records('students', $condition, $columns);
 
         if ($result['status']['remarks'] === 'success') {
             $payloadData = $result['payload'];
@@ -138,28 +126,44 @@ class Get extends GlobalMethods
             return array();
         }
     }
-    /**
-     * Retrieve a list of jobs.
-     *
-     * @return string
-     *   A string representing the list of jobs.
-     */
-    public function get_roles($id = null)
+    public function get_studentsFromClasses($block)
     {
-        $condition = null;
-        if ($id != null) {
-            $condition = "id=$id";
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
+        $condition = "block = '$block'";
+        $result = $this->get_records('students', $condition, $columns);
+
+        if ($result['status']['remarks'] === 'success') {
+            $payloadData = $result['payload'];
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
         }
-        return $this->get_records('role', $condition);
     }
-    public function get_departments($id = null)
+    public function get_coordinators($id = null)
     {
-        $condition = null;
-        if ($id != null) {
-            $condition = "id=$id";
+        $sql = "SELECT c.*, COUNT(r.block_name) AS number_of_classes
+            FROM coordinators c
+            LEFT JOIN rl_class_coordinators r ON c.id = r.coordinator_id";
+
+        if ($id !== null) {
+            $sql .= " WHERE c.id = $id";
         }
-        return $this->get_records('departments', $condition);
+
+        $sql .= " GROUP BY c.id";
+
+        $result = $this->executeQuery($sql);
+
+        if ($result['code'] == 200) {
+            return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
+        }
+        return $this->sendPayload(null, 'failed', "Failed to retrieve data.", $result['code']);
     }
+
     public function get_classes($id = null)
     {
         $condition = ($id !== null) ? "block_name = $id" : null;
@@ -177,34 +181,14 @@ class Get extends GlobalMethods
             return array();
         }
     }
-    public function get_studentsFromClasses($block)
-{   
-    $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
-    $condition = "block = '$block'";
-    $result = $this->get_records('students', $condition, $columns);
-
-    if ($result['status']['remarks'] === 'success') {
-        $payloadData = $result['payload'];
-
-        if (is_array($payloadData)) {
-            return $payloadData;
-        } else {
-            return array();
-        }
-    } else {
-        return array();
-    }
-}
-
-    public function get_student_requirements($userId = null)
+    public function get_classCoordinators($id = null, $block = null)
     {
-        $condition = ($userId !== null) ? "student_id = $userId" : null;
-        $result = $this->get_records('student_requirements', $condition);
+        $condition = ($id !== null) ? "coordinator_id = $id" : null;
+        $condition = ($block !== null) ? "block_name = $block" : null;
+        $result = $this->get_records('rl_class_coordinators', $condition);
 
         if ($result['status']['remarks'] === 'success') {
-
             $payloadData = $result['payload'];
-
 
             if (is_array($payloadData)) {
                 return $payloadData;
@@ -215,14 +199,58 @@ class Get extends GlobalMethods
             return array();
         }
     }
-    public function get_student($userId = null)
+    public function get_classes_ByCoordinator($coordinatorId)
     {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
-        $condition = ($userId !== null) ? "id = $userId" : null;
-        $result = $this->get_records('students', $condition, $columns);
+    
+        $sql = "SELECT cb.*
+        FROM class_blocks cb
+        JOIN rl_class_coordinators rcc ON cb.block_name = rcc.block_name
+        WHERE rcc.coordinator_id = :coordinatorId";
+
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':coordinatorId', $coordinatorId, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($result)) {
+                return $this->sendPayload(null, 'failed', "No students found for coordinator ID $coordinatorId.", 404);
+            }
+            return $this->sendPayload($result, 'success', "Successfully retrieved students.", 200);
+        } catch (PDOException $e) {
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }    
+
+
+    //ADMIN: GET CORE DATA
+    public function get_roles($id = null)
+    {
+        $condition = null;
+        if ($id != null) {
+            $condition = "id=$id";
+        }
+        return $this->get_records('role', $condition);
+    }
+    public function get_departments($id = null)
+    {
+        $condition = null;
+        if ($id != null) {
+            $condition = "id=$id";
+        }
+        return $this->get_records('departments', $condition);
+    }
+
+
+    //GET SUBMISSIONS
+    public function get_student_requirements($userId = null)
+    {
+        $condition = ($userId !== null) ? "student_id = $userId" : null;
+        $result = $this->get_records('student_requirements', $condition);
 
         if ($result['status']['remarks'] === 'success') {
+
             $payloadData = $result['payload'];
+
 
             if (is_array($payloadData)) {
                 return $payloadData;
@@ -263,8 +291,11 @@ class Get extends GlobalMethods
             return array("avatar" => null);
         }
     }
+
+
+
     public function getStudentsByCoordinatorId($coordinatorId)
-    {   
+    {
         $sql = "SELECT s.id, s.firstName, s.lastName, s.studentId, s.block, s.evaluation
         FROM coordinators c
         JOIN class_blocks cb ON c.id = cb.coordinator_id
@@ -284,6 +315,7 @@ class Get extends GlobalMethods
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
+
 
     public function get_submission($id = null)
     {
@@ -477,6 +509,7 @@ class Get extends GlobalMethods
         // Return the array directly
         return $weekNumbers;
     }
+
 
 
     // FOR DOWNLOADS!!!!!!!!!
