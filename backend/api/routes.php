@@ -118,6 +118,22 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_student());
                 }
                 break;
+            case 'studentbycourse':
+                if (isset($request[1])) {
+                    echo json_encode($get->get_studentByCourse($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'studentbycourseandyear':
+                if (isset($request[1]) && isset($request[2])) {
+                    echo json_encode($get->get_studentByCourseAndYear($request[1], $request[2]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
             case 'getavatar':
                 if (isset($request[1])) {
                     $get->get_avatar($request[1]);
@@ -349,6 +365,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'assignclasscoordinator':
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->assignClassCoordinator($data));
+                break;
+            case 'assignclassstudent':
+                if (isset($request[1])) {
+                    echo json_encode($post->assignClassStudent($data, $request[1]));
+                }
+                else{
+                    echo "No requests Provided!";
+                }
                 break;
             case 'uploadrequirement':
                 // Return JSON-encoded data for uploading files

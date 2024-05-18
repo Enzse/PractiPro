@@ -144,6 +144,42 @@ class Get extends GlobalMethods
             return array();
         }
     }
+    public function get_studentByCourse($course)
+    {
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
+        $condition = ($course !== null) ? "program = '$course'" : null;
+        $result = $this->get_records('students', $condition, $columns);
+
+        if ($result['status']['remarks'] === 'success') {
+            $payloadData = $result['payload'];
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
+        }
+    }
+    public function get_studentByCourseAndYear($course, $year)
+    {
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
+        $condition = ($course !== null) ? "program = '$course' AND year = $year" : null;
+        $result = $this->get_records('students', $condition, $columns);
+
+        if ($result['status']['remarks'] === 'success') {
+            $payloadData = $result['payload'];
+
+            if (is_array($payloadData)) {
+                return $payloadData;
+            } else {
+                return array();
+            }
+        } else {
+            return array();
+        }
+    }
     public function get_coordinators($id = null)
     {
         $sql = "SELECT c.*, COUNT(r.block_name) AS number_of_classes
@@ -166,7 +202,7 @@ class Get extends GlobalMethods
 
     public function get_classes($id = null)
     {
-        $condition = ($id !== null) ? "block_name = $id" : null;
+        $condition = ($id !== null) ? "block_name = '$id'" : null;
         $result = $this->get_records('class_blocks', $condition);
 
         if ($result['status']['remarks'] === 'success') {

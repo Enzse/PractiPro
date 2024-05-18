@@ -80,7 +80,7 @@ export class AdminStudentsComponent implements OnInit {
     const popup = this.dialog.open(InspectprofilepopupComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
-      width: "80%",
+      width: "50%",
       data: {
         usercode: code
       }

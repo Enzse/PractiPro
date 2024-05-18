@@ -96,6 +96,25 @@ class Post extends GlobalMethods
 
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
+    public function assignClassStudent($data, $id)
+    {
+        $sql = "UPDATE students SET block = ? WHERE id = ?";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [                
+                    $data->block_name,
+                    $id
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully updated record", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
 
 
     public function edit_user($data, $id)
@@ -140,7 +159,7 @@ class Post extends GlobalMethods
 
     public function edit_student_info($data, $id)
     {
-        $sql = "UPDATE students SET firstName = ?, lastName = ?, studentId = ?, program = ?, block = ?, year = ?, email = ?, phoneNumber = ?, address = ?, dateOfBirth = ? WHERE id = ?";
+        $sql = "UPDATE students SET firstName = ?, lastName = ?, studentId = ?, program = ?, year = ?, phoneNumber = ?, address = ?, dateOfBirth = ? WHERE id = ?";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
@@ -149,9 +168,7 @@ class Post extends GlobalMethods
                     $data->lastName,
                     $data->studentId,
                     $data->program,
-                    $data->block,
                     $data->year,
-                    $data->email,
                     $data->phoneNumber,
                     $data->address,
                     $data->dateOfBirth,

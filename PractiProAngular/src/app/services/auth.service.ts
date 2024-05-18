@@ -79,6 +79,12 @@ export class AuthService {
   getStudentsByCoordinator(Id: number) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator-students/${Id}`);
   }
+  getStudentsByCourse(course: any) {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/studentbycourse/${course}`);
+  }
+  getStudentsByCourseAndYear(course: any, year: number) {
+    return this.http.get<any>(`http://localhost/PractiPro/backend/api/studentbycourseandyear/${course}/${year}`);
+  }
   getStudent(Id: number) {
     return this.http.get<any>(`http://localhost/PractiPro/backend/api/student/${Id}`);
   }
@@ -272,6 +278,9 @@ export class AuthService {
   }
   assignClassCoordinator(inputdata: any) {
     return this.http.post('http://localhost/PractiPro/backend/api/assignclasscoordinator', inputdata);
+  }
+  assignClassStudent(id: number, inputdata:any) {
+    return this.http.post(`http://localhost/PractiPro/backend/api/assignclassstudent/${id}`, inputdata);
   }
 
 

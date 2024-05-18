@@ -1,0 +1,89 @@
+<div class="p-3 rounded-md shadow-xl">
+    <h1 class="mb-2 text-orange-500 font-bold ml-1">Students elligible for {{this.data.chosenblock}}:</h1>
+    <div *ngIf="datalist.length > 0 else noDataMessage" class="overflow-auto max-h-96 sm:rounded-lg">
+        <table mat-table
+            class="w-full overflow-y-auto text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+
+                    <th scope="col" class="px-6 py-3 text-center">
+                        First Name:
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        Last Name:
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-center text-nowrap">
+                        Student ID:
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        Current Block:
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        Year Level:
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-center">
+                        Selection
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of datalist" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                    <td class="px-6 py-4 text-center">
+                        {{ student.firstName }}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        {{ student.lastName }}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        {{ student.studentId ? student.studentId : "Not set" }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ student.block ? student.block : "Not set" }}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        {{ student.year ? (student.year | ordinal) + " Year" : "Not set"}}
+                    </td>
+                    <td class="px-6 py-4 text-center">
+                        <button (click)="addToSelection(student.id)"
+                                [ngClass]="[
+                                    'text-white',
+                                    selectedstudents.includes(student.id) ? 'bg-red-600 hover:bg-red-700 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800' : 'bg-green-600 hover:bg-green-700 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800'
+                                ]"
+                                class="font-medium rounded-lg text-sm px-3 py-2.5 mb-2 focus:outline-none cursor-pointer">
+                            {{ selectedstudents.includes(student.id) ? 'Remove' : 'Add' }}
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="flex justify-between mt-5">
+
+            <button
+                class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                (click)="resetSelection()"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                        d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                        clip-rule="evenodd" />
+                </svg>
+            </button>
+
+            <button
+                class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                (click)="closePopup()">Confirm and Proceed</button>
+
+        </div>
+    </div>
+
+    <ng-template #noDataMessage>
+        <div class="flex justify-center">
+            <h1 class="text-center">There are currently no students that match this class' <b>course</b> and <b>year
+                    level</b>.</h1>
+        </div>
+        <div class="mt-5 flex justify-center">
+            <a class="text-white bg-blue-900 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
+                href="/admin-students">See Students</a>
+        </div>
+    </ng-template>
+</div>

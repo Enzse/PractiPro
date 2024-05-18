@@ -1,1 +1,93 @@
-<p>assignstudentpopup works!</p>
+<div class="p-3 rounded-md shadow-xl">
+    <h1 class="mb-2 text-orange-500 font-bold ml-2">Assign Students:</h1>
+
+    <div class="p-2">
+
+        <form [formGroup]="inputform">
+            <div class="grid gap-2 mb-6 md:grid-cols-2">
+
+                <div>
+                    <label for="classes" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a
+                        Class:</label>
+                    <select formControlName="block_name" id="classes" (change)="onClassChange($event)"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        <option value="" disabled selected>All Classes:</option>
+                        <option *ngFor="let item of classlist" [value]="item.block_name">{{item.block_name}}</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="students" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select
+                        Students to Assign:</label>
+                    <button (click)="selectStudentsPopup()"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">All
+                        Students:
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="overflow-auto flex justify-center" *ngIf="selectedlist.length> 0; else noDataMessage">
+                <table mat-table
+                    class="w-full overflow-auto text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 font-primary">First Name</th>
+                            <th scope="col" class="px-6 py-3 font-primary">Last Name</th>
+                            <th scope="col" class="px-6 py-3 font-primary">Student ID</th>
+
+                            <th scope="col" class="px-6 py-3 font-primary">Current Block</th>
+                            <th scope="col" class="px-6 py-3 font-primary">Year Level</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let students of selectedlist | filter : searchtext"
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            <td class="px-6 py-4">
+                                {{ students.firstName }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ students.lastName }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ students.studentId ? students.studentId : "Not set" }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ students.block ? students.block : "Not set" }}
+                            </td>
+                            <td class="px-6 py-4 text-nowrap">
+                                {{
+                                students.year ? (students.year | ordinal) + " Year" : "Not set"
+                                }}
+                            </td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ng-template #noDataMessage>
+                <div class="border-b border-gray-300"></div>
+                <div class="m-10">
+                    <h1 class="text-center font-secondary">
+                        Please select students to assign.
+                    </h1>
+                </div>
+            </ng-template>
+
+
+            <div class="border-b border-gray-300"></div>
+
+
+            
+            <div class="flex justify-center mt-5">
+                <button (click)="proceedAssign()"
+                    class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Assign
+                    Students</button>
+                    
+            </div>
+
+        </form>
+
+    </div>
+</div>

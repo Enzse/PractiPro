@@ -34,15 +34,13 @@ export class EditinformationpopupComponent implements OnInit {
         console.log(userId);
         console.log("API response:", res);
         console.log(res);
-        this.editdata = res;
+        this.editdata = res[0];
         this.editForm.setValue({
           firstName: this.editdata.firstName,
           lastName: this.editdata.lastName,
           studentId: this.editdata.studentId,
           program: this.editdata.program,
-          block: this.editdata.block,
           year: this.editdata.year,
-          email: this.editdata.email,
           phoneNumber: this.editdata.phoneNumber,
           address: this.editdata.address,
           dateOfBirth: this.editdata.dateOfBirth
@@ -58,9 +56,7 @@ export class EditinformationpopupComponent implements OnInit {
     lastName: this.builder.control(''),
     studentId: this.builder.control(''),
     program: this.builder.control(''),
-    block: this.builder.control(''),
     year: this.builder.control(''),
-    email: this.builder.control(''),
     phoneNumber: this.builder.control(''),
     address: this.builder.control(''),
     dateOfBirth: this.builder.control(''),

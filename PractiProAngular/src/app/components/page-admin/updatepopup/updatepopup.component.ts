@@ -22,7 +22,6 @@ export class UpdatepopupComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<UpdatepopupComponent>) { }
 
   rolelist: any;
-  registrationfail = false;
   editdata: any;
 
 

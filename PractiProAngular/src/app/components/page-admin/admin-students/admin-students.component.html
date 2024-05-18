@@ -18,7 +18,7 @@
 
       <button
         (click)="assignStudents()"
-        class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 focus:ring-4 focus:ring-orange-300"
+        class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-700 focus:ring-4 focus:ring-orange-300"
         type="button"
       >
         Assign into Classes
@@ -42,7 +42,7 @@
             <th scope="col" class="px-6 py-3 font-primary">
               Profile Information
             </th>
-            <th scope="col" class="px-6 py-3 font-primary">Submissions</th>
+            <th scope="col" class="px-6 py-3 font-primary">Requirements</th>
             <th scope="col" class="px-6 py-3 font-primary">
               Requirements Status
             </th>
@@ -79,21 +79,21 @@
             <td class="px-6 py-4">
               <a
                 (click)="viewInfo(students.id)"
-                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
+                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
                 >Inspect</a
               >
             </td>
             <td class="px-6 py-4">
               <a
                 (click)="viewSubmissions(students.id)"
-                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
+                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
                 >View</a
               >
             </td>
             <td class="px-6 py-4">
               <a
                 (click)="Updateuser(students.id)"
-                class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
+                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer"
                 >Update</a
               >
             </td>
