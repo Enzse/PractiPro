@@ -1,69 +1,81 @@
-import { Component } from '@angular/core';
-import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
-import { CoordSidebarComponent } from '../coord-sidebar/coord-sidebar.component';
+import { Component, OnInit, Inject } from '@angular/core';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { OnInit } from '@angular/core';
-import { initFlowbite } from 'flowbite';
-import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FilterPipe } from '../../../filter.pipe';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import Swal from 'sweetalert2';
+import { OrdinalPipe } from '../../../ordinal.pipe';
 
 @Component({
   selector: 'app-coord-classes',
   standalone: true,
-  imports: [CoordSidebarComponent, CoordNavbarComponent, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, FormsModule, FilterPipe, OrdinalPipe],
   templateUrl: './coord-classes.component.html',
   styleUrl: './coord-classes.component.css'
 })
 export class CoordClassesComponent {
-  constructor(private service: AuthService, private dialog: MatDialog) {
-    this.Loaduser();
-  }
-  ngOnInit(): void {
-    initFlowbite();
-  }
-  userlist: any;
-  dataSource: any;
+  constructor(private builder: FormBuilder, private service: AuthService,
+    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CoordClassesComponent>) { }
 
-  Loaduser() {
-    this.service.getAllAdmins().subscribe(res => {
-      this.userlist = res;
-      this.dataSource = new MatTableDataSource(this.userlist);
+  datalist: any;
+  currentuser: any;
+
+  ngOnInit(): void {
+    if (this.data.coordinatorId != null && this.data.coordinatorId != '') {
+      this.service.getCoordinator(this.data.coordinatorId).subscribe(res => {
+        console.log(res);
+        this.currentuser = res.payload[0]
+        console.log(this.currentuser);
+      });
+      this.loadData();
+    }
+  }
+
+  loadData() {
+    this.service.getClassesByCoordinator(this.data.coordinatorId).subscribe(
+      (res: any) => {
+        this.datalist = res?.payload;
+        console.log(this.datalist);
+      },
+      (error: any) => {
+        if (error.status == 404) {
+          console.log('No classes found.')
+        } else {
+          console.error('Error fetching classes:', error);
+        }
+
+      }
+    );
+  }
+
+  unassignCoordinator(block: any) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You are unassigning ${this.currentuser?.first_name} from ${block}.`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#20284a",
+      confirmButtonText: "Confirm"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dialog.close();
+        this.service.unassignCoordinator(this.data.coordinatorId, block).subscribe(() => {
+
+
+        });
+      }
     });
   }
 
-  displayedColumns: string[] = [
-    'id',
-    'firstName',
-    'lastName',
-    'studentId',
-    'phoneNumber',
-    'program',
-    'block',
-    'year',
-    'email',
-    'isActive',
-    'role',
-    'action'];
-
-  closeModal() {
-    // Add code to close the modal here
-    const modal = document.getElementById('crud-modal');
-    modal?.classList.add('hidden');
+  selectClass(block: any) {
+    this.dialog.close(block);
   }
 
-  // Updateuser(code: any) {
-  //   const popup = this.dialog.open(UpdatepopupComponent, {
-  //     enterAnimationDuration: "350ms",
-  //     exitAnimationDuration: "300ms",
-  //     width: "50%",
-  //     data: {
-  //       usercode: code
-  //     }
-  //   })
-  //   popup.afterClosed().subscribe(res => {
-  //     this.Loaduser()
-  //   });
-
-  // }
 }

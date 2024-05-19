@@ -1,0 +1,12 @@
+.image-container {
+    height: 5rem;
+    width: 5rem;
+    z-index: 1;
+    border-radius: 50%;
+    background-color: #fff;
+    background-position: center;
+    background-size: cover;
+    &.avatar-placeholder {
+      background-image: url("../../../../assets/defaultpfp.png");
+    }
+  }

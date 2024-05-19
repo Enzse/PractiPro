@@ -49,7 +49,10 @@
               {{ user.email }}
             </td>
             <td class="px-6 py-4">
-              {{ user.isActive }}
+              <p *ngIf="user.isActive === 1" class="text-green-600">ACTIVE</p>
+              <p *ngIf="user.isActive === 0" class="text-orange-500">
+                INACTIVE
+              </p>
             </td>
             <td class="px-6 py-4">
               {{ user.role }}

@@ -136,7 +136,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
             case 'getavatar':
                 if (isset($request[1])) {
-                    $get->get_avatar($request[1]);
+                    echo json_encode($get->get_avatar($request[1]));
                 } else {
                     echo "ID not provided";
                     http_response_code(400);
@@ -469,4 +469,3 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 }
 
-?>

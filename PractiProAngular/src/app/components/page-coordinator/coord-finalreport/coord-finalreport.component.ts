@@ -11,6 +11,7 @@ import { RequirementspopupComponent } from '../../popups/requirementspopup/requi
 import { FinalreportpopupComponent } from '../../popups/finalreportpopup/finalreportpopup.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
+import { BlockService } from '../../../services/block.service';
 
 interface Student {
   id: number;
@@ -26,24 +27,39 @@ interface Student {
 })
 export class CoordFinalreportComponent {
 
-  constructor(private service: AuthService, private dialog: MatDialog) {
-    this.loadHeldStudents();
-
+  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {
   }
-  
+
   Coordinator: any;
   students: any;
   studentlist: any[] = [];
   dataSource: any;
   searchtext: any;
+  currentBlock: any;
+  isLoading: boolean = false;
 
-  
+  ngOnInit(): void {
+    this.blockService.selectedBlock$.subscribe(block => {
+      this.currentBlock = block;
+      if (this.currentBlock) {
+        this.loadHeldStudents();
+      } else {
+        console.log(`Submissions: no block selected`);
+      }
+
+      console.log(`Submissions: ${this.currentBlock}`);
+    });
+  }
+
   loadHeldStudents() {
-    this.Coordinator = this.service.getCurrentUserId();
-    this.service.getStudentsByCoordinator(this.Coordinator).subscribe(res => {
-      this.studentlist = res.payload;
-      // console.log(this.students);
-      this.dataSource = new MatTableDataSource(this.studentlist);
+    this.isLoading = true;
+    this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+      this.studentlist = res;
+      this.isLoading = false;
+      console.log(this.studentlist);
+    }, err => {
+      this.isLoading = false;
+      console.error(err);
     });
   }
 
@@ -85,14 +101,14 @@ export class CoordFinalreportComponent {
   }
 
 
-  
+
   toggleEvaluation(id: number, currentValue: boolean) {
     const newValue = currentValue ? 0 : 1; // Toggle the current value
     const requestData = {
       id: id,
       newEvaluation: newValue
     };
-  
+
     this.service.toggleStudentEvaluation(requestData).subscribe(
       (response) => {
         console.log('Evaluation toggled successfully:', response);

@@ -10,6 +10,7 @@ import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/r
 import { DtrpopupcomponentComponent } from '../../popups/dtrpopupcomponent/dtrpopupcomponent.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
+import { BlockService } from '../../../services/block.service';
 
 @Component({
   selector: 'app-coord-dtr',
@@ -18,21 +19,42 @@ import { FilterPipe } from '../../../filter.pipe';
   templateUrl: './coord-dtr.component.html',
   styleUrl: './coord-dtr.component.css'
 })
-export class CoordDtrComponent {
-  constructor(private service: AuthService, private dialog: MatDialog) {
-    this.Loaduser();
+export class CoordDtrComponent implements OnInit {
+  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {
   }
+
+
   Coordinator: any;
-  datalist: any;
+  studentlist: any;
   dataSource: any;
   searchtext: any;
+  currentBlock: any;
+  isLoading: boolean = false;
 
-  Loaduser() {
-    this.Coordinator = this.service.getCurrentUserId();
-    this.service.getStudentsByCoordinator(this.Coordinator).subscribe(res => {
-      this.datalist = res.payload;
-      // console.log(this.students);
-      this.dataSource = new MatTableDataSource(this.datalist);
+  ngOnInit(): void {
+    this.blockService.selectedBlock$.subscribe(block => {
+      this.currentBlock = block;
+      if (this.currentBlock) {
+        this.loadHeldStudents();
+      } else {
+        console.log(`Submissions: no block selected`);
+      }
+
+      console.log(`Submissions: ${this.currentBlock}`);
+    });
+  }
+
+
+
+  loadHeldStudents() {
+    this.isLoading = true;
+    this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+      this.studentlist = res;
+      this.isLoading = false;
+      console.log(this.studentlist);
+    }, err => {
+      this.isLoading = false;
+      console.error(err);
     });
   }
 
@@ -53,7 +75,7 @@ export class CoordDtrComponent {
       }
     })
     popup.afterClosed().subscribe(res => {
-      this.Loaduser()
+      this.loadHeldStudents()
     });
 
   }
@@ -68,7 +90,7 @@ export class CoordDtrComponent {
       }
     })
     popup.afterClosed().subscribe(res => {
-      this.Loaduser()
+      this.loadHeldStudents()
     });
 
   }

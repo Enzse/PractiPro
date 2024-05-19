@@ -65,6 +65,7 @@ export class ProfileComponent implements OnInit {
           if (blob.size > 0) { 
             const url = URL.createObjectURL(blob);
             this.avatarUrl = this.sanitizer.bypassSecurityTrustUrl(url);
+            console.log(this.avatarUrl);
           } else {
             console.log("User has not uploaded an avatar yet.");
             this.avatarUrl = undefined;
