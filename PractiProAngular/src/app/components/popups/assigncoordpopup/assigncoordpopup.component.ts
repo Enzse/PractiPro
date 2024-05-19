@@ -43,7 +43,15 @@ export class AssigncoordpopupComponent {
         Swal.fire({
           title: "Request Successful!",
           icon: "success"
-        });
+        })
+      }, error => {
+        if (error.status == 400) {
+          Swal.fire({
+            title: "Uh-oh!",
+            text: "This coordinator is already assigned to this class!",
+            icon: "error"
+          })
+        }
       });
     } else {
       Swal.fire({

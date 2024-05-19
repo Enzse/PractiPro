@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import saveAs from 'file-saver';
 import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -38,8 +39,11 @@ export class ExitPollComponent {
         this.service.uploadFinalReport(userId, file).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
-            this.successtoast = true;
-            setTimeout(() => this.successtoast = false, 3000);
+            Swal.fire({
+              title: "Uploaded Successfully!",
+              text: "Please wait for your coordinator's approval.",
+              icon: "success"
+            });
             this.loadData();
           },
           error => {

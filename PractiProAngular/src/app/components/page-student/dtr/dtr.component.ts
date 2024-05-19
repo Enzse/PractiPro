@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { saveAs } from 'file-saver';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dtr',
@@ -21,7 +22,7 @@ export class DtrComponent {
   }
 
   successtoast = false;
-  tabWeekNumbers: number[] = [];
+  tabWeekNumbers: number[] = [1];
 
   ngOnInit() {
     const userId = this.service.getCurrentUserId();
@@ -60,8 +61,11 @@ export class DtrComponent {
         this.service.uploadDtr(userId, file, this.selectedTabLabel).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
-            this.successtoast = true;
-            setTimeout(() => this.successtoast = false, 3000);
+            Swal.fire({
+              title: "Uploaded Successfully!",
+              text: "Please wait for your coordinator's approval.",
+              icon: "success"
+            });
             this.loadData();
           },
           error => {

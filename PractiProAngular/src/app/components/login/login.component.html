@@ -24,39 +24,31 @@
       class="max-w-md w-full max-sm:mb-24"
     >
       <!-- email -->
-      <div class="relative z-0 w-full mb-5 group">
-        <input
-          type="email"
-          name="floating_email"
-          id="floating_email"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-slate-600 appearance-none 0 focus:outline-none focus:ring-0 focus:border-slate-500 peer"
-          placeholder=" "
-          formControlName="email"
-          required
-        />
-        <label
-          for="floating_email"
-          class="peer-focus:font-medium absolute text-sm text-gray500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin- [0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peerfocus:left-auto peer-focus:text-slate peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Email</label
-        >
-      </div>
-      <!-- password -->
-      <div class="relative z-0 w-full mb-5 group">
-        <input
-          type="password"
-          name="floating_password"
-          id="floating_password"
-          class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-slate-600 appearance-none 0 focus:outline-none focus:ring-0 focus:border-slate-500 peer"
-          placeholder=" "
-          formControlName="password"
-          required
-        />
-        <label
-          for="floating_password"
-          class="peer-focus:font-medium absolute text-sm text-gray500 duration-300 transform -translate-y-6 scale-75 top-2 -z-10 origin- [0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peerfocus:left-auto peer-focus:text-slate peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-          >Password</label
-        >
-      </div>
+<div class="relative z-0 w-full mb-5 group">
+  <label for="floating_email" class="block text-sm text-gray-500 mb-1">Email</label>
+  <input
+    type="email"
+    name="email"
+    id="floating_email"
+    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-slate-600 appearance-none 0 focus:outline-none focus:ring-0 focus:border-slate-500"
+    formControlName="email"
+    required
+  />
+</div>
+
+<!-- password -->
+<div class="relative z-0 w-full mb-5 group">
+  <label for="floating_password" class="block text-sm text-gray-500 mb-1">Password</label>
+  <input
+    type="password"
+    name="password"
+    id="floating_password"
+    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-slate-600 appearance-none 0 focus:outline-none focus:ring-0 focus:border-slate-500"
+    formControlName="password"
+    required
+  />
+</div>
+
       <!-- register -->
       <div class="flex items-end justify-end mb-5 gap-1">
         <a

@@ -87,6 +87,7 @@ export class ProfileComponent implements OnInit {
     if (this.userId) {
       this.service.getStudentProfile(this.userId).subscribe(
         (data: any[]) => {
+          console.log(data);
           this.studentProfile = data;
         },
         (error: any) => {

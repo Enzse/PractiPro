@@ -66,7 +66,7 @@
     >
       <table
         mat-table
-        class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+        class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 font-secondary"
       >
         <thead
           class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -75,7 +75,8 @@
             <th scope="col" class="px-6 py-3 font-secondary">Week</th>
             <th scope="col" class="px-6 py-3 font-secondary">File name</th>
             <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
-            <th scope="col" class="px-6 py-3 font-secondary">Status</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Remarks</th>
+            <th scope="col" class="px-6 py-3 font-secondary">File</th>
           </tr>
         </thead>
         <tbody>
@@ -89,6 +90,14 @@
             </td>
             <td class="px-6 py-4">
               {{ data.created_at }}
+            </td>
+            <td class="px-6 py-4">
+              <p *ngIf="data.remarks > 0" class="text-green-600">
+                APPROVED
+              </p>
+              <p *ngIf="data.remarks == 0" class="text-orange-500">
+                UNAPPROVED
+              </p>
             </td>
             <td class="px-6 py-4">
               <a

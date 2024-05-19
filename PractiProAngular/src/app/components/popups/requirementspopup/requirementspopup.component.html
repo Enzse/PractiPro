@@ -2,7 +2,7 @@
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Requirements Submitted:</h1>
     <div *ngIf="studentSubmissions.length > 0 else noDataMessage"
         class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
-        <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+        <table mat-table class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
@@ -45,7 +45,7 @@
                                 APPROVED
                             </p>
                             <p *ngIf="submission.remarks == 0" class="text-orange-500">
-                                UNAPPOVED
+                                UNAPPROVED
                             </p>
                         </button>
                     </td>

@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { JwtService } from '../../services/jwt.service';
+import Swal from 'sweetalert2';
+import { isPlatformBrowser } from '@angular/common';
+import { initFlowbite } from 'flowbite';
 
 @Component({
   selector: 'app-login',
@@ -14,9 +17,14 @@ import { JwtService } from '../../services/jwt.service';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private jwtservice: JwtService) {
+  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private jwtservice: JwtService) {
     sessionStorage.clear();
   }
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) initFlowbite();
+  }
+
 
   //FormBuilder
   loginform = this.builder.group({
@@ -44,17 +52,33 @@ export class LoginComponent {
             alert("User's role is unassigned, please contact admin to resolve this issue.")
         }
       } else {
-        alert("Invalid Credentials, please try again.");
+        Swal.fire({
+          title: "Error",
+          text: "Invalid Credentials. Please try again.",
+          icon: "error"
+        });
       }
     }, error => {
       if(error.status == 401){
-        alert("Invalid Credentials. Please try again.");
+        Swal.fire({
+          title: "Error",
+          text: "Invalid Credentials. Please try again.",
+          icon: "error"
+        });
       };
       if(error.status == 403){
-        alert("User is inactive. Please contact the admin for support.");
+        Swal.fire({
+          title: "Inactive User!",
+          text: "Please contact admin for activation of your account.",
+          icon: "warning"
+        });
       };
       if(error.status == 404){
-        alert("User does not exist. Please try again.");
+        Swal.fire({
+          title: "User does not exist!",
+          text: "Please double check your entered email.",
+          icon: "error"
+        });
       };
     });
   }

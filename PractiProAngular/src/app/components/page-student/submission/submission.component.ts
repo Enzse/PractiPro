@@ -6,6 +6,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import saveAs from 'file-saver';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-submission',
@@ -40,8 +41,11 @@ export class SubmissionComponent {
         this.authService.uploadRequirement(userId, file, this.selectedTabLabel).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
-            this.successtoast = true;
-            setTimeout(() => this.successtoast = false, 3000);
+            Swal.fire({
+              title: "Uploaded Successfully!",
+              text: "You can view your submissions and their approval status on the table below.",
+              icon: "success"
+            });
             this.loadData();
           },
           error => {
@@ -65,8 +69,8 @@ export class SubmissionComponent {
     this.authService.getRequirementSubmissionsByUser(this.user).subscribe(res => {
       if(res){
         this.datalist = res;
-        // console.log(this.students);
         this.dataSource = new MatTableDataSource(this.datalist);
+        console.log(this.datalist);
       }else{
         console.log("No submissions yet.")
       }

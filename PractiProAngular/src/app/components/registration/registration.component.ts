@@ -3,6 +3,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-registration',
@@ -35,12 +36,19 @@ export class RegistrationComponent {
           this.service.proceedRegister(this.registerform.value).subscribe(() => {
             console.log('Registered successfully. Please contact admin for activation.');
             this.router.navigate(['login']);
-            alert('Registration successful! Please contact the admin for activation.');
+            Swal.fire({
+              title: "Registration Successful!",
+              text: "Please contact admin for activation.",
+              icon: "success"
+            });
           });
         }
       });
     } else {
-      alert('Please enter valid data');
+      Swal.fire({
+        title: "Please enter valid data.",
+        icon: "error"
+      });
     }
   }
 
