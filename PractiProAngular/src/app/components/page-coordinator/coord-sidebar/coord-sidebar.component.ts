@@ -28,7 +28,7 @@ export class CoordSidebarComponent implements OnInit {
     const popup = this.dialog.open(CoordClassesComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "300ms",
-      width: "50%",
+      width: "90%",
       data: {
         coordinatorId: this.coordinatorId
       }

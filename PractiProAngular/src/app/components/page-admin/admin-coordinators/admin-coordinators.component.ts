@@ -68,7 +68,7 @@ export class AdminCoordinatorsComponent {
     const popup = this.dialog.open(CheckclassesComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "300ms",
-      width: "50%",
+      width: "80%",
       data: {
         usercode: code
       }
@@ -83,7 +83,7 @@ export class AdminCoordinatorsComponent {
     const popup = this.dialog.open(DeptpopupComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "300ms",
-      width: "50%",
+      width: "90%",
       data: {
         usercode: code
       }
@@ -99,7 +99,7 @@ export class AdminCoordinatorsComponent {
     const popup = this.dialog.open(AssigncoordpopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
-      width: "60%",
+      width: "90%",
       data: {
         // usercode: code
       }

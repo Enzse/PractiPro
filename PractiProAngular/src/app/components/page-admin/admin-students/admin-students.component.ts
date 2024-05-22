@@ -43,7 +43,7 @@ export class AdminStudentsComponent implements OnInit {
     const popup = this.dialog.open(AssignstudentpopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
-      width: "60%",
+      width: "90%",
       data: {
         // usercode: code
       }
@@ -64,7 +64,7 @@ export class AdminStudentsComponent implements OnInit {
     const popup = this.dialog.open(ViewsubmissionsComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
-      width: "50%",
+      width: "90%",
       data: {
         usercode: code
       }
@@ -80,7 +80,7 @@ export class AdminStudentsComponent implements OnInit {
     const popup = this.dialog.open(InspectprofilepopupComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
-      width: "50%",
+      width: "90%",
       data: {
         usercode: code
       }
@@ -95,7 +95,7 @@ export class AdminStudentsComponent implements OnInit {
     const popup = this.dialog.open(ReviewsubmissionsComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
-      width: "80%",
+      width: "90%",
       data: {
         usercode: code
       }

@@ -101,7 +101,8 @@ export class ProfileComponent implements OnInit {
     const popup = this.dialog.open(EditinformationpopupComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
-      width: "50%",
+      width: "80%",
+      // height: "70%",
       data: {
         usercode: code
       }

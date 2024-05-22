@@ -14,6 +14,7 @@ define("USER", "root");
 define("PASSWORD", "");
 define("DRIVER", "mysql");
 
+
 class Connection{
     private $connectionString = DRIVER . ":host=" . SERVER . ";dbname=" . DATABASE . "; charset=utf8mb4";
     private $options = [

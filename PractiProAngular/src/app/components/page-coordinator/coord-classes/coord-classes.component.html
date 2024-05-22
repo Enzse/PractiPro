@@ -1,4 +1,4 @@
-<div class="p-3 rounded-md shadow-xl">
+<div class="p-3 max-w-screen max-h-screen overflow-auto bg-white shadow-lg rounded-lg">
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Classes held by: {{currentuser?.first_name}} {{currentuser?.last_name}}</h1>
     <div *ngIf="datalist?.length > 0 else noDataMessage"
         class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
@@ -17,17 +17,15 @@
                     </th>  
                     <th scope="col" class="px-6 py-3">
                         Department
-                    </th>  
-                    <th scope="col" class="px-6 py-3">
-                        Action
-                    </th>                   
+                    </th>                                       
                     
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let data of datalist"
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
+                    class="cursor-pointer hover:bg-blue-100 bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    (click)="selectClass(data.block_name)">
+                
                     <td class="px-6 py-4">
                         {{ data.block_name }}
                     </td>
@@ -39,11 +37,7 @@
                     </td>
                     <td class="px-6 py-4">
                         {{ data.department }}
-                    </td>
-                    <td class="px-6 py-4">
-                        <button (click)="selectClass(data.block_name)"
-                        class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800  focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Select Class</button>
-                    </td>
+                    </td>                    
                     
                 </tr>
             </tbody>

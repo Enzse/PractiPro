@@ -11,11 +11,10 @@ import { PdfDownloadComponent } from 'ngx-extended-pdf-viewer';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    importProvidersFrom(HttpClientModule), provideAnimationsAsync(),
-    // to be tested
-    // provideHttpClient(withInterceptors([customInterceptor])),
+    importProvidersFrom(HttpClientModule), provideAnimationsAsync(),    
     JwtHelperService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    PdfDownloadComponent
+    PdfDownloadComponent,
+    
     
   ]
 };

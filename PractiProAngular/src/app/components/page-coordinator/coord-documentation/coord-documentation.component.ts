@@ -4,9 +4,6 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
-import { ViewsubmissionsComponent } from '../../page-admin/viewsubmissions/viewsubmissions.component';
-import { ReviewsubmissionsComponent } from '../../page-admin/reviewsubmissions/reviewsubmissions.component';
 import { DocumentationpopupComponent } from '../../popups/documentationpopup/documentationpopup.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
@@ -25,7 +22,6 @@ export class CoordDocumentationComponent implements OnInit {
   Coordinator: any;
   students: any;
   studentlist: any;
-  dataSource: any;
   searchtext: any;
   currentBlock: any;
   isLoading: boolean = false;
@@ -54,13 +50,6 @@ export class CoordDocumentationComponent implements OnInit {
       this.isLoading = false;
       console.error(err);
     });
-  }
-
-
-  closeModal() {
-    // Add code to close the modal here
-    const modal = document.getElementById('crud-modal');
-    modal?.classList.add('hidden');
   }
 
   viewSubmissions(code: any) {

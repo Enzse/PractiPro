@@ -51,7 +51,7 @@ export class AdminUsersComponent implements OnInit {
     const popup = this.dialog.open(UpdatepopupComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "300ms",
-      width: "50%",
+      width: "80%",
       data: {
         usercode: code
       }

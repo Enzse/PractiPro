@@ -27,7 +27,6 @@ export class CoordinatorSubmissionComponent implements OnInit {
   Coordinator: any;
   students: any;
   studentlist: any;
-  dataSource: any;
   searchtext: any;
   currentBlock: any;
   isLoading: boolean = false;
@@ -57,16 +56,12 @@ export class CoordinatorSubmissionComponent implements OnInit {
     });
   }
 
-  closeModal() {
-    const modal = document.getElementById('crud-modal');
-    modal?.classList.add('hidden');
-  }
 
   Updateuser(code: any) {
     const popup = this.dialog.open(ViewsubmissionsComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
-      width: "50%",
+      width: "80%",
       data: {
         usercode: code
       }

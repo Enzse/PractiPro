@@ -9,35 +9,37 @@ export class AuthService {
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   isLoggedIn = false;
-  apiurl = 'http://localhost/PractiPro/backend/api/';
+  apiurl = 'http://localhost/PractiPro/backend/api';
+
+  // apiurl = 'http://gcpractipro.online/backend/api';
 
   //User Handlers handlers. 
   getUser(id: any) {
-    return this.http.get(`http://localhost/PractiPro/backend/api/user/${id}`);
+    return this.http.get(`${this.apiurl}/user/${id}`);
   }
   getAllUsers() {
-    return this.http.get('http://localhost/PractiPro/backend/api/user');
+    return this.http.get(`${this.apiurl}/user`);
   } 
   deleteUser(id: any) {
-    return this.http.delete(`http://localhost/PractiPro/backend/api/deleteuser/${id}`);
+    return this.http.delete(`${this.apiurl}/deleteuser/${id}`);
   }
   unassignCoordinator(id: number, block: string) {
-    return this.http.delete(`http://localhost/PractiPro/backend/api/unassigncoordinator/${id}/${block}`);
+    return this.http.delete(`${this.apiurl}/unassigncoordinator/${id}/${block}`);
   }
 
 
   //Registration handler.
   doesEmailExist(inputdata: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/emailcheck', inputdata);
+    return this.http.post(`${this.apiurl}/emailcheck`, inputdata);
   }
   proceedRegister(inputdata: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/adduser', inputdata);
+    return this.http.post(`${this.apiurl}/adduser`, inputdata);
   }
 
 
   //Login handler.
   proceedLogin(inputdata: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/login', inputdata);
+    return this.http.post(`${this.apiurl}/login`, inputdata);
   }
   IsLoggedIn(): boolean {
     const myToken = sessionStorage.getItem('token');
@@ -64,228 +66,228 @@ export class AuthService {
 
   //Admin features.
   GetAllRoles() {
-    return this.http.get('http://localhost/PractiPro/backend/api/role');
+    return this.http.get(`${this.apiurl}/role`);
   }
   //Get Students
   getAllStudents() {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/student`);
+    return this.http.get<any>(`${this.apiurl}/student`);
   }
   getAllStudentsFromClass(block: any) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/class-students/${block}`);
+    return this.http.get<any>(`${this.apiurl}/class-students/${block}`);
   }
   getEmails() {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/email`);
+    return this.http.get<any>(`${this.apiurl}/email`);
   }
   getStudentsByCoordinator(Id: number) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator-students/${Id}`);
+    return this.http.get<any>(`${this.apiurl}/coordinator-students/${Id}`);
   }
   getStudentsByCourse(course: any) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/studentbycourse/${course}`);
+    return this.http.get<any>(`${this.apiurl}/studentbycourse/${course}`);
   }
   getStudentsByCourseAndYear(course: any, year: number) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/studentbycourseandyear/${course}/${year}`);
+    return this.http.get<any>(`${this.apiurl}/studentbycourseandyear/${course}/${year}`);
   }
   getStudent(Id: number) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/student/${Id}`);
+    return this.http.get<any>(`${this.apiurl}/student/${Id}`);
   }
   //Get Admins
   getAllAdmins() {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/admin`);
+    return this.http.get<any>(`${this.apiurl}/admin`);
   }
   //Get Coordinators
   getCoordinator(id: any = null) {
     if (id) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator/${id}`);
+      return this.http.get<any>(`${this.apiurl}/coordinator/${id}`);
     } else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/coordinator`);
+      return this.http.get<any>(`${this.apiurl}/coordinator`);
     }
   }
   getClasses(block: any = null) {
     if (block) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/classes/${block}`);
+      return this.http.get<any>(`${this.apiurl}/classes/${block}`);
     } else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/classes`);
+      return this.http.get<any>(`${this.apiurl}/classes`);
     }
   }
   getClassesByCoordinator(Id: number) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/classesbycoordinator/${Id}`);
+    return this.http.get<any>(`${this.apiurl}/classesbycoordinator/${Id}`);
   }
 
   addClass(inputdata: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/addclass', inputdata);
+    return this.http.post(`${this.apiurl}/addclass`, inputdata);
   }
   getAllDepartments() {
-    return this.http.get('http://localhost/PractiPro/backend/api/departments');
+    return this.http.get(`${this.apiurl}/departments`);
   }
   Updateuser(inputdata: any, code: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/edituser' + '/' + inputdata, code);
+    return this.http.post(`${this.apiurl}/edituser` + `/` + inputdata, code);
   }
   UpdateCoordinator(inputdata: any, code: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/editcoordinator' + '/' + inputdata, code);
+    return this.http.post(`${this.apiurl}/editcoordinator` + `/` + inputdata, code);
   }
   getRequirementSubmission(Id: number) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/submission/${Id}`);
+    return this.http.get<any>(`${this.apiurl}/submission/${Id}`);
   }
   getRequirementSubmissionsByUser(userId: number) {
     if (userId) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-submission/${userId}`);
+      return this.http.get<any>(`${this.apiurl}/student-submission/${userId}`);
     }
     else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-submission`);
+      return this.http.get<any>(`${this.apiurl}/student-submission`);
     }
   }
   getDocumentationsByUser(Id: any) {
     if (Id) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-documentation/${Id}`);
+      return this.http.get<any>(`${this.apiurl}/student-documentation/${Id}`);
     }
     else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-documentation`);
+      return this.http.get<any>(`${this.apiurl}/student-documentation`);
     }
   }
   getDtrByUser(Id: any) {
     if (Id) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-dtr/${Id}`);
+      return this.http.get<any>(`${this.apiurl}/student-dtr/${Id}`);
     }
     else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-dtr`);
+      return this.http.get<any>(`${this.apiurl}/student-dtr`);
     }
   }
   getWarByUser(Id: any) {
     if (Id) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-war/${Id}`);
+      return this.http.get<any>(`${this.apiurl}/student-war/${Id}`);
     }
     else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-war`);
+      return this.http.get<any>(`${this.apiurl}/student-war`);
     }
   }
   getFinalReportByUser(Id: any) {
     if (Id) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-finalreport/${Id}`);
+      return this.http.get<any>(`${this.apiurl}/student-finalreport/${Id}`);
     }
     else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-finalreport`);
+      return this.http.get<any>(`${this.apiurl}/student-finalreport`);
     }
   }
   getMaxDocsWeeks(Id: any) {
     if (Id) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdocsweeks/${Id}`);
+      return this.http.get<any>(`${this.apiurl}/student-maxdocsweeks/${Id}`);
     }
     else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdocsweeks`);
+      return this.http.get<any>(`${this.apiurl}/student-maxdocsweeks`);
     }
   }
   getMaxDtrWeeks(Id: any) {
     if (Id) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdtrweeks/${Id}`);
+      return this.http.get<any>(`${this.apiurl}/student-maxdtrweeks/${Id}`);
     }
     else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxdtrweeks`);
+      return this.http.get<any>(`${this.apiurl}/student-maxdtrweeks`);
     }
   }
   getMaxWarWeeks(Id: any) {
     if (Id) {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxwarweeks/${Id}`);
+      return this.http.get<any>(`${this.apiurl}/student-maxwarweeks/${Id}`);
     }
     else {
-      return this.http.get<any>(`http://localhost/PractiPro/backend/api/student-maxwarweeks`);
+      return this.http.get<any>(`${this.apiurl}/student-maxwarweeks`);
     }
   }
   toggleRequirementStatus(data: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/toggleRequirementStatus', data);
+    return this.http.post(`${this.apiurl}/toggleRequirementStatus`, data);
   }
   toggleReqRemark(data: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/togglerequirementsremark', data);
+    return this.http.post(`${this.apiurl}/togglerequirementsremark`, data);
   }
   toggleDocRemark(data: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/toggledocsremark', data);
+    return this.http.post(`${this.apiurl}/toggledocsremark`, data);
   }
   toggleDtrRemark(data: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/toggledtrremark', data);
+    return this.http.post(`${this.apiurl}/toggledtrremark`, data);
   }
   toggleWarRemark(data: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/togglewarremark', data);
+    return this.http.post(`${this.apiurl}/togglewarremark`, data);
   }
   toggleFrRemark(data: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/togglefinalreportsremark', data);
+    return this.http.post(`${this.apiurl}/togglefinalreportsremark`, data);
   }
   toggleStudentEvaluation(data: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/togglestudentevaluation', data);
+    return this.http.post(`${this.apiurl}/togglestudentevaluation`, data);
   }
 
   downloadRequirement(submissionId: number) {
-    return this.http.get(`http://localhost/PractiPro/backend/api/downloadrequirement/${submissionId}`, { responseType: 'blob' });
+    return this.http.get(`${this.apiurl}/downloadrequirement/${submissionId}`, { responseType: 'blob' });
   }
   downloadDocumentation(submissionId: number) {
-    return this.http.get(`http://localhost/PractiPro/backend/api/downloaddocumentation/${submissionId}`, { responseType: 'blob' });
+    return this.http.get(`${this.apiurl}/downloaddocumentation/${submissionId}`, { responseType: 'blob' });
   }
   downloadDtr(submissionId: number) {
-    return this.http.get(`http://localhost/PractiPro/backend/api/downloaddtr/${submissionId}`, { responseType: 'blob' });
+    return this.http.get(`${this.apiurl}/downloaddtr/${submissionId}`, { responseType: 'blob' });
   }
   downloadWar(submissionId: number) {
-    return this.http.get(`http://localhost/PractiPro/backend/api/downloadwar/${submissionId}`, { responseType: 'blob' });
+    return this.http.get(`${this.apiurl}/downloadwar/${submissionId}`, { responseType: 'blob' });
   }
   downloadFinalReport(submissionId: number) {
-    return this.http.get(`http://localhost/PractiPro/backend/api/downloadfinalreport/${submissionId}`, { responseType: 'blob' });
+    return this.http.get(`${this.apiurl}/downloadfinalreport/${submissionId}`, { responseType: 'blob' });
   }
   editStudentInfo(inputdata: any, code: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/editstudentinfo' + '/' + inputdata, code);
+    return this.http.post(`${this.apiurl}/editstudentinfo` + `/` + inputdata, code);
   }
 
 
 
   //Student features.
   getStudentRequirements(userId: number) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/student_requirements/${userId}`);
+    return this.http.get<any>(`${this.apiurl}/student_requirements/${userId}`);
   }
   getStudentProfile(userId: number) {
-    return this.http.get<any>(`http://localhost/PractiPro/backend/api/student/${userId}`);
+    return this.http.get<any>(`${this.apiurl}/student/${userId}`);
   }
   uploadRequirement(userId: number, file: File, submissionName: string) {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`http://localhost/PractiPro/backend/api/uploadrequirement/${userId}/${submissionName}`, formData);
+    return this.http.post(`${this.apiurl}/uploadrequirement/${userId}/${submissionName}`, formData);
   }
   uploadDocumentation(userId: number, file: File, submissionName: number) {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`http://localhost/PractiPro/backend/api/uploaddocumentation/${userId}/${submissionName}`, formData);
+    return this.http.post(`${this.apiurl}/uploaddocumentation/${userId}/${submissionName}`, formData);
   }
   uploadDtr(userId: number, file: File, submissionName: number) {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`http://localhost/PractiPro/backend/api/uploaddtr/${userId}/${submissionName}`, formData);
+    return this.http.post(`${this.apiurl}/uploaddtr/${userId}/${submissionName}`, formData);
   }
   uploadWar(userId: number, file: File, submissionName: number) {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`http://localhost/PractiPro/backend/api/uploadwar/${userId}/${submissionName}`, formData);
+    return this.http.post(`${this.apiurl}/uploadwar/${userId}/${submissionName}`, formData);
   }
   uploadFinalReport(userId: number, file: File) {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`http://localhost/PractiPro/backend/api/uploadfinalreport/${userId}`, formData);
+    return this.http.post(`${this.apiurl}/uploadfinalreport/${userId}`, formData);
   }
   uploadAvatar(userId: number, file: File) {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`http://localhost/PractiPro/backend/api/uploadavatar/${userId}`, formData);
+    return this.http.post(`${this.apiurl}/uploadavatar/${userId}`, formData);
   }
   assignClassCoordinator(inputdata: any) {
-    return this.http.post('http://localhost/PractiPro/backend/api/assignclasscoordinator', inputdata);
+    return this.http.post(`${this.apiurl}/assignclasscoordinator`, inputdata);
   }
   assignClassStudent(id: number, inputdata:any) {
-    return this.http.post(`http://localhost/PractiPro/backend/api/assignclassstudent/${id}`, inputdata);
+    return this.http.post(`${this.apiurl}/assignclassstudent/${id}`, inputdata);
   }
 
 
   getAvatar(userId: number) {
-    return this.http.get(`http://localhost/PractiPro/backend/api/getavatar/${userId}`, { responseType: 'blob' });
+    return this.http.get(`${this.apiurl}/getavatar/${userId}`, { responseType: 'blob' });
   }
 
 }

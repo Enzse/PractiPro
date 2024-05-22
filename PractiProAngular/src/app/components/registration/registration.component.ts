@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -15,12 +15,21 @@ import Swal from 'sweetalert2';
 export class RegistrationComponent {
   constructor(private builder: FormBuilder, private service: AuthService, private router: Router) {  }
   
+  passwordStrength(control: AbstractControl): { [key: string]: boolean } | null {
+    const password = control.value;
+    // Password must contain at least one uppercase letter, one lowercase letter, and one digit
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
+    if (!regex.test(password)) {
+      return { 'weakPassword': true }; // Return specific error for weak password
+    }
+    return null;
+  }
 
   registerform = this.builder.group({
     firstName: this.builder.control('', Validators.required),
     lastName: this.builder.control('', Validators.required),    
     email: this.builder.control('', Validators.compose([Validators.required, Validators.email])),
-    password: this.builder.control('', Validators.required)
+    password: this.builder.control('', [Validators.required, this.passwordStrength])
   });
 
   proceedregistration() {
@@ -47,6 +56,7 @@ export class RegistrationComponent {
     } else {
       Swal.fire({
         title: "Please enter valid data.",
+        text: "Either you missed a form, or your password does not include 1 uppercase and lowercase letter, and 1 number.",
         icon: "error"
       });
     }

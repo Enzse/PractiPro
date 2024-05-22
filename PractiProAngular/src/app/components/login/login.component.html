@@ -8,16 +8,16 @@
     class="h-screen flex mx-auto justify-center mr-5 flex-col max-sm:w-7/12 max-sm:mx-auto max-sm:h-3/6"
   >
     <img
-      class="max-sm:sm:mb-3 max-sm:mt-16"
+      class="max-sm:sm:mb-3 size-fit max-sm:mt-16"
       src="../../../assets/logo.png"
       alt=""
     />
-    <h1 class="text-center -mt-5 text-4xl font-mono max-sm:text-3xl">
+    <h1 class="text-center -mt-2  text-4xl font-primary max-sm:text-3xl">
       Practi<span class="text-orange-500">Pro</span>
     </h1>
   </div>
 
-  <div class="flex mx-auto justify-center h-screen items-center w-3/5">
+  <div class="flex mx-auto max-sm:mt-4 justify-center h-screen items-center w-3/5">
     <form
       [formGroup]="loginform"
       (ngSubmit)="onLogin2()"
@@ -62,7 +62,7 @@
       <!-- login -->
       <button
         type="submit"
-        class="block mx-auto text-white hover:bg-slate-800 bg-slate-600 focus:outline-none focus:bg-slate-800 font-medium rounded-3xl textsm w-full sm:w-auto px-8 py-2 text-center mb-10"
+        class="block mx-auto text-white hover:bg-blue-800 bg-blue-950 focus:outline-none focus:bg-blue-800 font-medium rounded-3xl textsm w-full sm:w-auto px-16 py-2 text-center mb-10"
       >
         Login
       </button>

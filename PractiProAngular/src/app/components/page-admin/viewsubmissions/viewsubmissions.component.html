@@ -14,7 +14,7 @@
             <tbody>
                 <tr>
                     <td class="pl-4 text-left border border-darkblue">RESUME</td>
-                    <td class="text-center border border-darkblue">
+                    <td class="text-center border border-darkblue hover:bg-blue-100">
                         <button class="btn-toggle"
                             (click)="toggleRequirement('resume', studentRequirements[0]?.resume)">
                             <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].resume"
@@ -29,7 +29,7 @@
                 <!-- Repeat the above pattern for other requirements -->
                 <tr>
                     <td class="pl-4 text-left border border-darkblue">APPLICATION LETTER</td>
-                    <td class="text-center border border-darkblue">
+                    <td class="text-center border border-darkblue hover:bg-blue-100">
                         <button class="btn-toggle"
                             (click)="toggleRequirement('application_letter', studentRequirements[0]?.application_letter)">
                             <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].application_letter"
@@ -45,7 +45,7 @@
 
                 <tr>
                     <td class="pl-4 text-left border border-darkblue">ACCEPTANCE LETTER</td>
-                    <td class="text-center border border-darkblue">
+                    <td class="text-center border border-darkblue hover:bg-blue-100">
                         <button class="btn-toggle"
                             (click)="toggleRequirement('acceptance_letter', studentRequirements[0]?.acceptance_letter)">
                             <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].acceptance_letter"
@@ -60,7 +60,7 @@
 
                 <tr>
                     <td class="pl-4 text-left border border-darkblue">ENDORSEMENT LETTER</td>
-                    <td class="text-center border border-darkblue">
+                    <td class="text-center border border-darkblue hover:bg-blue-100">
                         <button class="btn-toggle"
                             (click)="toggleRequirement('endorsement_letter', studentRequirements[0]?.endorsement_letter)">
                             <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].endorsement_letter"
@@ -75,7 +75,7 @@
 
                 <tr>
                     <td class="pl-4 text-left border border-darkblue">PARENT'S/GUARDIAN'S WAIVER</td>
-                    <td class="text-center border border-darkblue">
+                    <td class="text-center border border-darkblue hover:bg-blue-100">
                         <button class="btn-toggle"
                             (click)="toggleRequirement('guardians_waiver', studentRequirements[0]?.guardians_waiver)">
                             <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].guardians_waiver"
@@ -90,7 +90,7 @@
 
                 <tr>
                     <td class="pl-4 text-left border border-darkblue">VACCINATION CARD</td>
-                    <td class="text-center border border-darkblue">
+                    <td class="text-center border border-darkblue hover:bg-blue-100">
                         <button class="btn-toggle"
                             (click)="toggleRequirement('vaccination_card', studentRequirements[0]?.vaccination_card)">
                             <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].vaccination_card"
@@ -105,7 +105,7 @@
 
                 <tr>
                     <td class="pl-4 text-left border border-darkblue">BARANGGAY CLEARANCE</td>
-                    <td class="text-center border border-darkblue">
+                    <td class="text-center border border-darkblue hover:bg-blue-100">
                         <button class="btn-toggle"
                             (click)="toggleRequirement('barangay_clearance', studentRequirements[0]?.barangay_clearance)">
                             <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].barangay_clearance"
@@ -120,7 +120,7 @@
 
                 <tr>
                     <td class="pl-4 text-left border border-darkblue">MEDICAL CERTIFICATE</td>
-                    <td class="text-center border border-darkblue">
+                    <td class="text-center border border-darkblue hover:bg-blue-100">
                         <button class="btn-toggle"
                             (click)="toggleRequirement('medical_certificate', studentRequirements[0]?.medical_certificate)">
                             <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].medical_certificate"
