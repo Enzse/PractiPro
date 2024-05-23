@@ -60,9 +60,9 @@ export class CoordAccomplishmentReportComponent implements OnInit {
         usercode: code
       }
     })
-    popup.afterClosed().subscribe(res => {
-      this.loadHeldStudents()
-    });
+    // popup.afterClosed().subscribe(res => {
+    //   this.loadHeldStudents()
+    // });
 
   }
 

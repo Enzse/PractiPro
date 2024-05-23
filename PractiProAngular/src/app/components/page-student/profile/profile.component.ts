@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditinformationpopupComponent } from '../editinformationpopup/editinformationpopup.component';
 import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-profile',
@@ -36,9 +37,21 @@ export class ProfileComponent implements OnInit {
   onFileChange(event: any) {
     if (this.userId) {
       const files = event.target.files as FileList;
-
+  
       if (files.length > 0) {
         this.file = files[0];
+  
+        
+        if (this.file.size > 2097152) { 
+          Swal.fire({
+            title: "Uh-oh...",
+            text: "We only take photos under 2MB in file size, sorry about that.",
+            icon: "warning"
+          });
+          this.resetInput();
+          return;
+        }
+  
         console.log(this.file);
         this.service.uploadAvatar(this.userId, this.file).subscribe((data: any) => {
           console.log("File Uploaded Successfully");
@@ -59,13 +72,16 @@ export class ProfileComponent implements OnInit {
 
 
   loadAvatar() {
+    console.log("Loading Avatar...");
     if (this.userId) {
       this.service.getAvatar(this.userId).subscribe(
         blob => {
+          console.log("Loading Blob");
+          console.log(`blob: ${blob}`);
           if (blob.size > 0) { 
             const url = URL.createObjectURL(blob);
             this.avatarUrl = this.sanitizer.bypassSecurityTrustUrl(url);
-            console.log(this.avatarUrl);
+            console.log(`this.avatarUrl: ${this.avatarUrl}`);
           } else {
             console.log("User has not uploaded an avatar yet.");
             this.avatarUrl = undefined;

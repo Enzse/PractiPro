@@ -62,10 +62,9 @@ export class CoordFinalreportComponent implements OnInit {
         usercode: code
       }
     })
-    popup.afterClosed().subscribe(res => {
-      this.loadHeldStudents()
-    });
-
+    // popup.afterClosed().subscribe(res => {
+    //   this.loadHeldStudents()
+    // });
   }
 
   toggleEvaluation(id: number, currentValue: boolean) {

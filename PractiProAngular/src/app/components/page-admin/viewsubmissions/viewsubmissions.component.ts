@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-viewsubmissions',
@@ -38,24 +39,41 @@ export class ViewsubmissionsComponent implements OnInit {
   }
 
   toggleRequirement(requirement: string, value: boolean) {
-    // Determine the new status based on the current value
-    const newValue = value ? 0 : 1;
-    const requestData = {
-      studentId: this.data.usercode,
-      requirement: requirement,
-      status: newValue
-    };
-    console.log(requestData);
-    this.service.toggleRequirementStatus(requestData).subscribe(
-      (response) => {
-        console.log('Requirement status toggled successfully:', response);
-        // Refresh the student requirements list after successful toggle
-        this.refreshStudentRequirements();
-      },
-      (error) => {
-        console.error('Error toggling requirement status:', error);
+
+    Swal.fire({
+      title: "Are you want to toggle this requirement?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yep."
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newValue = value ? 0 : 1;
+        const requestData = {
+          studentId: this.data.usercode,
+          requirement: requirement,
+          status: newValue
+        };
+        console.log(requestData);
+        this.service.toggleRequirementStatus(requestData).subscribe(
+          (response) => {
+            console.log('Requirement status toggled successfully:', response);
+
+            this.refreshStudentRequirements();
+          },
+          (error) => {
+            console.error('Error toggling requirement status:', error);
+          }
+        );
+        Swal.fire({
+          title: "Requirement Toggled!",
+          text: "The student should be able to see it on his/her dashboard.",
+          icon: "success"
+        });
       }
-    );
+    });
+
   }
 
   refreshStudentRequirements() {

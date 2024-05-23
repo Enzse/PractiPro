@@ -12,6 +12,7 @@ import { FilterPipe } from '../../../filter.pipe';
 import { OrdinalPipe } from '../../../ordinal.pipe';
 import { AssignstudentpopupComponent } from '../../popups/assignstudentpopup/assignstudentpopup.component';
 import { InspectprofilepopupComponent } from '../../popups/inspectprofilepopup/inspectprofilepopup.component';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-students',
@@ -24,13 +25,13 @@ export class AdminStudentsComponent implements OnInit {
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.Loaduser();
   }
-  students:any;
+  students: any;
   studentlist: any;
   dataSource: any;
   searchtext: any;
   ngOnInit(): void {
-   
-   }
+
+  }
 
   Loaduser() {
     this.service.getAllStudents().subscribe(res => {
@@ -70,10 +71,10 @@ export class AdminStudentsComponent implements OnInit {
       }
     })
     popup.afterClosed().subscribe(res => {
-        this.Loaduser()      
+      this.Loaduser()
     });
 
-  }  
+  }
 
 
   viewInfo(code: any) {
@@ -86,10 +87,10 @@ export class AdminStudentsComponent implements OnInit {
       }
     })
     popup.afterClosed().subscribe(res => {
-        this.Loaduser()      
+      this.Loaduser()
     });
 
-  }  
+  }
 
   viewSubmissions(code: any) {
     const popup = this.dialog.open(ReviewsubmissionsComponent, {
@@ -101,29 +102,49 @@ export class AdminStudentsComponent implements OnInit {
       }
     })
     popup.afterClosed().subscribe(res => {
-        this.Loaduser()      
+      this.Loaduser()
     });
-  }  
-
-  toggleEvaluation(id: number, currentValue: boolean) {
-    const newValue = currentValue ? 0 : 1; 
-    const requestData = {
-      id: id,
-      newEvaluation: newValue
-    };
-  
-    this.service.toggleStudentEvaluation(requestData).subscribe(
-      (response) => {
-        console.log('Evaluation toggled successfully:', response);        
-        const studentIndex = this.studentlist.findIndex((student:any) => student.id === id);
-        if (studentIndex !== -1) {
-          this.studentlist[studentIndex].evaluation = newValue;
-        }
-      },
-      (error) => console.error('Error toggling evaluation:', error)
-    );
   }
 
-  
+  toggleEvaluation(id: number, currentValue: boolean) {
+    Swal.fire({
+      title: "Are you sure you want to toggle this evaluation?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yep."
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const newValue = currentValue ? 0 : 1;
+        const requestData = {
+          id: id,
+          newEvaluation: newValue
+        };
+
+        this.service.toggleStudentEvaluation(requestData).subscribe(
+          (response) => {
+
+
+
+            console.log('Evaluation toggled successfully:', response);
+            const studentIndex = this.studentlist.findIndex((student: any) => student.id === id);
+            if (studentIndex !== -1) {
+              this.studentlist[studentIndex].evaluation = newValue;
+            }
+          },
+          (error) => console.error('Error toggling evaluation:', error)
+        );
+        Swal.fire({
+          title: "Confirmed",
+          text: "This student's Practicum Status has been evaluated.",
+          icon: "success"
+        });
+      }
+    });
+
+  }
+
+
 }
 

@@ -9,6 +9,7 @@ export class AuthService {
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
 
   isLoggedIn = false;
+
   apiurl = 'http://localhost/PractiPro/backend/api';
 
   // apiurl = 'http://gcpractipro.online/backend/api';
