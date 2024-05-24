@@ -23,13 +23,21 @@ export class UpdatepopupComponent implements OnInit {
 
   rolelist: any;
   editdata: any;
+  userrole: any;
 
 
   ngOnInit(): void {
-    this.service.GetAllRoles().subscribe(res => {
-      this.rolelist = res;
-      console.log("Current user ID: " + this.data.usercode);
+    this.userrole = this.data.userrole;
+    console.log(this.userrole)
+    this.service.GetAllRoles().subscribe((res: any) => {
+      if(this.userrole !== 'superadmin'){
+        this.rolelist = res.payload.filter((role: any) => !role.code.includes('admin'));
+      }else{
+        this.rolelist = res.payload;
+      }
     });
+
+
     if (this.data.usercode != null && this.data.usercode != '') {
       this.service.getUser(this.data.usercode).subscribe((res: any) => {
         this.editdata = res.payload[0]; // Access data from the payload property
@@ -99,7 +107,7 @@ export class UpdatepopupComponent implements OnInit {
                 text: "The user has been deleted.",
                 icon: "success"
               });
-              
+
             }
           });
       }

@@ -39,6 +39,7 @@ export class LoginComponent {
         console.clear();
         switch (this.jwtservice.getUserRole()) {
           case 'admin':
+          case 'superadmin':
             this.router.navigate(['admin-users']);
             break;
           case 'student':
@@ -58,21 +59,21 @@ export class LoginComponent {
         });
       }
     }, error => {
-      if(error.status == 401){
+      if (error.status == 401) {
         Swal.fire({
           title: "Error",
           text: "Invalid Credentials. Please try again.",
           icon: "error"
         });
       };
-      if(error.status == 403){
+      if (error.status == 403) {
         Swal.fire({
           title: "Inactive User!",
           text: "Please contact admin for activation of your account.",
           icon: "warning"
         });
       };
-      if(error.status == 404){
+      if (error.status == 404) {
         Swal.fire({
           title: "User does not exist!",
           text: "Please double check your entered email.",

@@ -4,10 +4,8 @@ import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
-import { initFlowbite } from 'flowbite';
 import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 
@@ -20,32 +18,28 @@ import { FilterPipe } from '../../../filter.pipe';
 })
 export class AdminUsersComponent implements OnInit {
   constructor(private service: AuthService, private dialog: MatDialog) {
-    this.Loaduser();
   }
-  users:any;
+  
   searchtext: any;
-
-  ngOnInit(): void {
-    this.service.getAllUsers().subscribe(res => {
-      this.users = res;
-    });
-   }
-   
   userlist: any;
-  dataSource: any;
+  userrole: any;
+  
+  ngOnInit(): void {
+    this.loadUsers();
+    this.userrole = this.service.GetUserRole();
+  }
+   
 
-  Loaduser() {
-    this.service.getAllUsers().subscribe(res => {
-      this.userlist = res;
-      this.dataSource = new MatTableDataSource(this.userlist);
-    });
+  loadUsers() {
+    const currentUserId = this.service.getCurrentUserId();
+    if (currentUserId !== null) {
+      this.service.getAllUsers().subscribe((res:any) => {
+        this.userlist = res.payload.filter((user:any) => user.id !== currentUserId);
+        console.log(this.userlist);
+      });
+    }
   }
 
-  closeModal() {
-    // Add code to close the modal here
-    const modal = document.getElementById('crud-modal');
-    modal?.classList.add('hidden');
-  }
 
   Updateuser(code: any) {
     const popup = this.dialog.open(UpdatepopupComponent, {
@@ -53,13 +47,20 @@ export class AdminUsersComponent implements OnInit {
       exitAnimationDuration: "300ms",
       width: "80%",
       data: {
-        usercode: code
+        usercode: code,
+        userrole: this.userrole
       }
     })
     popup.afterClosed().subscribe(res => {
-        this.Loaduser()      
+        this.loadUsers()      
     });
-
   }  
+
+  isUpdateButtonVisible(userRole: string): boolean {
+    const currentUserRole = this.service.GetUserRole();
+    return (currentUserRole === 'superadmin' && userRole !== 'superadmin') || (currentUserRole === 'admin' && userRole !== 'admin' && userRole !== 'superadmin');
+  }
+  
+
 
 }

@@ -41,7 +41,7 @@ export class ViewsubmissionsComponent implements OnInit {
   toggleRequirement(requirement: string, value: boolean) {
 
     Swal.fire({
-      title: "Are you want to toggle this requirement?",
+      title: "Are you sure you want to toggle this requirement?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

@@ -21,25 +21,28 @@ import { FilterPipe } from '../../../filter.pipe';
 })
 export class AdminAdminsComponent implements OnInit {
   constructor(private service: AuthService, private dialog: MatDialog) {
-    this.Loaduser();
   }
-  ngOnInit(): void {
   
+  ngOnInit(): void {
+    this.loadUsers();
+    this.userrole = this.service.GetUserRole();
   }
   userlist: any;
-  dataSource: any;
   searchtext: any;
+  userrole: any;
 
-  Loaduser() {
-    this.service.getAllAdmins().subscribe(res => {
-      this.userlist = res;
-      this.dataSource = new MatTableDataSource(this.userlist);
-    });
+  loadUsers() {
+    const currentUserId = this.service.getCurrentUserId();
+    if (currentUserId !== null) {
+      this.service.getAllAdmins().subscribe((res:any) => {
+        this.userlist = res.payload.filter((user:any) => user.id !== currentUserId);
+        console.log(this.userlist);
+      });
+    }
   }
 
 
   closeModal() {
-    // Add code to close the modal here
     const modal = document.getElementById('crud-modal');
     modal?.classList.add('hidden');
   }
@@ -50,13 +53,19 @@ export class AdminAdminsComponent implements OnInit {
       exitAnimationDuration: "300ms",
       width: "50%",
       data: {
-        usercode: code
+        usercode: code,
+        userrole: this.userrole
       }
     })
     popup.afterClosed().subscribe(res => {
-      this.Loaduser()
+      this.loadUsers()
     });
 
+  }
+
+  isUpdateButtonVisible(userRole: string): boolean {
+    const currentUserRole = this.service.GetUserRole();
+    return (currentUserRole === 'superadmin' && userRole !== 'superadmin') || (currentUserRole === 'admin' && userRole !== 'admin' && userRole !== 'superadmin');
   }
 
 }
