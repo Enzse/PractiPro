@@ -28,11 +28,15 @@ import { CoordDocumentationComponent } from './components/page-coordinator/coord
 import { CoordFinalreportComponent } from './components/page-coordinator/coord-finalreport/coord-finalreport.component';
 import { AdminClassesComponent } from './components/page-admin/admin-classes/admin-classes.component';
 
+//landing page
+import { LandingPageComponent } from './components/landing-page/landing-page.component';
+
 export const routes: Routes = [
 
     { path: '', component: LoginComponent, title: 'Login' },
     { path: 'login', component: LoginComponent, title: 'Login' },
     { path: 'registration', component: RegistrationComponent, title: 'Registration' },
+    { path: 'PractiPro', component: LandingPageComponent, title: 'PractiPro' },
 
     //Student Pages
     {
