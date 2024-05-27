@@ -48,6 +48,7 @@
             <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
             <th scope="col" class="px-6 py-3 font-secondary">Status</th>
             <th scope="col" class="px-6 py-3 font-secondary">File</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Delete</th>
           </tr>
         </thead>
         <tbody>
@@ -62,13 +63,30 @@
               <p *ngIf="data.remarks > 0" class="text-green-600">
                 APPROVED
               </p>
-              <p *ngIf="data.remarks == 0" class="text-orange-500">
+              <p *ngIf="data.remarks == 0" class="text-gray-800">
+                PENDING
+              </p>
+              <p *ngIf="data.remarks < 0" class="text-orange-500">
                 UNAPPROVED
               </p>
             </td>
             <td class="px-6 py-4">
               <a (click)="downloadFinalReport(data.report_id, data.file_name)"
                 class="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-green-900">Download</a>
+            </td>
+            <td class="px-6 py-4">            
+
+              <button
+                class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                (click)="deleteSubmission(data.report_id)"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                    d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                    clip-rule="evenodd" />
+                </svg>
+              </button>
+
+
             </td>
           </tr>
         </tbody>
@@ -81,21 +99,4 @@
       You have not submitted any files yet.
     </h1>
   </ng-template>
-</div>
-
-<div class="toast-container">
-  <div *ngIf="successtoast" id="toast-success"
-    class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-    role="alert">
-    <div
-      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
-      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-        viewBox="0 0 20 20">
-        <path
-          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-      </svg>
-      <span class="sr-only">Warning icon</span>
-    </div>
-    <div class="ms-3 text-sm font-normal">Successfully submitted!</div>
-  </div>
 </div>

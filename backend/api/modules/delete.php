@@ -35,18 +35,55 @@ class Delete extends GlobalMethods
     {
         $sql = "DELETE FROM rl_class_coordinators
                 WHERE coordinator_id = :coordinator_id AND block_name = :block_name";
-    
+
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':coordinator_id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':block_name', $class, PDO::PARAM_STR);
             $stmt->execute();
-            
+
             if ($stmt->rowCount() > 0) {
                 return $this->sendPayload(null, 'success', "Successfully deleted the class assignment.", 200);
             } else {
                 return $this->sendPayload(null, 'failed', "No class assignment found for the provided coordinator ID and block name.", 404);
             }
+        } catch (PDOException $e) {
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
+
+    public function deleteSubmission($id, $table)
+    {
+        $specificId = null;
+        switch ($table) {
+            case 'documentations':
+                $specificId = 'doc_id';
+                break;
+            case 'submissions':
+                $specificId = 'submission_id';
+                break;
+            case 'dtr':
+                $specificId = 'dtr_id';
+                break;
+            case 'war':
+                $specificId = 'war_id';
+                break;
+            case 'finalreports':
+                $specificId = 'report_id';
+                break;
+            default:
+                $specificId = null;
+                break;
+        }
+        $sql = "DELETE FROM $table
+                WHERE $specificId = :id";
+
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $this->sendPayload(null, "success", "Successfully deleted record", 200);
         } catch (PDOException $e) {
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }

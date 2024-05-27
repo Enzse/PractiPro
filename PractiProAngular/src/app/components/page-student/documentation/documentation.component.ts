@@ -75,7 +75,7 @@ export class DocumentationComponent implements OnInit {
       }
     });
 
-  
+
   }
 
 
@@ -89,8 +89,6 @@ export class DocumentationComponent implements OnInit {
     this.user = this.service.getCurrentUserId();
     this.service.getDocumentationsByUser(this.user).subscribe(res => {
       this.datalist = res;
-      // console.log(this.students);
-      this.dataSource = new MatTableDataSource(this.datalist);
     });
   }
 
@@ -103,6 +101,29 @@ export class DocumentationComponent implements OnInit {
         console.error('Error downloading submission:', error);
       }
     );
+  }
+
+  deleteSubmission(submissionId: number) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
+        }, error => {
+          Swal.fire({
+            title: "Successfully Deleted Submission.",
+            icon: "success"
+          });
+          this.loadData();
+        });
+      }
+    });
   }
 
 

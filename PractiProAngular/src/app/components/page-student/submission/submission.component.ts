@@ -16,7 +16,7 @@ import Swal from 'sweetalert2';
   styleUrl: './submission.component.css'
 })
 export class SubmissionComponent {
-  constructor(private authService: AuthService) {
+  constructor(private service: AuthService) {
     this.loadData();
   }
   successtoast = false;
@@ -28,7 +28,7 @@ export class SubmissionComponent {
 
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
-    const userId = this.authService.getCurrentUserId();
+    const userId = this.service.getCurrentUserId();
 
     if (!userId) {
       console.error('User ID not found.');
@@ -38,7 +38,7 @@ export class SubmissionComponent {
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
-        this.authService.uploadRequirement(userId, file, this.selectedTabLabel).subscribe(
+        this.service.uploadRequirement(userId, file, this.selectedTabLabel).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
             Swal.fire({
@@ -65,8 +65,8 @@ export class SubmissionComponent {
   dataSource: any;
 
   loadData() {
-    this.user = this.authService.getCurrentUserId();
-    this.authService.getRequirementSubmissionsByUser(this.user).subscribe(res => {
+    this.user = this.service.getCurrentUserId();
+    this.service.getRequirementSubmissionsByUser(this.user).subscribe(res => {
       if(res){
         this.datalist = res;
         this.dataSource = new MatTableDataSource(this.datalist);
@@ -80,7 +80,7 @@ export class SubmissionComponent {
   }
 
   downloadRequirement(submissionId: number, fileName: string) {
-    this.authService.downloadRequirement(submissionId).subscribe(
+    this.service.downloadRequirement(submissionId).subscribe(
       (data: any) => {
         saveAs(data, fileName);
       },
@@ -90,5 +90,28 @@ export class SubmissionComponent {
     );
   }
 
+
+  deleteSubmission(submissionId: number) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteSubmission(submissionId, 'submissions').subscribe((res: any) => {
+        }, error => {
+          Swal.fire({
+            title: "Successfully Deleted Submission.",
+            icon: "success"
+          });
+          this.loadData();
+        });
+      }
+    });
+  }
 
 }

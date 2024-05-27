@@ -20,7 +20,7 @@ export class AuthService {
   }
   getAllUsers() {
     return this.http.get(`${this.apiurl}/user`);
-  } 
+  }
   deleteUser(id: any) {
     return this.http.delete(`${this.apiurl}/deleteuser/${id}`);
   }
@@ -102,7 +102,7 @@ export class AuthService {
     } else {
       return this.http.get<any>(`${this.apiurl}/coordinator`);
     }
-  }  
+  }
   getClasses(block: any = null) {
     if (block) {
       return this.http.get<any>(`${this.apiurl}/classes/${block}`);
@@ -230,6 +230,12 @@ export class AuthService {
   downloadFinalReport(submissionId: number) {
     return this.http.get(`${this.apiurl}/downloadfinalreport/${submissionId}`, { responseType: 'blob' });
   }
+
+  deleteSubmission(id: any, table: string) {
+    return this.http.delete(`${this.apiurl}/deletesubmission/${id}/${table}`);
+  }
+
+
   editStudentInfo(inputdata: any, code: any) {
     return this.http.post(`${this.apiurl}/editstudentinfo` + `/` + inputdata, code);
   }
@@ -282,7 +288,7 @@ export class AuthService {
   assignClassCoordinator(inputdata: any) {
     return this.http.post(`${this.apiurl}/assignclasscoordinator`, inputdata);
   }
-  assignClassStudent(id: number, inputdata:any) {
+  assignClassStudent(id: number, inputdata: any) {
     return this.http.post(`${this.apiurl}/assignclassstudent/${id}`, inputdata);
   }
 

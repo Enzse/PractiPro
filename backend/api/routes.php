@@ -369,8 +369,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'assignclassstudent':
                 if (isset($request[1])) {
                     echo json_encode($post->assignClassStudent($data, $request[1]));
-                }
-                else{
+                } else {
                     echo "No requests Provided!";
                 }
                 break;
@@ -451,6 +450,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     $delete->unassignCoordinatorFromClass($request[1], $request[2]);
                 } else {
                     echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'deletesubmission':
+                if (isset($request[1]) && isset($request[2])) {
+                    echo json_encode($delete->deleteSubmission($request[1], $request[2]));
+                } else {
+                    echo "Submission IDs not provided";
                     http_response_code(400);
                 }
                 break;

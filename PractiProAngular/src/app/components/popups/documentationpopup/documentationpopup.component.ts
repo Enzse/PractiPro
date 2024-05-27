@@ -3,13 +3,14 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { saveAs } from 'file-saver';
+import { PdfviewerComponent } from '../pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-documentationpopup',
@@ -20,7 +21,7 @@ import { saveAs } from 'file-saver';
 })
 export class DocumentationpopupComponent {
   constructor(private builder: FormBuilder, private service: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DocumentationpopupComponent>) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DocumentationpopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
 
@@ -39,6 +40,24 @@ export class DocumentationpopupComponent {
     }
   }
 
+  viewFile(submissionId: number, submissionName: string) {
+    this.service.downloadDocumentation(submissionId).subscribe(
+      (data: any) => {
+        const popup = this.dialog2.open(PdfviewerComponent, {
+          enterAnimationDuration: "0ms",
+          exitAnimationDuration: "500ms",
+          width: "90%",
+          data: {
+            selectedPDF: data
+          }
+        })
+      },
+      (error: any) => {
+        console.error('Error viewing submission:', error);
+      }
+    );
+  }
+
   downloadSubmission(submissionId: number, submissionName: string) {
     this.service.downloadDocumentation(submissionId).subscribe(
       (data: any) => {
@@ -50,8 +69,16 @@ export class DocumentationpopupComponent {
     );
   }
 
-  toggleApproval(id: number, currentValue: boolean) {
-    const newValue = currentValue ? 0 : 1; // Flip the current value
+  toggleApproval(id: number, currentValue: number) {
+    let newValue: number;
+
+    if (currentValue === 0) {
+      newValue = 1;
+    } else if (currentValue === 1) {
+      newValue = -1;
+    } else {
+      newValue = 0;
+    }
     const requestData = {
       submissionId: id,
       newRemark: newValue

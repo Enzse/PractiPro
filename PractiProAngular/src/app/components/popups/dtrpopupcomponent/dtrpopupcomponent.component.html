@@ -7,19 +7,22 @@
                 <tr>
 
                     <th scope="col" class="px-6 py-3">
-                        Week
+                        Week:
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        File Name
+                        File Name:
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Date Submitted
+                        Date Submitted:
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        View
+                        View File:
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Remarks
+                        Download File:
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Remarks:
                     </th>
                 </tr>
             </thead>
@@ -37,6 +40,10 @@
                         {{ submission.created_at }}
                     </td>
                     <td class="px-6 py-4">
+                        <button (click)="viewFile(submission.dtr_id, submission.file_name)"
+                        class="focus:outline-none text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View</button>
+                    </td>
+                    <td class="px-6 py-4">
                         <button (click)="downloadSubmission(submission.dtr_id, submission.file_name)"
                             class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Download</button>
                     </td>
@@ -46,7 +53,10 @@
                             <p *ngIf="submission.remarks > 0" class="text-green-600">
                                 APPROVED
                             </p>
-                            <p *ngIf="submission.remarks == 0" class="text-orange-500">
+                            <p *ngIf="submission.remarks == 0" class="text-gray-800">
+                                PENDING
+                            </p>
+                            <p *ngIf="submission.remarks < 0" class="text-orange-500">
                                 UNAPPROVED
                             </p>
                         </button>

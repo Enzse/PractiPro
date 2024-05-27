@@ -1,4 +1,4 @@
-import { Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
@@ -21,7 +21,7 @@ export class ExitPollComponent {
     this.loadData();
   }
 
-  successtoast = false;  
+  successtoast = false;
 
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
@@ -53,7 +53,7 @@ export class ExitPollComponent {
       }
     });
 
-    
+
   }
 
 
@@ -66,9 +66,9 @@ export class ExitPollComponent {
   loadData() {
     this.user = this.service.getCurrentUserId();
     this.service.getFinalReportByUser(this.user).subscribe(res => {
-      if(res){
-      this.datalist = res;
-      this.dataSource = new MatTableDataSource(this.datalist);
+      if (res) {
+        this.datalist = res;
+        this.dataSource = new MatTableDataSource(this.datalist);
       }
     });
   }
@@ -83,4 +83,28 @@ export class ExitPollComponent {
       }
     );
   }
+
+  deleteSubmission(submissionId: number) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
+        }, error => {
+          Swal.fire({
+            title: "Successfully Deleted Submission.",
+            icon: "success"
+          });
+          this.loadData();
+        });
+      }
+    });
+  }
+
 }
