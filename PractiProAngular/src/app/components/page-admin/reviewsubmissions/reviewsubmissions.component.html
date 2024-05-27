@@ -1,26 +1,24 @@
 <div class="p-3 rounded-md shadow-xl">
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Submission List</h1>
-    <div class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
+    <div *ngIf="studentSubmissions.length > 0 else noDataMessage"  class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
         <table mat-table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        Submission ID
+                        Submission ID:
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        Requirement
+                        Requirement:
                     </th>
                     <th scope="col" class="px-6 py-3">
-                        File Name
-                    </th>
+                        File Name:
+                    </th>                   
+                    
                     <th scope="col" class="px-6 py-3">
-                        File Type
-                    </th>
+                        View File:
+                    </th> 
                     <th scope="col" class="px-6 py-3">
-                        File Size
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        File Data
+                        Download File:
                     </th>                    
                 </tr>
             </thead>
@@ -35,19 +33,22 @@
                     </td>
                     <td class="px-6 py-4">
                         {{ submission.file_name }}
-                    </td>
+                    </td>                 
                     <td class="px-6 py-4">
-                        {{ submission.file_type }}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{ submission.file_size }}
+                        <button (click)="viewFile(submission.submission_id, submission.submission_name)"
+                        class="focus:outline-none text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View</button>
                     </td>
                     <td class="px-6 py-4">
                         <button (click)="downloadRequirement(submission.submission_id, submission.submission_name)"
-                        class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Download</button>
+                        class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Download
+                    </button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+
+    <ng-template #noDataMessage>
+        <h1 class="text-center">This student has not submitted any requirements yet.</h1>
+    </ng-template>
 </div>

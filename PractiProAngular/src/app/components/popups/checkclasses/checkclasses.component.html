@@ -1,5 +1,5 @@
 <div class="p-3 rounded-md shadow-xl">
-    <h1 class="mb-2 text-orange-500 font-bold ml-1">Classes held by: {{currentuser?.first_name}} {{currentuser?.last_name}}</h1>
+    <h1 class="mb-2 text-orange-500 font-bold ml-1">Classes handled by: {{currentuser?.first_name}} {{currentuser?.last_name}}</h1>
     <div *ngIf="datalist?.length > 0 else noDataMessage"
         class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
         <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
@@ -42,7 +42,7 @@
                     </td>
                     <td class="px-6 py-4">
                         <button (click)="unassignCoordinator(data.block_name)"
-                        class="text-white inline-flex items-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Unassign from this Class</button>
+                        class="text-white inline-flex items-center bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Unassign</button>
                     </td>
                     
                 </tr>
@@ -50,6 +50,6 @@
         </table>
     </div>
     <ng-template #noDataMessage>
-        <h1 class="text-center">This coordinator currently has no classes being held.</h1>
+        <h1 class="text-center">This advisor currently has no classes being handled.</h1>
     </ng-template>
 </div>

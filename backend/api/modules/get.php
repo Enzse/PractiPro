@@ -60,16 +60,23 @@ class Get extends GlobalMethods
     //LOGIN FUNCTIONS
     public function getByEmail(string $email = null): array|false
     {
+        if ($email === null) {
+            return false;
+        }
 
-        $condition = ($email !== null) ? "email = '$email'" : null;
-        $result = $this->get_records('user', $condition);
+        $sql = "SELECT * FROM user WHERE email = :email LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
 
-        if ($result['status']['remarks'] === 'success' && !empty($result['payload'])) {
-            return $result['payload'][0]; // Return the first user record
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return $result;
         } else {
-            return array();
+            return false;
         }
     }
+
     public function getEmails($id = null)
     {
         $columns = "email";
@@ -237,7 +244,7 @@ class Get extends GlobalMethods
     }
     public function get_classes_ByCoordinator($coordinatorId)
     {
-    
+
         $sql = "SELECT cb.*
         FROM class_blocks cb
         JOIN rl_class_coordinators rcc ON cb.block_name = rcc.block_name
@@ -255,7 +262,7 @@ class Get extends GlobalMethods
         } catch (PDOException $e) {
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
-    }    
+    }
 
 
     //ADMIN: GET CORE DATA

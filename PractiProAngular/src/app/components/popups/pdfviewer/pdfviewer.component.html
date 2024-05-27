@@ -1,0 +1,14 @@
+<div *ngIf="pdfUrl">
+    <object [data]="pdfUrl" type="application/pdf" width="100%" height="600px">
+        <div class="flex-1 p-10 mt-40 text-center justify-center font-secondary ">
+            <div class="flex justify-center">
+                <img class=" opacity-40 h-36 w-36" src="../../../../assets/empty1.png">
+            </div>
+            <p class="block">It appears you don't have a PDF plugin for this browser.
+            </p>
+            <br>
+            <p class="block">You can <a class="text-blue-500" [href]="pdfUrl" target="_blank">click
+                    here to view the file.</a></p>
+        </div>
+    </object>
+</div>

@@ -61,25 +61,21 @@ export class AdminStudentsComponent implements OnInit {
     modal?.classList.add('hidden');
   }
 
-  Updateuser(code: any) {
+  updateRqStatus(code: any) {
     const popup = this.dialog.open(ViewsubmissionsComponent, {
-      enterAnimationDuration: "1000ms",
+      enterAnimationDuration: "350ms",
       exitAnimationDuration: "500ms",
       width: "90%",
       data: {
         usercode: code
       }
     })
-    popup.afterClosed().subscribe(res => {
-      this.Loaduser()
-    });
-
   }
 
 
   viewInfo(code: any) {
     const popup = this.dialog.open(InspectprofilepopupComponent, {
-      enterAnimationDuration: "1000ms",
+      enterAnimationDuration: "350ms",
       exitAnimationDuration: "500ms",
       width: "90%",
       data: {
@@ -89,31 +85,27 @@ export class AdminStudentsComponent implements OnInit {
     popup.afterClosed().subscribe(res => {
       this.Loaduser()
     });
-
   }
 
   viewSubmissions(code: any) {
     const popup = this.dialog.open(ReviewsubmissionsComponent, {
-      enterAnimationDuration: "1000ms",
+      enterAnimationDuration: "350ms",
       exitAnimationDuration: "500ms",
       width: "90%",
       data: {
         usercode: code
       }
     })
-    popup.afterClosed().subscribe(res => {
-      this.Loaduser()
-    });
   }
 
   toggleEvaluation(id: number, currentValue: boolean) {
     Swal.fire({
-      title: "Are you sure you want to toggle this evaluation?",
+      title: "Are you sure you want to toggle this student's Practicum status?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yep."
+      confirmButtonText: "Confirm"
     }).then((result) => {
       if (result.isConfirmed) {
         const newValue = currentValue ? 0 : 1;

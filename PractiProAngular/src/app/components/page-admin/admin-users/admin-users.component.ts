@@ -8,6 +8,7 @@ import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-admin-users',
@@ -19,22 +20,22 @@ import { FilterPipe } from '../../../filter.pipe';
 export class AdminUsersComponent implements OnInit {
   constructor(private service: AuthService, private dialog: MatDialog) {
   }
-  
+
   searchtext: any;
   userlist: any;
   userrole: any;
-  
+
   ngOnInit(): void {
     this.loadUsers();
     this.userrole = this.service.GetUserRole();
   }
-   
+
 
   loadUsers() {
     const currentUserId = this.service.getCurrentUserId();
     if (currentUserId !== null) {
-      this.service.getAllUsers().subscribe((res:any) => {
-        this.userlist = res.payload.filter((user:any) => user.id !== currentUserId);
+      this.service.getAllUsers().subscribe((res: any) => {
+        this.userlist = res.payload.filter((user: any) => user.id !== currentUserId);
         console.log(this.userlist);
       });
     }
@@ -52,15 +53,21 @@ export class AdminUsersComponent implements OnInit {
       }
     })
     popup.afterClosed().subscribe(res => {
-        this.loadUsers()      
+      this.loadUsers()
     });
-  }  
+  }
 
   isUpdateButtonVisible(userRole: string): boolean {
     const currentUserRole = this.service.GetUserRole();
     return (currentUserRole === 'superadmin' && userRole !== 'superadmin') || (currentUserRole === 'admin' && userRole !== 'admin' && userRole !== 'superadmin');
   }
-  
 
+  handleDisabledClick() {
+    Swal.fire({
+      title: "Super Admin Only!",
+      text: "This function is only available for users with the Super Admin role.",
+      icon: "error"
+    })
+  }
 
 }

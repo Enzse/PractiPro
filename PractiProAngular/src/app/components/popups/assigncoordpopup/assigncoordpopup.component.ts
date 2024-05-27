@@ -26,7 +26,7 @@ export class AssigncoordpopupComponent {
     this.service.getClasses().subscribe(res => {
       this.classlist = res;
     });
-    this.service.getCoordinator().subscribe(res => {
+    this.service.getAdvisors().subscribe(res => {
       this.coordlist = res;
     });
   }

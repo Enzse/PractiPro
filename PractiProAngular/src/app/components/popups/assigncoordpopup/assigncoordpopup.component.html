@@ -1,5 +1,5 @@
 <div class="p-3 rounded-md shadow-xl">
-    <h1 class="mb-2 text-orange-500 font-bold ml-2">Assign Coordinators:</h1>
+    <h1 class="mb-2 text-orange-500 font-bold ml-2">Assign Advisors:</h1>
 
     <div class="p-2">
 
@@ -7,11 +7,11 @@
             <div class="grid gap-2 mb-6 md:grid-cols-2">
                 <div>
                     <label for="coordinators"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select a
-                        Coordinator:</label>
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an
+                        Advisor:</label>
                     <select formControlName="coordinator_id" id="coordinators"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                        <option value="" disabled selected>All Coordinators:</option>
+                        <option value="" disabled selected>All Advisors:</option>
                         <option *ngFor="let item of coordlist?.payload" [value]=item.id><b>{{item.id}}</b> - {{item.last_name}}, {{item.first_name}}
                         </option>
                     </select>
@@ -30,7 +30,7 @@
             
             <div class="flex justify-center">
                 <button type="submit"
-                    class="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-orange-300">Assign Coordinator</button>
+                    class="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-orange-300">Assign Advisor</button>
             </div>
 
         </form>

@@ -28,7 +28,7 @@ export class DeptpopupComponent implements OnInit {
       this.deptlist = res;
     });
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getCoordinator(this.data.usercode).subscribe((res: any) => {
+      this.service.getAdvisors(this.data.usercode).subscribe((res: any) => {
         console.log(this.data.usercode);
         console.log(res.payload);
 

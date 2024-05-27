@@ -46,7 +46,7 @@ export class ViewsubmissionsComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yep."
+      confirmButtonText: "Confirm"
     }).then((result) => {
       if (result.isConfirmed) {
         const newValue = value ? 0 : 1;

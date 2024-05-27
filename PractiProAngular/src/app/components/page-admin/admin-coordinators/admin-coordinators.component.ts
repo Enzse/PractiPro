@@ -35,7 +35,7 @@ export class AdminCoordinatorsComponent {
 
 
   Loaduser() {
-    this.service.getCoordinator().subscribe(res => {
+    this.service.getAdvisors().subscribe(res => {
       this.userlist = res;
       this.dataSource = new MatTableDataSource(this.userlist);
     });

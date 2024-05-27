@@ -28,7 +28,7 @@ export class CheckclassesComponent {
 
   ngOnInit(): void {
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getCoordinator(this.data.usercode).subscribe(res => {
+      this.service.getAdvisors(this.data.usercode).subscribe(res => {
         console.log(res);
         this.currentuser = res.payload[0]
         console.log(this.currentuser);

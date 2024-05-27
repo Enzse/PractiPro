@@ -10,9 +10,9 @@ export class AuthService {
 
   isLoggedIn = false;
 
-  // apiurl = 'http://localhost/PractiPro/backend/api';
+  apiurl = 'http://localhost/PractiPro/backend/api';
 
-  apiurl = 'http://gcpractipro.online/backend/api';
+  // apiurl = 'http://gcpractipro.online/backend/api';
 
   //User Handlers handlers. 
   getUser(id: any) {
@@ -96,13 +96,13 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/admin`);
   }
   //Get Coordinators
-  getCoordinator(id: any = null) {
+  getAdvisors(id: any = null) {
     if (id) {
       return this.http.get<any>(`${this.apiurl}/coordinator/${id}`);
     } else {
       return this.http.get<any>(`${this.apiurl}/coordinator`);
     }
-  }
+  }  
   getClasses(block: any = null) {
     if (block) {
       return this.http.get<any>(`${this.apiurl}/classes/${block}`);

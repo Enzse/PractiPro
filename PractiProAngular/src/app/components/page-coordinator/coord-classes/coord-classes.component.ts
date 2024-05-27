@@ -28,7 +28,7 @@ export class CoordClassesComponent {
 
   ngOnInit(): void {
     if (this.data.coordinatorId != null && this.data.coordinatorId != '') {
-      this.service.getCoordinator(this.data.coordinatorId).subscribe(res => {
+      this.service.getAdvisors(this.data.coordinatorId).subscribe(res => {
         console.log(res);
         this.currentuser = res.payload[0]
         console.log(this.currentuser);

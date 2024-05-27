@@ -25,6 +25,7 @@
     "cropperjs": "^1.6.2",
     "file-saver": "^2.0.5",
     "flowbite": "^2.3.0",
+    "ng2-pdf-viewer": "^10.2.2",
     "ngx-extended-pdf-viewer": "^20.0.1",
     "ngx-file-drop": "^16.0.0",
     "rxjs": "~7.8.0",
