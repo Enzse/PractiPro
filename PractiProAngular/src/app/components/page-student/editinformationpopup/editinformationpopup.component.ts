@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -54,10 +55,10 @@ export class EditinformationpopupComponent implements OnInit {
   editForm = this.builder.group({
     firstName: this.builder.control(''),
     lastName: this.builder.control(''),
-    studentId: this.builder.control(''),
+    studentId: this.builder.control('', [Validators.maxLength(9), Validators.minLength(9)]),
     program: this.builder.control(''),
     year: this.builder.control(''),
-    phoneNumber: this.builder.control(''),
+    phoneNumber: this.builder.control('', [Validators.maxLength(11)]),
     address: this.builder.control(''),
     dateOfBirth: this.builder.control(''),
   });
@@ -70,7 +71,11 @@ export class EditinformationpopupComponent implements OnInit {
         this.dialog.close();
       })
     } else {
-      console.log("Error Inputting Data.");
+      Swal.fire({
+        title: "Invalid Input",
+        text: "Double-check your information to see any forms you've mistakenly entered.",
+        icon: "error"
+      });
     }
   }
 

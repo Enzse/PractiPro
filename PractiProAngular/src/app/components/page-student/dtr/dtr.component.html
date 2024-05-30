@@ -15,40 +15,38 @@
     </p>
     <br />
 
-    <div
-      class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200"
-    >
+    <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
-        <mat-tab
-          *ngFor="let weekNumber of tabWeekNumbers"
-          [label]="'Week ' + weekNumber"
-        >
-          <form
-            class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto mt-8"
-          >
-            <input
-              type="file"
-              [id]="'week' + weekNumber"
-              [name]="'week' + weekNumber"
-            />
+        <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
+          <form class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto mt-8">
+            <input type="file" [id]="'week' + weekNumber" [name]="'week' + weekNumber" />
           </form>
         </mat-tab>
       </mat-tab-group>
-      <div class="flex justify-end mr-0 pt-3">
-        <button
-          type="button"
-          (click)="addNewTab()"
-          class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg focus:outline-none mr-5"
-        >
-          Add New Week
+      <div class="flex justify-between items-center pt-3">
+        <button type="button" (click)="viewTemplate()"
+          class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">    
+                  
+          
+          View Template
+          
+          
+          
         </button>
-        <button
-          type="button"
-          (click)="submitFiles()"
-          class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none"
-        >
-          Submit File
-        </button>
+        <div>
+          <button type="button" (click)="addNewTab()"
+            class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg focus:outline-none mr-5">
+            <svg class="w-5 h-5 -mt-1 text-gray-800 dark:text-white inline" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+            </svg>
+            
+            Add New Week
+          </button>
+          <button type="button" (click)="submitFiles()"
+            class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
+            Submit File
+          </button>
+        </div>
       </div>
     </div>
 
@@ -60,17 +58,11 @@
 
       <br />
     </div>
-    <div
-      *ngIf="datalist.length > 0; else noDataMessage"
-      class="relative overflow-x-auto shadow-md border border-gray-200 sm:rounded-lg"
-    >
-      <table
-        mat-table
-        class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400"
-      >
-        <thead
-          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-        >
+    <div *ngIf="datalist.length > 0; else noDataMessage"
+      class="relative overflow-x-auto shadow-md border border-gray-200 sm:rounded-lg">
+      <table mat-table
+        class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3 font-secondary">Week</th>
             <th scope="col" class="px-6 py-3 font-secondary">File name</th>
@@ -81,10 +73,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let data of datalist"
-            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-          >
+          <tr *ngFor="let data of datalist" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <td class="px-6 py-4">Week {{ data.week }}</td>
             <td class="px-6 py-4">
               {{ data.file_name }}
@@ -104,18 +93,16 @@
               </p>
             </td>
             <td class="px-6 py-4">
-              <a
-                (click)="downloadDtr(data.dtr_id, data.file_name)"
-                class="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-green-900"
-                >Download</a
-              >
+              <a (click)="downloadDtr(data.dtr_id, data.file_name)"
+                class="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-green-900">Download</a>
             </td>
-            <td class="px-6 py-4">            
+            <td class="px-6 py-4">
 
               <button
                 class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                (click)="deleteSubmission(data.dtr_id)"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                (click)="deleteSubmission(data.dtr_id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
+                  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                  viewBox="0 0 24 24">
                   <path fill-rule="evenodd"
                     d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
                     clip-rule="evenodd" />
@@ -136,25 +123,15 @@
 </div>
 
 <div class="toast-container">
-  <div
-    *ngIf="successtoast"
-    id="toast-success"
+  <div *ngIf="successtoast" id="toast-success"
     class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-    role="alert"
-  >
+    role="alert">
     <div
-      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200"
-    >
-      <svg
-        class="w-5 h-5"
-        aria-hidden="true"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="currentColor"
-        viewBox="0 0 20 20"
-      >
+      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+        viewBox="0 0 20 20">
         <path
-          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z"
-        />
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
       </svg>
       <span class="sr-only">Warning icon</span>
     </div>

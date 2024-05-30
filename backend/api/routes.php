@@ -397,6 +397,23 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for uploading files
                 echo json_encode($post->uploadAvatar($request[1]));
                 break;
+
+            case 'addcommentrequirement':
+                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_requirements'));
+                break;
+            case 'addcommentdocumentation':
+                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_documentation'));
+                break;
+            case 'addcommentdtr':
+                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_dtr'));
+                break;
+            case 'addcommentwar':
+                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_war'));
+                break;
+            case 'addcommentfinal':
+                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_finalreports'));
+                break;
+
             case 'toggleRequirementStatus':
                 // Toggle the requirement status
                 echo json_encode($post->toggleRequirementStatus($data->studentId, $data->requirement, $data->status));

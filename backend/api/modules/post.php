@@ -234,6 +234,28 @@ class Post extends GlobalMethods
             return $this->sendPayload(null, "failed", $errmsg, 400);
         }
     }
+    public function addSubmissionComment($submissionId, $data, $table)
+    {
+        $sql = "INSERT INTO $table (comments, file_id, commenter) VALUES (?, ?, ?)";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->comment,
+                    $submissionId,
+                    $data->commenter
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
+
+
     public function toggleStudentEvaluation($id, $newRemark, )
     {
 

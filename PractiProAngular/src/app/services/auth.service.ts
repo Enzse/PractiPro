@@ -10,9 +10,9 @@ export class AuthService {
 
   isLoggedIn = false;
 
-  // apiurl = 'http://localhost/PractiPro/backend/api';
+  apiurl = 'http://localhost/PractiPro/backend/api';
 
-  apiurl = 'http://gcpractipro.online/backend/api';
+  // apiurl = 'http://gcpractipro.online/backend/api';
 
   //User Handlers handlers. 
   getUser(id: any) {
@@ -292,6 +292,12 @@ export class AuthService {
     return this.http.post(`${this.apiurl}/assignclassstudent/${id}`, inputdata);
   }
 
+  addSubmissionComment(submission: string, id: number, inputdata: any) {
+    switch (submission) {
+
+    }
+    return this.http.post(`${this.apiurl}/assignclasscoordinator`, inputdata);
+  }
 
   getAvatar(userId: number) {
     return this.http.get(`${this.apiurl}/getavatar/${userId}`, { responseType: 'blob' });

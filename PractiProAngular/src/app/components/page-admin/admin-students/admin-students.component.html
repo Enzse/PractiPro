@@ -37,7 +37,7 @@
             <th scope="col" class="px-6 py-3 font-primary">
               Requirements Status
             </th>
-            <th scope="col" class="px-6 py-3 font-primary">Practicum Status</th>
+            <th scope="col" class="px-6 py-3 font-primary">Registration Status</th>
           </tr>
         </thead>
         <tbody>
@@ -78,14 +78,12 @@
                 class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5  mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">Update</a>
             </td>
             <td class="px-6 py-4">
-              <button (click)="toggleEvaluation(students.id, students.evaluation)" class="btn-toggle">
-                <p *ngIf="students.evaluation" class="text-green-600 text-center">
-                  <b>FINISHED!</b>
+                <p *ngIf="students.registrationstatus" class="text-green-600 text-center">
+                  <b>CLEARED</b>
                 </p>
-                <p *ngIf="!students.evaluation" class="text-blue-900 text-center">
-                  <b>IN PROGRESS</b>
+                <p *ngIf="!students.registrationstatus" class="text-blue-900 text-center">
+                  <b>NOT CLEARED</b>
                 </p>
-              </button>
             </td>
           </tr>
         </tbody>

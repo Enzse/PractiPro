@@ -66,7 +66,7 @@ export const routes: Routes = [
             { path: 'admin-users', component: AdminUsersComponent, title: 'Users',  },
             { path: 'admin-admins', component: AdminAdminsComponent, title: 'Admins',  },
             { path: 'admin-students', component: AdminStudentsComponent, title: 'Students',  },
-            { path: 'admin-coordinators', component: AdminCoordinatorsComponent, title: 'Coordinators',  },
+            { path: 'admin-coordinators', component: AdminCoordinatorsComponent, title: 'Advisors',  },
             { path: 'admin-classes', component: AdminClassesComponent, title: 'Classes',  },
         ]
     },

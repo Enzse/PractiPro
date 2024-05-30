@@ -1,10 +1,9 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { HttpClient, HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import { importProvidersFrom } from '@angular/core';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { customInterceptor } from './services/custom.interceptor';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { PdfDownloadComponent } from 'ngx-extended-pdf-viewer';
 

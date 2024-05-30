@@ -69,7 +69,10 @@ export class AdminStudentsComponent implements OnInit {
       data: {
         usercode: code
       }
-    })
+    });
+    popup.afterClosed().subscribe(res => {
+      this.Loaduser()
+    });
   }
 
 

@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
 import saveAs from 'file-saver';
 import Swal from 'sweetalert2';
+import { MatDialog } from '@angular/material/dialog';
+import { CommentspopupComponent } from '../../popups/commentspopup/commentspopup.component';
 
 @Component({
   selector: 'app-submission',
@@ -16,7 +18,7 @@ import Swal from 'sweetalert2';
   styleUrl: './submission.component.css'
 })
 export class SubmissionComponent {
-  constructor(private service: AuthService) {
+  constructor(private service: AuthService, private dialog: MatDialog) {
     this.loadData();
   }
   successtoast = false;
@@ -47,12 +49,21 @@ export class SubmissionComponent {
               icon: "success"
             });
             this.loadData();
+
+            fileInput.value = '';
           },
           error => {
             console.error('Error uploading file:', error);
             // Handle error, e.g., show an error message to the user
           }
         );
+      }
+      else if (file == null) {
+        Swal.fire({
+          title: "No File to Upload",
+          text: "Please select a file to upload first.",
+          icon: "error"
+        });
       }
     });
   }
@@ -67,11 +78,11 @@ export class SubmissionComponent {
   loadData() {
     this.user = this.service.getCurrentUserId();
     this.service.getRequirementSubmissionsByUser(this.user).subscribe(res => {
-      if(res){
+      if (res) {
         this.datalist = res;
         this.dataSource = new MatTableDataSource(this.datalist);
         console.log(this.datalist);
-      }else{
+      } else {
         console.log("No submissions yet.")
       }
     }, error => {
@@ -114,4 +125,16 @@ export class SubmissionComponent {
     });
   }
 
+
+  viewComments(fileId: number, fileName: string) {
+    const popup = this.dialog.open(CommentspopupComponent, {
+      enterAnimationDuration: "500ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
+      data: {
+        fileID: fileId,
+        fileName: fileName
+      }
+    })
+  }
 }

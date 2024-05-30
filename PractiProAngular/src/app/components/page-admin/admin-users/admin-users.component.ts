@@ -36,6 +36,7 @@ export class AdminUsersComponent implements OnInit {
     if (currentUserId !== null) {
       this.service.getAllUsers().subscribe((res: any) => {
         this.userlist = res.payload.filter((user: any) => user.id !== currentUserId);
+        this.userlist = res.payload.filter((user: any) => user.role !== "admin" && user.role !== "superadmin");
         console.log(this.userlist);
       });
     }

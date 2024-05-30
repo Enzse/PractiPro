@@ -117,7 +117,7 @@ class Get extends GlobalMethods
     }
     public function get_student($userId = null)
     {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
         $condition = ($userId !== null) ? "id = $userId" : null;
         $result = $this->get_records('students', $condition, $columns);
 
@@ -135,7 +135,7 @@ class Get extends GlobalMethods
     }
     public function get_studentsFromClasses($block)
     {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
         $condition = "block = '$block'";
         $result = $this->get_records('students', $condition, $columns);
 
@@ -153,7 +153,7 @@ class Get extends GlobalMethods
     }
     public function get_studentByCourse($course)
     {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
         $condition = ($course !== null) ? "program = '$course'" : null;
         $result = $this->get_records('students', $condition, $columns);
 
@@ -171,7 +171,7 @@ class Get extends GlobalMethods
     }
     public function get_studentByCourseAndYear($course, $year)
     {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation";
+        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
         $condition = ($course !== null) ? "program = '$course' AND year = $year" : null;
         $result = $this->get_records('students', $condition, $columns);
 

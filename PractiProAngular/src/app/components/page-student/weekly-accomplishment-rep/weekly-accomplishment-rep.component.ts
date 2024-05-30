@@ -68,16 +68,28 @@ export class WeeklyAccomplishmentRepComponent {
               icon: "success"
             });
             this.loadData();
+
+            fileInput.value = '';
           },
           error => {
             console.error('Error uploading file:', error);
           }
         );
       }
+      else if (file == null) {
+        Swal.fire({
+          title: "No File to Upload",
+          text: "Please select a file to upload first.",
+          icon: "error"
+        });
+      }
     });
   }
 
-
+  viewTemplate() {
+    const pdfPath = '../../assets/pdfTemplates/WAR.pdf';
+    window.open(pdfPath, '_blank');
+  }
 
   user: any;
   students: any;

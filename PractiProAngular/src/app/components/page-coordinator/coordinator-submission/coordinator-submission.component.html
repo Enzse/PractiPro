@@ -34,7 +34,7 @@
                     Last Name
                   </th>
                   <th scope="col" class="px-6 py-3 text-center font-primary">
-                    Practicum Status
+                    Registration Status
                   </th>
                   <th scope="col" class="px-6 py-3 text-center font-primary">
                     Submissions
@@ -56,11 +56,11 @@
                     {{ student.lastName }}
                   </td>
                   <td class="px-6 py-4 text-center">
-                    <p *ngIf="student.evaluation > 0" class="text-green-600">
-                      <b>COMPLETED</b>
+                    <p *ngIf="student.registrationstatus > 0" class="text-green-600">
+                      <b>CLEARED</b>
                     </p>
-                    <p *ngIf="student.evaluation == 0" class="text-orange-500">
-                      In Progress
+                    <p *ngIf="student.registrationstatus == 0" class="text-orange-500">
+                      NOT CLEARED
                     </p>
                   </td>
                   <td class="px-6 py-4 text-center">
