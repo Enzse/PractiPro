@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { saveAs } from 'file-saver';
 import { PdfviewerComponent } from '../pdfviewer/pdfviewer.component';
+import { CommentspopupComponent } from '../commentspopup/commentspopup.component';
 
 @Component({
   selector: 'app-finalreportpopup',
@@ -25,18 +26,19 @@ export class FinalreportpopupComponent {
   studentSubmissions: any[] = [];
 
   ngOnInit(): void {
-    console.log(this.data.usercode)
-    if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getFinalReportByUser(this.data.usercode).subscribe(
-        (data: any[]) => {
-          this.studentSubmissions = data;
-          console.log(this.studentSubmissions);
-        },
-        (error: any) => {
-          console.error('Error fetching student submissions:', error);
-        }
-      );
-    }
+    this.loadData();
+  }
+
+  loadData() {
+    this.service.getFinalReportByUser(this.data.usercode).subscribe(
+      (data: any[]) => {
+        this.studentSubmissions = data;
+        console.log(this.studentSubmissions);
+      },
+      (error: any) => {
+        console.error('Error fetching student submissions:', error);
+      }
+    );
   }
 
   viewFile(submissionId: number, submissionName: string) {
@@ -95,5 +97,20 @@ export class FinalreportpopupComponent {
     );
   }
 
+  viewComments(submissionId: number, fileName: string) {
+    const popup = this.dialog2.open(CommentspopupComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "500ms",
+      width: "95%",
+      data: {
+        submissionID: submissionId,
+        fileName: fileName,
+        table: 'finalreports'
+      }
+    })
+    popup.afterClosed().subscribe(res => {
+      this.loadData()
+    });
+  }
 
 }

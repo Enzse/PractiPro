@@ -126,15 +126,20 @@ export class SubmissionComponent {
   }
 
 
-  viewComments(fileId: number, fileName: string) {
+  viewComments(submissionId: number, fileName: string) {
     const popup = this.dialog.open(CommentspopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "80%",
       data: {
-        fileID: fileId,
-        fileName: fileName
+        submissionID: submissionId,
+        fileName: fileName,
+        table: 'requirements'
       }
     })
+    popup.afterClosed().subscribe(res => {
+      this.loadData()
+    });
   }
+
 }

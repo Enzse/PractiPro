@@ -2,7 +2,7 @@
   <div class="p-1 xl:p-10">
     <div>
       <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 ms-0 font-primary">
-        Daily Time Record
+        Daily Attendance
       </h1>
       <div class="border-b border-gray-300"></div>
       <br />
@@ -35,7 +35,7 @@
                     Last Name
                   </th>
                   <th scope="col" class="px-6 py-3 text-center font-primary">
-                    Practicum Status
+                    Registration Status
                   </th>
                   <th scope="col" class="px-6 py-3 text-center font-primary">
                     Submissions
@@ -55,12 +55,12 @@
                   <td class="px-6 py-4 text-center">
                     {{ data.lastName }}
                   </td>
-                  <td class="px-6 py-4 text-center">
-                    <p *ngIf="data.evaluation > 0" class="text-green-600">
-                      <b>COMPLETED</b>
+                  <td class="px-6 py-4 text-center font-secondary">
+                    <p *ngIf="data.registrationstatus > 0" class="text-green-600">
+                      <b>CLEARED</b>
                     </p>
-                    <p *ngIf="data.evaluation == 0" class="text-orange-500">
-                      In Progress
+                    <p *ngIf="data.registrationstatus == 0" class="text-orange-500">
+                      NOT CLEARED
                     </p>
                   </td>
                   <td class="px-6 py-4 text-center">

@@ -24,7 +24,6 @@ export class CoordinatorSubmissionComponent implements OnInit {
 
   constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {}
 
-  Coordinator: any;
   students: any;
   studentlist: any;
   searchtext: any;
@@ -77,7 +76,7 @@ export class CoordinatorSubmissionComponent implements OnInit {
       exitAnimationDuration: "500ms",
       width: "80%",
       data: {
-        usercode: code
+        usercode: code,
       }
     })
     // popup.afterClosed().subscribe(res => {

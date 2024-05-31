@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import saveAs from 'file-saver';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { CommentspopupComponent } from '../../popups/commentspopup/commentspopup.component';
 
 
 @Component({
@@ -136,6 +137,22 @@ export class WeeklyAccomplishmentRepComponent {
           this.loadData();
         });
       }
+    });
+  }
+
+  viewComments(submissionId: number, fileName: string) {
+    const popup = this.dialog.open(CommentspopupComponent, {
+      enterAnimationDuration: "500ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
+      data: {
+        submissionID: submissionId,
+        fileName: fileName,
+        table: 'war'
+      }
+    })
+    popup.afterClosed().subscribe(res => {
+      this.loadData()
     });
   }
 

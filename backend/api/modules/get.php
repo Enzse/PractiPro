@@ -398,7 +398,7 @@ class Get extends GlobalMethods
 
     public function get_documentationByStudent($id = null)
     {
-        $columns = "doc_id, user_id, week, file_name, created_at, remarks";
+        $columns = "doc_id, user_id, week, file_name, created_at, remarks, comments, comments";
         $condition = ($id != null) ? "user_id=$id" : null;
         $result = $this->get_records('documentations', $condition, $columns);
 
@@ -410,7 +410,7 @@ class Get extends GlobalMethods
     }
     public function get_dtrByStudent($id = null)
     {
-        $columns = "dtr_id, user_id, week, file_name, created_at, remarks";
+        $columns = "dtr_id, user_id, week, file_name, created_at, remarks, comments";
         $condition = ($id != null) ? "user_id=$id" : null;
         $result = $this->get_records('dtr', $condition, $columns);
 
@@ -422,7 +422,7 @@ class Get extends GlobalMethods
     }
     public function get_warByStudent($id = null)
     {
-        $columns = "war_id, user_id, week, file_name, created_at, remarks";
+        $columns = "war_id, user_id, week, file_name, created_at, remarks, comments";
         $condition = ($id != null) ? "user_id=$id" : null;
         $result = $this->get_records('war', $condition, $columns);
 
@@ -435,7 +435,7 @@ class Get extends GlobalMethods
 
     public function get_finalReportByStudent($id = null)
     {
-        $columns = "report_id, user_id, file_name, created_at, remarks";
+        $columns = "report_id, user_id, file_name, created_at, remarks, comments";
         $condition = ($id != null) ? "user_id=$id" : null;
         $result = $this->get_records('finalreports', $condition, $columns);
 
@@ -748,5 +748,15 @@ class Get extends GlobalMethods
         }
     }
 
+
+
+    public function getSubmissionComments($id, $table)
+    {
+        $condition = null;
+        if ($id != null) {
+            $condition = "file_id=$id";
+        }
+        return $this->get_records($table, $condition);
+    }
 
 }

@@ -2,13 +2,15 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { EditinformationpopupComponent } from '../../page-student/editinformationpopup/editinformationpopup.component';
 
 @Component({
   selector: 'app-inspectprofilepopup',
@@ -18,61 +20,78 @@ import Swal from 'sweetalert2';
   styleUrl: './inspectprofilepopup.component.css'
 })
 export class InspectprofilepopupComponent {
+
+  studentProfile: any[] = [];
+  avatarUrl?: SafeUrl;
+
   constructor(private builder: FormBuilder, private service: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<InspectprofilepopupComponent>) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<InspectprofilepopupComponent>, private sanitizer: DomSanitizer, private dialog2: MatDialog) { }
 
 
 
   //This dynamically displays the data according to changes.
   editdata?: any;
   ngOnInit(): void {
-    const userId = this.data.usercode;
-    if (userId) {
-      this.service.getStudent(userId).subscribe((res: any) => {
-        console.log(userId);
-        console.log("API response:", res);
-        console.log(res);
-        this.editdata = res[0];
-        this.editForm.setValue({
-          firstName: this.editdata.firstName,
-          lastName: this.editdata.lastName,
-          studentId: this.editdata.studentId,
-          program: this.editdata.program,
-          year: this.editdata.year,
-          phoneNumber: this.editdata.phoneNumber,
-          address: this.editdata.address,
-          dateOfBirth: this.editdata.dateOfBirth
-        });
-
-      })
-    }
+    this.loadInfo();
+    this.loadAvatar();
   }
 
   //This serves as a placeholder for the student data.
-  editForm = this.builder.group({
-    firstName: this.builder.control(''),
-    lastName: this.builder.control(''),
-    studentId: this.builder.control('', [Validators.maxLength(9), Validators.minLength(9)]),
-    program: this.builder.control(''),
-    year: this.builder.control(''),
-    phoneNumber: this.builder.control('', [Validators.maxLength(11)]),
-    address: this.builder.control(''),
-    dateOfBirth: this.builder.control(''),
-  });
+  loadAvatar() {
+    console.log("Loading Avatar...");
+    if (this.data.usercode) {
+      this.service.getAvatar(this.data.usercode).subscribe(
+        blob => {
+          console.log("Loading Blob");
+          console.log(`blob: ${blob}`);
+          if (blob.size > 0) { 
+            const url = URL.createObjectURL(blob);
+            this.avatarUrl = this.sanitizer.bypassSecurityTrustUrl(url);
+            console.log(`this.avatarUrl: ${this.avatarUrl}`);
+          } else {
+            console.log("User has not uploaded an avatar yet.");
+            this.avatarUrl = undefined;
+          }
+        },
+        error => {
+          if (error.status === 404) {
+            console.log('No avatar found for the user.');
+            this.avatarUrl = undefined;
+          } else {
+            console.error('Failed to load avatar:', error);
+          }
+        }
+      );
+    }
+  }
+
+  loadInfo() {
+    if (this.data.usercode) {
+      this.service.getStudentProfile(this.data.usercode).subscribe(
+        (data: any[]) => {
+          console.log(data);
+          this.studentProfile = data;
+        },
+        (error: any) => {
+          console.error('Error fetching student requirements:', error);
+        }
+      );
+    }
+  }
 
   //This is for the Submit button functionality.
-  editInformation() {
-    if (this.editForm.valid) {
-      this.service.editStudentInfo(this.data.usercode, this.editForm.value).subscribe(res => {
-        console.log(`Updated successfully: ${this.data.usercode}`);
-        this.dialog.close();
-      })
-    } else {
-      Swal.fire({
-        title: "Invalid Input",
-        text: "Double-check to see any forms you've mistakenly entered.",
-        icon: "error"
-      });
-    }
+  editInfo(code: any) {
+    const popup = this.dialog2.open(EditinformationpopupComponent, {
+      enterAnimationDuration: "1000ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
+      // height: "70%",
+      data: {
+        usercode: code
+      }
+    });
+    popup.afterClosed().subscribe(res => {
+      this.loadInfo()
+    });
   }
 }

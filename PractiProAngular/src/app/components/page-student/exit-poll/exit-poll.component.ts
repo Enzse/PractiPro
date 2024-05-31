@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import saveAs from 'file-saver';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { CommentspopupComponent } from '../../popups/commentspopup/commentspopup.component';
 
 
 @Component({
@@ -79,6 +80,7 @@ export class ExitPollComponent {
     this.user = this.service.getCurrentUserId();
     this.service.getFinalReportByUser(this.user).subscribe(res => {
       if (res) {
+        console.log(res);
         this.datalist = res;
         this.dataSource = new MatTableDataSource(this.datalist);
       }
@@ -116,6 +118,23 @@ export class ExitPollComponent {
           this.loadData();
         });
       }
+    });
+  }
+
+
+  viewComments(submissionId: number, fileName: string) {
+    const popup = this.dialog.open(CommentspopupComponent, {
+      enterAnimationDuration: "500ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
+      data: {
+        submissionID: submissionId,
+        fileName: fileName,
+        table: 'finalreports'
+      }
+    })
+    popup.afterClosed().subscribe(res => {
+      this.loadData()
     });
   }
 

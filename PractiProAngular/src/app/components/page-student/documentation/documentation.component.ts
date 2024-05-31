@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { saveAs } from 'file-saver';
 import Swal from 'sweetalert2';
+import { CommentspopupComponent } from '../../popups/commentspopup/commentspopup.component';
 
 @Component({
   selector: 'app-documentation',
@@ -96,6 +97,7 @@ export class DocumentationComponent implements OnInit {
   loadData() {
     this.user = this.service.getCurrentUserId();
     this.service.getDocumentationsByUser(this.user).subscribe(res => {
+      console.log(res);
       this.datalist = res;
     });
   }
@@ -134,5 +136,21 @@ export class DocumentationComponent implements OnInit {
     });
   }
 
+
+  viewComments(submissionId: number, fileName: string) {
+    const popup = this.dialog.open(CommentspopupComponent, {
+      enterAnimationDuration: "500ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
+      data: {
+        submissionID: submissionId,
+        fileName: fileName,
+        table: 'documentations'
+      }
+    })
+    popup.afterClosed().subscribe(res => {
+      this.loadData()
+    });
+  }
 
 }

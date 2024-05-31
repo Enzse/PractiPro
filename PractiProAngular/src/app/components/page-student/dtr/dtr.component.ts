@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { saveAs } from 'file-saver';
 import Swal from 'sweetalert2';
+import { CommentspopupComponent } from '../../popups/commentspopup/commentspopup.component';
 
 @Component({
   selector: 'app-dtr',
@@ -139,6 +140,22 @@ export class DtrComponent {
           this.loadData();
         });
       }
+    });
+  }
+
+  viewComments(submissionId: number, fileName: string) {
+    const popup = this.dialog.open(CommentspopupComponent, {
+      enterAnimationDuration: "500ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
+      data: {
+        submissionID: submissionId,
+        fileName: fileName,
+        table: 'dtr'
+      }
+    })
+    popup.afterClosed().subscribe(res => {
+      this.loadData()
     });
   }
 

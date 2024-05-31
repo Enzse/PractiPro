@@ -1,36 +1,61 @@
-<div class="p-1 xl:p-10">
-    <div>
+<div class="p-3 max-w-screen max-h-screen overflow-auto bg-white shadow-lg rounded-xl font-secondary relative">
+    <div class="font-primary m-3">
         <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
-            Feedback
+            Leave a comment for: '{{this.data.fileName}}'
         </h1>
         <div class="border-b border-gray-300"></div>
-        <br />
     </div>
 
-    <p class="text-gray-800 max-sm:text-sm max-sm:ml-2 font-secondary">
-        User Feedback is greatly appreciated. If you have any, please leave it in the blank.
-    </p>
-    <br />
-    <form class="bg-slate-50 border border-gray-200 rounded-lg shadow-md h-auto w-auto p-5 max-sm:p-4">
-        <div class="w-full">
-            <div class="px-4 py-2 mb-5 bg-slate-200 rounded-lg dark:bg-gray-800 max-sm:mb-3">
-                <!--
-          <p class="ml-5 text-gray-800">Write your feedback in our app in the blank</p>
-          <br>
-          <form class="bg-white  border border-gray-200 rounded-lg shadow-md shadow-gray-500 h-auto w-auto p-10">
-              <div class="w-full">
-                  <div class="px-4 py-2 bg-slate-200 rounded-lg mb-5 dark:bg-gray-800">
-  -->
-                <textarea id="comment" rows="7"
-                    class="w-full px-0 text-sm text-black-900 bg-slate-200 border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-                    placeholder="Write something..." required></textarea>
+    <!-- Comments section -->
+    <div class="mt-4 font-secondary mx-4 my-5">
+        <h2 class="text-lg font-bold mb-3 font-primary">Comments Section: ({{commentsList?.length}})</h2>
+        <ul *ngFor="let data of commentsList" class="space-y-4">
+            <li class="bg-gray-100 p-4 rounded-lg my-3">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div>
+                            <div class="text-sm font-medium text-gray-900">
+                                {{data.commenter}}
+                                <span class="opacity-40" *ngIf="data.commenter == this.userName">(You)</span>
+                            </div>
+                            <div class="text-sm text-gray-500">
+                                {{data.created_at }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-b border-gray-300"></div>
+                <div class="mt-2">
+                    <p class="text-sm text-gray-700">
+                        {{data.comments}}
+                    </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="comment-form-sticky bottom-0 left-0 right-0 bg-white shadow-md px-3 py-2">
+        <form [formGroup]="commentForm" (ngSubmit)="submitComment()">
+            <div class="w-full">
+                <div class="px-4 py-2 mb-2 bg-slate-200 rounded-lg dark:bg-gray-800 max-sm:mb-3">
+                    <textarea id="comment" rows="4"
+                        class="w-full px-0 text-sm text-black-900 bg-slate-200 border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                        placeholder="Leave a comment regarding this particular submission."
+                        formControlName="comments" required></textarea>
+                </div>
+                <div class="flex justify-center dark:border-gray-600 py-2">
+                    <button type="submit"
+                        class="text-white p-2 px-5 bg-blue-600 shadow-sm hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
+                        Submit Comment
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white inline" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                            viewBox="0 0 24 24">
+                            <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="flex justify-end dark:border-gray-600">
-                <button type="submit"
-                    class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
-                    Submit
-                </button>
-            </div>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>

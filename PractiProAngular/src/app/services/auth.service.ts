@@ -95,6 +95,49 @@ export class AuthService {
   getAllAdmins() {
     return this.http.get<any>(`${this.apiurl}/admin`);
   }
+
+
+  getReqComments(id: number) {
+    return this.http.get<any>(`${this.apiurl}/getrequirementscomments/${id}`);
+  }
+  getDocComments(id: number) {
+    return this.http.get<any>(`${this.apiurl}/getdocumentationcomments/${id}`);
+  }
+  getDtrComments(id: number) {
+    return this.http.get<any>(`${this.apiurl}/getdtrcomments/${id}`);
+  }
+  getWarComments(id: number) {
+    return this.http.get<any>(`${this.apiurl}/getwarcomments/${id}`);
+  }
+  getRepComments(id: number) {
+    return this.http.get<any>(`${this.apiurl}/getfinalreportcomments/${id}`);
+  }
+  getComments($table: any, id: number) {
+    let url;
+    switch ($table) {
+      case 'requirements':
+        url = `${this.apiurl}/getrequirementscomments/${id}`;
+        break;
+      case 'documentations':
+        url = `${this.apiurl}/getdocumentationcomments/${id}`;
+        break;
+      case 'dtr':
+        url = `${this.apiurl}/getdtrcomments/${id}`;
+        break;
+      case 'war':
+        url = `${this.apiurl}/getwarcomments/${id}`;
+        break;
+      case 'finalreports':
+        url = `${this.apiurl}/getfinalreportcomments/${id}`;
+        break;
+      default:
+        throw new Error(`Invalid table: ${$table}`);
+    }
+    return this.http.get<any>(url);
+  }
+
+
+
   //Get Coordinators
   getAdvisors(id: any = null) {
     if (id) {
@@ -114,6 +157,10 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/classesbycoordinator/${Id}`);
   }
 
+
+  addOjtSite(id:number, inputdata: any) {
+    return this.http.post(`${this.apiurl}/ojtsite/${id}`, inputdata);
+  }
   addClass(inputdata: any) {
     return this.http.post(`${this.apiurl}/addclass`, inputdata);
   }
@@ -145,6 +192,7 @@ export class AuthService {
       return this.http.get<any>(`${this.apiurl}/student-documentation`);
     }
   }
+
   getDtrByUser(Id: any) {
     if (Id) {
       return this.http.get<any>(`${this.apiurl}/student-dtr/${Id}`);
@@ -153,6 +201,7 @@ export class AuthService {
       return this.http.get<any>(`${this.apiurl}/student-dtr`);
     }
   }
+
   getWarByUser(Id: any) {
     if (Id) {
       return this.http.get<any>(`${this.apiurl}/student-war/${Id}`);
@@ -292,12 +341,31 @@ export class AuthService {
     return this.http.post(`${this.apiurl}/assignclassstudent/${id}`, inputdata);
   }
 
-  addSubmissionComment(submission: string, id: number, inputdata: any) {
-    switch (submission) {
-
+  addComment($table: any, id: number, inputdata: any) {
+    let url;
+    switch ($table) {
+      case 'requirements':
+        url = `${this.apiurl}/addcommentrequirement/${id}`;
+        break;
+      case 'documentations':
+        url = `${this.apiurl}/addcommentdocumentation/${id}`;
+        break;
+      case 'dtr':
+        url = `${this.apiurl}/addcommentdtr/${id}`;
+        break;
+      case 'war':
+        url = `${this.apiurl}/addcommentwar/${id}`;
+        break;
+      case 'finalreports':
+        url = `${this.apiurl}/addcommentfinal/${id}`;
+        break;
+      default:
+        throw new Error(`Invalid table: ${$table}`);
     }
-    return this.http.post(`${this.apiurl}/assignclasscoordinator`, inputdata);
+    return this.http.post(url, inputdata);
   }
+  
+
 
   getAvatar(userId: number) {
     return this.http.get(`${this.apiurl}/getavatar/${userId}`, { responseType: 'blob' });

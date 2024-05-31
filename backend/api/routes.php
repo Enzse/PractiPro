@@ -281,6 +281,47 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'getrequirementscomments':
+                if (isset($request[1])) {
+                    echo json_encode($get->getSubmissionComments($request[1], 'comments_requirements'));
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'getdocumentationcomments':
+                if (isset($request[1])) {
+                    echo json_encode($get->getSubmissionComments($request[1], 'comments_documentation'));
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'getdtrcomments':
+                if (isset($request[1])) {
+                    echo json_encode($get->getSubmissionComments($request[1], 'comments_dtr'));
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'getwarcomments':
+                if (isset($request[1])) {
+                    echo json_encode($get->getSubmissionComments($request[1], 'comments_war'));
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'getfinalreportcomments':
+                if (isset($request[1])) {
+                    echo json_encode($get->getSubmissionComments($request[1], 'comments_finalreports'));
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
             default:
                 echo "This is forbidden";
                 http_response_code(403);
@@ -347,6 +388,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'adduser':
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->add_user($data));
+                break;
+            case 'ojtsite':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->addOjtSite($request[1], $data));
                 break;
             case 'addclass':
                 // Return JSON-encoded data for adding users

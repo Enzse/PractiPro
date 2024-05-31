@@ -52,6 +52,34 @@ class Post extends GlobalMethods
 
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
+    public function addOjtSite($student_id, $data)
+    {
+        $sql = "INSERT INTO ojt_sites(student_id, company_name, address, job_title, job_description, supervisor_name, supervisor_email, supervisor_phone)
+        VALUES (?, ?, ? ,?, ?, ?, ?, ?)";
+        try {
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [   
+                    $student_id,
+                    $data->company_name,
+                    $data->address,
+                    $data->job_title,
+                    $data->job_description,
+                    $data->supervisor_name,
+                    $data->supervisor_email,
+                    $data->supervisor_phone,
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully created a new record", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+        }
+
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
+    
     public function add_class($data)
     {
         $sql = "INSERT INTO class_blocks(block_name, department, course, year_level)
@@ -241,7 +269,7 @@ class Post extends GlobalMethods
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
-                    $data->comment,
+                    $data->comments,
                     $submissionId,
                     $data->commenter
                 ]

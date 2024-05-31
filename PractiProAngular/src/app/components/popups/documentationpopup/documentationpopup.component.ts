@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { saveAs } from 'file-saver';
 import { PdfviewerComponent } from '../pdfviewer/pdfviewer.component';
+import { CommentspopupComponent } from '../commentspopup/commentspopup.component';
 
 @Component({
   selector: 'app-documentationpopup',
@@ -26,18 +27,19 @@ export class DocumentationpopupComponent {
   studentSubmissions: any[] = [];
 
   ngOnInit(): void {
-    console.log(this.data.usercode)
-    if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getDocumentationsByUser(this.data.usercode).subscribe(
-        (data: any[]) => {
-          this.studentSubmissions = data;
-          console.log(this.studentSubmissions);
-        },
-        (error: any) => {
-          console.error('Error fetching student submissions:', error);
-        }
-      );
-    }
+    this.loadData();
+  }
+
+  loadData(){
+    this.service.getDocumentationsByUser(this.data.usercode).subscribe(
+      (data: any[]) => {
+        this.studentSubmissions = data;
+        console.log(this.studentSubmissions);
+      },
+      (error: any) => {
+        console.error('Error fetching student submissions:', error);
+      }
+    );
   }
 
   viewFile(submissionId: number, submissionName: string) {
@@ -56,6 +58,22 @@ export class DocumentationpopupComponent {
         console.error('Error viewing submission:', error);
       }
     );
+  }
+
+  viewComments(submissionId: number, fileName: string) {
+    const popup = this.dialog2.open(CommentspopupComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "500ms",
+      width: "95%",
+      data: {
+        submissionID: submissionId,
+        fileName: fileName,
+        table: 'documentations'
+      }
+    })
+    popup.afterClosed().subscribe(res => {
+      this.loadData()
+    });
   }
 
   downloadSubmission(submissionId: number, submissionName: string) {
