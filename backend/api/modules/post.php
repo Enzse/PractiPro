@@ -11,47 +11,104 @@ class Post extends GlobalMethods
         $this->pdo = $pdo;
     }
 
-  
 
-     public function doesEmailExist($email)
-     {
-         $sql = "SELECT email FROM user WHERE email = ?";
-         try {
-             $stmt = $this->pdo->prepare($sql);
-             $stmt->execute([$email]);
-             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-             return $result; // Return email or null
-         } catch (PDOException $e) {
-             // Handle database error
-             return array();
-         }
-     }
 
-    public function add_user($data)
+    public function doesEmailExist($email)
     {
-        $sql = "INSERT INTO user(firstName, lastName, email, password)
-        VALUES (?, ?, ? ,?)";
+        $sql = "SELECT email FROM user WHERE email = ?";
         try {
-            //hash the password.
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$email]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result; // Return email or null
+        } catch (PDOException $e) {
+            // Handle database error
+            return array();
+        }
+    }
+
+    public function registerUser($data)
+    {
+        $sql = "INSERT INTO user(firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
+        try {
             $hashed_password = password_hash($data->password, PASSWORD_DEFAULT);
 
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(
-                [
-                    $data->firstName,
-                    $data->lastName,
-                    $data->email,
-                    $hashed_password
-                ]
-            );
-            return $this->sendPayload(null, "success", "Successfully created a new record", 200);
+            $stmt->execute([
+                $data->firstName,
+                $data->lastName,
+                $data->email,
+                $hashed_password,
+                $data->role
+            ]);
+
+            switch ($data->role) {
+                case 'student':
+                    $sql = "UPDATE students SET studentId = ?, program = ?, year = ? WHERE email = ?";
+                    try {
+                        $stmt = $this->pdo->prepare($sql);
+                        $stmt->execute([
+                            $data->studentId,
+                            $data->program,
+                            $data->year,
+                            $data->email
+                        ]);
+                        return $this->sendPayload(null, "success", "Successfully registered student", 200);
+                    } catch (PDOException $e) {
+                        $errmsg = $e->getMessage();
+                        $code = 400;
+                        return $this->sendPayload(null, "failed", $errmsg, $code);
+                    }
+
+                case 'advisor':
+                    $sql = "UPDATE coordinators SET department = ? WHERE email = ?";
+                    try {
+                        $stmt = $this->pdo->prepare($sql);
+                        $stmt->execute(
+                            [
+                                $data->department,
+                                $data->email
+                            ]
+                        );
+                        return $this->sendPayload(null, "success", "Successfully registered advisor", 200);
+                    } catch (PDOException $e) {
+                        $errmsg = $e->getMessage();
+                        $code = 400;
+                        return $this->sendPayload(null, "failed", $errmsg, $code);
+                    }
+                
+                case 'supervisor':
+                    $sql = "UPDATE supervisors SET company = ?, position = ?, phone = ? WHERE email = ?";
+                    try {
+                        $stmt = $this->pdo->prepare($sql);
+                        $stmt->execute(
+                            [
+                                $data->company,
+                                $data->position,
+                                $data->phone,
+                                $data->email
+                            ]
+                        );
+                        return $this->sendPayload(null, "success", "Successfully registered supervisor", 200);
+                    } catch (PDOException $e) {
+                        $errmsg = $e->getMessage();
+                        $code = 400;
+                        return $this->sendPayload(null, "failed", $errmsg, $code);
+                    }
+
+
+                default:
+                    return $this->sendPayload(null, "failed", "Unknown role: " . $data->role, 400);
+            }
+
         } catch (PDOException $e) {
             $errmsg = $e->getMessage();
             $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code); 
         }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
     }
+
+
     public function addOjtSite($student_id, $data)
     {
         $sql = "INSERT INTO ojt_sites(student_id, company_name, address, job_title, job_description, supervisor_name, supervisor_email, supervisor_phone)
@@ -60,7 +117,7 @@ class Post extends GlobalMethods
 
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
-                [   
+                [
                     $student_id,
                     $data->company_name,
                     $data->address,
@@ -79,7 +136,7 @@ class Post extends GlobalMethods
 
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
-    
+
     public function add_class($data)
     {
         $sql = "INSERT INTO class_blocks(block_name, department, course, year_level)
@@ -113,7 +170,7 @@ class Post extends GlobalMethods
             $stmt->execute(
                 [
                     $data->coordinator_id,
-                    $data->block_name                   
+                    $data->block_name
                 ]
             );
             return $this->sendPayload(null, "success", "Successfully created a new record", 200);
@@ -130,7 +187,7 @@ class Post extends GlobalMethods
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
-                [                
+                [
                     $data->block_name,
                     $id
                 ]

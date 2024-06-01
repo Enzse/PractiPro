@@ -85,7 +85,6 @@ export class InspectprofilepopupComponent {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
       width: "80%",
-      // height: "70%",
       data: {
         usercode: code
       }

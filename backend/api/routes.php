@@ -335,7 +335,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
         $data = json_decode(file_get_contents("php://input"));
         switch ($request[0]) {
 
-
             case 'emailcheck':
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->doesEmailExist($data->email));
@@ -384,10 +383,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode(["message" => "An error occurred: " . $e->getMessage()]);
                 }
                 break;
-
-            case 'adduser':
+        
+            case 'registeruser':
                 // Return JSON-encoded data for adding users
-                echo json_encode($post->add_user($data));
+                echo json_encode($post->registerUser($data));
                 break;
             case 'ojtsite':
                 // Return JSON-encoded data for adding users

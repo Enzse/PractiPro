@@ -4,16 +4,18 @@
 
 <div class="absolute bottom-4 right-4 font-primary">
   <a routerLink="/PractiPro" routerLinkActive="active" class="flex items-center text-gray-900 dark:text-white">
-    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+      height="24" fill="none" viewBox="0 0 24 24">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
     </svg>
-    
-    
+
+
     <span class="ml-2 hidden sm:block">About</span>
   </a>
 </div>
 
-<div class="h-screen grid place-content-center grid-cols-2 max-sm:flex-col max-sm:mb-10 max-sm:flex">
+<div class="h-screen grid overflow-hidden place-content-center grid-cols-2 max-sm:flex-col max-sm:mb-10 max-sm:flex">
   <div class="h-screen flex mx-auto justify-center mr-5 flex-col max-sm:w-7/12 max-sm:mx-auto max-sm:h-3/6">
     <img class="max-sm:sm:mb-3 size-fit max-sm:mt-16" src="../../../assets/logo.png" alt="" />
     <h1 class="text-center -mt-2  text-4xl font-primary max-sm:text-3xl">
@@ -22,7 +24,7 @@
   </div>
 
   <div class="flex mx-auto max-sm:mt-4 mt-8 justify-center h-screen items-center w-3/5 font-secondary">
-    <form [formGroup]="loginform" (ngSubmit)="onLogin2()" class="max-w-md w-full max-sm:mb-24">
+    <form [formGroup]="loginform" class="max-w-md w-full max-sm:mb-24">
       <!-- email -->
       <div class="relative z-0 w-full mb-5 group">
         <label for="floating_email" class="block text-sm text-gray-700 mb-1">Email</label>
@@ -42,16 +44,13 @@
 
       <!-- register -->
       <div class="flex items-end justify-end mb-5 gap-1 ">
-        <a routerLink="/registration" routerLinkActive="active"
-        class="hover:underline text-blue-900 hover:text-blue-950 font-bold">    
-        <!-- <svg class="w-5 h-5 text-gray-800 dark:text-white inline-flex -mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12h4m-2 2v-4M4 18v-1a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v1a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1Zm8-10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-        </svg>       -->
-        <span>Register</span>
-      </a>
+        <button (click)="registerUser()" class="hover:underline text-blue-900 hover:text-blue-950 font-bold">
+          <span>Register</span>
+
+        </button>
       </div>
       <!-- login -->
-      <button type="submit"
+      <button (click)="onLogin2()"
         class="block mx-auto text-white hover:bg-blue-800 bg-blue-950 focus:outline-none focus:bg-blue-800 font-medium rounded-3xl textsm w-full sm:w-auto px-16 py-2 text-center mb-10">
         Login
       </button>

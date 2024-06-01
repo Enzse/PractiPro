@@ -7,6 +7,9 @@ import { JwtService } from '../../services/jwt.service';
 import Swal from 'sweetalert2';
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
+import { MatDialog } from '@angular/material/dialog';
+import { UpdatepopupComponent } from '../page-admin/updatepopup/updatepopup.component';
+import { ChooseRolePopupComponent } from '../popups/choose-role-popup/choose-role-popup.component';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +19,7 @@ import { initFlowbite } from 'flowbite';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private jwtservice: JwtService) {
+  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private jwtservice: JwtService, private dialog: MatDialog) {
     sessionStorage.clear();
   }
 
@@ -82,6 +85,20 @@ export class LoginComponent {
       };
     });
   }
+
+  registerUser() {
+    const popup = this.dialog.open(ChooseRolePopupComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "300ms",
+      width: 'auto',
+      data: {
+      }
+    })
+
+    
+  }
+
+
 }
 
 

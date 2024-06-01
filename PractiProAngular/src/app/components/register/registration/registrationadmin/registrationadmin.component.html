@@ -1,0 +1,78 @@
+<div class="relative">
+  
+    <div class="w-2/4 fixed inset-0 bg-cover bg-right blur-md" style="background-image: url('../../../assets/logo.png')">
+    </div>
+    <div class="relative z-10">
+      <!-- background -->
+      <div class="background"></div>
+      <!-- content -->
+      <div class="h-screen grid place-content-center sm:grid-cols-2 maxsm:flex max-sm:flex-col max-sm:mb-10">
+  
+        <div class="absolute top-4 left-4 font-primary">
+          <a routerLink="/login" routerLinkActive="active" class="flex items-center text-gray-900 dark:text-white">
+            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7"/>
+            </svg>
+            
+            <span class="ml-2 hidden sm:block">Login</span>
+          </a>
+        </div>
+  
+        <div class="h-auto flex mx-auto mb-auto justify-center flex-col max-sm:mx-auto">
+          <img src="../../../assets/logo.png" class="max-sm:sm:mb-3 max-sm:mt-16" alt="PractiPro" />
+          <h1 class="text-center -mt-5 text-4xl font-primary">
+            Practi<span class="text-orange-500">Pro</span>
+          </h1>
+        </div>
+        <div class="p-10 font-secondary">
+          <form [formGroup]="registerform" (ngSubmit)="proceedregistration()">
+            <div class="grid gap-2 mb-6 md:grid-cols-2">
+              <div>
+                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
+                  name</label>
+                <input type="text" id="first_name"
+                  class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="First name" formControlName="firstName" />
+              </div>
+              <div>
+                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
+                  name</label>
+                <input type="text" id="last_name"
+                  class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Last name" formControlName="lastName" />
+              </div>
+  
+              <div>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
+                  address</label>
+                <input type="email" id="email"
+                  class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="2022XXXXX@gordoncollege.edu.ph" formControlName="email" />
+              </div>
+            </div>
+            <div class="mb-6">
+              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password <span class="opacity-60">(Requires 1 uppercase letter, 1 lowercase letter, and 1 number)</span></label>
+              <input type="password" id="password"
+                class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="(Please read label for password strength)" formControlName="password" />
+            </div>
+  
+            <div class="flex items-start mb-6">
+              <div class="flex items-center h-5">
+                <input id="remember" type="checkbox" value=""
+                  class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+                  required />
+              </div>
+              <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree that I have
+                provided my information correctly and
+                honestly.</label>
+            </div>
+            <button type="submit"
+              class="text-white bg-blue-950 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

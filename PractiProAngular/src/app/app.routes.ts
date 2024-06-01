@@ -3,7 +3,7 @@ import { coordGuard } from './guard/coord.guard';
 import { adminGuard } from './guard/admin.guard';
 import { studentGuard } from './guard/student.guard';
 import { LoginComponent } from './components/login/login.component';
-import { RegistrationComponent } from './components/registration/registration.component';
+import { RegistrationComponent } from './components/register/registration/registration.component';
 //Student Imports
 import { NavbarComponent } from './components/page-student/navbar/navbar.component';
 import { DashboardComponent } from './components/page-student/dashboard/dashboard.component';
@@ -31,14 +31,20 @@ import { CoordFinalreportComponent } from './components/page-coordinator/coord-f
 import { AdminClassesComponent } from './components/page-admin/admin-classes/admin-classes.component';
 //landing page
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { RegistrationadvisorComponent } from './components/register/registration/registrationadvisor/registrationadvisor.component';
+import { RegistrationadminComponent } from './components/register/registration/registrationadmin/registrationadmin.component';
+import { RegistrationsupervisorComponent } from './components/register/registration/registrationsupervisor/registrationsupervisor.component';
 
 
 export const routes: Routes = [
 
     { path: '', component: LoginComponent, title: 'Login' },
     { path: 'login', component: LoginComponent, title: 'Login' },
-    { path: 'registration', component: RegistrationComponent, title: 'Registration' },
     { path: 'PractiPro', component: LandingPageComponent, title: 'PractiPro' },
+    { path: 'registration', component: RegistrationComponent, title: 'Registration' },
+    { path: 'registrationadvisor', component: RegistrationadvisorComponent, title: 'Registration' },
+    { path: 'registrationadmin', component: RegistrationadminComponent, title: 'Registration' },
+    { path: 'registrationsupervisor', component: RegistrationsupervisorComponent, title: 'Registration' },
 
     //Student Pages
     {

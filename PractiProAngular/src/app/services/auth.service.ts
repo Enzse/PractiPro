@@ -34,7 +34,7 @@ export class AuthService {
     return this.http.post(`${this.apiurl}/emailcheck`, inputdata);
   }
   proceedRegister(inputdata: any) {
-    return this.http.post(`${this.apiurl}/adduser`, inputdata);
+    return this.http.post(`${this.apiurl}/registeruser`, inputdata);
   }
 
 

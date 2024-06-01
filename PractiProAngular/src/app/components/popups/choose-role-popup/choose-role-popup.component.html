@@ -1,0 +1,32 @@
+<div class="font-secondary overflow-auto max-sm:max-h-screen">
+<div class="flex justify-center text-center pt-4 px-5">
+    <h1 class="font-primary text-orange-500 text-lg"><b>For which Role would you be registering for?:</b></h1>
+</div>
+<div class="mb-3 border-b border-gray-300 mt-3"></div>
+<div class="flex max-sm:flex-wrap justify-center pb-7 pt-2 px-8 rounded-xl">
+    <div class="flex justify-center w-full bg-blue-100 opacity-60 hover:opacity-100 hover:shadow-lg m-2 mx-3 p-8 rounded-xl sm:w-1/2 md:w-1/4 lg:w-1/4 xl:w-1/4 ">
+        <a routerLink="/registration" (click)="closePopup()">
+            <img src="../../../assets/roles/student.png" class="h-28 mx-auto mb-2">
+            <h1 class="text-center text-blue-900"><b>Student</b></h1>
+        </a>
+    </div>
+    <div class="flex justify-center w-full bg-blue-100 opacity-60 hover:opacity-100 hover:shadow-lg m-2 mx-3 p-8 rounded-xl sm:w-1/2 md:w-1/4 lg:w-1/4 xl:w-1/4 ">
+        <a routerLink="/registrationadvisor" (click)="closePopup()">
+            <img src="../../../assets/roles/teacher.png" class="h-28 mx-auto mb-2">
+            <h1 class="text-center text-blue-900"><b>Advisor</b></h1>
+        </a>
+    </div>
+    <div class="flex justify-center w-full bg-blue-100 opacity-60 hover:opacity-100 hover:shadow-lg m-2 mx-3 p-8 rounded-xl sm:w-1/2 md:w-1/4 lg:w-1/4 xl:w-1/4 ">
+        <a routerLink="/registrationsupervisor" (click)="closePopup()">
+            <img src="../../../assets/roles/supervisor.png" class="h-28 mx-auto mb-2">
+            <h1 class="text-center text-blue-900"><b>Supervisor</b></h1>
+        </a>
+    </div>
+    <div class="flex justify-center w-full bg-blue-100 opacity-60 hover:opacity-100 hover:shadow-lg m-2 mx-3 p-8 rounded-xl sm:w-1/2 md:w-1/4 lg:w-1/4 xl:w-1/4 ">
+        <a routerLink="/registrationadmin" (click)="closePopup()">
+            <img src="../../../assets/roles/admin.png" class="h-28 mx-auto mb-2">
+            <h1 class="text-center text-blue-900"><b>Administrator</b></h1>
+        </a>
+    </div>
+</div>
+</div>
