@@ -25,6 +25,7 @@ export class CoordClassesComponent {
 
   datalist: any;
   currentuser: any;
+  
 
   ngOnInit(): void {
     if (this.data.coordinatorId != null && this.data.coordinatorId != '') {
@@ -37,10 +38,12 @@ export class CoordClassesComponent {
     }
   }
 
+  isLoading = true;
   loadData() {
     this.service.getClassesByCoordinator(this.data.coordinatorId).subscribe(
       (res: any) => {
         this.datalist = res?.payload;
+        this.isLoading = false;
         console.log(this.datalist);
       },
       (error: any) => {
