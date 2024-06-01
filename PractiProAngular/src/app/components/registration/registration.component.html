@@ -18,13 +18,13 @@
         </a>
       </div>
 
-      <div class="h-auto flex mx-auto mb-auto justify-center flex-col max-sm:mx-auto">
+      <div class="h-auto flex mx-auto mb-auto justify-center flex-col max-sm:mx-auto max-sm:size-44 max-sm:mt-16">
         <img src="../../../assets/logo.png" class="max-sm:sm:mb-3 max-sm:mt-16" alt="PractiPro" />
-        <h1 class="text-center -mt-5 text-4xl font-primary">
+        <h1 class="text-center -mt-3 text-4xl font-primary max-sm:text-2xl">
           Practi<span class="text-orange-500">Pro</span>
         </h1>
       </div>
-      <div class="p-10 font-secondary">
+      <div class="p-10 max-sm:mt-4 font-secondary">
         <form [formGroup]="registerform" (ngSubmit)="proceedregistration()">
           <div class="grid gap-2 mb-6 md:grid-cols-2">
             <div>
@@ -57,7 +57,7 @@
               placeholder="•••••••••" formControlName="password" />
           </div>
 
-          <div class="flex items-start mb-6">
+          <div class="flex items-start mb-6 ">
             <div class="flex items-center h-5">
               <input id="remember" type="checkbox" value=""
                 class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"

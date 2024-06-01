@@ -22,6 +22,9 @@ export class FinalreportpopupComponent {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<FinalreportpopupComponent>) { }
 
   studentSubmissions: any[] = [];
+  isLoading: boolean = true;
+  studentlist: any;
+  currentBlock: any;
 
   ngOnInit(): void {
     console.log(this.data.usercode)
@@ -29,6 +32,7 @@ export class FinalreportpopupComponent {
       this.service.getFinalReportByUser(this.data.usercode).subscribe(
         (data: any[]) => {
           this.studentSubmissions = data;
+          this.isLoading = false;
           console.log(this.studentSubmissions);
         },
         (error: any) => {

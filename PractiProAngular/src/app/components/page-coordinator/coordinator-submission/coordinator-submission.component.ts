@@ -29,7 +29,7 @@ export class CoordinatorSubmissionComponent implements OnInit {
   studentlist: any;
   searchtext: any;
   currentBlock: any;
-  isLoading: boolean = false;
+  isLoading: boolean = true;
 
   ngOnInit(): void {
     this.blockService.selectedBlock$.subscribe(block => {

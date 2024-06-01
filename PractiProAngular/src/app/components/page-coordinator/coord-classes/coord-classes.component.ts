@@ -25,6 +25,10 @@ export class CoordClassesComponent {
 
   datalist: any;
   currentuser: any;
+  isLoading: boolean = true;
+  studentlist: any;
+  currentBlock: any;
+
 
   ngOnInit(): void {
     if (this.data.coordinatorId != null && this.data.coordinatorId != '') {
@@ -37,10 +41,12 @@ export class CoordClassesComponent {
     }
   }
 
+
   loadData() {
     this.service.getClassesByCoordinator(this.data.coordinatorId).subscribe(
       (res: any) => {
         this.datalist = res?.payload;
+        this.isLoading = false;
         console.log(this.datalist);
       },
       (error: any) => {
@@ -52,6 +58,18 @@ export class CoordClassesComponent {
 
       }
     );
+  }
+
+  loadHeldStudents() {
+    this.isLoading = true;
+    this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+      this.studentlist = res;
+      this.isLoading = false;
+      console.log(this.studentlist);
+    }, err => {
+      this.isLoading = false;
+      console.error(err);
+    });
   }
 
   unassignCoordinator(block: any) {

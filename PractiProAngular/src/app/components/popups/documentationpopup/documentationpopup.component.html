@@ -1,6 +1,11 @@
 <div class="p-3 rounded-md shadow-xl">
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Documentations Submitted:</h1>
-    <div *ngIf="studentSubmissions.length > 0 else noDataMessage" class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
+    <div  class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
+        <div *ngIf="isLoading" class="flex justify-center">
+            <p class="font-secondary text-2xl">Loading...</p>
+          </div>
+        <ng-container *ngIf="!isLoading">
+            <ng-container *ngIf="studentSubmissions.length > 0 else noDataMessage">
         <table mat-table class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -53,6 +58,8 @@
                 </tr>
             </tbody>
         </table>
+    </ng-container>
+</ng-container>
     </div>
 
     <ng-template #noDataMessage>

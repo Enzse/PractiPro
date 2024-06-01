@@ -45,7 +45,7 @@ export class LoginComponent {
           case 'student':
             this.router.navigate(['student-dashboard']);
             break;
-          case 'coordinator':
+          case 'advisor':
             this.router.navigate(['coord-submissions']);
             break;
           default:

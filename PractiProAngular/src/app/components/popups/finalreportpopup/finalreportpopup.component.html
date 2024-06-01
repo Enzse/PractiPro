@@ -1,11 +1,14 @@
 <div class="p-3 rounded-md shadow-xl">
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Final Reports Submitted:</h1>
-    <div *ngIf="studentSubmissions.length > 0 else noDataMessage" class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
+    <div  class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
+        <div *ngIf="isLoading" class="flex justify-center">
+            <p class="font-secondary text-2xl">Loading...</p>
+          </div>
+        <ng-container *ngIf="!isLoading">
+            <ng-container *ngIf="studentSubmissions.length > 0 else noDataMessage">
         <table mat-table class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    
-                    
+                <tr>                    
                     <th scope="col" class="px-6 py-3">
                         File Name
                     </th>
@@ -49,7 +52,11 @@
                 </tr>
             </tbody>
         </table>
+        </ng-container>
+    </ng-container>
     </div>
+
+
     <ng-template #noDataMessage>
         <h1 class="text-center">This student has not submitted any data.</h1>
     </ng-template>

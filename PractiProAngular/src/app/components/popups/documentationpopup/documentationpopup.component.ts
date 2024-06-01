@@ -23,6 +23,9 @@ export class DocumentationpopupComponent {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DocumentationpopupComponent>) { }
 
   studentSubmissions: any[] = [];
+  isLoading: boolean = true;
+  studentlist: any;
+  currentBlock: any;
 
   ngOnInit(): void {
     console.log(this.data.usercode)
@@ -30,6 +33,7 @@ export class DocumentationpopupComponent {
       this.service.getDocumentationsByUser(this.data.usercode).subscribe(
         (data: any[]) => {
           this.studentSubmissions = data;
+          this.isLoading = false;
           console.log(this.studentSubmissions);
         },
         (error: any) => {
