@@ -4,7 +4,7 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FinalreportpopupComponent } from '../../popups/finalreportpopup/finalreportpopup.component';
+import { FinalreportpopupComponent } from '../../popups/popups-coordinator/finalreportpopup/finalreportpopup.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import { BlockService } from '../../../services/block.service';

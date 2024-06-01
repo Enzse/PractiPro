@@ -5,8 +5,8 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
-import { NoticetosupervisorsComponent } from '../../../popups/noticetosupervisors/noticetosupervisors.component';
-import { TermsofserviceComponent } from '../../../popups/termsofservice/termsofservice.component';
+import { NoticetosupervisorsComponent } from '../../../popups/popups-registration/noticetosupervisors/noticetosupervisors.component';
+import { TermsofserviceComponent } from '../../../popups/popups-registration/termsofservice/termsofservice.component';
 
 @Component({
   selector: 'app-registrationsupervisor',
@@ -53,7 +53,11 @@ export class RegistrationsupervisorComponent implements OnInit {
       // Check if the email already exists in the database
       this.service.doesEmailExist(email).subscribe((res: any) => {
         if (res) {
-          alert('Email already exists. Please use a different email address.');
+          Swal.fire({
+            title: "Email already exists!",
+            text: 'Please use a different email address.',
+            icon: "warning"
+          });
         } else {
           // Proceed with registration if email is not already registered
           this.service.proceedRegister(this.registerform.value).subscribe(() => {
@@ -70,7 +74,7 @@ export class RegistrationsupervisorComponent implements OnInit {
     } else {
       Swal.fire({
         title: "Please enter valid data.",
-        text: "Either you missed a form, or your password does not include 1 uppercase and lowercase letter, and 1 number.",
+        text: "Double check the forms to see if you have mistakenly inputted data.",
         icon: "error"
       });
     }

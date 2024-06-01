@@ -10,8 +10,8 @@ import { ReviewsubmissionsComponent } from '../reviewsubmissions/reviewsubmissio
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import { OrdinalPipe } from '../../../ordinal.pipe';
-import { AssignstudentpopupComponent } from '../../popups/assignstudentpopup/assignstudentpopup.component';
-import { InspectprofilepopupComponent } from '../../popups/inspectprofilepopup/inspectprofilepopup.component';
+import { AssignstudentpopupComponent } from '../../popups/popups-admin/assignstudentpopup/assignstudentpopup.component';
+import { InspectprofilepopupComponent } from '../../popups/popups-admin/inspectprofilepopup/inspectprofilepopup.component';
 import Swal from 'sweetalert2';
 
 @Component({

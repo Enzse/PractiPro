@@ -9,7 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdatepopupComponent } from '../page-admin/updatepopup/updatepopup.component';
-import { ChooseRolePopupComponent } from '../popups/choose-role-popup/choose-role-popup.component';
+import { ChooseRolePopupComponent } from '../popups/popups-registration/choose-role-popup/choose-role-popup.component';
 
 @Component({
   selector: 'app-login',

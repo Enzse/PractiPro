@@ -4,7 +4,7 @@ import { AuthService } from '../../../services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { TermsofserviceComponent } from '../../popups/termsofservice/termsofservice.component';
+import { TermsofserviceComponent } from '../../popups/popups-registration/termsofservice/termsofservice.component';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
@@ -45,6 +45,7 @@ export class RegistrationComponent implements OnInit {
     studentId: this.builder.control('', [Validators.required]),
     program: this.builder.control('', [Validators.required]),
     year: this.builder.control('', [Validators.required]),
+    // terms: [false, Validators.requiredTrue]
   });
 
 
@@ -57,7 +58,11 @@ export class RegistrationComponent implements OnInit {
       // Check if the email already exists in the database
       this.service.doesEmailExist(email).subscribe((res: any) => {
         if (res) {
-          alert('Email already exists. Please use a different email address.');
+          Swal.fire({
+            title: "Email already exists!",
+            text: 'Please use a different email address.',
+            icon: "warning"
+          });
         } else {
           // Proceed with registration if email is not already registered
           this.service.proceedRegister(this.registerform.value).subscribe(() => {

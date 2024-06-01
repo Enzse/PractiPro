@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { saveAs } from 'file-saver';
 import Swal from 'sweetalert2';
-import { CommentspopupComponent } from '../../popups/commentspopup/commentspopup.component';
+import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
 
 @Component({
   selector: 'app-documentation',

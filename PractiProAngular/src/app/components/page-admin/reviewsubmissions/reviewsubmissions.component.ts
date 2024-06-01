@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { saveAs } from 'file-saver';
-import { PdfviewerComponent } from '../../popups/pdfviewer/pdfviewer.component';
+import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-reviewsubmissions',

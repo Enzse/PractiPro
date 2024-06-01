@@ -76,7 +76,7 @@ class Post extends GlobalMethods
                         $code = 400;
                         return $this->sendPayload(null, "failed", $errmsg, $code);
                     }
-                
+
                 case 'supervisor':
                     $sql = "UPDATE supervisors SET company = ?, position = ?, phone = ? WHERE email = ?";
                     try {
@@ -96,6 +96,9 @@ class Post extends GlobalMethods
                         return $this->sendPayload(null, "failed", $errmsg, $code);
                     }
 
+                case 'admin':
+                    return $this->sendPayload(null, "success", "Successfully registered admin", 200);
+
 
                 default:
                     return $this->sendPayload(null, "failed", "Unknown role: " . $data->role, 400);
@@ -104,7 +107,7 @@ class Post extends GlobalMethods
         } catch (PDOException $e) {
             $errmsg = $e->getMessage();
             $code = 400;
-            return $this->sendPayload(null, "failed", $errmsg, $code); 
+            return $this->sendPayload(null, "failed", $errmsg, $code);
         }
     }
 
