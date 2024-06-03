@@ -1,19 +1,26 @@
 <!-- <app-navbar></app-navbar> -->
-<div class="p-2 sm:ml-60">
+<div class="p-2 sm:ml-56">
   <div class="p-1 xl:p-10">
     <div>
-      <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
+      <h1 class="indent-3 text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
         Profile
       </h1>
       <div class="border-b border-gray-300"></div>
       <br />
     </div>
-    <div class="flex flex-col max-w-md mx-auto gap-5 sm:gap-5">
-      <div
-        class="bg-slate-50 overflow-x-hidden w-full mx-auto max-w-lg h-auto rounded-lg shadow-md border border-gray-300"
-      >
-        <div class="flex justify-center mt-10 mb-10">
-          <div class="avatar-container">
+
+
+    <!-- whole div -->
+    <div class="p-5 w-11/12 mx-auto overflow-x-auto rounded-md max-lg:bg-slate-50 max-lg:shadow-md max-lg:border-2 max-lg:border-slate-100">
+
+      <!-- information container -->
+      <div class="flex flex-row w-full max-lg:flex-col justify-center max-lg:space-x-0 space-x-3">
+
+        <!-- first container-->
+        <div class="w-full p-3 shadow-md bg-slate-50 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
+
+          <!-- image -->
+          <div class="avatar-container mx-auto">
             <img
               *ngIf="avatarUrl; else placeholder"
               [src]="avatarUrl"
@@ -38,18 +45,14 @@
               </div>
             </label>
           </div>
-        </div>
 
-        <div
-          *ngIf="studentProfile && studentProfile.length > 0"
-          class="w-full bg-gray-50"
-        ></div>
-        <h5
-          class="mb-2 text-xl mt-2 lg:text-2xl font-bold text-gray-900 font-primary text-center"
+          <!-- student information -->
+        <div class="flow-root mt-3">
+          <h5
+          class="mb-2 text-2xl mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center"
         >
           Student Information
         </h5>
-        <div class="flow-root">
           <ul role="list" class="flex flex-col flex-1 px-10">
             <li class="mb-2">
               <div class="flex items-center">
@@ -140,9 +143,12 @@
               </div>
             </li>
           </ul>
-          <hr
-            class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700"
-          />
+        </div>
+
+        </div>
+
+        <!-- second container -->
+        <div class="w-full p-3 flow-root bg-slate-50 border-2 border-slate-100 shadow-md max-lg:shadow-none max-lg:border-0">
           <h5
             class="mb-2 text-2xl mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center"
           >
@@ -197,14 +203,26 @@
               </div>
             </li>
           </ul>
-        </div>
 
-        
-        <div class="pt-2 border-b border-gray-300"></div>
-
-        <div class="flex justify-end pt-4 pb-4 px-4">
+          <!-- hr -->
           
-          <button
+          <hr
+            class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700"
+          />
+
+          <h5
+            class="mb-2 text-2xl mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center"
+          >
+            Company Information
+          </h5>
+
+        </div>
+        
+      </div>
+
+      <!-- edit button -->
+      <div class="flex p-4 justify-end max-lg:p-2">
+        <button
             (click)="editInfo(studentProfile)"
             type="button"
             class="inline-flex items-center py-3 px-4 text-xs font-medium text-center text-white bg-blue-900 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
@@ -215,8 +233,9 @@
           
             Edit Information
           </button>
-        </div>
       </div>
+
     </div>
+
   </div>
 </div>
