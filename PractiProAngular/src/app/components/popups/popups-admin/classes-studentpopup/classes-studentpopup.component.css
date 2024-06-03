@@ -7,6 +7,6 @@
     background-position: center;
     background-size: cover;
     &.avatar-placeholder {
-      background-image: url("../../../../assets/defaultpfp.png");
+      background-image: url("../../../../../assets/defaultpfp.png");
     }
   }

@@ -25,6 +25,7 @@ export class WarpopupcomponentComponent {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<WarpopupcomponentComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
+  isLoading: boolean = true;
 
   ngOnInit(): void {
     this.loadData();
@@ -35,6 +36,7 @@ export class WarpopupcomponentComponent {
     this.service.getWarByUser(this.data.usercode).subscribe(
       (data: any[]) => {
         this.studentSubmissions = data;
+        this.isLoading = false;
         console.log(this.studentSubmissions);
       },
       (error: any) => {

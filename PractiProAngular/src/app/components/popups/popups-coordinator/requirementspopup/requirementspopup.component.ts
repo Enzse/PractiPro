@@ -25,6 +25,7 @@ export class RequirementspopupComponent {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<RequirementspopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
+  isLoading = true;
 
   ngOnInit(): void {
     this.loadData();
@@ -34,6 +35,7 @@ export class RequirementspopupComponent {
     this.service.getRequirementSubmissionsByUser(this.data.usercode).subscribe(
       (res: any[]) => {
         this.studentSubmissions = res;
+        this.isLoading = false;
         console.log(this.studentSubmissions);
       },
       (error: any) => {
