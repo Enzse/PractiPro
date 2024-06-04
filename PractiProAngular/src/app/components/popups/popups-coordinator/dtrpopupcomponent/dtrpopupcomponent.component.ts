@@ -25,6 +25,7 @@ export class DtrpopupcomponentComponent {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DtrpopupcomponentComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
+  isLoading = true;
 
   ngOnInit(): void {
     this.loadData();
@@ -36,6 +37,7 @@ export class DtrpopupcomponentComponent {
     this.service.getDtrByUser(this.data.usercode).subscribe(
       (data: any[]) => {
         this.studentSubmissions = data;
+        this.isLoading = false;
         console.log(this.studentSubmissions);
       },
       (error: any) => {

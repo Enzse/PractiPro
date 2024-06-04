@@ -1,57 +1,56 @@
 <div class="p-3 max-w-screen max-h-screen overflow-auto bg-white shadow-lg rounded-lg">
-    <h1 class="mb-2 text-orange-500 font-bold ml-1">Classes handled by: {{currentuser?.first_name}}
-        {{currentuser?.last_name}}</h1>
-        
+
+    <h1 class="mb-2 text-orange-500 font-bold ml-1">Classes held by: {{currentuser?.first_name}} {{currentuser?.last_name}}</h1>
     <div *ngIf="isLoading" class="flex justify-center">
         <p class="font-secondary text-2xl">Loading...</p>
+      </div>
+      <ng-container *ngIf="!isLoading">
+        <div *ngIf="datalist?.length else noDataMessage">
+        <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+
+                    <th scope="col" class="px-6 py-3">
+                        Block Name
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Course
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Year Level
+                    </th>  
+                    <th scope="col" class="px-6 py-3">
+                        Department
+                    </th>                                       
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of datalist"
+                    class="cursor-pointer hover:bg-blue-100 bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                    (click)="selectClass(data.block_name)">
+                
+                    <td class="px-6 py-4">
+                        {{ data.block_name }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ data.course }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ data.year_level| ordinal }} Year
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ data.department }}
+                    </td>                    
+                    
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <ng-container *ngIf="!isLoading">
-        <div *ngIf="datalist?.length else noDataMessage"
-            class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
-            <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
+</ng-container>
+<div>
+    <ng-template #noDataMessage>
+        <h1 class="text-center">This coordinator currently has no classes being held.</h1>
+    </ng-template>
+</div>
 
-                        <th scope="col" class="px-6 py-3">
-                            Block Name
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Course
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Year Level
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Department
-                        </th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let data of datalist"
-                        class="cursor-pointer hover:bg-blue-100 bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                        (click)="selectClass(data.block_name)">
-
-                        <td class="px-6 py-4">
-                            {{ data.block_name }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ data.course }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ data.year_level| ordinal }} Year
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ data.department }}
-                        </td>
-
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </ng-container>
-    <div>
-        <ng-template #noDataMessage>
-            <h1 class="text-center">This coordinator currently has no classes being held.</h1>
-        </ng-template>
-    </div>

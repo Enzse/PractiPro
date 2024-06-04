@@ -1,7 +1,10 @@
 <div class="p-3 max-w-screen max-h-screen overflow-auto bg-white shadow-lg rounded-lg">
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Requirements Submitted:</h1>
-    <div *ngIf="studentSubmissions.length > 0 else noDataMessage"
-        class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
+    <div *ngIf="isLoading" class="flex justify-center">
+        <p class="font-secondary text-2xl">Loading...</p>
+      </div>
+    <ng-container *ngIf="!isLoading">
+    <ng-container *ngIf="studentSubmissions.length > 0 else noDataMessage">
         <table mat-table
             class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -80,7 +83,8 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </ng-container>
+</ng-container>
 
     <ng-template #noDataMessage>
         <h1 class="text-center">This student has not submitted any data.</h1>
