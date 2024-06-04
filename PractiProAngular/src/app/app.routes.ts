@@ -34,6 +34,10 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { RegistrationadvisorComponent } from './components/register/registration/registrationadvisor/registrationadvisor.component';
 import { RegistrationadminComponent } from './components/register/registration/registrationadmin/registrationadmin.component';
 import { RegistrationsupervisorComponent } from './components/register/registration/registrationsupervisor/registrationsupervisor.component';
+import { SupervisorNavbarComponent } from './components/page-supervisor/supervisor-navbar/supervisor-navbar.component';
+import { supervisorGuard } from './guard/supervisor.guard';
+import { SupervisorDtrComponent } from './components/page-supervisor/supervisor-dtr/supervisor-dtr.component';
+import { SupervisorProfileComponent } from './components/page-supervisor/supervisor-profile/supervisor-profile.component';
 
 
 export const routes: Routes = [
@@ -56,7 +60,7 @@ export const routes: Routes = [
             { path: 'student-profile', component: ProfileComponent, title: 'Profile',  },
             { path: 'student-submission', component: SubmissionComponent, title: 'Submit a File',  },
             { path: 'student-documentation', component: DocumentationComponent, title: 'Documentation',  },
-            { path: 'student-dtr', component: DtrComponent, title: 'Daily Time Record',  },
+            { path: 'student-dtr', component: DtrComponent, title: 'Daily Time Records',  },
             { path: 'student-weekly-report', component: WeeklyAccomplishmentRepComponent, title: 'Weekly Accomplishment Report',  },
             { path: 'student-exit-poll', component: ExitPollComponent, title: 'Exit Poll',  },
             { path: 'student-feedback', component: FeedbackComponent, title: 'Feedback',  },
@@ -84,9 +88,19 @@ export const routes: Routes = [
         children: [
             { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Submissions',  },
             { path: 'coord-documentations', component: CoordDocumentationComponent, title: 'Documentations',  },
-            { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Record',  },
+            { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records',  },
             { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports',  },
             { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports',  },
+        ]
+    },
+    //Supervisor Pages
+    {
+        path: '',
+        component: SupervisorNavbarComponent,  
+        canActivateChild: [supervisorGuard],      
+        children: [
+            { path: 'supervisor-profile', component: SupervisorProfileComponent, title: 'Company Profile',  },
+            { path: 'supervisor-dtr', component: SupervisorDtrComponent, title: 'Daily Time Records',  },
         ]
     },
     { path: '**', redirectTo: 'login', pathMatch: 'full' }

@@ -307,12 +307,9 @@ class Get extends GlobalMethods
     public function get_avatar($id)
     {
         $fileInfo = $this->get_imageData($id);
-
-        // Check if file info exists
         if ($fileInfo) {
             $fileData = $fileInfo['avatar'];
 
-            // Set headers for file download
             header('Content-Type: image/png');
             echo $fileData;
             exit();

@@ -21,20 +21,23 @@ export class AdminUsersComponent implements OnInit {
   constructor(private service: AuthService, private dialog: MatDialog) {
   }
 
-  searchtext: any;
-  userlist: any;
-  userrole: any;
+  searchtext: any; //FOR SEARCH FILTER
+  userlist: any; //ARRAY OF ALL USERS FETCHED FROM DATABASE
+  userrole: any; //ROLE OF USER THE IS LOGGED IN (to check if admin / superadmin)
 
+
+  //This block executes upon opening this page:
   ngOnInit(): void {
     this.loadUsers();
     this.userrole = this.service.GetUserRole();
   }
 
-
+  //This block fetches ALL users from the database:
   loadUsers() {
     const currentUserId = this.service.getCurrentUserId();
     if (currentUserId !== null) {
       this.service.getAllUsers().subscribe((res: any) => {
+        //The "res" variable automatically contains an object that contains the payload(payload = fetched data).
         this.userlist = res.payload.filter((user: any) => user.id !== currentUserId);
         this.userlist = res.payload.filter((user: any) => user.role !== "admin" && user.role !== "superadmin");
         console.log(this.userlist);
@@ -42,7 +45,7 @@ export class AdminUsersComponent implements OnInit {
     }
   }
 
-
+  //"Update" button functionality:
   Updateuser(code: any) {
     const popup = this.dialog.open(UpdatepopupComponent, {
       enterAnimationDuration: "350ms",
@@ -58,11 +61,13 @@ export class AdminUsersComponent implements OnInit {
     });
   }
 
+  //"Update" button restriction
   isUpdateButtonVisible(userRole: string): boolean {
     const currentUserRole = this.service.GetUserRole();
     return (currentUserRole === 'superadmin' && userRole !== 'superadmin') || (currentUserRole === 'admin' && userRole !== 'admin' && userRole !== 'superadmin');
   }
 
+  //"Update" button restriction
   handleDisabledClick() {
     Swal.fire({
       title: "Super Admin Only!",

@@ -41,9 +41,10 @@ export class RegistrationsupervisorComponent implements OnInit {
     password: this.builder.control('', [Validators.required, this.passwordStrength]),
     role: this.builder.control('', [Validators.required]),
 
-    company: this.builder.control('', [Validators.required]),
+    company_name: this.builder.control('', [Validators.required]),
     position: this.builder.control('', [Validators.required]),
     phone: this.builder.control('', [Validators.required]),
+    address: this.builder.control('', [Validators.required]),
   });
 
   proceedregistration() {

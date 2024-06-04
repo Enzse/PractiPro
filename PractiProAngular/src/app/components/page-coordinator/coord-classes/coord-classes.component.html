@@ -1,4 +1,5 @@
 <div class="p-3 max-w-screen max-h-screen overflow-auto bg-white shadow-lg rounded-lg">
+
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Classes held by: {{currentuser?.first_name}} {{currentuser?.last_name}}</h1>
     <div *ngIf="isLoading" class="flex justify-center">
         <p class="font-secondary text-2xl">Loading...</p>
@@ -52,3 +53,4 @@
         <h1 class="text-center">This coordinator currently has no classes being held.</h1>
     </ng-template>
 </div>
+

@@ -1,31 +1,27 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { FilterPipe } from '../../../filter.pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import Swal from 'sweetalert2';
 import { OrdinalPipe } from '../../../ordinal.pipe';
 
 @Component({
   selector: 'app-coord-classes',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, FormsModule, FilterPipe, OrdinalPipe],
+  imports: [CommonModule, MatSelectModule, MatButtonModule, FilterPipe, OrdinalPipe],
   templateUrl: './coord-classes.component.html',
   styleUrl: './coord-classes.component.css'
 })
 export class CoordClassesComponent {
-  constructor(private builder: FormBuilder, private service: AuthService,
+  constructor(private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CoordClassesComponent>) { }
 
   datalist: any;
   currentuser: any;
-  
+  isLoading: boolean = true;
+
 
   ngOnInit(): void {
     if (this.data.coordinatorId != null && this.data.coordinatorId != '') {
@@ -38,8 +34,8 @@ export class CoordClassesComponent {
     }
   }
 
-  isLoading = true;
   loadData() {
+    this.isLoading = true;
     this.service.getClassesByCoordinator(this.data.coordinatorId).subscribe(
       (res: any) => {
         this.datalist = res?.payload;
@@ -47,6 +43,7 @@ export class CoordClassesComponent {
         console.log(this.datalist);
       },
       (error: any) => {
+        this.isLoading = false;
         if (error.status == 404) {
           console.log('No classes found.')
         } else {
@@ -55,26 +52,6 @@ export class CoordClassesComponent {
 
       }
     );
-  }
-
-  unassignCoordinator(block: any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: `You are unassigning ${this.currentuser?.first_name} from ${block}.`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#20284a",
-      confirmButtonText: "Confirm"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.dialog.close();
-        this.service.unassignCoordinator(this.data.coordinatorId, block).subscribe(() => {
-
-
-        });
-      }
-    });
   }
 
   selectClass(block: any) {
