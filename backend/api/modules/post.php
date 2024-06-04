@@ -78,12 +78,30 @@ class Post extends GlobalMethods
                     }
 
                 case 'supervisor':
-                    $sql = "UPDATE supervisors SET company = ?, position = ?, phone = ? WHERE email = ?";
+
+                    $sql = "INSERT INTO industry_partners(company_name, address) VALUES (?, ?)";
+                    try {
+
+                        $stmt = $this->pdo->prepare($sql);
+                        $stmt->execute(
+                            [
+
+                                $data->company_name,
+                                $data->address,
+                            ]
+                        );
+                    } catch (PDOException $e) {
+                        $errmsg = $e->getMessage();
+                        $code = 400;
+                    }
+                    $company_id = $this->pdo->lastInsertId();
+
+                    $sql = "UPDATE supervisors SET company_id = ?, position = ?, phone = ? WHERE email = ?";
                     try {
                         $stmt = $this->pdo->prepare($sql);
                         $stmt->execute(
                             [
-                                $data->company,
+                                $company_id,
                                 $data->position,
                                 $data->phone,
                                 $data->email

@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { BlockService } from '../../../services/block.service';
 
 @Component({
   selector: 'app-supervisor-sidebar',
@@ -12,8 +10,7 @@ import { BlockService } from '../../../services/block.service';
   styleUrl: './supervisor-sidebar.component.css'
 })
 export class SupervisorSidebarComponent {
-  constructor(private service: AuthService, private dialog: MatDialog,
-    private blockService: BlockService) { }
+  constructor(private service: AuthService) { }
 
   selectedStudent: any;
   supervisorId: any;
@@ -22,4 +19,5 @@ export class SupervisorSidebarComponent {
     this.supervisorId = this.service.getCurrentUserId();
     console.log("ID: " + this.supervisorId);
   }
+  
 }

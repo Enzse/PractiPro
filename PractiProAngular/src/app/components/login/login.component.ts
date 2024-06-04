@@ -51,8 +51,11 @@ export class LoginComponent {
           case 'advisor':
             this.router.navigate(['coord-submissions']);
             break;
+          case 'supervisor':
+            this.router.navigate(['supervisor-dtr']);
+            break;
           default:
-            alert("User's role is unassigned, please contact admin to resolve this issue.")
+            alert("User's role is unhandled.")
         }
       } else {
         Swal.fire({
@@ -95,7 +98,7 @@ export class LoginComponent {
       }
     })
 
-    
+
   }
 
 
