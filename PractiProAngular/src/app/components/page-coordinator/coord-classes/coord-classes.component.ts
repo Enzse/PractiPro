@@ -25,6 +25,7 @@ export class CoordClassesComponent {
 
   datalist: any;
   currentuser: any;
+  isLoading: boolean = true;
 
   ngOnInit(): void {
     if (this.data.coordinatorId != null && this.data.coordinatorId != '') {
@@ -38,12 +39,15 @@ export class CoordClassesComponent {
   }
 
   loadData() {
+    this.isLoading = true;
     this.service.getClassesByCoordinator(this.data.coordinatorId).subscribe(
       (res: any) => {
         this.datalist = res?.payload;
+        this.isLoading = false;
         console.log(this.datalist);
       },
       (error: any) => {
+        this.isLoading = false;
         if (error.status == 404) {
           console.log('No classes found.')
         } else {
@@ -52,26 +56,6 @@ export class CoordClassesComponent {
 
       }
     );
-  }
-
-  unassignCoordinator(block: any) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: `You are unassigning ${this.currentuser?.first_name} from ${block}.`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#20284a",
-      confirmButtonText: "Confirm"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.dialog.close();
-        this.service.unassignCoordinator(this.data.coordinatorId, block).subscribe(() => {
-
-
-        });
-      }
-    });
   }
 
   selectClass(block: any) {
