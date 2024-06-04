@@ -9,7 +9,7 @@
     <div class="h-screen">
 
         <!-- header -->
-        <div class="w-full h-16 p-4 flex justify-items-start font-primary">
+        <div class="max-md:mb-4 w-full h-10 p-4 flex justify-items-start font-primary">
 
           <a routerLink="/login" routerLinkActive="active" class="flex flex-row h-7 justify-items-center text-gray-900">
             <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -24,18 +24,18 @@
         </div>
       
         <!-- img and forms div -->
-      <div class="flex-row p-8 mt-10 max-md:flex-col grid grid-flow-col max-md:p-0 max-md:mt-0 max-md:grid-flow-row">
+      <div class="flex-row p-8 max-md:flex-col grid grid-flow-col max-md:p-0 max-xl:mt-0 max-xl:p-0 max-md:grid-flow-row">
         
-        <div class="h-auto text-3xl p-2 my-auto mx-auto text-center size-auto flex justify-center max-md:size-2/4 flex-col max-md:text-2xl">
+        <div class="h-auto text-3xl p-2 -mt-16 mx-16  max-md:my-auto max-md:mx-auto text-center flex justify-center max-md:size-2/4 flex-col max-md:text-2xl">
           <img src="../../../assets/logo.png" class="" alt="PractiPro" />
-          <h1>
+          <h1 class="-mt-8 max-md:-mt-0">
             Practi<span class="text-orange-500">Pro</span>
           </h1>
         </div>
   
   
   
-        <div class="p-10 max-sm:mt-4 max font-secondary">
+        <div class="px-10 py-5 max-sm:mt-4 max font-secondary">
           <form [formGroup]="registerform" (ngSubmit)="proceedregistration()">
             <div class="grid gap-2 mb-6 md:grid-cols-2">
               <div>
