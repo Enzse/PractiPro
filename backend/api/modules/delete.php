@@ -53,30 +53,9 @@ class Delete extends GlobalMethods
     }
 
     public function deleteSubmission($id, $table)
-    {
-        $specificId = null;
-        switch ($table) {
-            case 'documentations':
-                $specificId = 'doc_id';
-                break;
-            case 'submissions':
-                $specificId = 'submission_id';
-                break;
-            case 'dtr':
-                $specificId = 'dtr_id';
-                break;
-            case 'war':
-                $specificId = 'war_id';
-                break;
-            case 'finalreports':
-                $specificId = 'report_id';
-                break;
-            default:
-                $specificId = null;
-                break;
-        }
+    {        
         $sql = "DELETE FROM $table
-                WHERE $specificId = :id";
+                WHERE id = :id";
 
         try {
             $stmt = $this->pdo->prepare($sql);

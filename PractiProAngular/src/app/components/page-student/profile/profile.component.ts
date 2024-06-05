@@ -3,7 +3,7 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { EditinformationpopupComponent } from '../editinformationpopup/editinformationpopup.component';
+import { EditinformationpopupComponent } from '../../popups/popups-student/editinformationpopup/editinformationpopup.component';
 import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import Swal from 'sweetalert2';

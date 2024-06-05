@@ -31,9 +31,9 @@ export class FinalreportpopupComponent {
   }
 
   loadData() {
-    this.service.getFinalReportByUser(this.data.usercode).subscribe(
-      (data: any[]) => {
-        this.studentSubmissions = data;
+    this.service.getSubmissionsByStudent('finalreports', this.data.usercode).subscribe(
+      (res: any) => {
+        this.studentSubmissions = res.payload;
         this.isLoading = false;
         console.log(this.studentSubmissions);
       },
@@ -90,7 +90,7 @@ export class FinalreportpopupComponent {
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 
-        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.report_id === id);
+        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.id === id);
         if (submissionIndex !== -1) {
           this.studentSubmissions[submissionIndex].remarks = newValue;
         }
@@ -107,7 +107,7 @@ export class FinalreportpopupComponent {
       data: {
         submissionID: submissionId,
         fileName: fileName,
-        table: 'finalreports'
+        table: 'comments_finalreports'
       }
     })
     popup.afterClosed().subscribe(res => {

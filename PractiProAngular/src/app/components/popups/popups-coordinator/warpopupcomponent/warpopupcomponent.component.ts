@@ -33,9 +33,9 @@ export class WarpopupcomponentComponent {
 
 
   loadData() {
-    this.service.getWarByUser(this.data.usercode).subscribe(
-      (data: any[]) => {
-        this.studentSubmissions = data;
+    this.service.getSubmissionsByStudent('war', this.data.usercode).subscribe(
+      (res) => {
+        this.studentSubmissions = res.payload;
         this.isLoading = false;
         console.log(this.studentSubmissions);
       },
@@ -93,7 +93,7 @@ export class WarpopupcomponentComponent {
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 
-        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.war_id === id);
+        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.id === id);
         if (submissionIndex !== -1) {
           this.studentSubmissions[submissionIndex].remarks = newValue;
         }
@@ -110,7 +110,7 @@ export class WarpopupcomponentComponent {
       data: {
         submissionID: submissionId,
         fileName: fileName,
-        table: 'war'
+        table: 'comments_war'
       }
     })
     popup.afterClosed().subscribe(res => {

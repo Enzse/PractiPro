@@ -4,7 +4,7 @@ import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
-import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
+import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';

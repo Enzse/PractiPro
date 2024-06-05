@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
-import { EditinformationpopupComponent } from '../../page-student/editinformationpopup/editinformationpopup.component';
+import { EditinformationpopupComponent } from '../../popups/popups-student/editinformationpopup/editinformationpopup.component';
 
 @Component({
   selector: 'app-supervisor-profile',

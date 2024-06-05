@@ -32,9 +32,9 @@ export class DocumentationpopupComponent {
   }
 
   loadData(){
-    this.service.getDocumentationsByUser(this.data.usercode).subscribe(
-      (data: any[]) => {
-        this.studentSubmissions = data;
+    this.service.getSubmissionsByStudent('documentations', this.data.usercode).subscribe(
+      (res: any) => {
+        this.studentSubmissions = res.payload;
         this.isLoading = false;
         console.log(this.studentSubmissions);
       },
@@ -70,7 +70,7 @@ export class DocumentationpopupComponent {
       data: {
         submissionID: submissionId,
         fileName: fileName,
-        table: 'documentations'
+        table: 'comments_documentation'
       }
     })
     popup.afterClosed().subscribe(res => {
@@ -107,7 +107,7 @@ export class DocumentationpopupComponent {
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 
-        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.doc_id === id);
+        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.id === id);
         if (submissionIndex !== -1) {
           this.studentSubmissions[submissionIndex].remarks = newValue;
         }

@@ -1,0 +1,126 @@
+<!-- <app-navbar></app-navbar> -->
+<div class="p-2 sm:ml-60">
+  <div class="p-1 xl:p-10">
+    <div>
+      <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
+        Documentation
+      </h1>
+      <div class="border-b border-gray-300"></div>
+      <br />
+    </div>
+
+    <p class="text-gray-800 font-secondary">
+      Upload clear documents of all your <b>Practicum Documentations</b> here.
+      All documents should be in <b>Portable Document Format(.pdf).</b>
+    </p>
+    <br />
+
+    <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
+      <mat-tab-group (selectedTabChange)="onTabChange($event)">
+        <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
+          <form class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto mt-8">
+            <input type="file" [id]="'week' + weekNumber" [name]="'week' + weekNumber" />
+          </form>
+        </mat-tab>
+      </mat-tab-group>
+      <div class="flex justify-end mr-0 pt-3">
+        <button type="button" (click)="addNewTab()"
+          class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg focus:outline-none mr-5">
+          Add New Week
+        </button>
+        <button type="button" (click)="submitFiles()"
+          class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
+          Submit File
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-20">
+      <div class="border-b border-gray-300"></div>
+      <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4 font-primary">
+        Your Documentations:
+      </h1>
+
+      <br />
+    </div>
+    <div *ngIf="datalist.length > 0; else noDataMessage"
+      class="relative overflow-x-auto shadow-md shadow-slate-200 border border-gray-200 sm:rounded-lg">
+      <table mat-table
+        class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 font-secondary">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3 font-secondary">Week</th>
+            <th scope="col" class="px-6 py-3 font-secondary">File name</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Remarks</th>
+            <th scope="col" class="px-6 py-3 font-secondary">File</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Comments</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of datalist" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <td class="px-6 py-4">Week {{ data.week }}</td>
+            <td class="px-6 py-4">
+              {{ data.file_name }}
+            </td>
+            <td class="px-6 py-4">
+              {{ data.created_at }}
+            </td>
+            <td class="px-6 py-4">
+              <p *ngIf="data.remarks > 0" class="text-green-600">
+                APPROVED
+              </p>
+              <p *ngIf="data.remarks == 0" class="text-gray-800">
+                PENDING
+              </p>
+              <p *ngIf="data.remarks < 0" class="text-orange-500">
+                UNAPPROVED
+              </p>
+            </td>
+            <td class="px-6 py-4">
+              <a (click)="downloadDocumentation(data.id, data.file_name)"
+                class="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-green-900">Download</a>
+            </td>
+
+            <td class="px-6 py-4">
+              <button (click)="viewComments(data.id, data.file_name)"
+                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white inline" aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                    d="M3.559 4.544c.355-.35.834-.544 1.33-.544H19.11c.496 0 .975.194 1.33.544.356.35.559.829.559 1.331v9.25c0 .502-.203.981-.559 1.331-.355.35-.834.544-1.33.544H15.5l-2.7 3.6a1 1 0 0 1-1.6 0L8.5 17H4.889c-.496 0-.975-.194-1.33-.544A1.868 1.868 0 0 1 3 15.125v-9.25c0-.502.203-.981.559-1.331ZM7.556 7.5a1 1 0 1 0 0 2h8a1 1 0 0 0 0-2h-8Zm0 3.5a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2H7.556Z"
+                    clip-rule="evenodd" />
+                </svg>
+
+                <span class="ml-1">{{data.comments}}</span>
+              </button>
+            </td>
+            <td class="px-6 py-4">
+
+              <button
+                class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
+                  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                  viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                    d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                    clip-rule="evenodd" />
+                </svg>
+              </button>
+
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ng-template #noDataMessage>
+    <h1 class="text-center font-secondary">
+      You have not submitted any files yet.
+    </h1>
+  </ng-template>
+</div>
+

@@ -8,13 +8,12 @@ import { RegistrationComponent } from './components/register/registration/regist
 import { NavbarComponent } from './components/page-student/navbar/navbar.component';
 import { DashboardComponent } from './components/page-student/dashboard/dashboard.component';
 import { ProfileComponent } from './components/page-student/profile/profile.component';
-import { SubmissionComponent } from './components/page-student/submission/submission.component';
-import { DocumentationComponent } from './components/page-student/documentation/documentation.component';
-import { DtrComponent } from './components/page-student/dtr/dtr.component';
-import { WeeklyAccomplishmentRepComponent } from './components/page-student/weekly-accomplishment-rep/weekly-accomplishment-rep.component';
-import { ExitPollComponent } from './components/page-student/exit-poll/exit-poll.component';
+import { SubmissionComponent } from './components/page-student/submission-requirement/submission.component';
+import { DocumentationComponent } from './components/page-student/submission-documentation/documentation.component';
+import { DtrComponent } from './components/page-student/submission-dtr/dtr.component';
+import { WeeklyAccomplishmentRepComponent } from './components/page-student/submission-war/weekly-accomplishment-rep.component';
+import { ExitPollComponent } from './components/page-student/submission-finalreport/exit-poll.component';
 import { FeedbackComponent } from './components/page-student/feedback/feedback.component';
-import { AboutusComponent } from './components/page-student/aboutus/aboutus.component';
 //Admin Imports
 import { AdminNavbarComponent } from './components/page-admin/admin-navbar/admin-navbar.component';
 import { AdminUsersComponent } from './components/page-admin/admin-users/admin-users.component';
@@ -64,7 +63,6 @@ export const routes: Routes = [
             { path: 'student-weekly-report', component: WeeklyAccomplishmentRepComponent, title: 'Weekly Accomplishment Report',  },
             { path: 'student-exit-poll', component: ExitPollComponent, title: 'Exit Poll',  },
             { path: 'student-feedback', component: FeedbackComponent, title: 'Feedback',  },
-            { path: 'student-aboutus', component: AboutusComponent, title: 'About us',  },
         ]
     },
     //Admin Pages

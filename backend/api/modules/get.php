@@ -304,9 +304,19 @@ class Get extends GlobalMethods
             return array();
         }
     }
-    public function get_avatar($id)
+
+    public function get_avatar($userId)
     {
-        $fileInfo = $this->get_imageData($id);
+        $columns = "avatar";
+        $condition = "id = $userId";
+        $result = $this->get_records('students', $condition, $columns);
+
+        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['avatar'])) {
+            $fileData = $result['payload'][0]['avatar'];
+            $fileInfo = array("avatar" => $fileData);
+        } else {
+            return array("avatar" => null);
+        }
         if ($fileInfo) {
             $fileData = $fileInfo['avatar'];
 
@@ -316,19 +326,6 @@ class Get extends GlobalMethods
         } else {
             echo "User has not uploaded an avatar yet.";
             http_response_code(404);
-        }
-    }
-    public function get_imageData($userId = null)
-    {
-        $columns = "avatar";
-        $condition = ($userId !== null) ? "id = $userId" : null;
-        $result = $this->get_records('students', $condition, $columns);
-
-        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['avatar'])) {
-            $fileData = $result['payload'][0]['avatar'];
-            return array("avatar" => $fileData);
-        } else {
-            return array("avatar" => null);
         }
     }
 
@@ -357,120 +354,35 @@ class Get extends GlobalMethods
     }
 
 
-    public function get_submission($id = null)
+    public function getStudentSubmission($table, $id = null)
     {
-        $columns = "submission_id, submission_name, file_name, file_type, file_size, user_id";
-        $condition = ($id != null) ? "submission_id=$id" : null;
-        $result = $this->get_records('submissions', $condition, $columns);
+        $columns = null;
 
-        if ($result['status']['remarks'] === 'success') {
-            return $result['payload'];
-        } else {
-            return array();
+        switch ($table) {
+            case 'submissions':
+                $columns = "id, user_id, submission_name, file_name, created_at, remarks, comments";
+                break;
+            case 'finalreports':
+                $columns = "id, user_id, file_name, created_at, remarks, comments";
+                break;
+            default:
+                $columns = "id, user_id, week, file_name, created_at, remarks, comments";
+                break;
         }
-    }
-
-    public function get_submissionByStudent($id = null)
-    {
-        $condition = null;
-        if ($id != null) {
-            $condition = "user_id=$id";
-        }
-        $result = $this->get_records('submissions', $condition);
-
-        if ($result['status']['remarks'] === 'success') {
-
-            $payloadData = $result['payload'];
-
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
-    }
-
-    public function get_documentationByStudent($id = null)
-    {
-        $columns = "doc_id, user_id, week, file_name, created_at, remarks, comments, comments";
         $condition = ($id != null) ? "user_id=$id" : null;
-        $result = $this->get_records('documentations', $condition, $columns);
 
-        if ($result['status']['remarks'] === 'success') {
-            return $result['payload'];
-        } else {
-            return array();
-        }
+        return $this->get_records($table, $condition, $columns);
     }
-    public function get_dtrByStudent($id = null)
+
+    public function getStudentDTR($id = null)
     {
-        $columns = "dtr_id, user_id, week, file_name, created_at, remarks, comments";
         $condition = ($id != null) ? "user_id=$id" : null;
-        $result = $this->get_records('dtr', $condition, $columns);
-
-        if ($result['status']['remarks'] === 'success') {
-            return $result['payload'];
-        } else {
-            return array();
-        }
-    }
-    public function get_warByStudent($id = null)
-    {
-        $columns = "war_id, user_id, week, file_name, created_at, remarks, comments";
-        $condition = ($id != null) ? "user_id=$id" : null;
-        $result = $this->get_records('war', $condition, $columns);
-
-        if ($result['status']['remarks'] === 'success') {
-            return $result['payload'];
-        } else {
-            return array();
-        }
-    }
-
-    public function get_finalReportByStudent($id = null)
-    {
-        $columns = "report_id, user_id, file_name, created_at, remarks, comments";
-        $condition = ($id != null) ? "user_id=$id" : null;
-        $result = $this->get_records('finalreports', $condition, $columns);
-
-        if ($result['status']['remarks'] === 'success') {
-            return $result['payload'];
-        } else {
-            return array();
-        }
+        return $this->get_records('student_dailytimerecords', $condition);
     }
 
 
-
-    public function get_documentation($id = null)
-    {
-        $columns = "doc_id, user_id, week, file_name, file_type, file_size, created_at";
-        $condition = ($id != null) ? "doc_id=$id" : null;
-
-        // Fetch the maximum week number from the database
-        $maxWeekQuery = "SELECT MAX(week) AS max_week FROM documentations";
-        $maxWeekResult = $this->executeQuery($maxWeekQuery);
-        $maxWeek = $maxWeekResult['data'][0]['max_week'];
-
-        // If maxWeek is null, set it to 0
-        if ($maxWeek === null) {
-            $maxWeek = 0;
-        }
-
-        // Generate an array of week numbers from 1 to maxWeek
-        $weekNumbers = range(1, $maxWeek);
-
-        // Return the array directly
-        return $weekNumbers;
-    }
     public function get_studentMaxDocsWeeks($id = null)
     {
-        $columns = "doc_id, user_id, week, file_name, file_type, file_size, created_at";
-        $condition = ($id != null) ? "user_id=$id" : null;
-
         // Fetch the maximum week number from the database
         $maxWeekQuery = "SELECT MAX(week) AS max_week FROM documentations";
 
@@ -487,18 +399,11 @@ class Get extends GlobalMethods
             $weekNumbers = range(1, $maxWeek);
 
         }
-
-        // Generate an array of week numbers from 1 to maxWeek
-
-        // Return the array directly
         return $weekNumbers;
     }
 
     public function get_studentMaxDtrWeeks($id = null)
     {
-        $columns = "dtr_id, user_id, week, file_name, file_type, file_size, created_at";
-        $condition = ($id != null) ? "user_id=$id" : null;
-
         // Fetch the maximum week number from the database
         $maxWeekQuery = "SELECT MAX(week) AS max_week FROM dtr";
 
@@ -515,18 +420,11 @@ class Get extends GlobalMethods
             $weekNumbers = range(1, $maxWeek);
 
         }
-
-        // Generate an array of week numbers from 1 to maxWeek
-
-        // Return the array directly
         return $weekNumbers;
     }
 
     public function get_studentMaxWarWeeks($id = null)
     {
-        $columns = "dtr_id, user_id, week, file_name, file_type, file_size, created_at";
-        $condition = ($id != null) ? "user_id=$id" : null;
-
         // Fetch the maximum week number from the database
         $maxWeekQuery = "SELECT MAX(week) AS max_week FROM war";
 
@@ -543,18 +441,14 @@ class Get extends GlobalMethods
             $weekNumbers = range(1, $maxWeek);
 
         }
-
-        // Generate an array of week numbers from 1 to maxWeek
-
-        // Return the array directly
         return $weekNumbers;
     }
 
 
 
+
+
     // FOR DOWNLOADS!!!!!!!!!
-
-
 
 
     //FOR PDF REQUIREMENT DOWNLOADS
@@ -581,7 +475,7 @@ class Get extends GlobalMethods
     {
         $condition = null;
         if ($id != null) {
-            $condition = "submission_id=$id";
+            $condition = "id=$id";
         }
         $result = $this->get_records('submissions', $condition);
 
@@ -619,7 +513,7 @@ class Get extends GlobalMethods
     {
         $condition = null;
         if ($id != null) {
-            $condition = "doc_id=$id";
+            $condition = "id=$id";
         }
         $result = $this->get_records('documentations', $condition);
 
@@ -657,7 +551,7 @@ class Get extends GlobalMethods
     {
         $condition = null;
         if ($id != null) {
-            $condition = "dtr_id=$id";
+            $condition = "id=$id";
         }
         $result = $this->get_records('dtr', $condition);
 
@@ -695,7 +589,7 @@ class Get extends GlobalMethods
     {
         $condition = null;
         if ($id != null) {
-            $condition = "war_id=$id";
+            $condition = "id=$id";
         }
         $result = $this->get_records('war', $condition);
 
@@ -732,7 +626,7 @@ class Get extends GlobalMethods
     {
         $condition = null;
         if ($id != null) {
-            $condition = "report_id=$id";
+            $condition = "id=$id";
         }
         $result = $this->get_records('finalreports', $condition);
 
@@ -746,8 +640,8 @@ class Get extends GlobalMethods
     }
 
 
-
-    public function getSubmissionComments($id, $table)
+    //HANDLES ALL COMMENTS
+    public function getSubmissionComments($table, $id)
     {
         $condition = null;
         if ($id != null) {

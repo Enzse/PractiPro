@@ -308,29 +308,7 @@ class Post extends GlobalMethods
 
     public function toggleSubmissionRemark($submissionId, $newRemark, $table)
     {
-        $file_id = null;
-        switch ($table) {
-            case 'submissions':
-                $file_id = 'submission_id';
-                break;
-            case 'documentations':
-                $file_id = 'doc_id';
-                break;
-            case 'dtr':
-                $file_id = 'dtr_id';
-                break;
-            case 'war':
-                $file_id = 'war_id';
-                break;
-            case 'finalreports':
-                $file_id = 'report_id';
-                break;
-            default:
-                $file_id = 'id';
-                break;
-
-        }
-        $sql = "UPDATE $table SET remarks = ? WHERE $file_id = ?";
+        $sql = "UPDATE $table SET remarks = ? WHERE id = ?";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([$newRemark, $submissionId]);
@@ -340,7 +318,7 @@ class Post extends GlobalMethods
             return $this->sendPayload(null, "failed", $errmsg, 400);
         }
     }
-    public function addSubmissionComment($submissionId, $data, $table)
+    public function addSubmissionComment($table, $submissionId, $data)
     {
         $sql = "INSERT INTO $table (comments, file_id, commenter) VALUES (?, ?, ?)";
         try {
@@ -352,7 +330,7 @@ class Post extends GlobalMethods
                     $data->commenter
                 ]
             );
-            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+            return $this->sendPayload(null, "success", "Successfully submitted comment", 200);
         } catch (PDOException $e) {
             $errmsg = $e->getMessage();
             $code = 400;

@@ -5,7 +5,7 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
-import { UpdatepopupComponent } from '../updatepopup/updatepopup.component';
+import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';

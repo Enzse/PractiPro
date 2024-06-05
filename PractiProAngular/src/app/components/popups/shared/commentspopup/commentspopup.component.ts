@@ -43,7 +43,7 @@ export class CommentspopupComponent implements OnInit {
   }
 
   loadData() {
-    this.service.getComments(this.data.table, this.fileID).subscribe((res: any) => {
+    this.service.getSubmissionComments(this.data.table, this.fileID).subscribe((res: any) => {
       this.commentsList = res.payload;
       console.log(this.commentsList);
     });

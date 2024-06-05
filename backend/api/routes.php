@@ -143,6 +143,18 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'admin':
+                echo json_encode($get->get_admins());
+                break;
+
+            case 'coordinator':
+                if (count($request) > 1) {
+                    echo json_encode($get->get_coordinators($request[1]));
+                } else {
+                    echo json_encode($get->get_coordinators());
+                }
+                break;
+
             case 'coordinator-students':
                 if (count($request) > 1) {
                     echo json_encode($get->getStudentsByCoordinatorId($request[1]));
@@ -151,65 +163,30 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
-            case 'admin':
-
-                echo json_encode($get->get_admins());
-
-                break;
-
-            case 'coordinator':
-
-                if (count($request) > 1) {
-                    echo json_encode($get->get_coordinators($request[1]));
-                } else {
-                    echo json_encode($get->get_coordinators());
-                }
-                break;
-
-            case 'submission':
-                if (count($request) > 1) {
-                    echo json_encode($get->get_submission($request[1]));
-                } else {
-                    echo json_encode($get->get_submission());
-                }
-                break;
-
             case 'student-submission':
-                if (count($request) > 1) {
-                    echo json_encode($get->get_submissionByStudent($request[1]));
+                if (isset($request[1]) && isset($request[2])) {
+                    echo json_encode($get->getStudentSubmission($request[1], $request[2]));
+                } else if (isset($request[1])) {
+                    echo json_encode($get->getStudentSubmission($request[1]));
                 } else {
-                    echo json_encode($get->get_submissionByStudent());
+                    echo "Insufficient IDs provided.";
                 }
                 break;
 
-            case 'student-documentation':
+            case 'student-dailytimerecord':
                 if (count($request) > 1) {
-                    echo json_encode($get->get_documentationByStudent($request[1]));
+                    echo json_encode($get->getStudentDTR($request[1]));
                 } else {
-                    echo json_encode($get->get_documentationByStudent());
+                    echo json_encode($get->getStudentDTR());
                 }
                 break;
-            case 'student-dtr':
-                if (count($request) > 1) {
-                    echo json_encode($get->get_dtrByStudent($request[1]));
-                } else {
-                    echo json_encode($get->get_dtrByStudent());
-                }
-                break;
-            case 'student-war':
-                if (count($request) > 1) {
-                    echo json_encode($get->get_warByStudent($request[1]));
-                } else {
-                    echo json_encode($get->get_warByStudent());
-                }
-                break;
-            case 'student-finalreport':
-                if (count($request) > 1) {
-                    echo json_encode($get->get_finalReportByStudent($request[1]));
-                } else {
-                    echo json_encode($get->get_finalReportByStudent());
-                }
-                break;
+            // case 'student-dtr':
+            //     if (count($request) > 1) {
+            //         echo json_encode($get->get_dtrByStudent($request[1]));
+            //     } else {
+            //         echo json_encode($get->get_dtrByStudent());
+            //     }
+            //     break;
 
             case 'student-maxdocsweeks':
                 if (count($request) > 1) {
@@ -281,46 +258,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
-            case 'getrequirementscomments':
-                if (isset($request[1])) {
-                    echo json_encode($get->getSubmissionComments($request[1], 'comments_requirements'));
+            case 'submission-comments':
+                if (isset($request[1]) && isset($request[2])) {
+                    echo json_encode($get->getSubmissionComments($request[1], $request[2]));
                 } else {
                     echo "Submission ID not provided";
                     http_response_code(400);
                 }
-                break;
-            case 'getdocumentationcomments':
-                if (isset($request[1])) {
-                    echo json_encode($get->getSubmissionComments($request[1], 'comments_documentation'));
-                } else {
-                    echo "Submission ID not provided";
-                    http_response_code(400);
-                }
-                break;
-            case 'getdtrcomments':
-                if (isset($request[1])) {
-                    echo json_encode($get->getSubmissionComments($request[1], 'comments_dtr'));
-                } else {
-                    echo "Submission ID not provided";
-                    http_response_code(400);
-                }
-                break;
-            case 'getwarcomments':
-                if (isset($request[1])) {
-                    echo json_encode($get->getSubmissionComments($request[1], 'comments_war'));
-                } else {
-                    echo "Submission ID not provided";
-                    http_response_code(400);
-                }
-                break;
-            case 'getfinalreportcomments':
-                if (isset($request[1])) {
-                    echo json_encode($get->getSubmissionComments($request[1], 'comments_finalreports'));
-                } else {
-                    echo "Submission ID not provided";
-                    http_response_code(400);
-                }
-                break;
+                break;            
 
             default:
                 echo "This is forbidden";
@@ -383,7 +328,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode(["message" => "An error occurred: " . $e->getMessage()]);
                 }
                 break;
-        
+
             case 'registeruser':
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->registerUser($data));
@@ -441,7 +386,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for uploading files
                 echo json_encode($post->uploadAvatar($request[1]));
                 break;
-
+            case 'submission-comment':
+                echo json_encode($post->addSubmissionComment($request[1], $request[2], $data));
+                break;
             case 'addcommentrequirement':
                 echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_requirements'));
                 break;

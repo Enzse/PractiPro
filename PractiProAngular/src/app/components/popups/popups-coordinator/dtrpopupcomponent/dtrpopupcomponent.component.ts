@@ -34,9 +34,9 @@ export class DtrpopupcomponentComponent {
 
 
   loadData() {
-    this.service.getDtrByUser(this.data.usercode).subscribe(
-      (data: any[]) => {
-        this.studentSubmissions = data;
+    this.service.getSubmissionsByStudent('dtr', this.data.usercode).subscribe(
+      (res:any) => {
+        this.studentSubmissions = res.payload;
         this.isLoading = false;
         console.log(this.studentSubmissions);
       },
@@ -93,7 +93,7 @@ export class DtrpopupcomponentComponent {
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 
-        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.dtr_id === id);
+        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.id === id);
         if (submissionIndex !== -1) {
           this.studentSubmissions[submissionIndex].remarks = newValue;
         }
@@ -110,7 +110,7 @@ export class DtrpopupcomponentComponent {
       data: {
         submissionID: submissionId,
         fileName: fileName,
-        table: 'dtr'
+        table: 'comments_dtr'
       }
     })
     popup.afterClosed().subscribe(res => {

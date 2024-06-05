@@ -13,7 +13,7 @@ import { FilterPipe } from '../../../../filter.pipe';
 import { OrdinalPipe } from '../../../../ordinal.pipe';
 import { initFlowbite } from 'flowbite';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { SelectstudentspopupComponent } from '../../selectstudentspopup/selectstudentspopup.component';
+import { SelectstudentspopupComponent } from '../selectstudentspopup/selectstudentspopup.component';
 
 @Component({
   selector: 'app-assignstudentpopup',

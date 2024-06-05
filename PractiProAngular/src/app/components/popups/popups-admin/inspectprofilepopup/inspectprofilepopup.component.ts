@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import { EditinformationpopupComponent } from '../../../page-student/editinformationpopup/editinformationpopup.component';
+import { EditinformationpopupComponent } from '../../popups-student/editinformationpopup/editinformationpopup.component';
 
 @Component({
   selector: 'app-inspectprofilepopup',
