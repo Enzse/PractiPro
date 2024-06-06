@@ -13,11 +13,12 @@ import { FilterPipe } from '../../../filter.pipe';
 import { DeptpopupComponent } from '../../popups/popups-admin/deptpopup/deptpopup.component';
 import { AssigncoordpopupComponent } from '../../popups/popups-admin/assigncoordpopup/assigncoordpopup.component';
 import { CheckclassesComponent } from '../../popups/popups-admin/checkclasses/checkclasses.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-admin-coordinators',
   standalone: true,
-  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent],
+  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent, NgxPaginationModule],
   templateUrl: './admin-coordinators.component.html',
   styleUrl: './admin-coordinators.component.css'
 })
@@ -31,6 +32,7 @@ export class AdminCoordinatorsComponent {
   userlist: any;
   dataSource: any;
   searchtext: any;
+  p: number = 1; /* starting no. of the list */
 
 
 
