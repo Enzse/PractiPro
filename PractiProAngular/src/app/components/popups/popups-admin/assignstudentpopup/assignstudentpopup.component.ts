@@ -34,7 +34,7 @@ export class AssignstudentpopupComponent {
     this.service.getClasses().subscribe(res => {
       this.classlist = res;
     });
-    this.service.getAllStudents().subscribe(res => {
+    this.service.getStudent().subscribe(res => {
 
       this.studentlist = res;
 

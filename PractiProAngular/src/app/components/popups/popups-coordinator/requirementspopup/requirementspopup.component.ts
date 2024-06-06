@@ -44,8 +44,8 @@ export class RequirementspopupComponent {
     );
   }
 
-  viewFile(submissionId: number, submissionName: string) {
-    this.service.downloadRequirement(submissionId).subscribe(
+  viewFile(submissionId: number) {
+    this.service.getSubmissionFile('submissions', submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
           enterAnimationDuration: "0ms",
@@ -63,8 +63,8 @@ export class RequirementspopupComponent {
   }
 
 
-  downloadRequirement(submissionId: number, submissionName: string) {
-    this.service.downloadRequirement(submissionId).subscribe(
+  downloadFile(submissionId: number, submissionName: string) {
+    this.service.getSubmissionFile('submissions', submissionId).subscribe(
       (data: any) => {
         saveAs(data, submissionName);
       },
@@ -105,7 +105,7 @@ export class RequirementspopupComponent {
       submissionId: id,
       newRemark: newValue
     };
-    this.service.toggleReqRemark(requestData).subscribe(
+    this.service.toggleSubmissionRemark('submissions', requestData).subscribe(
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 

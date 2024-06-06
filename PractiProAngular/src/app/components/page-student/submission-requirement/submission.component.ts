@@ -89,8 +89,8 @@ export class SubmissionComponent {
     });
   }
 
-  downloadRequirement(submissionId: number, fileName: string) {
-    this.service.downloadRequirement(submissionId).subscribe(
+  downloadFile(submissionId: number, fileName: string) {
+    this.service.getSubmissionFile('submissions', submissionId).subscribe(
       (data: any) => {
         saveAs(data, fileName);
       },

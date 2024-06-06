@@ -30,7 +30,7 @@ export class WeeklyAccomplishmentRepComponent {
   
   ngOnInit() {
     this.loadData();
-    this.service.getMaxWarWeeks(this.userId).subscribe(
+    this.service.getSubmissionMaxWeeks('war', this.userId).subscribe(
       res => {
         this.tabWeekNumbers = res;
       },
@@ -96,8 +96,8 @@ export class WeeklyAccomplishmentRepComponent {
   }
 
 
-  downloadWar(submissionId: number, fileName: string) {
-    this.service.downloadWar(submissionId).subscribe(
+  downloadFile(submissionId: number, fileName: string) {
+    this.service.getSubmissionFile('war',submissionId).subscribe(
       (data: any) => {
         saveAs(data, fileName);
       },

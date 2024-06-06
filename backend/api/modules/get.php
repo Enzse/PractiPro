@@ -381,263 +381,45 @@ class Get extends GlobalMethods
     }
 
 
-    public function get_studentMaxDocsWeeks($id = null)
-    {
-        // Fetch the maximum week number from the database
-        $maxWeekQuery = "SELECT MAX(week) AS max_week FROM documentations";
-
-        if ($id != null) {
-            $maxWeekQuery .= " WHERE user_id = $id";
-        }
-        $maxWeekResult = $this->executeQuery($maxWeekQuery);
-        $maxWeek = $maxWeekResult['data'][0]['max_week'];
-
-        // If maxWeek is null, set it to 0
-        if ($maxWeek === null) {
-            $weekNumbers = [1];
-        } else {
-            $weekNumbers = range(1, $maxWeek);
-
-        }
-        return $weekNumbers;
-    }
-
-    public function get_studentMaxDtrWeeks($id = null)
-    {
-        // Fetch the maximum week number from the database
-        $maxWeekQuery = "SELECT MAX(week) AS max_week FROM dtr";
-
-        if ($id != null) {
-            $maxWeekQuery .= " WHERE user_id = $id";
-        }
-        $maxWeekResult = $this->executeQuery($maxWeekQuery);
-        $maxWeek = $maxWeekResult['data'][0]['max_week'];
-
-        // If maxWeek is null, set it to 0
-        if ($maxWeek === null) {
-            $weekNumbers = [1];
-        } else {
-            $weekNumbers = range(1, $maxWeek);
-
-        }
-        return $weekNumbers;
-    }
-
-    public function get_studentMaxWarWeeks($id = null)
-    {
-        // Fetch the maximum week number from the database
-        $maxWeekQuery = "SELECT MAX(week) AS max_week FROM war";
-
-        if ($id != null) {
-            $maxWeekQuery .= " WHERE user_id = $id";
-        }
-        $maxWeekResult = $this->executeQuery($maxWeekQuery);
-        $maxWeek = $maxWeekResult['data'][0]['max_week'];
-
-        // If maxWeek is null, set it to 0
-        if ($maxWeek === null) {
-            $weekNumbers = [1];
-        } else {
-            $weekNumbers = range(1, $maxWeek);
-
-        }
-        return $weekNumbers;
-    }
-
-
-
-
-
     // FOR DOWNLOADS!!!!!!!!!
-
-
-    //FOR PDF REQUIREMENT DOWNLOADS
-    public function downloadRequirement($submissionId)
+    public function getSubmissionMaxWeeks($table, $id)
     {
-        $fileInfo = $this->getRequirementData($submissionId);
+        // Fetch the maximum week number from the database.
+        $maxWeekQuery = "SELECT MAX(week) AS max_week FROM $table";
 
-        // Check if file info exists
-        if ($fileInfo) {
-            $fileData = $fileInfo['file_data'];
-            $fileName = $fileInfo['file_name'];
+        if ($id != null) {
+            $maxWeekQuery .= " WHERE user_id = $id";
+        }
+        $maxWeekResult = $this->executeQuery($maxWeekQuery);
+        $maxWeek = $maxWeekResult['data'][0]['max_week'];
 
-            // Set headers for file download
+        // If maxWeek is null, set it to 1
+        if ($maxWeek === null) {
+            $weekNumbers = [1];
+        } else {
+            $weekNumbers = range(1, $maxWeek);
+        }
+        return $weekNumbers;
+    }
+
+    
+    // FOR DOWNLOADS!!!!!!!!!
+    public function getSubmissionFile($table, $id)
+    {
+        $condition = "id=$id";
+        $result = $this->get_records($table, $condition);
+        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
+            $fileData = base64_decode($result['payload'][0]['file_data']);
+            $fileName = $result['payload'][0]['file_name'];
             header('Content-Type: application/pdf');
             header('Content-Disposition: attachment; filename="' . $fileName . '"');
             echo $fileData;
             exit();
         } else {
-            echo "File not found";
-            http_response_code(404);
-        }
-    }
-    public function getRequirementData($id = null)
-    {
-        $condition = null;
-        if ($id != null) {
-            $condition = "id=$id";
-        }
-        $result = $this->get_records('submissions', $condition);
-
-        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
-            $fileData = base64_decode($result['payload'][0]['file_data']);
-            $fileName = $result['payload'][0]['file_name']; // Retrieve the file name
-            return array("file_data" => $fileData, "file_name" => $fileName);
-        } else {
-            return false;
+            echo "File not Found";
         }
     }
 
-
-    //FOR DOCUMENTATIONS
-    public function downloadDocumentation($submissionId)
-    {
-        $fileInfo = $this->getDocumentationData($submissionId);
-
-        // Check if file info exists
-        if ($fileInfo) {
-            $fileData = $fileInfo['file_data'];
-            $fileName = $fileInfo['file_name'];
-
-            // Set headers for file download
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment; filename="' . $fileName . '"');
-            echo $fileData;
-            exit();
-        } else {
-            echo "File not found";
-            http_response_code(404);
-        }
-    }
-    public function getDocumentationData($id = null)
-    {
-        $condition = null;
-        if ($id != null) {
-            $condition = "id=$id";
-        }
-        $result = $this->get_records('documentations', $condition);
-
-        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
-            $fileData = base64_decode($result['payload'][0]['file_data']);
-            $fileName = $result['payload'][0]['file_name']; // Retrieve the file name
-            return array("file_data" => $fileData, "file_name" => $fileName);
-        } else {
-            return false;
-        }
-    }
-
-
-    //FOR DTR
-    public function downloadDtr($submissionId)
-    {
-        $fileInfo = $this->getDtrData($submissionId);
-
-        // Check if file info exists
-        if ($fileInfo) {
-            $fileData = $fileInfo['file_data'];
-            $fileName = $fileInfo['file_name'];
-
-            // Set headers for file download
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment; filename="' . $fileName . '"');
-            echo $fileData;
-            exit();
-        } else {
-            echo "File not found";
-            http_response_code(404);
-        }
-    }
-    public function getDtrData($id = null)
-    {
-        $condition = null;
-        if ($id != null) {
-            $condition = "id=$id";
-        }
-        $result = $this->get_records('dtr', $condition);
-
-        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
-            $fileData = base64_decode($result['payload'][0]['file_data']);
-            $fileName = $result['payload'][0]['file_name']; // Retrieve the file name
-            return array("file_data" => $fileData, "file_name" => $fileName);
-        } else {
-            return false;
-        }
-    }
-
-
-    //FOR WAR
-    public function downloadWar($submissionId)
-    {
-        $fileInfo = $this->getWarData($submissionId);
-
-        // Check if file info exists
-        if ($fileInfo) {
-            $fileData = $fileInfo['file_data'];
-            $fileName = $fileInfo['file_name'];
-
-            // Set headers for file download
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment; filename="' . $fileName . '"');
-            echo $fileData;
-            exit();
-        } else {
-            echo "File not found";
-            http_response_code(404);
-        }
-    }
-    public function getWarData($id = null)
-    {
-        $condition = null;
-        if ($id != null) {
-            $condition = "id=$id";
-        }
-        $result = $this->get_records('war', $condition);
-
-        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
-            $fileData = base64_decode($result['payload'][0]['file_data']);
-            $fileName = $result['payload'][0]['file_name']; // Retrieve the file name
-            return array("file_data" => $fileData, "file_name" => $fileName);
-        } else {
-            return false;
-        }
-    }
-
-    //FOR WAR
-    public function downloadFinalReport($submissionId)
-    {
-        $fileInfo = $this->getFinalReportData($submissionId);
-
-        // Check if file info exists
-        if ($fileInfo) {
-            $fileData = $fileInfo['file_data'];
-            $fileName = $fileInfo['file_name'];
-
-            // Set headers for file download
-            header('Content-Type: application/pdf');
-            header('Content-Disposition: attachment; filename="' . $fileName . '"');
-            echo $fileData;
-            exit();
-        } else {
-            echo "File not found";
-            http_response_code(404);
-        }
-    }
-    public function getFinalReportData($id = null)
-    {
-        $condition = null;
-        if ($id != null) {
-            $condition = "id=$id";
-        }
-        $result = $this->get_records('finalreports', $condition);
-
-        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
-            $fileData = base64_decode($result['payload'][0]['file_data']);
-            $fileName = $result['payload'][0]['file_name']; // Retrieve the file name
-            return array("file_data" => $fileData, "file_name" => $fileName);
-        } else {
-            return false;
-        }
-    }
 
 
     //HANDLES ALL COMMENTS

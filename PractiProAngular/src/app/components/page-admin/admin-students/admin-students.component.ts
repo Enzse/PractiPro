@@ -34,7 +34,7 @@ export class AdminStudentsComponent implements OnInit {
   }
 
   Loaduser() {
-    this.service.getAllStudents().subscribe(res => {
+    this.service.getStudent().subscribe(res => {
       this.studentlist = res;
       this.dataSource = new MatTableDataSource(this.studentlist);
     });

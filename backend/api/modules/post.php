@@ -306,7 +306,7 @@ class Post extends GlobalMethods
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
-    public function toggleSubmissionRemark($submissionId, $newRemark, $table)
+    public function toggleSubmissionRemark($table, $submissionId, $newRemark)
     {
         $sql = "UPDATE $table SET remarks = ? WHERE id = ?";
         try {
@@ -318,6 +318,8 @@ class Post extends GlobalMethods
             return $this->sendPayload(null, "failed", $errmsg, 400);
         }
     }
+
+
     public function addSubmissionComment($table, $submissionId, $data)
     {
         $sql = "INSERT INTO $table (comments, file_id, commenter) VALUES (?, ?, ?)";
@@ -340,7 +342,7 @@ class Post extends GlobalMethods
     }
 
 
-    public function toggleStudentEvaluation($id, $newRemark, )
+    public function toggleStudentEvaluation($id, $newRemark)
     {
 
         $sql = "UPDATE students SET evaluation = ? WHERE id = ?";

@@ -118,14 +118,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_student());
                 }
                 break;
-            case 'studentbycourse':
-                if (isset($request[1])) {
-                    echo json_encode($get->get_studentByCourse($request[1]));
-                } else {
-                    echo "ID not provided";
-                    http_response_code(400);
-                }
-                break;
             case 'studentbycourseandyear':
                 if (isset($request[1]) && isset($request[2])) {
                     echo json_encode($get->get_studentByCourseAndYear($request[1], $request[2]));
@@ -187,77 +179,21 @@ switch ($_SERVER['REQUEST_METHOD']) {
             //         echo json_encode($get->get_dtrByStudent());
             //     }
             //     break;
-
-            case 'student-maxdocsweeks':
-                if (count($request) > 1) {
-                    echo json_encode($get->get_studentMaxDocsWeeks($request[1]));
+            case 'submissionmaxweeks':
+                if (isset($request[1]) && isset($request[2])) {
+                    echo json_encode($get->getSubmissionMaxWeeks($request[1], $request[2]));
                 } else {
-                    echo json_encode($get->get_studentMaxDocsWeeks());
+                    echo "Invalid endpoints provided.";
                 }
-                break;
-
-            case 'student-maxdtrweeks':
-                if (count($request) > 1) {
-                    echo json_encode($get->get_studentMaxDtrWeeks($request[1]));
-                } else {
-                    echo json_encode($get->get_studentMaxDtrWeeks());
-                }
-                break;
-
-            case 'student-maxwarweeks':
-                if (count($request) > 1) {
-                    echo json_encode($get->get_studentMaxWarWeeks($request[1]));
-                } else {
-                    echo json_encode($get->get_studentMaxWarWeeks());
-                }
-                break;
-
-            case 'downloadrequirement':
+                break;            
+            case 'getsubmissionfile':
                 if (isset($request[1])) {
-                    $submissionId = $request[1];
-                    $get->downloadRequirement($submissionId);
+                    echo json_encode($get->getSubmissionFile($request[1], $request[2]));
                 } else {
-                    echo "Submission ID not provided";
+                    echo "Submission ID not provided!";
                     http_response_code(400);
                 }
                 break;
-            case 'downloaddocumentation':
-                if (isset($request[1])) {
-                    $submissionId = $request[1];
-                    $get->downloadDocumentation($submissionId);
-                } else {
-                    echo "Submission ID not provided";
-                    http_response_code(400);
-                }
-                break;
-            case 'downloaddtr':
-                if (isset($request[1])) {
-                    $submissionId = $request[1];
-                    $get->downloadDtr($submissionId);
-                } else {
-                    echo "Submission ID not provided";
-                    http_response_code(400);
-                }
-                break;
-            case 'downloadwar':
-                if (isset($request[1])) {
-                    $submissionId = $request[1];
-                    $get->downloadWar($submissionId);
-                } else {
-                    echo "Submission ID not provided";
-                    http_response_code(400);
-                }
-                break;
-            case 'downloadfinalreport':
-                if (isset($request[1])) {
-                    $submissionId = $request[1];
-                    $get->downloadFinalReport($submissionId);
-                } else {
-                    echo "Submission ID not provided";
-                    http_response_code(400);
-                }
-                break;
-
             case 'submission-comments':
                 if (isset($request[1]) && isset($request[2])) {
                     echo json_encode($get->getSubmissionComments($request[1], $request[2]));
@@ -265,7 +201,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo "Submission ID not provided";
                     http_response_code(400);
                 }
-                break;            
+                break;
 
             default:
                 echo "This is forbidden";
@@ -386,45 +322,19 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for uploading files
                 echo json_encode($post->uploadAvatar($request[1]));
                 break;
+
             case 'submission-comment':
                 echo json_encode($post->addSubmissionComment($request[1], $request[2], $data));
                 break;
-            case 'addcommentrequirement':
-                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_requirements'));
-                break;
-            case 'addcommentdocumentation':
-                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_documentation'));
-                break;
-            case 'addcommentdtr':
-                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_dtr'));
-                break;
-            case 'addcommentwar':
-                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_war'));
-                break;
-            case 'addcommentfinal':
-                echo json_encode($post->addSubmissionComment($request[1], $data, 'comments_finalreports'));
-                break;
-
+            // Toggle the student's status.
             case 'toggleRequirementStatus':
-                // Toggle the requirement status
                 echo json_encode($post->toggleRequirementStatus($data->studentId, $data->requirement, $data->status));
                 break;
-
-            case 'togglerequirementsremark':
-                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'submissions'));
+            // Toggle a student submission's remark.
+            case 'togglesubmissionremark':
+                echo json_encode($post->toggleSubmissionRemark($request[1], $data->submissionId, $data->newRemark));
                 break;
-            case 'toggledocsremark':
-                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'documentations'));
-                break;
-            case 'toggledtrremark':
-                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'dtr'));
-                break;
-            case 'togglewarremark':
-                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'war'));
-                break;
-            case 'togglefinalreportsremark':
-                echo json_encode($post->toggleSubmissionRemark($data->submissionId, $data->newRemark, 'finalreports'));
-                break;
+            // Toggle a student's practicum evaluation.
             case 'togglestudentevaluation':
                 echo json_encode($post->toggleStudentEvaluation($data->id, $data->newEvaluation));
                 break;

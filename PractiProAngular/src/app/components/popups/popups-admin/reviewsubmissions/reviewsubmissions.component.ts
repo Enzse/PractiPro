@@ -36,8 +36,8 @@ export class ReviewsubmissionsComponent implements OnInit {
     );
   }
 
-  downloadRequirement(submissionId: number, submissionName: string) {
-    this.service.downloadRequirement(submissionId).subscribe(
+  downloadFile(submissionId: number, submissionName: string) {
+    this.service.getSubmissionFile('submissions', submissionId).subscribe(
       (data: any) => {
         console.log(data);
         saveAs(data, submissionName);
@@ -48,8 +48,8 @@ export class ReviewsubmissionsComponent implements OnInit {
     );
   }
 
-  viewFile(submissionId: number, submissionName: string) {
-    this.service.downloadRequirement(submissionId).subscribe(
+  viewFile(submissionId: number) {
+    this.service.getSubmissionFile('submissions', submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
           enterAnimationDuration: "0ms",

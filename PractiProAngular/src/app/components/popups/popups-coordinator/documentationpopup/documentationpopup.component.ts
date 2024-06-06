@@ -44,8 +44,8 @@ export class DocumentationpopupComponent {
     );
   }
 
-  viewFile(submissionId: number, submissionName: string) {
-    this.service.downloadDocumentation(submissionId).subscribe(
+  viewFile(submissionId: number) {
+    this.service.getSubmissionFile('documentations', submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
           enterAnimationDuration: "0ms",
@@ -78,8 +78,8 @@ export class DocumentationpopupComponent {
     });
   }
 
-  downloadSubmission(submissionId: number, submissionName: string) {
-    this.service.downloadDocumentation(submissionId).subscribe(
+  downloadFile(submissionId: number, submissionName: string) {
+    this.service.getSubmissionFile('documentations', submissionId).subscribe(
       (data: any) => {
         saveAs(data, submissionName);
       },
@@ -103,7 +103,7 @@ export class DocumentationpopupComponent {
       submissionId: id,
       newRemark: newValue
     };
-    this.service.toggleDocRemark(requestData).subscribe(
+    this.service.toggleSubmissionRemark('documentations',requestData).subscribe(
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 

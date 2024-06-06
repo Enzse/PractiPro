@@ -29,7 +29,7 @@ export class DocumentationComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
-    this.service.getMaxDocsWeeks(this.userId).subscribe(
+    this.service.getSubmissionMaxWeeks('documentations',this.userId).subscribe(
       res => {
         this.tabWeekNumbers = res;
       },
@@ -91,8 +91,8 @@ export class DocumentationComponent implements OnInit {
 
 
 
-  downloadDocumentation(submissionId: number, fileName: string) {
-    this.service.downloadDocumentation(submissionId).subscribe(
+  downloadFile(submissionId: number, fileName: string) {
+    this.service.getSubmissionFile('documentations', submissionId).subscribe(
       (data: any) => {
         saveAs(data, fileName);
       },

@@ -45,8 +45,8 @@ export class WarpopupcomponentComponent {
     );
   }
 
-  viewFile(submissionId: number, submissionName: string) {
-    this.service.downloadWar(submissionId).subscribe(
+  viewFile(submissionId: number) {
+    this.service.getSubmissionFile('war',submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
           enterAnimationDuration: "0ms",
@@ -63,8 +63,8 @@ export class WarpopupcomponentComponent {
     );
   }
 
-  downloadSubmission(submissionId: number, submissionName: string) {
-    this.service.downloadWar(submissionId).subscribe(
+  downloadFile(submissionId: number, submissionName: string) {
+    this.service.getSubmissionFile('war',submissionId).subscribe(
       (data: any) => {
         saveAs(data, submissionName);
       },
@@ -89,7 +89,7 @@ export class WarpopupcomponentComponent {
       submissionId: id,
       newRemark: newValue
     };
-    this.service.toggleWarRemark(requestData).subscribe(
+    this.service.toggleSubmissionRemark('war',requestData).subscribe(
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 

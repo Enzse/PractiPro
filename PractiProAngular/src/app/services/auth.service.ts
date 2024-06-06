@@ -14,7 +14,9 @@ export class AuthService {
 
   // apiurl = 'http://gcpractipro.online/backend/api';
 
-  //User Handlers handlers. 
+
+
+  //User handlers. 
   getUser(id: any) {
     return this.http.get(`${this.apiurl}/user/${id}`);
   }
@@ -69,29 +71,24 @@ export class AuthService {
   GetAllRoles() {
     return this.http.get(`${this.apiurl}/role`);
   }
-  //Get Students
-  getAllStudents() {
-    return this.http.get<any>(`${this.apiurl}/student`);
+  getEmails() {
+    return this.http.get<any>(`${this.apiurl}/email`);
+  }
+  //GET STUDENTS
+  getStudent(id: any = null) {
+    if (id) {
+      return this.http.get<any>(`${this.apiurl}/student/${id}`);
+    } else {
+      return this.http.get<any>(`${this.apiurl}/student`);
+    }
   }
   getAllStudentsFromClass(block: any) {
     return this.http.get<any>(`${this.apiurl}/class-students/${block}`);
   }
-  getEmails() {
-    return this.http.get<any>(`${this.apiurl}/email`);
-  }
-  getStudentsByCoordinator(Id: number) {
-    return this.http.get<any>(`${this.apiurl}/coordinator-students/${Id}`);
-  }
-  getStudentsByCourse(course: any) {
-    return this.http.get<any>(`${this.apiurl}/studentbycourse/${course}`);
-  }
   getStudentsByCourseAndYear(course: any, year: number) {
     return this.http.get<any>(`${this.apiurl}/studentbycourseandyear/${course}/${year}`);
   }
-  getStudent(Id: number) {
-    return this.http.get<any>(`${this.apiurl}/student/${Id}`);
-  }
-  //Get Admins
+  //GET ADMINS
   getAllAdmins() {
     return this.http.get<any>(`${this.apiurl}/admin`);
   }
@@ -99,7 +96,7 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/submission-comments/${table}/${id}`);
   }
 
-  //Get Coordinators
+  //GET ADVISORS
   getAdvisors(id: any = null) {
     if (id) {
       return this.http.get<any>(`${this.apiurl}/coordinator/${id}`);
@@ -107,6 +104,7 @@ export class AuthService {
       return this.http.get<any>(`${this.apiurl}/coordinator`);
     }
   }
+  //GET CLASSES
   getClasses(block: any = null) {
     if (block) {
       return this.http.get<any>(`${this.apiurl}/classes/${block}`);
@@ -134,115 +132,36 @@ export class AuthService {
   UpdateCoordinator(inputdata: any, code: any) {
     return this.http.post(`${this.apiurl}/editcoordinator` + `/` + inputdata, code);
   }
+
+
+
   getSubmissionsByStudent(table: string, userId: number) {
-    if (table) {
+    if (userId) {
       return this.http.get<any>(`${this.apiurl}/student-submission/${table}/${userId}`);
     }
     else {
       return this.http.get<any>(`${this.apiurl}/student-submission/${table}`);
     }
   }
-  getDocumentationsByUser(Id: any) {
-    if (Id) {
-      return this.http.get<any>(`${this.apiurl}/student-documentation/${Id}`);
-    }
-    else {
-      return this.http.get<any>(`${this.apiurl}/student-documentation`);
-    }
-  }
-
-  getDtrByUser(Id: any) {
-    if (Id) {
-      return this.http.get<any>(`${this.apiurl}/student-dtr/${Id}`);
-    }
-    else {
-      return this.http.get<any>(`${this.apiurl}/student-dtr`);
-    }
-  }
-
-  getWarByUser(Id: any) {
-    if (Id) {
-      return this.http.get<any>(`${this.apiurl}/student-war/${Id}`);
-    }
-    else {
-      return this.http.get<any>(`${this.apiurl}/student-war`);
-    }
-  }
-  getFinalReportByUser(Id: any) {
-    if (Id) {
-      return this.http.get<any>(`${this.apiurl}/student-finalreport/${Id}`);
-    }
-    else {
-      return this.http.get<any>(`${this.apiurl}/student-finalreport`);
-    }
-  }
-  getMaxDocsWeeks(Id: any) {
-    if (Id) {
-      return this.http.get<any>(`${this.apiurl}/student-maxdocsweeks/${Id}`);
-    }
-    else {
-      return this.http.get<any>(`${this.apiurl}/student-maxdocsweeks`);
-    }
-  }
-  getMaxDtrWeeks(Id: any) {
-    if (Id) {
-      return this.http.get<any>(`${this.apiurl}/student-maxdtrweeks/${Id}`);
-    }
-    else {
-      return this.http.get<any>(`${this.apiurl}/student-maxdtrweeks`);
-    }
-  }
-  getMaxWarWeeks(Id: any) {
-    if (Id) {
-      return this.http.get<any>(`${this.apiurl}/student-maxwarweeks/${Id}`);
-    }
-    else {
-      return this.http.get<any>(`${this.apiurl}/student-maxwarweeks`);
-    }
+  getSubmissionMaxWeeks(table: string, id: number) {
+    return this.http.get<any>(`${this.apiurl}/submissionmaxweeks/${table}/${id}`);
   }
   toggleRequirementStatus(data: any) {
     return this.http.post(`${this.apiurl}/toggleRequirementStatus`, data);
   }
-  toggleReqRemark(data: any) {
-    return this.http.post(`${this.apiurl}/togglerequirementsremark`, data);
-  }
-  toggleDocRemark(data: any) {
-    return this.http.post(`${this.apiurl}/toggledocsremark`, data);
-  }
-  toggleDtrRemark(data: any) {
-    return this.http.post(`${this.apiurl}/toggledtrremark`, data);
-  }
-  toggleWarRemark(data: any) {
-    return this.http.post(`${this.apiurl}/togglewarremark`, data);
-  }
-  toggleFrRemark(data: any) {
-    return this.http.post(`${this.apiurl}/togglefinalreportsremark`, data);
+  toggleSubmissionRemark(table: string, data: any) {
+    return this.http.post(`${this.apiurl}/togglesubmissionremark/${table}`, data);
   }
   toggleStudentEvaluation(data: any) {
     return this.http.post(`${this.apiurl}/togglestudentevaluation`, data);
   }
-
-  downloadRequirement(submissionId: number) {
-    return this.http.get(`${this.apiurl}/downloadrequirement/${submissionId}`, { responseType: 'blob' });
-  }
-  downloadDocumentation(submissionId: number) {
-    return this.http.get(`${this.apiurl}/downloaddocumentation/${submissionId}`, { responseType: 'blob' });
-  }
-  downloadDtr(submissionId: number) {
-    return this.http.get(`${this.apiurl}/downloaddtr/${submissionId}`, { responseType: 'blob' });
-  }
-  downloadWar(submissionId: number) {
-    return this.http.get(`${this.apiurl}/downloadwar/${submissionId}`, { responseType: 'blob' });
-  }
-  downloadFinalReport(submissionId: number) {
-    return this.http.get(`${this.apiurl}/downloadfinalreport/${submissionId}`, { responseType: 'blob' });
+  getSubmissionFile(table: string, submissionId: number) {
+    return this.http.get(`${this.apiurl}/getsubmissionfile/${table}/${submissionId}`, { responseType: 'blob' });
   }
 
   deleteSubmission(id: any, table: string) {
     return this.http.delete(`${this.apiurl}/deletesubmission/${id}/${table}`);
   }
-
-
   editStudentInfo(inputdata: any, code: any) {
     return this.http.post(`${this.apiurl}/editstudentinfo` + `/` + inputdata, code);
   }

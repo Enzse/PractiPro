@@ -53,36 +53,7 @@ export class ClassesStudentpopupComponent {
 
   }
 
-  downloadSubmission(submissionId: number, submissionName: string) {
-    this.service.downloadDocumentation(submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, submissionName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    );
-  }
-
-  toggleApproval(id: number, currentValue: boolean) {
-    const newValue = currentValue ? 0 : 1; // Flip the current value
-    const requestData = {
-      submissionId: id,
-      newRemark: newValue
-    };
-    this.service.toggleDocRemark(requestData).subscribe(
-      (response) => {
-        console.log('Submission remark toggled successfully:', response);
-
-        const submissionIndex = this.datalist.findIndex(submission => submission.doc_id === id);
-        if (submissionIndex !== -1) {
-          this.datalist[submissionIndex].remarks = newValue;
-        }
-      },
-      (error) => console.error('Error toggling Submission remark:', error)
-    );
-  }
-
+  
   getAvatars() {
     console.log("this works")
   }

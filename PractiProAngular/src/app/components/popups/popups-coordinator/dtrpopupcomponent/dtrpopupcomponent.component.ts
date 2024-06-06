@@ -46,8 +46,8 @@ export class DtrpopupcomponentComponent {
     );
   }
 
-  viewFile(submissionId: number, submissionName: string) {
-    this.service.downloadDtr(submissionId).subscribe(
+  viewFile(submissionId: number) {
+    this.service.getSubmissionFile('dtr', submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
           enterAnimationDuration: "0ms",
@@ -64,8 +64,8 @@ export class DtrpopupcomponentComponent {
     );
   }
 
-  downloadSubmission(submissionId: number, submissionName: string) {
-    this.service.downloadDtr(submissionId).subscribe(
+  downloadFile(submissionId: number, submissionName: string) {
+    this.service.getSubmissionFile('dtr', submissionId).subscribe(
       (data: any) => {
         saveAs(data, submissionName);
       },
@@ -89,7 +89,7 @@ export class DtrpopupcomponentComponent {
       submissionId: id,
       newRemark: newValue
     };
-    this.service.toggleDtrRemark(requestData).subscribe(
+    this.service.toggleSubmissionRemark('dtr', requestData).subscribe(
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 

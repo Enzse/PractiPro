@@ -43,8 +43,8 @@ export class FinalreportpopupComponent {
     );
   }
 
-  viewFile(submissionId: number, submissionName: string) {
-    this.service.downloadFinalReport(submissionId).subscribe(
+  viewFile(submissionId: number) {
+    this.service.getSubmissionFile('finalreports',submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
           enterAnimationDuration: "0ms",
@@ -61,8 +61,8 @@ export class FinalreportpopupComponent {
     );
   }
 
-  downloadSubmission(submissionId: number, submissionName: string) {
-    this.service.downloadFinalReport(submissionId).subscribe(
+  downloadFile(submissionId: number, submissionName: string) {
+    this.service.getSubmissionFile('finalreports', submissionId).subscribe(
       (data: any) => {
         saveAs(data, submissionName);
       },
@@ -86,7 +86,7 @@ export class FinalreportpopupComponent {
       submissionId: id,
       newRemark: newValue
     };
-    this.service.toggleFrRemark(requestData).subscribe(
+    this.service.toggleSubmissionRemark('finalreports',requestData).subscribe(
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 

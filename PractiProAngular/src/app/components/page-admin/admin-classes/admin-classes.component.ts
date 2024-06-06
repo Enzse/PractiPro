@@ -57,7 +57,7 @@ export class AdminClassesComponent {
     const popup = this.dialog.open(AddclassespopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
-      width: "90%",
+      width: 'auto',
       data: {
         // usercode: code
       }

@@ -18,6 +18,9 @@ export class DtrComponent {
 
   public time$: Observable<Date>;
   public dateToday$: Observable<string>;
+  user: any;
+  datalist: any[] = [];
+
 
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.time$ = timer(0, 1000).pipe(
@@ -43,41 +46,12 @@ export class DtrComponent {
 
 
 
-  user: any;
-  datalist: any[] = [];
-
-  loadData() {
-    this.user = this.service.getCurrentUserId();
-    this.service.getDtrByUser(this.user).subscribe(res => {
-      this.datalist = res;
-    });
-  }
 
 
 
 
-  deleteSubmission(submissionId: number) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.service.deleteSubmission(submissionId, 'dtr').subscribe((res: any) => {
-        }, error => {
-          Swal.fire({
-            title: "Successfully Deleted Submission.",
-            icon: "success"
-          });
-          this.loadData();
-        });
-      }
-    });
-  }
+
+
 
   viewComments(submissionId: number, fileName: string) {
     const popup = this.dialog.open(CommentspopupComponent, {
@@ -91,7 +65,7 @@ export class DtrComponent {
       }
     })
     popup.afterClosed().subscribe(res => {
-      this.loadData()
+      // this.loadData()
     });
   }
 

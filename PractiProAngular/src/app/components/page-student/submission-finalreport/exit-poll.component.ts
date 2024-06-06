@@ -79,8 +79,8 @@ export class ExitPollComponent implements OnInit {
   }
 
 
-  downloadFinalReport(submissionId: number, fileName: string) {
-    this.service.downloadFinalReport(submissionId).subscribe(
+  downloadFile(submissionId: number, fileName: string) {
+    this.service.getSubmissionFile('finalreports', submissionId).subscribe(
       (data: any) => {
         saveAs(data, fileName);
       },
