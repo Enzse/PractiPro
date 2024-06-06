@@ -165,27 +165,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
-            case 'student-dailytimerecord':
+            case 'getdtr':
                 if (count($request) > 1) {
                     echo json_encode($get->getStudentDTR($request[1]));
                 } else {
                     echo json_encode($get->getStudentDTR());
                 }
                 break;
-            // case 'student-dtr':
-            //     if (count($request) > 1) {
-            //         echo json_encode($get->get_dtrByStudent($request[1]));
-            //     } else {
-            //         echo json_encode($get->get_dtrByStudent());
-            //     }
-            //     break;
             case 'submissionmaxweeks':
                 if (isset($request[1]) && isset($request[2])) {
                     echo json_encode($get->getSubmissionMaxWeeks($request[1], $request[2]));
                 } else {
                     echo "Invalid endpoints provided.";
                 }
-                break;            
+                break;
             case 'getsubmissionfile':
                 if (isset($request[1])) {
                     echo json_encode($get->getSubmissionFile($request[1], $request[2]));
@@ -306,9 +299,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for uploading files
                 echo json_encode($post->upload_documentation($request[1], $request[2]));
                 break;
-            case 'uploaddtr':
-                // Return JSON-encoded data for uploading files
-                echo json_encode($post->upload_dtr($request[1], $request[2]));
+
+            case 'dtrclockin':
+                echo json_encode($post->dtrClockIn($request[1]));
+                break;
+            case 'dtrclockout':
+                echo json_encode($post->dtrClockOut($request[1]));
                 break;
             case 'uploadwar':
                 // Return JSON-encoded data for uploading files

@@ -1,4 +1,4 @@
-<div class="p-2 sm:ml-56">
+<div class="p-2 sm:ml-56 font-secondary">
   <div class="p-1 xl:p-10">
     <div>
       <h1 class="indent-3 text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
@@ -15,10 +15,6 @@
       <div class="flex flex-row w-full max-lg:flex-col justify-center max-lg:space-x-0 space-x-3">
 
         <div class="w-full p-3 shadow-md bg-slate-50 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
-
-
-
-
           <!-- CONTENT -->
           <div class="flow-root mt-3">
             <!-- DATE TODAY -->
@@ -31,8 +27,8 @@
             </h1>
 
             <div class="flex pt-10 p-4 justify-evenly max-lg:p-2">
-              <button
-                class="inline-flex items-center py-3 px-4 text-xs font-medium text-center text-white bg-orange-500 rounded-lg focus:ring-4 focus:ring-orange-200 dark:focus:ring-orange-700 hover:bg-orange-600">
+              <button (click)="clockIn()"
+                class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-orange-500 rounded-lg focus:ring-4 focus:ring-orange-200 dark:focus:ring-orange-700 hover:bg-orange-600">
                 <svg class="w-4 h-4 mr-1 text-gray-800 dark:text-white" aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
                   <path fill-rule="evenodd"
@@ -41,8 +37,8 @@
                 </svg>
                 Clock In
               </button>
-              <button
-                class="inline-flex items-center py-3 px-4 text-xs font-medium text-center text-white bg-blue-900 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+              <button (click)="clockOut()"
+                class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-blue-900 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                 <svg class="w-4 h-4 mr-1 text-gray-800 dark:text-white" aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
                   <path fill-rule="evenodd"
@@ -54,8 +50,36 @@
             </div>
           </div>
 
+
+
         </div>
       </div>
+
+      <!-- TABLE -->
+      <div class="flex justify-center mt-10 text-center">
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Total Hours</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of datalist">
+              <td>{{ record.date }}</td>
+              <td>{{ record.startTime }}</td>
+              <td>{{ record.endTime }}</td>
+              <td>{{record.totalHours}}</td>
+              <td>{{record.status}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- TABLE -->
+
     </div>
   </div>
 </div>

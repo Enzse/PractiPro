@@ -14,15 +14,16 @@ import { map, shareReplay } from 'rxjs/operators';
   templateUrl: './dtr.component.html',
   styleUrl: './dtr.component.css'
 })
-export class DtrComponent {
+export class DtrComponent implements OnInit {
 
   public time$: Observable<Date>;
   public dateToday$: Observable<string>;
-  user: any;
-  datalist: any[] = [];
+  userId: any
+  datalist:any;
 
 
   constructor(private service: AuthService, private dialog: MatDialog) {
+    this.userId = this.service.getCurrentUserId();
     this.time$ = timer(0, 1000).pipe(
       map(() => new Date()),
       shareReplay(1)
@@ -36,6 +37,57 @@ export class DtrComponent {
       shareReplay(1)
     );
 
+  }
+
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData() {
+    this.service.getDtrs(this.userId).subscribe((res: any) => {
+      this.datalist = res.payload;
+    }
+    );
+  }
+
+  clockIn() {
+    this.service.dtrClockIn(this.userId, null).subscribe((res: any) => {
+      this.loadData();
+      Swal.fire({
+        title: "Successfully clocked in for today!",
+        icon: "success"
+      });
+    }, error => {
+      if (error.status == 400) {
+        Swal.fire({
+          title: "You've already clocked-in.",
+          text: "You already have an active clock-in. Please clock out first.",
+          confirmButtonText: 'Oh, ok',
+          confirmButtonColor: '#d35e46'
+        });
+      };
+    })
+  }
+
+  clockOut() {
+    this.service.dtrClockOut(this.userId, null).subscribe((res: any) => {
+      this.loadData();
+      Swal.fire({
+        title: "Successfully clocked out for today!",
+        icon: "success"
+      });
+    }, error => {
+      if (error.status == 400) {
+        console.log(error);
+        Swal.fire({
+          title: "You haven't clocked in yet.",
+          text: "No active clock-in found for today. Please clock in first.",
+          confirmButtonText: 'Oh, ok',
+          confirmButtonColor: '#d35e46'
+        });
+      };
+    })
   }
 
 

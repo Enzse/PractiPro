@@ -412,40 +412,59 @@ class Post extends GlobalMethods
         } catch (PDOException $e) {
             $errmsg = $e->getMessage();
             $code = 400;
-        }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
+            return $this->sendPayload(null, "Failed uploading file", $errmsg, $code);
+        }     
     }
 
-    public function upload_dtr($data, $category)
+
+
+    public function dtrClockIn($user_id)
     {
-        $fileName = basename($_FILES["file"]["name"]);
-        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileSize = $_FILES["file"]["size"];
-        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
+        // Check if there's an active clock-in record with no clock-out
+        $checkSql = "SELECT COUNT(*) FROM student_dailytimerecords WHERE student_id = ? AND date = CURDATE() AND endTime IS NULL";
+        try {
+            $checkStmt = $this->pdo->prepare($checkSql);
+            $checkStmt->execute([$user_id]);
+            $count = $checkStmt->fetchColumn();
 
+            if ($count > 0) {
+                // If there's an active clock-in record, prevent a new clock-in
+                return $this->sendPayload(null, "failed", "You already have an active clock-in. Please clock out first.", 400);
+            }
 
-        $sql = "INSERT INTO dtr (user_id, week, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?, ?)";
+            // If no active clock-in record, proceed with clock-in
+            $sql = "INSERT INTO student_dailytimerecords (student_id, date, startTime) VALUES (?, CURDATE(), CURTIME())";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$user_id]);
+
+            return $this->sendPayload(null, "success", "Clock-in successful", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            return $this->sendPayload(null, "failed", $errmsg, 401);
+        }
+    }
+    public function dtrClockOut($user_id)
+    {
+        $sql = "UPDATE student_dailytimerecords SET endTime = CURTIME() WHERE student_id = ? AND date = CURDATE() AND endTime IS NULL";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
-                    $data,
-                    $category,
-                    $fileName,
-                    $fileType,
-                    $fileSize,
-                    $fileData
+                    $user_id
                 ]
             );
-            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+
+            if ($stmt->rowCount() > 0) {
+                return $this->sendPayload(null, "success", "Clock-out successful", 200);
+            } else {
+                return $this->sendPayload(null, "failed", "No active clock-in found for today", 400);
+            }
         } catch (PDOException $e) {
             $errmsg = $e->getMessage();
-            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, 401);
         }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
     }
+
 
     public function upload_war($data, $category)
     {

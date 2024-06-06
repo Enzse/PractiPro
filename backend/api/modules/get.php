@@ -376,7 +376,7 @@ class Get extends GlobalMethods
 
     public function getStudentDTR($id = null)
     {
-        $condition = ($id != null) ? "user_id=$id" : null;
+        $condition = ($id != null) ? "student_id=$id" : null;
         return $this->get_records('student_dailytimerecords', $condition);
     }
 

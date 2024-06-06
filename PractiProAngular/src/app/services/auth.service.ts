@@ -175,6 +175,21 @@ export class AuthService {
   getStudentProfile(userId: number) {
     return this.http.get<any>(`${this.apiurl}/student/${userId}`);
   }
+
+
+  getDtrs(userId: number) {
+    if (userId) {
+      return this.http.get<any>(`${this.apiurl}/getdtr/${userId}`);
+    } else {
+      return this.http.get<any>(`${this.apiurl}/getdtr`);
+    }
+  }
+  dtrClockIn(userId: number, data: any) {
+    return this.http.post(`${this.apiurl}/dtrclockin/${userId}`, data);
+  }
+  dtrClockOut(userId: number, data: any) {
+    return this.http.post(`${this.apiurl}/dtrclockout/${userId}`, data);
+  }
   uploadRequirement(userId: number, file: File, submissionName: string) {
     const formData = new FormData();
     formData.append('file', file);
@@ -186,12 +201,6 @@ export class AuthService {
     formData.append('file', file);
 
     return this.http.post(`${this.apiurl}/uploaddocumentation/${userId}/${submissionName}`, formData);
-  }
-  uploadDtr(userId: number, file: File, submissionName: number) {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    return this.http.post(`${this.apiurl}/uploaddtr/${userId}/${submissionName}`, formData);
   }
   uploadWar(userId: number, file: File, submissionName: number) {
     const formData = new FormData();
