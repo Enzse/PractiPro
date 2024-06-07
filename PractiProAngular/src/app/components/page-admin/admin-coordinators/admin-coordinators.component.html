@@ -47,7 +47,7 @@
             </td>
           </tr>
           <tr
-            *ngFor="let user of userlist?.payload| paginate: { itemsPerPage: 5, currentPage: p  } | filter : searchtext"
+            *ngFor="let user of userlist?.payload| paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
           >
             <th
@@ -90,7 +90,7 @@
       <div class="w-full mt-3 flex justify-center">
 
         <!-- pagination control -->
-        <pagination-controls class=""  (pageChange)="p = $event"></pagination-controls>
+        <pagination-controls [responsive]="true" class="my-pagination"  (pageChange)="p = $event"></pagination-controls>
 
       </div>
 

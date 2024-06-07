@@ -10,3 +10,21 @@
     border: 1px solid #e5e7eb; /* example border */
     border-radius: 0.375rem; /* example border-radius */
 }
+
+
+.my-pagination ::ng-deep .ngx-pagination .current{
+    padding: .1875rem .625rem; 
+    background: #1e1b4b;
+    color: #fefefe;
+    cursor: default;
+}
+
+.my-pagination ::ng-deep .ngx-pagination li{
+  border-radius: 25px;
+  margin: 0 2px;
+}  
+
+.my-pagination ::ng-deep .ngx-pagination li :hover{
+border-radius: 25px;  
+}
+
