@@ -8,11 +8,12 @@ import { DtrpopupcomponentComponent } from '../../popups/popups-coordinator/dtrp
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import { BlockService } from '../../../services/block.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-coord-dtr',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe],
+  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule],
   templateUrl: './coord-dtr.component.html',
   styleUrl: './coord-dtr.component.css'
 })
@@ -26,6 +27,7 @@ export class CoordDtrComponent implements OnInit {
   searchtext: any;
   currentBlock: any;
   isLoading: boolean = false;
+  p: number = 1; /* starting no. of the list */
 
   ngOnInit(): void {
     this.blockService.selectedBlock$.subscribe(block => {

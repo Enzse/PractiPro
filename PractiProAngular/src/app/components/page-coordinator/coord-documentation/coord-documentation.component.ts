@@ -8,11 +8,12 @@ import { DocumentationpopupComponent } from '../../popups/popups-coordinator/doc
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import { BlockService } from '../../../services/block.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-coord-documentation',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe],
+  imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule],
   templateUrl: './coord-documentation.component.html',
   styleUrl: './coord-documentation.component.css'
 })
@@ -25,6 +26,7 @@ export class CoordDocumentationComponent implements OnInit {
   searchtext: any;
   currentBlock: any;
   isLoading: boolean = false;
+  p: number = 1; /* starting no. of the list */
 
   ngOnInit(): void {
     this.blockService.selectedBlock$.subscribe(block => {

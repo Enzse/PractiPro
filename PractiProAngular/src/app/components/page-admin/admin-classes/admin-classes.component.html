@@ -47,7 +47,7 @@
               No Data Found
             </td>
           </tr>
-          <tr *ngFor="let data of datalist | filter : searchtext"
+          <tr *ngFor="let data of datalist | paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
               {{ data.block_name }}
@@ -75,6 +75,14 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="w-full mt-3 flex justify-center">
+
+        <!-- pagination control -->
+        <pagination-controls [responsive]="true"  class="my-pagination"  (pageChange)="p = $event"></pagination-controls>
+
+      </div>
+
     </div>
   </div>
 </div>
