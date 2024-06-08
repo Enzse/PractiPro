@@ -88,4 +88,20 @@ class Delete extends GlobalMethods
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
+
+    public function deleteAvatar($id)
+    {
+        $sql = "DELETE FROM user_avatars
+                WHERE user_id = :id";
+
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            return $this->sendPayload(null, "success", "Successfully deleted avatar", 200);
+        } catch (PDOException $e) {
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
 }

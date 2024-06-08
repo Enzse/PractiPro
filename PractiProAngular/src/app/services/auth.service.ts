@@ -85,6 +85,10 @@ export class AuthService {
   getStudentsByCourseAndYear(course: any, year: number) {
     return this.http.get<any>(`${this.apiurl}/studentbycourseandyear/${course}/${year}`);
   }
+  getStudentsByStudentID(studentId:any) {
+    return this.http.get<any>(`${this.apiurl}/studentbystudentid/${studentId}`);
+  }
+
   //GET ADMINS
   getAllAdmins() {
     return this.http.get<any>(`${this.apiurl}/admin`);

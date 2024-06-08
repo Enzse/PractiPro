@@ -32,50 +32,37 @@ export class SupervisorDashboardComponent {
 
   ngOnInit(): void {
     this.loadData();
-    this.loadAvatar();
   }
 
-  loadAvatar() {
-    console.log("Loading Avatar...");
-    if (this.userId) {
-      this.service.getAvatar(this.userId).subscribe(
-        blob => {
-          console.log("Loading Blob");
-          console.log(`blob: ${blob}`);
-          if (blob.size > 0) {
-            const url = URL.createObjectURL(blob);
-            this.avatarUrl = this.sanitizer.bypassSecurityTrustUrl(url);
-            console.log(`this.avatarUrl: ${this.avatarUrl}`);
-          } else {
-            console.log("User has not uploaded an avatar yet.");
-            this.avatarUrl = undefined;
-          }
-        },
-        error => {
-          if (error.status === 404) {
-            console.log('No avatar found for the user.');
-            this.avatarUrl = undefined;
-          } else {
-            console.error('Failed to load avatar:', error);
-          }
-        }
-      );
-    }
-  }
+
 
   loadData() {
     this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
-      this.traineesList = res.payload
-      console.log(this.traineesList);
+      this.traineesList = res.payload.map((user:any) => {
+        return { ...user, avatar: '' };
+      });    
+      this.traineesList.forEach((student: any) => {
+        this.service.getAvatar(student.id).subscribe((res: any) => {
+          if (res.size > 0) {
+            console.log(res);
+            const url = URL.createObjectURL(res);
+            student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+          }
+        })
+      });
     })
   }
+
+
+
+
 
 
   selectTrainees() {
     const popup = this.dialog.open(SelecttraineespopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
-      width: 'auto',
+      width: '90%',
       data: {
         company_id: this.user.company_id
       }
@@ -83,10 +70,9 @@ export class SupervisorDashboardComponent {
     popup.afterClosed().subscribe(res => {
       this.loadData()
     });
-
   }
 
-  viewTrainee(student:any) {
+  viewTrainee(student: any) {
     const popup = this.dialog.open(ViewtraineepopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
@@ -98,7 +84,6 @@ export class SupervisorDashboardComponent {
     popup.afterClosed().subscribe(res => {
       this.loadData()
     });
-
   }
 
   removeStudentFromSelection(id: number) {

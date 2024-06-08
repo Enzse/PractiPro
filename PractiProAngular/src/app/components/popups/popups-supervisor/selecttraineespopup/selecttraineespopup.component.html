@@ -11,18 +11,24 @@
   <!-- SEARCH BAR: -->
   <div class="flex items-center space-x-4 mb-3">
     <div class="form-outline flex-grow">
-        <input
-            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search for trainees..."
-            aria-label="search" />
+      <input
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search for trainees..." aria-label="search" />
     </div>
 
-    <button (click)="addTrainees()"
-        class="bg-green-500 font-primary text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300"
-        type="button">
-        Hire Students
+    <button (click)="hireStudents()"
+      class="bg-green-500 font-primary text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300"
+      type="button">
+      
+      <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+        width="24" height="24" fill="white" viewBox="0 0 24 24">
+        <path fill-rule="evenodd"
+          d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z"
+          clip-rule="evenodd" />
+      </svg>
+      <p class="inline ml-1 max-lg:hidden">Hire Students</p>
     </button>
-</div>
+  </div>
 
 
 
@@ -47,7 +53,8 @@
         </tr>
         <tr *ngFor="let data of traineesList | filter : searchtext"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-slate-100">
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{ data.firstName }} {{ data.lastName }}</th>
+          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+            data.firstName }} {{ data.lastName }}</th>
           <td class="px-6 py-4">{{ data.job_title || "Not set" }}</td>
           <td class="px-6 py-4">{{ data.TotalHoursWorked }}</td>
           <td class="px-6 py-4">{{ data.hire_date }}</td>

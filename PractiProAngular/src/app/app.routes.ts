@@ -40,6 +40,7 @@ import { SupervisorProfileComponent } from './components/page-supervisor/supervi
 import { SupervisorDashboardComponent } from './components/page-supervisor/supervisor-dashboard/supervisor-dashboard.component';
 import { SupervisorWarComponent } from './components/page-supervisor/supervisor-war/supervisor-war.component';
 import { SupervisorEvaluationComponent } from './components/page-supervisor/supervisor-evaluation/supervisor-evaluation.component';
+import { SupervisorHirestudentsComponent } from './components/page-supervisor/supervisor-hirestudents/supervisor-hirestudents.component';
 
 
 export const routes: Routes = [
@@ -101,6 +102,7 @@ export const routes: Routes = [
         canActivateChild: [supervisorGuard],      
         children: [
             { path: 'supervisor-dashboard', component: SupervisorDashboardComponent, title: 'Dashboard',  },
+            { path: 'supervisor-hirestudents', component: SupervisorHirestudentsComponent, title: 'Hire Students',  },
             { path: 'supervisor-profile', component: SupervisorProfileComponent, title: 'Company Profile',  },
             { path: 'supervisor-dtr', component: SupervisorDtrComponent, title: 'Daily Time Records',  },
             { path: 'supervisor-war', component: SupervisorWarComponent, title: 'Weekly Accomplishment Reports',  },

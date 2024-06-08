@@ -502,11 +502,12 @@ class Post extends GlobalMethods
         $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
 
 
-        $sql = "UPDATE students SET avatar = ? WHERE id = $id";
+        $sql = "INSERT INTO user_avatars (user_id, avatar) VALUES (?, ?)";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
+                    $id,
                     $fileData
                 ]
             );

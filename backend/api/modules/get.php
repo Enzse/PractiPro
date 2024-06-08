@@ -11,33 +11,37 @@ class Get extends GlobalMethods
     }
 
     //ESSENTIALS
-    private function get_records($table, $conditions = null, $columns = '*')
+    private function get_records($table = null, $conditions = null, $columns = '*', $customSqlStr = null, $params = [])
     {
-        $sqlStr = "SELECT $columns FROM $table";
-        if ($conditions != null) {
-            $sqlStr .= " WHERE " . $conditions;
+        if ($customSqlStr != null) {
+            $sqlStr = $customSqlStr;
+        } else {
+            $sqlStr = "SELECT $columns FROM $table";
+            if ($conditions != null) {
+                $sqlStr .= " WHERE " . $conditions;
+            }
         }
-        $result = $this->executeQuery($sqlStr);
+        $result = $this->executeQuery($sqlStr, $params);
 
         if ($result['code'] == 200) {
             return $this->sendPayload($result['data'], 'success', "Successfully retrieved data.", $result['code']);
         }
         return $this->sendPayload(null, 'failed', "Failed to retrieve data.", $result['code']);
     }
-    private function executeQuery($sql)
+
+    private function executeQuery($sql, $params = [])
     {
-        $data = array();
+        $data = [];
         $errmsg = "";
         $code = 0;
 
         try {
-            $statement = $this->pdo->query($sql);
-            if ($statement) {
+            $statement = $this->pdo->prepare($sql);
+            if ($statement->execute($params)) {
                 $result = $statement->fetchAll(PDO::FETCH_ASSOC);
                 foreach ($result as $record) {
                     // Handle BLOB data
                     if (isset($record['file_data'])) {
-
                         $record['file_data'] = base64_encode($record['file_data']);
                     }
                     array_push($data, $record);
@@ -54,6 +58,7 @@ class Get extends GlobalMethods
         }
         return array("code" => $code, "errmsg" => $errmsg);
     }
+
 
 
 
@@ -320,11 +325,11 @@ class Get extends GlobalMethods
         }
     }
 
-    public function get_avatar($userId)
+    public function getAvatar($userId)
     {
         $columns = "avatar";
-        $condition = "id = $userId";
-        $result = $this->get_records('students', $condition, $columns);
+        $condition = "user_id = $userId";
+        $result = $this->get_records('user_avatars', $condition, $columns);
 
         if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['avatar'])) {
             $fileData = $result['payload'][0]['avatar'];
@@ -344,28 +349,13 @@ class Get extends GlobalMethods
         }
     }
 
-
-
-    public function getStudentsByCoordinatorId($coordinatorId)
+    public function getStudentsByStudentID($studentId)
     {
-        $sql = "SELECT s.id, s.firstName, s.lastName, s.studentId, s.block, s.evaluation
-        FROM coordinators c
-        JOIN class_blocks cb ON c.id = cb.coordinator_id
-        JOIN students s ON cb.block_name = s.block
-        WHERE c.id = :coordinatorId";
-
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':coordinatorId', $coordinatorId, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if (empty($result)) {
-                return $this->sendPayload(null, 'failed', "No students found for coordinator ID $coordinatorId.", 404);
-            }
-            return $this->sendPayload($result, 'success', "Successfully retrieved students.", 200);
-        } catch (PDOException $e) {
-            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
-        }
+        $sql = "SELECT students.*, industry_partners.company_name, industry_partners.address AS company_address
+            FROM `students`
+            LEFT JOIN industry_partners ON students.company_id = industry_partners.id
+            WHERE students.studentId = :studentId";
+        return $this->get_records(null, null, null, $sql, ['studentId' => $studentId]);
     }
 
 
@@ -455,7 +445,7 @@ class Get extends GlobalMethods
         return $this->get_records('vw_students_ojt_status', $condition);
     }
 
-    
+
     public function getStudentsBySupervisor($id)
     {
         $sql = "SELECT v.*

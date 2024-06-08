@@ -146,9 +146,18 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+
+            case 'studentbystudentid':
+                if (isset($request[1])) {
+                    echo json_encode($get->getStudentsByStudentID($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
             case 'getavatar':
                 if (isset($request[1])) {
-                    $get->get_avatar($request[1]);
+                    $get->getAvatar($request[1]);
                 } else {
                     echo "ID not provided";
                     http_response_code(400);
@@ -175,13 +184,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
-            case 'coordinator-students':
-                if (count($request) > 1) {
-                    echo json_encode($get->getStudentsByCoordinatorId($request[1]));
-                } else {
-                    echo json_encode($get->get_student());
-                }
-                break;
 
             case 'student-submission':
                 if (isset($request[1]) && isset($request[2])) {
@@ -335,8 +337,12 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode($post->dtrClockOut($request[1]));
                 break;
             case 'uploadavatar':
-                // Return JSON-encoded data for uploading files
-                echo json_encode($post->uploadAvatar($request[1]));
+                if (isset($request[1])) {
+                    $delete->deleteAvatar($request[1]);
+                    echo json_encode($post->uploadAvatar($request[1]));
+                } else {
+                    echo "User ID not provided.";
+                }
                 break;
 
             case 'submission-comment':
@@ -409,6 +415,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($delete->removeStudentFromSupervisor($request[1], $request[2]));
                 } else {
                     echo "Submission IDs not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'deleteavatar':
+                if (isset($request[1])) {
+                    echo json_encode($delete->deleteAvatar($request[1]));
+                } else {
+                    echo "User ID not provided";
                     http_response_code(400);
                 }
                 break;

@@ -34,7 +34,7 @@ export class ClassesStudentpopupComponent {
           this.datalist = data.map(user => {
             return { ...user, avatar: '' };
           });
-          console.log(this.datalist);
+
           this.datalist.forEach(student => {
             this.service.getAvatar(student.id).subscribe(res => {
               if (res.size > 0) {
@@ -46,11 +46,10 @@ export class ClassesStudentpopupComponent {
           });
         },
         (error: any) => {
-          console.error('Error fetching student submissions:', error);
+          console.error('Error fetching students', error);
         }
       );
     }
-
   }
 
   

@@ -1,0 +1,29 @@
+<div class="m-10 flex flex-col items-center">
+    <div class="flex justify-center space-x-2 mb-5">
+        <input
+            class="w-56vh bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            type="search" id="form1" placeholder="Enter Student ID..." aria-label="search" />
+
+        <button (click)="searchForStudentID()"
+            class="bg-blue-900 font-primary text-white px-4 py-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+            type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline lucide lucide-user-round-search">
+                <circle cx="10" cy="8" r="5" />
+                <path d="M2 21a8 8 0 0 1 10.434-7.62" />
+                <circle cx="18" cy="18" r="3" />
+                <path d="m22 22-1.9-1.9" />
+            </svg>
+            Search
+        </button>
+    </div>
+    <div>
+        <h1 class="opacity-40 text-center text-4xl font-primary mt-5">
+            Search for Students...
+        </h1>
+    </div>
+    <div class="flex justify-center">
+        <img class="opacity-40 w-8/12" src="../../../../assets/empty1.png">
+    </div>
+</div>
