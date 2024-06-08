@@ -52,19 +52,7 @@ export class RegistrationComponent implements OnInit {
 
 
   proceedregistration() {
-    if (this.registerform.valid) {
-      const email = this.registerform.value;
-      console.log(email);
-      // Check if the email already exists in the database
-      this.service.doesEmailExist(email).subscribe((res: any) => {
-        if (res) {
-          Swal.fire({
-            title: "Email already exists!",
-            text: 'Please use a different email address.',
-            icon: "warning"
-          });
-        } else {
-          // Proceed with registration if email is not already registered
+    if (this.registerform.valid) {   
           this.service.proceedRegister(this.registerform.value).subscribe(() => {
             console.log('Registered successfully. Please contact admin for activation.');
             this.router.navigate(['login']);
@@ -73,9 +61,22 @@ export class RegistrationComponent implements OnInit {
               text: "Please contact admin for activation.",
               icon: "success"
             });
+          }, error => {
+            if (error.status === 400) {
+              Swal.fire({
+                title: "Email already exists!",
+                text: 'Please use a different email address.',
+                icon: "warning"
+              });
+            } else if (error.status === 409) {
+              Swal.fire({
+                title: "Student already exists!",
+                text: 'Please use a different Student ID.',
+                icon: "warning"
+              });
+            }
           });
-        }
-      });
+        
     } else {
       Swal.fire({
         title: "Please enter valid data.",

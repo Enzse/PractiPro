@@ -21,7 +21,7 @@ export class RegistrationadminComponent implements OnInit {
     const password = control.value;
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
     if (!regex.test(password)) {
-      return { 'weakPassword': true }; 
+      return { 'weakPassword': true };
     }
     return null;
   }
@@ -43,27 +43,30 @@ export class RegistrationadminComponent implements OnInit {
 
   proceedregistration() {
     if (this.registerform.valid) {
-      const email = this.registerform.value;
-      console.log(email);
-      this.service.doesEmailExist(email).subscribe((res: any) => {
-        if (res) {
+      this.service.proceedRegister(this.registerform.value).subscribe(() => {
+        console.log('Registered successfully. Please contact admin for activation.');
+        this.router.navigate(['login']);
+        Swal.fire({
+          title: "Registration Successful!",
+          text: "Please contact admin for activation.",
+          icon: "success"
+        });
+      }, error => {
+        if (error.status === 400) {
           Swal.fire({
             title: "Email already exists!",
             text: 'Please use a different email address.',
             icon: "warning"
           });
         } else {
-          this.service.proceedRegister(this.registerform.value).subscribe(() => {
-            console.log('Registered successfully. Please contact admin for activation.');
-            this.router.navigate(['login']);
-            Swal.fire({
-              title: "Registration Successful!",
-              text: "Please contact admin for activation.",
-              icon: "success"
-            });
+          Swal.fire({
+            title: "Unable to register now.",
+            text: 'Please try again another time.',
+            icon: "warning"
           });
         }
       });
+
     } else {
       Swal.fire({
         title: "Please enter valid data.",

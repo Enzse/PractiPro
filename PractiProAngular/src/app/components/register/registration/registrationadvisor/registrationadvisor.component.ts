@@ -46,29 +46,30 @@ export class RegistrationadvisorComponent implements OnInit {
   
   proceedregistration() {
     if (this.registerform.valid) {
-      const email = this.registerform.value;
-      console.log(email);
-      // Check if the email already exists in the database
-      this.service.doesEmailExist(email).subscribe((res: any) => {
-        if (res) {
+      this.service.proceedRegister(this.registerform.value).subscribe(() => {
+        console.log('Registered successfully. Please contact admin for activation.');
+        this.router.navigate(['login']);
+        Swal.fire({
+          title: "Registration Successful!",
+          text: "Please contact admin for activation.",
+          icon: "success"
+        });
+      }, error => {
+        if (error.status === 400) {
           Swal.fire({
             title: "Email already exists!",
             text: 'Please use a different email address.',
             icon: "warning"
           });
         } else {
-          // Proceed with registration if email is not already registered
-          this.service.proceedRegister(this.registerform.value).subscribe(() => {
-            console.log('Registered successfully. Please contact admin for activation.');
-            this.router.navigate(['login']);
-            Swal.fire({
-              title: "Registration Successful!",
-              text: "Please contact admin for activation.",
-              icon: "success"
-            });
+          Swal.fire({
+            title: "Unable to register now.",
+            text: 'Please try again another time.',
+            icon: "warning"
           });
         }
       });
+
     } else {
       Swal.fire({
         title: "Please enter valid data.",

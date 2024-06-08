@@ -29,10 +29,10 @@ class Post extends GlobalMethods
 
     public function registerUser($data)
     {
-        $sql = "INSERT INTO user(firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
+        $this->pdo->beginTransaction();
         try {
             $hashed_password = password_hash($data->password, PASSWORD_DEFAULT);
-
+            $sql = "INSERT INTO user (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 $data->firstName,
@@ -42,92 +42,103 @@ class Post extends GlobalMethods
                 $data->role
             ]);
 
-            switch ($data->role) {
-                case 'student':
-                    $sql = "UPDATE students SET studentId = ?, program = ?, year = ? WHERE email = ?";
-                    try {
-                        $stmt = $this->pdo->prepare($sql);
-                        $stmt->execute([
-                            $data->studentId,
-                            $data->program,
-                            $data->year,
-                            $data->email
-                        ]);
-                        return $this->sendPayload(null, "success", "Successfully registered student", 200);
-                    } catch (PDOException $e) {
-                        $errmsg = $e->getMessage();
-                        $code = 400;
-                        return $this->sendPayload(null, "failed", $errmsg, $code);
-                    }
+            $this->registerRoleSpecificData($data);
 
-                case 'advisor':
-                    $sql = "UPDATE coordinators SET department = ? WHERE email = ?";
-                    try {
-                        $stmt = $this->pdo->prepare($sql);
-                        $stmt->execute(
-                            [
-                                $data->department,
-                                $data->email
-                            ]
-                        );
-                        return $this->sendPayload(null, "success", "Successfully registered advisor", 200);
-                    } catch (PDOException $e) {
-                        $errmsg = $e->getMessage();
-                        $code = 400;
-                        return $this->sendPayload(null, "failed", $errmsg, $code);
-                    }
-
-                case 'supervisor':
-
-                    $sql = "INSERT INTO industry_partners(company_name, address) VALUES (?, ?)";
-                    try {
-
-                        $stmt = $this->pdo->prepare($sql);
-                        $stmt->execute(
-                            [
-
-                                $data->company_name,
-                                $data->address,
-                            ]
-                        );
-                    } catch (PDOException $e) {
-                        $errmsg = $e->getMessage();
-                        $code = 400;
-                    }
-                    $company_id = $this->pdo->lastInsertId();
-
-                    $sql = "UPDATE supervisors SET company_id = ?, position = ?, phone = ? WHERE email = ?";
-                    try {
-                        $stmt = $this->pdo->prepare($sql);
-                        $stmt->execute(
-                            [
-                                $company_id,
-                                $data->position,
-                                $data->phone,
-                                $data->email
-                            ]
-                        );
-                        return $this->sendPayload(null, "success", "Successfully registered supervisor", 200);
-                    } catch (PDOException $e) {
-                        $errmsg = $e->getMessage();
-                        $code = 400;
-                        return $this->sendPayload(null, "failed", $errmsg, $code);
-                    }
-
-                case 'admin':
-                    return $this->sendPayload(null, "success", "Successfully registered admin", 200);
-
-
-                default:
-                    return $this->sendPayload(null, "failed", "Unknown role: " . $data->role, 400);
-            }
-
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully registered user", 200);
         } catch (PDOException $e) {
-            $errmsg = $e->getMessage();
-            $code = 400;
-            return $this->sendPayload(null, "failed", $errmsg, $code);
+            $this->pdo->rollBack();
+            return $this->handleException($e);
         }
     }
+
+    private function registerRoleSpecificData($data)
+    {
+        switch ($data->role) {
+            case 'student':
+                $this->registerStudent($data);
+                break;
+            case 'advisor':
+                $this->registerAdvisor($data);
+                break;
+            case 'supervisor':
+                $this->registerSupervisor($data);
+                break;
+            case 'admin':
+                // No additional data to register for admin
+                break;
+            default:
+                throw new Exception("Unknown role: " . $data->role);
+        }
+    }
+
+    private function registerStudent($data)
+    {
+        $sql = "UPDATE students SET studentId = ?, program = ?, year = ? WHERE email = ?";
+        $stmt = $this->pdo->prepare($sql);
+        try {
+            $stmt->execute([
+                $data->studentId,
+                $data->program,
+                $data->year,
+                $data->email
+            ]);
+        } catch (PDOException $e) {
+            if ($e->getCode() == '23000') {
+                throw new PDOException("The student ID is already in use.", 23002);
+            } else {
+                throw $e;
+            }
+        }
+    }
+
+    private function registerAdvisor($data)
+    {
+        $sql = "UPDATE coordinators SET department = ? WHERE email = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            $data->department,
+            $data->email
+        ]);
+    }
+
+    private function registerSupervisor($data)
+    {
+        $sql = "INSERT INTO industry_partners (company_name, address) VALUES (?, ?)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            $data->company_name,
+            $data->address
+        ]);
+        $company_id = $this->pdo->lastInsertId();
+
+        $sql = "UPDATE supervisors SET company_id = ?, position = ?, phone = ? WHERE email = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            $company_id,
+            $data->position,
+            $data->phone,
+            $data->email
+        ]);
+    }
+
+    private function handleException(PDOException $e)
+    {
+        if ($e->getCode() == '23002') {
+            $errmsg = "The student ID is already in use.";
+            $code = 409; // Conflict HTTP status code
+        } elseif ($e->getCode() == '23000' && strpos($e->getMessage(), 'user.email') !== false) {
+            $errmsg = "A user with this email already exists.";
+            $code = 409; // Conflict HTTP status code
+        } else {
+            $errmsg = $e->getMessage();
+            $code = 400; // Bad request HTTP status code
+        }
+        return $this->sendPayload(null, "failed", $errmsg, $code);
+    }
+
+
+
 
 
     public function addOjtSite($student_id, $data)
@@ -404,8 +415,8 @@ class Post extends GlobalMethods
     }
 
     public function uploadFile($table, $user_id, $category = null)
-    {   
-        if(!isset($_FILES["file"])){
+    {
+        if (!isset($_FILES["file"])) {
             return $this->sendPayload(null, "failed", "No file selected", 400);
         }
         $fileName = basename($_FILES["file"]["name"]);

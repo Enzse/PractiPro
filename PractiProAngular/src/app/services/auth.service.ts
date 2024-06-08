@@ -31,10 +31,7 @@ export class AuthService {
   }
 
 
-  //Registration handler.
-  doesEmailExist(inputdata: any) {
-    return this.http.post(`${this.apiurl}/emailcheck`, inputdata);
-  }
+  //Registration handler.  
   proceedRegister(inputdata: any) {
     return this.http.post(`${this.apiurl}/registeruser`, inputdata);
   }
