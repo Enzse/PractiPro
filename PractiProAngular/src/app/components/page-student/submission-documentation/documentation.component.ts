@@ -63,7 +63,7 @@ export class DocumentationComponent implements OnInit {
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
-        this.service.uploadDocumentation(this.userId, file, this.selectedTabLabel).subscribe(
+        this.service.uploadSubmission('documentations', this.userId, file, this.selectedTabLabel).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
             Swal.fire({
@@ -114,12 +114,17 @@ export class DocumentationComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
-        }, error => {
           Swal.fire({
-            title: "Successfully Deleted Submission.",
+            title: "Your submission has been deleted",
             icon: "success"
           });
           this.loadData();
+        }, error => {
+            Swal.fire({
+              title: "Delete failed",
+              text: "You may not have permission to delete this file.",
+              icon: "error"
+            });
         });
       }
     });

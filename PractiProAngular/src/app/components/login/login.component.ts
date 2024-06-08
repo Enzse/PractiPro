@@ -52,7 +52,7 @@ export class LoginComponent {
             this.router.navigate(['coord-submissions']);
             break;
           case 'supervisor':
-            this.router.navigate(['supervisor-dtr']);
+            this.router.navigate(['supervisor-dashboard']);
             break;
           default:
             alert("User's role is unhandled.")

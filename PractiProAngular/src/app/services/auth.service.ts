@@ -169,14 +169,20 @@ export class AuthService {
 
 
   //Student features.
+
   getStudentRequirements(userId: number) {
     return this.http.get<any>(`${this.apiurl}/student_requirements/${userId}`);
+  }
+  getStudentOjtInfo(userId: number) {
+    if (userId) {
+      return this.http.get<any>(`${this.apiurl}/studentsojt/${userId}`);
+    } else {
+      return this.http.get<any>(`${this.apiurl}/studentsojt`);
+    }
   }
   getStudentProfile(userId: number) {
     return this.http.get<any>(`${this.apiurl}/student/${userId}`);
   }
-
-
   getDtrs(userId: number) {
     if (userId) {
       return this.http.get<any>(`${this.apiurl}/getdtr/${userId}`);
@@ -190,36 +196,29 @@ export class AuthService {
   dtrClockOut(userId: number, data: any) {
     return this.http.post(`${this.apiurl}/dtrclockout/${userId}`, data);
   }
-  uploadRequirement(userId: number, file: File, submissionName: string) {
+  uploadSubmission(table: string, userId: number, file: File, category: any = null) {
     const formData = new FormData();
     formData.append('file', file);
 
-    return this.http.post(`${this.apiurl}/uploadrequirement/${userId}/${submissionName}`, formData);
+    return this.http.post(`${this.apiurl}/uploadfile/${table}/${userId}/${category}`, formData);
   }
-  uploadDocumentation(userId: number, file: File, submissionName: number) {
-    const formData = new FormData();
-    formData.append('file', file);
+  addComment(table: any, id: number, inputdata: any) {
+    return this.http.post(`${this.apiurl}/submission-comment/${table}/${id}`, inputdata);
+  }
 
-    return this.http.post(`${this.apiurl}/uploaddocumentation/${userId}/${submissionName}`, formData);
-  }
-  uploadWar(userId: number, file: File, submissionName: number) {
-    const formData = new FormData();
-    formData.append('file', file);
 
-    return this.http.post(`${this.apiurl}/uploadwar/${userId}/${submissionName}`, formData);
-  }
-  uploadFinalReport(userId: number, file: File) {
-    const formData = new FormData();
-    formData.append('file', file);
 
-    return this.http.post(`${this.apiurl}/uploadfinalreport/${userId}`, formData);
-  }
   uploadAvatar(userId: number, file: File) {
     const formData = new FormData();
     formData.append('file', file);
 
     return this.http.post(`${this.apiurl}/uploadavatar/${userId}`, formData);
   }
+  getAvatar(userId: number) {
+    return this.http.get(`${this.apiurl}/getavatar/${userId}`, { responseType: 'blob' });
+  }
+
+
   assignClassCoordinator(inputdata: any) {
     return this.http.post(`${this.apiurl}/assignclasscoordinator`, inputdata);
   }
@@ -227,15 +226,28 @@ export class AuthService {
     return this.http.post(`${this.apiurl}/assignclassstudent/${id}`, inputdata);
   }
 
-
-  addComment(table: any, id: number, inputdata: any) {
-    return this.http.post(`${this.apiurl}/submission-comment/${table}/${id}`, inputdata);
+  addStudentToCompany(inputdata: any) {
+    return this.http.post(`${this.apiurl}/addstudenttocompany`, inputdata);
+  }
+  addStudentToSupervisor(inputdata: any) {
+    return this.http.post(`${this.apiurl}/addstudenttosupervisor`, inputdata);
+  }
+  getStudentsByCompany(companyId: number) {
+    return this.http.get<any>(`${this.apiurl}/studentsbycompany/${companyId}`);
+  }
+  getStudentsBySupervisor(supervisorId: number) {
+    return this.http.get<any>(`${this.apiurl}/studentsbysupervisor/${supervisorId}`);
+  }
+  removeStudentFromSupervisor(supervisorId: number, studentId: number) {
+    return this.http.delete(`${this.apiurl}/deleteuser/${supervisorId}/${studentId}`);
+  };
+  getSupervisors(id: number) {
+    if (id) {
+      return this.http.get<any>(`${this.apiurl}/supervisors/${id}`);
+    }
+    return this.http.get<any>(`${this.apiurl}/supervisors`);
   }
 
 
-
-  getAvatar(userId: number) {
-    return this.http.get(`${this.apiurl}/getavatar/${userId}`, { responseType: 'blob' });
-  }
 
 }

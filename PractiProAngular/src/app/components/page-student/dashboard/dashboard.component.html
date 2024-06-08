@@ -10,7 +10,7 @@
     </div>
 
     <!-- REGISTRATION STATUS -->
-    <div
+    <div *ngIf="registrationStatus === 0"
       class="overflow-x-hidden text-center bg-slate-50 h-auto items-center justify-center rounded-lg shadow-md border border-gray-200">
       <div class="mb-auto mt-3 inline-block border-b-8 rounded-b-md border-orange-500 w-4/5">
         <h1 class="font-primary font-bold text-lg">REGISTRATION STATUS</h1>
@@ -200,74 +200,65 @@
     </div>
 
 
-    <!-- OJT STATUS -->
-    <div
-      class="overflow-x-hidden text-center mt-6 bg-slate-50 h-auto items-center justify-center rounded-lg shadow-md border border-gray-200">
+    <div *ngIf="registrationStatus === 1"
+      class="overflow-x-hidden text-center bg-slate-100 h-auto items-center justify-center rounded-lg shadow-md border border-gray-200">
       <div class="mb-auto mt-3 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
-        <h1 class="font-primary font-bold text-lg">OJT STATUS</h1>
+        <h1 class="font-primary font-bold text-lg">PRACTICUM PROGRESS</h1>
       </div>
-      <div class="pt-2 pl-4 pr-4 text-xs mb-3">
-        <table class="w-full">
+
+      <div class="flex flex-col md:flex-row justify-evenly">
+        <div class="flex flex-col justify-center p-10 m-5 shadow-md rounded-xl bg-white">
+          <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalHoursWorked}}<span class="text-sm">hrs</span></h1>
+          <h2 class="font-primary text-sm">Total Training Hours Accumulated</h2>
+        </div>
+        <div class="flex flex-col justify-center p-10 m-5 shadow-md rounded-xl bg-white">
+          <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalHoursWorked}}<span class="text-sm">hrs</span></h1>
+          <h2 class="font-primary text-sm">Total Seminar Hours Accumulated</h2>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
 
 
-          <thead>
-            <tr>
-              <th class="text-center font-bold border border-darkblue  font-primary text-base">
-                REQUIREMENT
-              </th>
-              <th class="text-center font-bold border border-darkblue font-primary text-base">
-                HOURS NEEDED
-              </th>
-              <th class="text-center font-bold border border-darkblue  font-primary text-base">
-                YOUR TOTAL HOURS
-              </th>
-              <th class="text-center font-bold border border-darkblue  font-primary text-base">
-                STATUS
-              </th>
-            </tr>
-          </thead>
+        <div class="col-span-1">
+          <!-- First column content here -->
+          <div class="w-full bg-white shadow-md p-3">
+            <div>
+              <h1 class="font-primary font-bold text-lg">Currently working at:</h1>
+            </div>
 
+          </div>
+        </div>
 
-
-          <tbody>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
-                ON-SITE TRAINING HOURS
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                200 HOURS
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                (Your Hours)
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                (Your Status)
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
-                SEMINAR HOURS
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                50 HOURS
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                (Your Hours)
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                (Your Status)
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <!-- <p class="mt-4 text-xm text-red-500">
-          ** If your status was marked as "NOT CLEARED", you need to proceed to
-          submit the specified document for your registration status. You will not be
-          able to proceed with the practicum process and evaluation until you have been cleared
-          in all <b class="text-red-700">OJT</b> requirements.
-        </p> -->
+        <div class="col-span-1">
+          <!-- Second column content here -->
+          <table class="w-full shadow-md bg-white">
+            <thead>
+              <tr>
+                <th class="text-center font-bold border font-primary text-base">REQUIREMENT</th>
+                <th class="text-center font-bold border  font-primary text-base">HOURS ACCUMULATED</th>
+                <th class="text-center font-bold border  font-primary text-base">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="pl-4 text-left border  font-secondary text-sm">ON-SITE TRAINING HOURS</td>
+                <td class="text-center border  font-secondary text-sm">{{student.TotalHoursWorked}} / 200
+                </td>
+                <td class="text-center border  font-secondary text-sm">(Your Status)</td>
+              </tr>
+              <tr>
+                <td class="pl-4 text-left border  font-secondary text-sm">SEMINAR HOURS</td>
+                <td class="text-center border  font-secondary text-sm">(Your Hours)/50</td>
+                <td class="text-center border  font-secondary text-sm">(Your Status)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
+
+
   </div>
 
 

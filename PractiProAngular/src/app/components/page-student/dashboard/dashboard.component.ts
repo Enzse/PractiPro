@@ -12,22 +12,35 @@ import { CommonModule } from '@angular/common';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit {
-  
-  constructor(private service: AuthService) {}
-  
+
+  constructor(private service: AuthService) { }
+  registrationStatus: any;
   studentRequirements: any[] = [];
+  student:any;
   ngOnInit(): void {
     const userId = this.service.getCurrentUserId();
-    
+
     if (userId) {
-      this.service.getStudentRequirements(userId).subscribe(
-        (data: any[]) => {
-          this.studentRequirements = data;
+      this.service.getStudentOjtInfo(userId).subscribe(
+        (res: any) => {
+          console.log(res)
+          this.registrationStatus = res.payload[0].registrationstatus;
+          this.student = res.payload[0];
+          console.log(`Status: ${this.registrationStatus}`)
         },
         (error: any) => {
-          console.error('Error fetching student requirements:', error);
+          console.error('Error fetching data.', error);
         }
       );
+      if (!this.registrationStatus)
+        this.service.getStudentRequirements(userId).subscribe(
+          (res: any[]) => {
+            this.studentRequirements = res;
+          },
+          (error: any) => {
+            console.error('Error fetching student requirements:', error);
+          }
+        );
     }
   }
 }

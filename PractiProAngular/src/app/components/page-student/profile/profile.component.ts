@@ -28,6 +28,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.loadInfo();
     this.loadAvatar();
+    console.log(this.avatarUrl);
   }
 
 
@@ -75,13 +76,10 @@ export class ProfileComponent implements OnInit {
     console.log("Loading Avatar...");
     if (this.userId) {
       this.service.getAvatar(this.userId).subscribe(
-        blob => {
-          console.log("Loading Blob");
-          console.log(`blob: ${blob}`);
+        blob => {          
           if (blob.size > 0) { 
             const url = URL.createObjectURL(blob);
             this.avatarUrl = this.sanitizer.bypassSecurityTrustUrl(url);
-            console.log(`this.avatarUrl: ${this.avatarUrl}`);
           } else {
             console.log("User has not uploaded an avatar yet.");
             this.avatarUrl = undefined;

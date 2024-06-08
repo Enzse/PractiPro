@@ -37,6 +37,9 @@ import { SupervisorNavbarComponent } from './components/page-supervisor/supervis
 import { supervisorGuard } from './guard/supervisor.guard';
 import { SupervisorDtrComponent } from './components/page-supervisor/supervisor-dtr/supervisor-dtr.component';
 import { SupervisorProfileComponent } from './components/page-supervisor/supervisor-profile/supervisor-profile.component';
+import { SupervisorDashboardComponent } from './components/page-supervisor/supervisor-dashboard/supervisor-dashboard.component';
+import { SupervisorWarComponent } from './components/page-supervisor/supervisor-war/supervisor-war.component';
+import { SupervisorEvaluationComponent } from './components/page-supervisor/supervisor-evaluation/supervisor-evaluation.component';
 
 
 export const routes: Routes = [
@@ -97,8 +100,11 @@ export const routes: Routes = [
         component: SupervisorNavbarComponent,  
         canActivateChild: [supervisorGuard],      
         children: [
+            { path: 'supervisor-dashboard', component: SupervisorDashboardComponent, title: 'Dashboard',  },
             { path: 'supervisor-profile', component: SupervisorProfileComponent, title: 'Company Profile',  },
             { path: 'supervisor-dtr', component: SupervisorDtrComponent, title: 'Daily Time Records',  },
+            { path: 'supervisor-war', component: SupervisorWarComponent, title: 'Weekly Accomplishment Reports',  },
+            { path: 'supervisor-evaluation', component: SupervisorEvaluationComponent, title: 'Student Performance Evaluation',  },
         ]
     },
     { path: '**', redirectTo: 'login', pathMatch: 'full' }

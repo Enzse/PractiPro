@@ -1,0 +1,59 @@
+<div
+    class="overflow-x-auto p-1 text-center bg-slate-100 h-auto items-center justify-center shadow-md border border-gray-200">
+    <div class="mb-auto mt-3 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
+        <h1 class="font-primary font-bold text-lg">{{data.student.firstName}} {{data.student.lastName}}</h1>
+    </div>
+
+    <div class="flex flex-col md:flex-row justify-evenly">
+        <div class="flex flex-col justify-center p-10 m-5 shadow-md rounded-xl bg-white">
+            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{data.student.TotalHoursWorked}}<span
+                    class="text-sm">hrs</span></h1>
+            <h2 class="font-primary text-sm">Total Training Hours Accumulated</h2>
+        </div>
+        <div class="flex flex-col justify-center p-10 m-5 shadow-md rounded-xl bg-white">
+            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{data.student.TotalHoursWorked}}<span
+                    class="text-sm">hrs</span></h1>
+            <h2 class="font-primary text-sm">Total Seminar Hours Accumulated</h2>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
+
+
+        <div class="col-span-1">
+            <!-- First column content here -->
+            <div class="w-full bg-white shadow-md p-3">
+                <div>
+                    <h1 class="font-primary font-bold text-lg">Currently working at:</h1>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-span-1">
+            <!-- Second column content here -->
+            <table class="w-full shadow-md bg-white">
+                <thead>
+                    <tr>
+                        <th class="text-center font-bold border font-primary text-base">smth</th>
+                        <th class="text-center font-bold border  font-primary text-base">HOURS smth</th>
+                        <th class="text-center font-bold border  font-primary text-base">smth</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="pl-4 text-left border  font-secondary text-sm">ON-SITE TRAINING HOURS</td>
+                        <td class="text-center border  font-secondary text-sm">{{data.student.TotalHoursWorked}} / 200
+                        </td>
+                        <td class="text-center border  font-secondary text-sm">(Your Status)</td>
+                    </tr>
+                    <tr>
+                        <td class="pl-4 text-left border  font-secondary text-sm">SEMINAR HOURS</td>
+                        <td class="text-center border  font-secondary text-sm">(Your Hours)/50</td>
+                        <td class="text-center border  font-secondary text-sm">(Your Status)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -99,16 +99,17 @@ export class UpdatepopupComponent implements OnInit {
         console.log('Deleting user with ID:', userId);
         this.service.deleteUser(userId).subscribe(
           res => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "The user has been deleted.",
+              icon: "success"
+            });
           }, error => {
-            if (error.status == 404) {
-              console.log('Successfully deleted user ID:', userId);
               Swal.fire({
-                title: "Deleted!",
-                text: "The user has been deleted.",
-                icon: "success"
+                title: "Delete failed",
+                text: "You may not have permission to delete this user.",
+                icon: "error"
               });
-
-            }
           });
       }
     });

@@ -2,10 +2,8 @@
 header("Access-Control-Allow-Origin: http://localhost:4200");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
-/**
- * API Endpoint Router
- * This PHP script serves as a simple API endpoint router, handling GET and POST requests for specific resources.
- */
+
+/*API Endpoint Router*/
 
 require_once "./modules/get.php";
 require_once "./modules/post.php";
@@ -118,6 +116,28 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_student());
                 }
                 break;
+            case 'studentsojt':
+                if (count($request) > 1) {
+                    echo json_encode($get->getStudentsOjtInfo($request[1]));
+                } else {
+                    echo json_encode($get->getStudentsOjtInfo());
+                }
+                break;
+            case 'studentsbycompany':
+                if (isset($request[1])) {
+                    echo json_encode($get->getStudentsByCompany($request[1]));
+                } else {
+                    echo "Invalid endpoint!";
+                }
+                break;
+            case 'studentsbysupervisor':
+                if (isset($request[1])) {
+                    echo json_encode($get->getStudentsBySupervisor($request[1]));
+                } else {
+                    echo "Invalid endpoint!";
+                }
+                break;
+
             case 'studentbycourseandyear':
                 if (isset($request[1]) && isset($request[2])) {
                     echo json_encode($get->get_studentByCourseAndYear($request[1], $request[2]));
@@ -128,7 +148,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
             case 'getavatar':
                 if (isset($request[1])) {
-                    echo json_encode($get->get_avatar($request[1]));
+                    $get->get_avatar($request[1]);
                 } else {
                     echo "ID not provided";
                     http_response_code(400);
@@ -136,7 +156,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
 
             case 'admin':
-                echo json_encode($get->get_admins());
+                echo json_encode($get->getAdmins());
+                break;
+
+            case 'supervisors':
+                if (isset($request[1])) {
+                    echo json_encode($get->getSupervisors($request[1]));
+                } else {
+                    echo json_encode($get->getSupervisors());
+                }
                 break;
 
             case 'coordinator':
@@ -291,28 +319,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo "No requests Provided!";
                 }
                 break;
-            case 'uploadrequirement':
-                // Return JSON-encoded data for uploading files
-                echo json_encode($post->upload_requirement($request[1], $request[2]));
+            case 'uploadfile':
+                if (isset($request[3])) {
+                    echo json_encode($post->uploadFile($request[1], $request[2], $request[3]));
+                } elseif (isset($request[2])) {
+                    echo json_encode($post->uploadFile($request[1], $request[2]));
+                } else {
+                    echo "Invalid Endpoints!";
+                }
                 break;
-            case 'uploaddocumentation':
-                // Return JSON-encoded data for uploading files
-                echo json_encode($post->upload_documentation($request[1], $request[2]));
-                break;
-
             case 'dtrclockin':
                 echo json_encode($post->dtrClockIn($request[1]));
                 break;
             case 'dtrclockout':
                 echo json_encode($post->dtrClockOut($request[1]));
-                break;
-            case 'uploadwar':
-                // Return JSON-encoded data for uploading files
-                echo json_encode($post->upload_war($request[1], $request[2]));
-                break;
-            case 'uploadfinalreport':
-                // Return JSON-encoded data for uploading files
-                echo json_encode($post->upload_finalReport($request[1]));
                 break;
             case 'uploadavatar':
                 // Return JSON-encoded data for uploading files
@@ -334,10 +354,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'togglestudentevaluation':
                 echo json_encode($post->toggleStudentEvaluation($data->id, $data->newEvaluation));
                 break;
-
             case 'editstudentinfo':
                 // Return JSON-encoded data for editing users
                 echo json_encode($post->edit_student_info($data, $request[1]));
+                break;
+            case 'addstudenttocompany':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->addStudentToCompany($data));
+                break;
+            case 'addstudenttosupervisor':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->addStudentToSupervisor($data));
                 break;
 
             default:
@@ -377,16 +404,26 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'removestudentfromsupervisor':
+                if (isset($request[1]) && isset($request[2])) {
+                    echo json_encode($delete->removeStudentFromSupervisor($request[1], $request[2]));
+                } else {
+                    echo "Submission IDs not provided";
+                    http_response_code(400);
+                }
+                break;
+
             default:
                 // Return a 403 response for unsupported requests
                 echo "No Such Request";
                 http_response_code(403);
                 break;
         }
+        break;
 
     default:
         // Return a 404 response for unsupported HTTP methods
-        echo "Method not available";
+        echo "Unsupported HTTP method";
         http_response_code(404);
         break;
 }

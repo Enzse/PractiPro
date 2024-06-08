@@ -53,7 +53,7 @@ class Delete extends GlobalMethods
     }
 
     public function deleteSubmission($id, $table)
-    {        
+    {
         $sql = "DELETE FROM $table
                 WHERE id = :id";
 
@@ -68,4 +68,24 @@ class Delete extends GlobalMethods
         }
     }
 
+    public function removeStudentFromSupervisor($supervisor_id, $student_id)
+    {
+        $sql = "DELETE FROM rl_supervisor_students
+                WHERE supervisor_id = :supervisor_id AND student_id = :student_id";
+
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':supervisor_id', $supervisor_id, PDO::PARAM_INT);
+            $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                return $this->sendPayload(null, 'success', "Successfully removed student from supervisor selection.", 200);
+            } else {
+                return $this->sendPayload(null, 'failed', "No student found from supervisor selection", 404);
+            }
+        } catch (PDOException $e) {
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
 }

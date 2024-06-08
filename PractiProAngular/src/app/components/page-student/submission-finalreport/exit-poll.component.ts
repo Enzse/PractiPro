@@ -44,7 +44,7 @@ export class ExitPollComponent implements OnInit {
       const file = fileInput.files[0];
       console.log(file);
       if (file) {
-        this.service.uploadFinalReport(this.userId, file).subscribe(
+        this.service.uploadSubmission('finalreports', this.userId, file).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
             Swal.fire({
@@ -102,12 +102,17 @@ export class ExitPollComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
-        }, error => {
           Swal.fire({
-            title: "Successfully Deleted Submission.",
+            title: "Your submission has been deleted",
             icon: "success"
           });
           this.loadData();
+        }, error => {
+            Swal.fire({
+              title: "Delete failed",
+              text: "You may not have permission to delete this file.",
+              icon: "error"
+            });
         });
       }
     });

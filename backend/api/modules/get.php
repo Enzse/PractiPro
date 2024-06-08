@@ -109,11 +109,19 @@ class Get extends GlobalMethods
         return $this->get_records('user', $condition);
     }
 
-    public function get_admins()
+    public function getAdmins()
     {
         $condition = "role= 'admin'";
 
         return $this->get_records('user', $condition);
+    }
+    public function getSupervisors($id = null)
+    {
+        $condition = null;
+        if ($id != null) {
+            $condition = "id=$id";
+        }
+        return $this->get_records('supervisors', $condition);
     }
     public function get_student($userId = null)
     {
@@ -133,6 +141,13 @@ class Get extends GlobalMethods
             return array();
         }
     }
+    public function getStudentsOjtInfo($userId = null)
+    {
+        $condition = ($userId !== null) ? "id = $userId" : null;
+        return $this->get_records('vw_students_ojt_status', $condition);
+    }
+
+
     public function get_studentsFromClasses($block)
     {
         $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
@@ -402,7 +417,7 @@ class Get extends GlobalMethods
         return $weekNumbers;
     }
 
-    
+
     // FOR DOWNLOADS!!!!!!!!!
     public function getSubmissionFile($table, $id)
     {
@@ -431,5 +446,37 @@ class Get extends GlobalMethods
         }
         return $this->get_records($table, $condition);
     }
+
+
+    //COMPANY FUNCTIONS
+    public function getStudentsByCompany($id)
+    {
+        $condition = "company_id=$id";
+        return $this->get_records('vw_students_ojt_status', $condition);
+    }
+
+    
+    public function getStudentsBySupervisor($id)
+    {
+        $sql = "SELECT v.*
+        FROM vw_students_ojt_status v
+        JOIN rl_supervisor_students r
+        ON v.id = r.student_id
+        WHERE r.supervisor_id = :supervisorId";
+
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':supervisorId', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            if (empty($result)) {
+                return $this->sendPayload(null, 'failed', "No students found for this supervisor.", 404);
+            }
+            return $this->sendPayload($result, 'success', "Successfully retrieved students.", 200);
+        } catch (PDOException $e) {
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
+
 
 }

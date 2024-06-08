@@ -1,0 +1,104 @@
+<div class="p-2 sm:ml-56 font-secondary">
+    <div class="p-1 xl:p-10">
+        <div>
+            <h1 class="indent-3 text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
+                Your Student Trainees:
+            </h1>
+            <div class="border-b border-gray-300"></div>
+            <br />
+        </div>
+
+        <div class="flex items-center space-x-4 mb-3">
+            <div class="form-outline flex-grow">
+                <input
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search for trainees..."
+                    aria-label="search" />
+            </div>
+
+            <button (click)="selectTrainees()"
+                class="bg-orange-500 font-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 focus:ring-4 focus:ring-orange-300"
+                type="button">
+                Select Trainees
+            </button>
+        </div>
+
+        <div class="flex flex-wrap w-full mt-10 justify-evenly space-x-3">
+            <!-- individual container -->
+            <div *ngFor="let data of traineesList" class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewTrainee(data)">
+
+                <!-- <button (click)="removeStudentFromSelection(data.id)" class="absolute top-0 right-0 mt-2 mr-2 p-1 text-white bg-slate-400 opacity-40 rounded-full hover:bg-red-400 hover:opacity-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button> -->
+            
+                <!-- shape -->
+                <div class="w-auto p-3 shadow-md justify-around bg-slate-50 hover:bg-slate-100 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
+                    <!-- photo -->
+                    <div class="avatar-container mx-auto">
+                        <img *ngIf="avatarUrl; else placeholder" [src]="avatarUrl" class="image-container" alt="Avatar" />
+                        <ng-template #placeholder>
+                            <div class="image-container avatar-placeholder"></div>
+                        </ng-template>
+                    </div>
+            
+                    <!-- information -->
+                    <div class="flow-root mt-3">
+                        <h5 class="mb-2 text-2xl mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center">
+                            {{ data.firstName }}
+                            {{ data.lastName }}
+                        </h5>
+                        <ul role="list" class="flex flex-col flex-1 px-10">
+                            <li class="mb-2">
+                                <div class="flex items-center">
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                            Hours Worked:
+                                        </p>
+                                        <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">
+                                            {{ data.TotalHoursWorked || 0 }}hrs
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="flex items-center">
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                            Job Title:
+                                        </p>
+                                        <span [ngClass]="{'text-red-500': !data.job_title}" class="text-sm font-normal lg:text-base font-secondary">
+                                            {{ data.job_title || "Waiting for assignation" }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="flex items-center">
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                            Status:
+                                        </p>
+                                        Checked-in
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-2">
+                                <div class="flex items-center">
+                                    <div class="flex-1 min-w-0 ms-4">
+                                        <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                            Date hired:
+                                        </p>
+                                        <span class="text-sm font-normal lg:text-base font-secondary">
+                                            {{ data.hire_date | date : "longDate" }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

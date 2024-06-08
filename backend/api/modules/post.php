@@ -356,68 +356,6 @@ class Post extends GlobalMethods
         }
     }
 
-
-    public function upload_requirement($data, $category)
-    {
-        $fileName = basename($_FILES["file"]["name"]);
-        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileSize = $_FILES["file"]["size"];
-        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
-
-
-        $sql = "INSERT INTO submissions (user_id, submission_name, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(
-                [
-                    $data,
-                    $category,
-                    $fileName,
-                    $fileType,
-                    $fileSize,
-                    $fileData
-                ]
-            );
-            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
-        } catch (PDOException $e) {
-            $errmsg = $e->getMessage();
-            $code = 400;
-        }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
-    }
-
-    public function upload_documentation($data, $category)
-    {
-        $fileName = basename($_FILES["file"]["name"]);
-        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileSize = $_FILES["file"]["size"];
-        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
-
-
-        $sql = "INSERT INTO documentations (user_id, week, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(
-                [
-                    $data,
-                    $category,
-                    $fileName,
-                    $fileType,
-                    $fileSize,
-                    $fileData
-                ]
-            );
-            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
-        } catch (PDOException $e) {
-            $errmsg = $e->getMessage();
-            $code = 400;
-            return $this->sendPayload(null, "Failed uploading file", $errmsg, $code);
-        }     
-    }
-
-
-
     public function dtrClockIn($user_id)
     {
         // Check if there's an active clock-in record with no clock-out
@@ -465,64 +403,87 @@ class Post extends GlobalMethods
         }
     }
 
-
-    public function upload_war($data, $category)
-    {
+    public function uploadFile($table, $user_id, $category = null)
+    {   
+        if(!isset($_FILES["file"])){
+            return $this->sendPayload(null, "failed", "No file selected", 400);
+        }
         $fileName = basename($_FILES["file"]["name"]);
         $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
         $fileSize = $_FILES["file"]["size"];
         $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
 
 
-        $sql = "INSERT INTO war (user_id, week, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(
-                [
-                    $data,
-                    $category,
-                    $fileName,
-                    $fileType,
-                    $fileSize,
-                    $fileData
-                ]
-            );
-            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
-        } catch (PDOException $e) {
-            $errmsg = $e->getMessage();
-            $code = 400;
+        switch ($table) {
+            case 'submissions':
+                $sql = "INSERT INTO $table (user_id, submission_name, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?, ?)";
+                try {
+                    $stmt = $this->pdo->prepare($sql);
+                    $stmt->execute(
+                        [
+                            $user_id,
+                            $category,
+                            $fileName,
+                            $fileType,
+                            $fileSize,
+                            $fileData
+                        ]
+                    );
+                    return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+                } catch (PDOException $e) {
+                    $errmsg = $e->getMessage();
+                    $code = 400;
+                    return $this->sendPayload(null, "failed", $errmsg, $code);
+                }
+
+
+            case 'documentations':
+            case 'war':
+                $sql = "INSERT INTO $table (user_id, week, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?, ?)";
+                try {
+                    $stmt = $this->pdo->prepare($sql);
+                    $stmt->execute(
+                        [
+                            $user_id,
+                            $category,
+                            $fileName,
+                            $fileType,
+                            $fileSize,
+                            $fileData
+                        ]
+                    );
+                    return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+                } catch (PDOException $e) {
+                    $errmsg = $e->getMessage();
+                    $code = 400;
+                    return $this->sendPayload(null, "Failed uploading file", $errmsg, $code);
+                }
+
+
+            case 'finalreports':
+                $sql = "INSERT INTO finalreports (user_id, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?)";
+                try {
+                    $stmt = $this->pdo->prepare($sql);
+                    $stmt->execute(
+                        [
+                            $user_id,
+                            $fileName,
+                            $fileType,
+                            $fileSize,
+                            $fileData
+                        ]
+                    );
+                    return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+                } catch (PDOException $e) {
+                    $errmsg = $e->getMessage();
+                    $code = 400;
+                    return $this->sendPayload(null, "failed", $errmsg, $code);
+                }
+
+
+            default:
+                return $this->sendPayload(null, "Failed", "Invalid category", 400);
         }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
-    }
-
-    public function upload_finalReport($data)
-    {
-        $fileName = basename($_FILES["file"]["name"]);
-        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
-        $fileSize = $_FILES["file"]["size"];
-        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
-
-
-        $sql = "INSERT INTO finalreports (user_id, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?)";
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(
-                [
-                    $data,
-                    $fileName,
-                    $fileType,
-                    $fileSize,
-                    $fileData
-                ]
-            );
-            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
-        } catch (PDOException $e) {
-            $errmsg = $e->getMessage();
-            $code = 400;
-        }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
     public function uploadAvatar($id)
@@ -538,14 +499,60 @@ class Post extends GlobalMethods
                     $fileData
                 ]
             );
-            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+            return $this->sendPayload(null, "success", "Successfully uploaded avatar", 200);
         } catch (PDOException $e) {
             $errmsg = $e->getMessage();
             $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
         }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
     }
+
+
+    public function addStudentToCompany($data)
+    {
+        $sql = "INSERT INTO rl_company_students(company_id, student_id, hired_by)
+        VALUES (?, ?, ?)";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->company_id,
+                    $data->student_id,
+                    $data->supervisor_id
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully added student to company", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+    public function addStudentToSupervisor($data)
+    {
+        $sql = "INSERT INTO rl_supervisor_students(supervisor_id, student_id)
+        VALUES (?, ?)";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->supervisor_id,
+                    $data->student_id
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully added student to supervisor selection", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+
+
+
+
 }
 
 

@@ -18,6 +18,7 @@ export class SidebarComponent {
   registrationStatus: any;
   constructor(@Inject(PLATFORM_ID) private platformId: Object, private service: AuthService,) {
   }
+  
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) initFlowbite();
 
