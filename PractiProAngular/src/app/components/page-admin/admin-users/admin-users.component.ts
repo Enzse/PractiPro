@@ -9,11 +9,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import Swal from 'sweetalert2';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-admin-users',
   standalone: true,
-  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe],
+  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, NgxPaginationModule],
   templateUrl: './admin-users.component.html',
   styleUrl: './admin-users.component.css'
 })
@@ -24,6 +25,7 @@ export class AdminUsersComponent implements OnInit {
   searchtext: any; //FOR SEARCH FILTER
   userlist: any; //ARRAY OF ALL USERS FETCHED FROM DATABASE
   userrole: any; //ROLE OF USER THE IS LOGGED IN (to check if admin / superadmin)
+  p: number = 1; /* starting no. of the list */
 
 
   //This block executes upon opening this page:

@@ -13,11 +13,12 @@ import { OrdinalPipe } from '../../../ordinal.pipe';
 import { AssignstudentpopupComponent } from '../../popups/popups-admin/assignstudentpopup/assignstudentpopup.component';
 import { InspectprofilepopupComponent } from '../../popups/popups-admin/inspectprofilepopup/inspectprofilepopup.component';
 import Swal from 'sweetalert2';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-admin-students',
   standalone: true,
-  imports: [AdminNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, OrdinalPipe],
+  imports: [AdminNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, OrdinalPipe,NgxPaginationModule],
   templateUrl: './admin-students.component.html',
   styleUrl: './admin-students.component.css'
 })
@@ -29,6 +30,8 @@ export class AdminStudentsComponent implements OnInit {
   studentlist: any;
   dataSource: any;
   searchtext: any;
+  p: number = 1; /* starting no. of the list */
+
   ngOnInit(): void {
 
   }
