@@ -104,4 +104,18 @@ class Delete extends GlobalMethods
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
+    public function deleteLogo($id)
+    {
+        $sql = "DELETE FROM company_logos
+                WHERE company_id = :id";
+
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $this->sendPayload(null, "success", "Successfully deleted logo", 200);
+        } catch (PDOException $e) {
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
 }

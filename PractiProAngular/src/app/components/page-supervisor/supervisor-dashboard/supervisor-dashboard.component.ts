@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,56 +7,61 @@ import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import { SelecttraineespopupComponent } from '../../popups/popups-supervisor/selecttraineespopup/selecttraineespopup.component';
 import { ViewtraineepopupComponent } from '../../popups/popups-supervisor/viewtraineepopup/viewtraineepopup.component';
+import { FilterPipe } from '../../../filter.pipe';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-supervisor-dashboard',
   standalone: true,
-  imports: [CommonModule, DatePipe, FormsModule],
+  imports: [CommonModule, DatePipe, FormsModule, FilterPipe],
   templateUrl: './supervisor-dashboard.component.html',
-  styleUrl: './supervisor-dashboard.component.css'
+  styleUrls: ['./supervisor-dashboard.component.css']
 })
-export class SupervisorDashboardComponent {
+export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   userId: any;
   user: any;
   traineesList: any;
   avatarUrl?: SafeUrl;
   searchtext: any;
+  private subscriptions = new Subscription();
 
   constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
     this.userId = this.service.getCurrentUserId();
-    this.service.getSupervisors(this.userId).subscribe((res: any) => {
-      this.user = res.payload[0];
-    })
+    this.subscriptions.add(
+      this.service.getSupervisors(this.userId).subscribe((res: any) => {
+        this.user = res.payload[0];
+      })
+    );
   }
-
 
   ngOnInit(): void {
     this.loadData();
   }
 
-
-
-  loadData() {
-    console.log("Loading Data...")
-    this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
-      this.traineesList = res.payload.map((user: any) => {
-        return { ...user, avatar: '' };
-      });
-      this.traineesList.forEach((student: any) => {
-        this.service.getAvatar(student.id).subscribe((res: any) => {
-          if (res.size > 0) {
-            const url = URL.createObjectURL(res);
-            student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
-          }
-        })
-      });
-    })
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
-
-
-
-
+  loadData() {
+    console.log("Loading Data...");
+    this.subscriptions.add(
+      this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
+        this.traineesList = res.payload.map((user: any) => {
+          return { ...user, avatar: '' };
+        });
+        this.traineesList.forEach((student: any) => {
+          this.subscriptions.add(
+            this.service.getAvatar(student.id).subscribe((res: any) => {
+              if (res.size > 0) {
+                const url = URL.createObjectURL(res);
+                student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+              }
+            })
+          );
+        });
+      })
+    );
+  }
 
   selectTrainees() {
     const popup = this.dialog.open(SelecttraineespopupComponent, {
@@ -67,14 +72,16 @@ export class SupervisorDashboardComponent {
         company_id: this.user.company_id,
         supervisor_id: this.userId
       }
-    })
-    popup.afterClosed().subscribe(res => {
-      const changeDetected = res
-      if (changeDetected) {
-        console.log("Change detected!")
-        this.loadData()
-      }
     });
+    this.subscriptions.add(
+      popup.afterClosed().subscribe(res => {
+        const changeDetected = res;
+        if (changeDetected) {
+          console.log("Change detected!");
+          this.loadData();
+        }
+      })
+    );
   }
 
   viewTrainee(student: any) {
@@ -85,17 +92,16 @@ export class SupervisorDashboardComponent {
       data: {
         student: student
       }
-    })
-    popup.afterClosed().subscribe(res => {
-      console.log(`res: ${res}`);
-      // if (res.changeDetected) {
-      //   this.loadData()
-      // }
-      // else{}
     });
+    this.subscriptions.add(
+      popup.afterClosed().subscribe(res => {
+        console.log(`res: ${res}`);
+      })
+    );
   }
 
   removeStudentFromSelection(id: number) {
-
+    // Implementation for removing a student from selection
   }
 }
+  

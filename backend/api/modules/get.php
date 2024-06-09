@@ -221,6 +221,29 @@ class Get extends GlobalMethods
             http_response_code(404);
         }
     }
+    public function getLogo($userId)
+    {
+        $columns = "avatar";
+        $condition = "company_id = $userId";
+        $result = $this->get_records('company_logos', $condition, $columns);
+
+        if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['avatar'])) {
+            $fileData = $result['payload'][0]['avatar'];
+            $fileInfo = array("avatar" => $fileData);
+        } else {
+            return array("avatar" => null);
+        }
+        if ($fileInfo) {
+            $fileData = $fileInfo['avatar'];
+
+            header('Content-Type: image/png');
+            echo $fileData;
+            exit();
+        } else {
+            echo "User has not uploaded an avatar yet.";
+            http_response_code(404);
+        }
+    }
 
     public function getStudentsByStudentID($studentId)
     {
@@ -333,6 +356,15 @@ class Get extends GlobalMethods
         WHERE r.supervisor_id = :supervisorId";
 
         return $this->get_records(null, null, null, $sql, ['supervisorId' => $supervisor_id]);
+    }
+
+    public function getCompanies($id = null)
+    {
+        $condition = null;
+        if ($id != null) {
+            $condition = "id=$id";
+        }
+        return $this->get_records('vw_company_profile', $condition);
     }
 
 

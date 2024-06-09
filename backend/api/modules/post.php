@@ -11,7 +11,35 @@ class Post extends GlobalMethods
         $this->pdo = $pdo;
     }
 
+    public function userLogin($data, $user)
+    {
+        if ($user !== false && isset($user['password'])) {
+            // Verify the password
+            if (!password_verify($data['password'], $user['password'])) {
+                return $this->sendPayload(null, "failed", "Invalid Credentials.", 401);
+            }
+            // Verify if account is active
+            if ($user['isActive'] === 0) {
+                return $this->sendPayload(null, "failed", "Inactive Account.", 403);
+            }
+            // Generate JWT token
+            $JwtController = new Jwt($_ENV["SECRET_KEY"]);
+            $token = $JwtController->encode([
+                "id" => $user['id'],
+                "firstName" => $user['firstName'],
+                "lastName" => $user['lastName'],
+                "email" => $user['email'],
+                "role" => $user['role'],
+            ]);
 
+            // Respond with the generated token
+            http_response_code(200);
+            echo json_encode(["token" => $token]);
+        } else {
+            // User not found or password not set
+            return $this->sendPayload(null, "failed", "User not found.", 404);
+        }
+    }
 
     public function doesEmailExist($email)
     {
@@ -512,6 +540,28 @@ class Post extends GlobalMethods
                 ]
             );
             return $this->sendPayload(null, "success", "Successfully uploaded avatar", 200);
+        } catch (PDOException $e) {
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+    
+    public function uploadLogo($id)
+    {
+        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
+
+
+        $sql = "INSERT INTO company_logos (company_id, avatar) VALUES (?, ?)";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $id,
+                    $fileData
+                ]
+            );
+            return $this->sendPayload(null, "success", "Successfully uploaded logo", 200);
         } catch (PDOException $e) {
             $errmsg = $e->getMessage();
             $code = 400;

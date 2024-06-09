@@ -110,6 +110,14 @@ export class AuthService {
       return this.http.get<any>(`${this.apiurl}/classes`);
     }
   }
+  getCompanies(id: any = null) {
+    if (id) {
+      return this.http.get<any>(`${this.apiurl}/companies/${id}`);
+    } else {
+      return this.http.get<any>(`${this.apiurl}/companies`);
+    }
+  }
+
   getClassesByCoordinator(Id: number) {
     return this.http.get<any>(`${this.apiurl}/classesbycoordinator/${Id}`);
   }
@@ -214,6 +222,16 @@ export class AuthService {
   }
   getAvatar(userId: number) {
     return this.http.get(`${this.apiurl}/getavatar/${userId}`, { responseType: 'blob' });
+  }
+  
+  uploadLogo(userId: number, file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`${this.apiurl}/uploadlogo/${userId}`, formData);
+  }
+  getLogo(companyId: number) {
+    return this.http.get(`${this.apiurl}/getlogo/${companyId}`, { responseType: 'blob' });
   }
 
 

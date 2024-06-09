@@ -139,14 +139,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
-            case 'getavatar':
-                if (isset($request[1])) {
-                    $get->getAvatar($request[1]);
-                } else {
-                    echo "ID not provided";
-                    http_response_code(400);
-                }
-                break;
 
             case 'admin':
                 echo json_encode($get->getAdmins());
@@ -168,6 +160,31 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'companies':
+                if (count($request) > 1) {
+                    echo json_encode($get->getCompanies($request[1]));
+                } else {
+                    echo json_encode($get->getCompanies());
+                }
+                break;
+
+            case 'getavatar':
+                if (isset($request[1])) {
+                    $get->getAvatar($request[1]);
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'getlogo':
+                if (isset($request[1])) {
+                    $get->getLogo($request[1]);
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
 
             case 'student-submission':
                 if (isset($request[1]) && isset($request[2])) {
@@ -229,47 +246,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
 
             case 'login':
-                try {
-                    $data = json_decode(file_get_contents('php://input'), true);
 
-                    if (!isset($data['email']) || !isset($data['password'])) {
-                        throw new Exception("Missing login credentials", 400);
-                    }
-
-                    $user = $get->getByEmail($data['email']);
-
-                    if ($user !== false && isset($user['password'])) {
-                        // Verify the password
-                        if (!password_verify($data['password'], $user['password'])) {
-                            throw new Exception("Invalid credentials", 401);
-                        }
-                        // Verify if account is active
-                        if ($user['isActive'] === 0) {
-                            throw new Exception("Inactive account", 403);
-                        }
-                        // Generate JWT token
-                        $JwtController = new Jwt($_ENV["SECRET_KEY"]);
-                        $token = $JwtController->encode([
-                            "id" => $user['id'],
-                            "firstName" => $user['firstName'],
-                            "lastName" => $user['lastName'],
-                            "email" => $user['email'],
-                            "role" => $user['role'],
-                        ]);
-
-                        // Respond with the generated token
-                        http_response_code(200);
-                        echo json_encode(["token" => $token]);
-                    } else {
-                        // User not found or password not set
-                        throw new Exception("User not found or invalid credentials", 404);
-                    }
-                } catch (Exception $e) {
-                    // Handle exceptions
-                    $statusCode = $e->getCode() ?: 500;
-                    http_response_code($statusCode);
-                    echo json_encode(["message" => "An error occurred: " . $e->getMessage()]);
+                $data = json_decode(file_get_contents('php://input'), true);
+                if (!isset($data['email']) || !isset($data['password'])) {
+                    throw new Exception("Missing login credentials", 400);
                 }
+                $user = $get->getByEmail($data['email']);
+                $post->userLogin($data, $user);
                 break;
 
             case 'registeruser':
@@ -324,6 +307,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 if (isset($request[1])) {
                     $delete->deleteAvatar($request[1]);
                     echo json_encode($post->uploadAvatar($request[1]));
+                } else {
+                    echo "User ID not provided.";
+                }
+                break;
+            case 'uploadlogo':
+                if (isset($request[1])) {
+                    $delete->deleteLogo($request[1]);
+                    echo json_encode($post->uploadLogo($request[1]));
                 } else {
                     echo "User ID not provided.";
                 }
