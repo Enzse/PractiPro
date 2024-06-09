@@ -6,6 +6,7 @@ import { FilterPipe } from '../../../../filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { HirestudentspopupComponent } from '../hirestudentspopup/hirestudentspopup.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-selecttraineespopup',
@@ -17,7 +18,7 @@ import { HirestudentspopupComponent } from '../hirestudentspopup/hirestudentspop
 export class SelecttraineespopupComponent implements OnInit {
   traineesList: any;
   searchtext: any;
-  constructor(private router: Router, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelecttraineespopupComponent>, private dialog2: MatDialog) {
+  constructor(private router: Router, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelecttraineespopupComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer) {
 
   }
 
@@ -28,8 +29,18 @@ export class SelecttraineespopupComponent implements OnInit {
   loadData() {
     console.log(`company ID: ${this.data.company_id}`)
     this.service.getStudentsByCompany(this.data.company_id).subscribe((res: any) => {
-      this.traineesList = res.payload;
-      console.log(this.traineesList)
+      this.traineesList = res.payload.map((user: any) => {
+        return { ...user, avatar: '' };
+      });
+      this.traineesList.forEach((student: any) => {
+        this.service.getAvatar(student.id).subscribe((res: any) => {
+          if (res.size > 0) {
+            console.log(res);
+            const url = URL.createObjectURL(res);
+            student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+          }
+        })
+      });
     })
   }
 
@@ -38,15 +49,7 @@ export class SelecttraineespopupComponent implements OnInit {
     this.dialog.close();
   }
 
-  // hireStudents() {
-  //   const popup = this.dialog2.open(HirestudentspopupComponent, {
-  //     enterAnimationDuration: "500ms",
-  //     exitAnimationDuration: "500ms",
-  //     width: 'auto',
-  //     data: {
-  //       company_id: this.data.company_id
-  //     }
-  //   })
-  // }
-
+  addStudentToSelection() {
+    
+  }
 }

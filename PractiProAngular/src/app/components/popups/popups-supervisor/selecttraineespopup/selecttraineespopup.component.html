@@ -17,16 +17,16 @@
     </div>
 
     <button (click)="hireStudents()"
-      class="bg-green-500 font-primary text-white px-4 py-2 rounded-lg hover:bg-green-600 focus:ring-4 focus:ring-green-300"
+      class="bg-blue-900 font-primary text-white px-4 py-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
       type="button">
-      
+
       <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
         width="24" height="24" fill="white" viewBox="0 0 24 24">
         <path fill-rule="evenodd"
           d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z"
           clip-rule="evenodd" />
       </svg>
-      <p class="inline ml-1 max-lg:hidden">Hire Students</p>
+      <p class="inline ml-1 max-lg:hidden">Add Trainees</p>
     </button>
   </div>
 
@@ -38,6 +38,7 @@
       <!-- COLUMN TITLES: -->
       <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
         <tr>
+          <th scope="col" class="px-6 py-3 font-primary">Avatar:</th>
           <th scope="col" class="px-6 py-3 font-primary">Full Name:</th>
           <th scope="col" class="px-6 py-3 font-primary">Job Title:</th>
           <th scope="col" class="px-6 py-3 font-primary">Hours Worked</th>
@@ -51,12 +52,18 @@
         <tr *ngIf="(traineesList | filter : searchtext)?.length === 0">
           <td colspan="7" class="px-6 py-4 text-center text-red-500 font-primary">No Trainees Found</td>
         </tr>
-        <tr *ngFor="let data of traineesList | filter : searchtext"
+        <tr *ngFor="let data of traineesList | filter : searchtext" (click)="addStudentToSelection()"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-slate-100">
+          <td class="px-6 py-4"><img *ngIf="data.avatar; else placeholder" [src]="data.avatar"
+              class="mx-auto w-20 h-20 rounded-full">
+            <ng-template #placeholder>
+              <div class="mx-auto w-20 h-20 image-container avatar-placeholder"></div>
+            </ng-template>
+          </td>
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
             data.firstName }} {{ data.lastName }}</th>
           <td class="px-6 py-4">{{ data.job_title || "Not set" }}</td>
-          <td class="px-6 py-4">{{ data.TotalHoursWorked }}</td>
+          <td class="px-6 py-4">{{ data.TotalHoursWorked || "Not started" }}</td>
           <td class="px-6 py-4">{{ data.hire_date }}</td>
           <td class="px-6 py-4">{{ data.hire_date }}</td>
         </tr>

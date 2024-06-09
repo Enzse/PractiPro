@@ -364,6 +364,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for editing users
                 echo json_encode($post->edit_student_info($data, $request[1]));
                 break;
+            case 'createhiringrequest':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->createHiringRequest($data));
+                break;
             case 'addstudenttocompany':
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->addStudentToCompany($data));

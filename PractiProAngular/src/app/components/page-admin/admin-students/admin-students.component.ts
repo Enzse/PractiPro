@@ -79,14 +79,14 @@ export class AdminStudentsComponent implements OnInit {
   }
 
 
-  viewInfo(code: any) {
+  viewInfo(code: any, studentID: any) {
     const popup = this.dialog.open(InspectprofilepopupComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "500ms",
       width: 'auto',
-      height: "90%",
       data: {
-        usercode: code
+        usercode: code,
+        studentId: studentID
       }
     })
     popup.afterClosed().subscribe(res => {

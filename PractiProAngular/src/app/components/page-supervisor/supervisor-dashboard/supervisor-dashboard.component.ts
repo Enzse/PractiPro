@@ -81,9 +81,9 @@ export class SupervisorDashboardComponent {
         student: student
       }
     })
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    });
+    // popup.afterClosed().subscribe(res => {
+    //   this.loadData()
+    // });
   }
 
   removeStudentFromSelection(id: number) {

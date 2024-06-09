@@ -85,7 +85,7 @@ export class AuthService {
   getStudentsByCourseAndYear(course: any, year: number) {
     return this.http.get<any>(`${this.apiurl}/studentbycourseandyear/${course}/${year}`);
   }
-  getStudentsByStudentID(studentId:any) {
+  getStudentsByStudentID(studentId: any) {
     return this.http.get<any>(`${this.apiurl}/studentbystudentid/${studentId}`);
   }
 
@@ -227,6 +227,9 @@ export class AuthService {
     return this.http.post(`${this.apiurl}/assignclassstudent/${id}`, inputdata);
   }
 
+  createHiringRequest(inputdata: any) {
+    return this.http.post(`${this.apiurl}/createhiringrequest`, inputdata);
+  }
   addStudentToCompany(inputdata: any) {
     return this.http.post(`${this.apiurl}/addstudenttocompany`, inputdata);
   }

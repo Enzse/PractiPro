@@ -149,7 +149,7 @@ class Get extends GlobalMethods
     public function getStudentsOjtInfo($userId = null)
     {
         $condition = ($userId !== null) ? "id = $userId" : null;
-        return $this->get_records('vw_students_ojt_status', $condition);
+        return $this->get_records('vw_student_ojt_status', $condition);
     }
 
 
@@ -270,18 +270,7 @@ class Get extends GlobalMethods
         JOIN rl_class_coordinators rcc ON cb.block_name = rcc.block_name
         WHERE rcc.coordinator_id = :coordinatorId";
 
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':coordinatorId', $coordinatorId, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if (empty($result)) {
-                return $this->sendPayload(null, 'failed', "No students found for coordinator ID $coordinatorId.", 404);
-            }
-            return $this->sendPayload($result, 'success', "Successfully retrieved students.", 200);
-        } catch (PDOException $e) {
-            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
-        }
+        return $this->get_records(null, null, null, $sql, ['coordinatorId' => $coordinatorId]);
     }
 
 
@@ -351,10 +340,10 @@ class Get extends GlobalMethods
 
     public function getStudentsByStudentID($studentId)
     {
-        $sql = "SELECT students.*, industry_partners.company_name, industry_partners.address AS company_address
-            FROM `students`
-            LEFT JOIN industry_partners ON students.company_id = industry_partners.id
-            WHERE students.studentId = :studentId";
+        $sql = "SELECT vw_student_ojt_status.*, industry_partners.company_name, industry_partners.address AS company_address
+            FROM `vw_student_ojt_status`
+            LEFT JOIN industry_partners ON vw_student_ojt_status.company_id = industry_partners.id
+            WHERE vw_student_ojt_status.studentId = :studentId";
         return $this->get_records(null, null, null, $sql, ['studentId' => $studentId]);
     }
 
@@ -439,33 +428,29 @@ class Get extends GlobalMethods
 
 
     //COMPANY FUNCTIONS
-    public function getStudentsByCompany($id)
+    public function getStudentsByCompany($company_id)
     {
-        $condition = "company_id=$id";
-        return $this->get_records('vw_students_ojt_status', $condition);
+        $sql = "SELECT v.*, s.firstName AS sFirstName, s.lastName AS sLastName
+        FROM vw_student_ojt_status v
+        JOIN rl_company_students cs
+        ON v.id = cs.student_id
+        JOIN supervisors s
+        ON cs.hired_by = s.id
+        WHERE v.company_id = :companyId";
+
+        return $this->get_records(null, null, null, $sql, ['companyId' => $company_id]);
     }
 
 
-    public function getStudentsBySupervisor($id)
+    public function getStudentsBySupervisor($supervisor_id)
     {
         $sql = "SELECT v.*
-        FROM vw_students_ojt_status v
+        FROM vw_student_ojt_status v
         JOIN rl_supervisor_students r
         ON v.id = r.student_id
         WHERE r.supervisor_id = :supervisorId";
 
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':supervisorId', $id, PDO::PARAM_INT);
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            if (empty($result)) {
-                return $this->sendPayload(null, 'failed', "No students found for this supervisor.", 404);
-            }
-            return $this->sendPayload($result, 'success', "Successfully retrieved students.", 200);
-        } catch (PDOException $e) {
-            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
-        }
+        return $this->get_records(null, null, null, $sql, ['supervisorId' => $supervisor_id]);
     }
 
 

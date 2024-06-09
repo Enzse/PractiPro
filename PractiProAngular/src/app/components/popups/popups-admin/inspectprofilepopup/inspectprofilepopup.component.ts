@@ -21,7 +21,7 @@ import { EditinformationpopupComponent } from '../../popups-student/editinformat
 })
 export class InspectprofilepopupComponent {
 
-  studentProfile: any[] = [];
+  studentProfile: any;
   avatarUrl?: SafeUrl;
 
   constructor(private builder: FormBuilder, private service: AuthService,
@@ -33,50 +33,25 @@ export class InspectprofilepopupComponent {
   editdata?: any;
   ngOnInit(): void {
     this.loadInfo();
-    this.loadAvatar();
   }
 
-  //This serves as a placeholder for the student data.
-  loadAvatar() {
-    console.log("Loading Avatar...");
-    if (this.data.usercode) {
-      this.service.getAvatar(this.data.usercode).subscribe(
-        blob => {
-          console.log("Loading Blob");
-          console.log(`blob: ${blob}`);
-          if (blob.size > 0) { 
-            const url = URL.createObjectURL(blob);
-            this.avatarUrl = this.sanitizer.bypassSecurityTrustUrl(url);
-            console.log(`this.avatarUrl: ${this.avatarUrl}`);
-          } else {
-            console.log("User has not uploaded an avatar yet.");
-            this.avatarUrl = undefined;
-          }
-        },
-        error => {
-          if (error.status === 404) {
-            console.log('No avatar found for the user.');
-            this.avatarUrl = undefined;
-          } else {
-            console.error('Failed to load avatar:', error);
-          }
-        }
-      );
-    }
-  }
 
   loadInfo() {
-    if (this.data.usercode) {
-      this.service.getStudentProfile(this.data.usercode).subscribe(
-        (data: any[]) => {
-          console.log(data);
-          this.studentProfile = data;
-        },
-        (error: any) => {
-          console.error('Error fetching student requirements:', error);
-        }
-      );
-    }
+    this.service.getStudentsByStudentID(this.data.studentId).subscribe(
+      (res: any) => {
+        this.studentProfile = res.payload[0];
+        this.studentProfile.avatar = '';
+                
+        console.log(this.studentProfile);
+        
+        this.service.getAvatar(this.studentProfile.id).subscribe((avatarRes: any) => {
+            if (avatarRes.size > 0) {
+                const url = URL.createObjectURL(avatarRes);
+                this.studentProfile.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+            }
+        });
+      }
+    );
   }
 
   //This is for the Submit button functionality.

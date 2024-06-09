@@ -561,7 +561,29 @@ class Post extends GlobalMethods
         }
     }
 
-
+    public function createHiringRequest($data)
+    {
+        $sql = "INSERT INTO company_hiring_requests(company_id, student_id, supervisor_id)
+        VALUES (?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [   
+                    $data->company_id,
+                    $data->student_id,
+                    $data->supervisor_id
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully created hiring request", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
 
 
 
