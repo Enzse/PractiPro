@@ -226,6 +226,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+            case 'getstudentjob':
+                if (isset($request[1])) {
+                    echo json_encode($get->getStudentJob($request[1]));
+                } else {
+                    echo "Student ID not provided!";
+                    http_response_code(400);
+                }
+                break;
 
             default:
                 echo "This is forbidden";
@@ -286,6 +294,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($post->assignClassStudent($data, $request[1]));
                 } else {
                     echo "No requests Provided!";
+                }
+                break;
+            case 'assignjobtostudent':
+                if (isset($data)) {
+                    echo json_encode($post->assignJobToStudent($data));
+                } else {
+                    echo "No data Provided!";
                 }
                 break;
             case 'uploadfile':

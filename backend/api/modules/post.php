@@ -546,7 +546,7 @@ class Post extends GlobalMethods
             return $this->sendPayload(null, "failed", $errmsg, $code);
         }
     }
-    
+
     public function uploadLogo($id)
     {
         $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
@@ -641,6 +641,32 @@ class Post extends GlobalMethods
             );
             $this->pdo->commit();
             return $this->sendPayload(null, "success", "Successfully created hiring request", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+
+    public function assignJobToStudent($data)
+    {
+        $sql = "INSERT INTO student_jobs(student_id, assigned_by, job_title, job_description)
+        VALUES (?, ?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->student_id,
+                    $data->assigned_by,
+                    $data->job_title,
+                    $data->job_description
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully created job assignation", 200);
         } catch (PDOException $e) {
             $this->pdo->rollBack();
             $errmsg = $e->getMessage();

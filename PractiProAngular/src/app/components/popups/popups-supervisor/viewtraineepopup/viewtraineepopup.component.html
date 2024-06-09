@@ -1,56 +1,135 @@
 <div
-    class="overflow-x-auto p-1 text-center bg-slate-100 h-auto items-center justify-center shadow-md border border-gray-200">
+    class="text-center bg-slate-100 items-center justify-center shadow-md border border-gray-200">
     <div class="mb-auto mt-3 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
         <h1 class="font-primary font-bold text-lg">{{data.student.firstName}} {{data.student.lastName}}</h1>
     </div>
 
     <div class="flex flex-col md:flex-row justify-evenly">
-        <div class="flex flex-col justify-center p-10 m-5 shadow-md rounded-xl bg-white">
-            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{data.student.TotalHoursWorked}}<span
-                    class="text-sm">hrs</span></h1>
-            <h2 class="font-primary text-sm">Total Training Hours Accumulated</h2>
-        </div>
-        <div class="flex flex-col justify-center p-10 m-5 shadow-md rounded-xl bg-white">
-            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{data.student.TotalHoursWorked}}<span
-                    class="text-sm">hrs</span></h1>
-            <h2 class="font-primary text-sm">Total Seminar Hours Accumulated</h2>
+        <div class="flex flex-col justify-center w-full p-10 my-5 shadow-md bg-white">
+            <div *ngIf="data.student.TotalHoursWorked">
+                <h1 class="font-primary font-bold text-blue-800 text-5xl">
+                    {{data.student.TotalHoursWorked}}<span class="text-sm">hrs</span></h1>
+                <h2 class="font-primary text-sm">Total Training Hours Accumulated</h2>
+            </div>
+            <div *ngIf="!data.student.TotalHoursWorked">
+                <h1 class="font-primary font-bold text-blue-800 text-4xl">
+                    'Not Started'</h1>
+                <h2 class="font-primary mt-1 text-sm">This student has yet to start their practicum training.</h2>
+            </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-2 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
+    <div class="grid grid-cols-5 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
 
 
-        <div class="col-span-1">
+        <div class="col-span-3">
             <!-- First column content here -->
-            <div class="w-full bg-white shadow-md p-3">
+            <div *ngIf="studentjob" class="w-full bg-white shadow-md p-3">
                 <div>
-                    <h1 class="font-primary font-bold text-lg">Currently working at:</h1>
+                    <h1 class="font-primary font-bold text-lg">{{studentjob.job_title || "Unassigned"}}</h1>
                 </div>
 
+                <p class="font-primary">Job Title</p>
+                <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
+
+                <div class="flex justify-start text-left">
+                    <ul role="list" class="">
+                        <li class="mb-2">
+                            <div class="flex items-center">
+                                <div class="flex-1 min-w-0 ms-4">
+                                    <p
+                                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                        Job Description:
+                                    </p><span
+                                        class="text-sm font-medium lg:text-base font-secondary text-gray-900">{{studentjob.job_description}}</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="mb-2">
+                            <div class="flex items-center">
+                                <div class="flex-1 min-w-0 ms-4">
+                                    <p
+                                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                        Start Date:
+                                    </p>
+                                    <span class="text-sm font-normal lg:text-base font-secondary">{{
+                                        studentjob.sfirstName}} {{ studentjob.slastName}}</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="mb-2">
+                            <div class="flex items-center">
+                                <div class="flex-1 min-w-0 ms-4">
+                                    <p
+                                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                        End Date:
+                                    </p>
+                                    <span class="text-sm font-normal lg:text-base font-secondary">{{
+                                        studentjob.sfirstName}} {{ studentjob.slastName}}</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="mb-2">
+                            <div class="flex items-center">
+                                <div class="flex-1 min-w-0 ms-4">
+                                    <p
+                                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                        Assigned by:
+                                    </p>
+                                    <span class="text-sm font-normal lg:text-base font-secondary">{{
+                                        studentjob.sfirstName}} {{ studentjob.slastName}}</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
             </div>
+            <div *ngIf="!studentjob" class="w-full bg-white shadow-md p-3">
+                <div>
+                    <h1 class="font-primary text-lg">No jobs assigned to this student.</h1>
+                </div>
+            </div>
+
         </div>
 
-        <div class="col-span-1">
+        <div class="col-span-2">
             <!-- Second column content here -->
             <table class="w-full shadow-md bg-white">
-                <thead>
-                    <tr>
-                        <th class="text-center font-bold border font-primary text-base">smth</th>
-                        <th class="text-center font-bold border  font-primary text-base">HOURS smth</th>
-                        <th class="text-center font-bold border  font-primary text-base">smth</th>
-                    </tr>
-                </thead>
                 <tbody>
                     <tr>
-                        <td class="pl-4 text-left border  font-secondary text-sm">ON-SITE TRAINING HOURS</td>
-                        <td class="text-center border  font-secondary text-sm">{{data.student.TotalHoursWorked}} / 200
-                        </td>
-                        <td class="text-center border  font-secondary text-sm">(Your Status)</td>
+                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Monday</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
                     </tr>
                     <tr>
-                        <td class="pl-4 text-left border  font-secondary text-sm">SEMINAR HOURS</td>
-                        <td class="text-center border  font-secondary text-sm">(Your Hours)/50</td>
-                        <td class="text-center border  font-secondary text-sm">(Your Status)</td>
+                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Tuesday</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Wednesday</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Thursday</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Friday</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Saturday</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
+                    </tr>
+                    <tr>
+                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Sunday</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
+                        <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
                     </tr>
                 </tbody>
             </table>

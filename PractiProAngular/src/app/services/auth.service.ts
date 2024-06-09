@@ -223,7 +223,7 @@ export class AuthService {
   getAvatar(userId: number) {
     return this.http.get(`${this.apiurl}/getavatar/${userId}`, { responseType: 'blob' });
   }
-  
+
   uploadLogo(userId: number, file: File) {
     const formData = new FormData();
     formData.append('file', file);
@@ -260,6 +260,9 @@ export class AuthService {
   removeStudentFromSupervisor(supervisorId: number, studentId: number) {
     return this.http.delete(`${this.apiurl}/deleteuser/${supervisorId}/${studentId}`);
   };
+  getStudentJob(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/getstudentjob/${studentId}`);
+  }
   getSupervisors(id: number) {
     if (id) {
       return this.http.get<any>(`${this.apiurl}/supervisors/${id}`);

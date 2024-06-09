@@ -367,5 +367,14 @@ class Get extends GlobalMethods
         return $this->get_records('vw_company_profile', $condition);
     }
 
+    public function getStudentJob($id)
+    {
+        $sql = "SELECT sj.*, s.firstName AS sfirstName, s.lastName AS slastName
+        FROM student_jobs sj
+        JOIN supervisors s
+        ON sj.assigned_by = s.id
+        WHERE sj.student_id = :studentId";
 
+        return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
+    }
 }

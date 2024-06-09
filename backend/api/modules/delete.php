@@ -15,19 +15,21 @@ class Delete extends GlobalMethods
     {
         $sql = "DELETE FROM user WHERE id = ?";
         try {
+            $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
                     $id
                 ]
             );
+            $this->pdo->commit();
             return $this->sendPayload(null, "success", "Successfully deleted record", 200);
         } catch (PDOException $e) {
+            $this->pdo->rollBack();
             $errmsg = $e->getMessage();
             $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
         }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
 
@@ -37,17 +39,21 @@ class Delete extends GlobalMethods
                 WHERE coordinator_id = :coordinator_id AND block_name = :block_name";
 
         try {
+            $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':coordinator_id', $id, PDO::PARAM_INT);
             $stmt->bindParam(':block_name', $class, PDO::PARAM_STR);
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
+                $this->pdo->commit();
                 return $this->sendPayload(null, 'success', "Successfully deleted the class assignment.", 200);
             } else {
+                $this->pdo->rollBack();
                 return $this->sendPayload(null, 'failed', "No class assignment found for the provided coordinator ID and block name.", 404);
             }
         } catch (PDOException $e) {
+            $this->pdo->rollBack();
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
@@ -58,12 +64,15 @@ class Delete extends GlobalMethods
                 WHERE id = :id";
 
         try {
+            $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
 
+            $this->pdo->commit();
             return $this->sendPayload(null, "success", "Successfully deleted record", 200);
         } catch (PDOException $e) {
+            $this->pdo->rollBack();
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
@@ -74,17 +83,21 @@ class Delete extends GlobalMethods
                 WHERE supervisor_id = :supervisor_id AND student_id = :student_id";
 
         try {
+            $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':supervisor_id', $supervisor_id, PDO::PARAM_INT);
             $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
+                $this->pdo->commit();
                 return $this->sendPayload(null, 'success', "Successfully removed student from supervisor selection.", 200);
             } else {
+                $this->pdo->rollBack();
                 return $this->sendPayload(null, 'failed', "No student found from supervisor selection", 404);
             }
         } catch (PDOException $e) {
+            $this->pdo->rollBack();
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
@@ -95,12 +108,15 @@ class Delete extends GlobalMethods
                 WHERE user_id = :id";
 
         try {
+            $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
 
+            $this->pdo->commit();
             return $this->sendPayload(null, "success", "Successfully deleted avatar", 200);
         } catch (PDOException $e) {
+            $this->pdo->rollBack();
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
@@ -110,11 +126,15 @@ class Delete extends GlobalMethods
                 WHERE company_id = :id";
 
         try {
+            $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':id', $id, PDO::PARAM_INT);
             $stmt->execute();
+
+            $this->pdo->commit();
             return $this->sendPayload(null, "success", "Successfully deleted logo", 200);
         } catch (PDOException $e) {
+            $this->pdo->rollBack();
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
