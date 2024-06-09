@@ -8,11 +8,12 @@ import { WarpopupcomponentComponent } from '../../popups/popups-coordinator/warp
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import { BlockService } from '../../../services/block.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-coord-accomplishment-report',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe],
+  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule],
   templateUrl: './coord-accomplishment-report.component.html',
   styleUrl: './coord-accomplishment-report.component.css'
 })
@@ -24,6 +25,7 @@ export class CoordAccomplishmentReportComponent implements OnInit {
   searchtext: any;
   currentBlock: any;
   isLoading: boolean = false;
+  p: number = 1; /* starting no. of the list */
 
   ngOnInit(): void {
     this.blockService.selectedBlock$.subscribe(block => {

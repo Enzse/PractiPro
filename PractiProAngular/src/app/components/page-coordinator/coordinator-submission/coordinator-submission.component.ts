@@ -11,12 +11,13 @@ import { RequirementspopupComponent } from '../../popups/popups-coordinator/requ
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import { BlockService } from '../../../services/block.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @Component({
   selector: 'app-coordinator-submission',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe],
+  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, NgxPaginationModule],
   templateUrl: './coordinator-submission.component.html',
   styleUrl: './coordinator-submission.component.css'
 })
@@ -29,6 +30,8 @@ export class CoordinatorSubmissionComponent implements OnInit {
   searchtext: any;
   currentBlock: any;
   isLoading: boolean = false;
+  p: number = 1; /* starting no. of the list */
+
 
   ngOnInit(): void {
     this.blockService.selectedBlock$.subscribe(block => {

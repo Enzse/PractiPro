@@ -8,11 +8,12 @@ import { FinalreportpopupComponent } from '../../popups/popups-coordinator/final
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
 import { BlockService } from '../../../services/block.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-coord-finalreport',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe],
+  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule],
   templateUrl: './coord-finalreport.component.html',
   styleUrl: './coord-finalreport.component.css'
 })
@@ -27,6 +28,7 @@ export class CoordFinalreportComponent implements OnInit {
   searchtext: any;
   currentBlock: any;
   isLoading: boolean = false;
+  p: number = 1; /* starting no. of the list */
 
   ngOnInit(): void {
     this.blockService.selectedBlock$.subscribe(block => {

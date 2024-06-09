@@ -9,11 +9,12 @@ import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { ClassesStudentpopupComponent } from '../../popups/popups-admin/classes-studentpopup/classes-studentpopup.component';
 import { AddclassespopupComponent } from '../../popups/popups-admin/addclassespopup/addclassespopup.component';
 import { OrdinalPipe } from '../../../ordinal.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-admin-classes',
   standalone: true,
-  imports: [AdminNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, OrdinalPipe],
+  imports: [AdminNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
   templateUrl: './admin-classes.component.html',
   styleUrl: './admin-classes.component.css'
 })
@@ -26,6 +27,7 @@ export class AdminClassesComponent {
   coordinatorName: any;
   dataSource: any;
   searchtext: any;
+  p: number = 1; /* starting no. of the list */
 
   Loaduser() {
     this.classes = this.service.getCurrentUserId();

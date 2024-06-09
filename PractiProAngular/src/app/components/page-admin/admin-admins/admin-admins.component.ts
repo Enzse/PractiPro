@@ -10,12 +10,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../filter.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @Component({
   selector: 'app-admin-admins',
   standalone: true,
-  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe],
+  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, NgxPaginationModule],
   templateUrl: './admin-admins.component.html',
   styleUrl: './admin-admins.component.css'
 })
@@ -30,6 +31,7 @@ export class AdminAdminsComponent implements OnInit {
   userlist: any;
   searchtext: any;
   userrole: any;
+  p: number = 1; /* starting no. of the list */
 
   loadUsers() {
     const currentUserId = this.service.getCurrentUserId();
