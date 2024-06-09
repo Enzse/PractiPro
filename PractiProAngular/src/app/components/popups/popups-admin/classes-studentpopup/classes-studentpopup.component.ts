@@ -30,8 +30,8 @@ export class ClassesStudentpopupComponent {
     console.log(this.data.usercode)
     if (this.data.usercode != null && this.data.usercode != '') {
       this.service.getAllStudentsFromClass(this.data.usercode).subscribe(
-        (data: any[]) => {
-          this.datalist = data.map(user => {
+        (res: any) => {
+          this.datalist = res.payload.map((user:any) => {
             return { ...user, avatar: '' };
           });
 

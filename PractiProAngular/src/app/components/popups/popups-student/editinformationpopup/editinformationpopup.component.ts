@@ -27,10 +27,7 @@ export class EditinformationpopupComponent implements OnInit {
     const userId = this.service.getCurrentUserId();
     if (userId) {
       this.service.getStudent(userId).subscribe((res: any) => {
-        console.log(userId);
-        console.log("API response:", res);
-        console.log(res);
-        this.editdata = res[0];
+        this.editdata = res.payload[0];
         this.editForm.setValue({
           firstName: this.editdata.firstName,
           lastName: this.editdata.lastName,

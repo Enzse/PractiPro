@@ -37,14 +37,14 @@ export class SupervisorDashboardComponent {
 
 
   loadData() {
+    console.log("Loading Data...")
     this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
-      this.traineesList = res.payload.map((user:any) => {
+      this.traineesList = res.payload.map((user: any) => {
         return { ...user, avatar: '' };
-      });    
+      });
       this.traineesList.forEach((student: any) => {
         this.service.getAvatar(student.id).subscribe((res: any) => {
           if (res.size > 0) {
-            console.log(res);
             const url = URL.createObjectURL(res);
             student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
           }
@@ -64,11 +64,16 @@ export class SupervisorDashboardComponent {
       exitAnimationDuration: "500ms",
       width: '90%',
       data: {
-        company_id: this.user.company_id
+        company_id: this.user.company_id,
+        supervisor_id: this.userId
       }
     })
     popup.afterClosed().subscribe(res => {
-      this.loadData()
+      const changeDetected = res
+      if (changeDetected) {
+        console.log("Change detected!")
+        this.loadData()
+      }
     });
   }
 
@@ -81,9 +86,13 @@ export class SupervisorDashboardComponent {
         student: student
       }
     })
-    // popup.afterClosed().subscribe(res => {
-    //   this.loadData()
-    // });
+    popup.afterClosed().subscribe(res => {
+      console.log(`res: ${res}`);
+      // if (res.changeDetected) {
+      //   this.loadData()
+      // }
+      // else{}
+    });
   }
 
   removeStudentFromSelection(id: number) {

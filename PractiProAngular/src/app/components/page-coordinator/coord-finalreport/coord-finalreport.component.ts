@@ -46,7 +46,7 @@ export class CoordFinalreportComponent implements OnInit {
   loadHeldStudents() {
     this.isLoading = true;
     this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
-      this.studentlist = res;
+      this.studentlist = res.payload;
       this.isLoading = false;
       console.log(this.studentlist);
     }, err => {

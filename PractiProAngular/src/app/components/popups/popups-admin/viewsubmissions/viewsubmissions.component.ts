@@ -27,8 +27,8 @@ export class ViewsubmissionsComponent implements OnInit {
     console.log(this.data.usercode)
     if (this.data.usercode != null && this.data.usercode != '') {
       this.service.getStudentRequirements(this.data.usercode).subscribe(
-        (data: any[]) => {
-          this.studentRequirements = data;
+        (res:any) => {
+          this.studentRequirements = res.payload;
           console.log(this.studentRequirements);
         },
         (error: any) => {
@@ -79,8 +79,8 @@ export class ViewsubmissionsComponent implements OnInit {
   refreshStudentRequirements() {
     // Refresh the student requirements list
     this.service.getStudentRequirements(this.data.usercode).subscribe(
-      (data: any[]) => {
-        this.studentRequirements = data;
+      (res: any) => {
+        this.studentRequirements = res.payload;
         console.log('Student requirements refreshed:', this.studentRequirements);
       },
       (error: any) => {

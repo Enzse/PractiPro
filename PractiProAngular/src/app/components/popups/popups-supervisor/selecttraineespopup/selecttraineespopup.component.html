@@ -52,7 +52,7 @@
         <tr *ngIf="(traineesList | filter : searchtext)?.length === 0">
           <td colspan="7" class="px-6 py-4 text-center text-red-500 font-primary">No Trainees Found</td>
         </tr>
-        <tr *ngFor="let data of traineesList | filter : searchtext" (click)="addStudentToSelection()"
+        <tr *ngFor="let data of traineesList | filter : searchtext" (click)="addStudentToSelection(data.id)"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-slate-100">
           <td class="px-6 py-4"><img *ngIf="data.avatar; else placeholder" [src]="data.avatar"
               class="mx-auto w-20 h-20 rounded-full">

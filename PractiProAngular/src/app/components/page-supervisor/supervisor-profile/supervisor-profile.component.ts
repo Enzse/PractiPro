@@ -101,9 +101,8 @@ export class SupervisorProfileComponent {
   loadInfo() {
     if (this.userId) {
       this.service.getStudentProfile(this.userId).subscribe(
-        (data: any[]) => {
-          console.log(data);
-          this.studentProfile = data;
+        (res: any) => {
+          this.studentProfile = res.payload[0];
         },
         (error: any) => {
           console.error('Error fetching student requirements:', error);

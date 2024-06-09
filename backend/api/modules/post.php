@@ -543,23 +543,37 @@ class Post extends GlobalMethods
 
     public function addStudentToSupervisor($data)
     {
+        $existingAssignment = $this->checkExistingAssignment('rl_supervisor_students', 'supervisor_id', 'student_id', $data->supervisor_id, $data->student_id);
+        if ($existingAssignment) {
+            return $this->sendPayload(null, "failed", "Student is already assigned to the supervisor", 409);
+        }
+
         $sql = "INSERT INTO rl_supervisor_students(supervisor_id, student_id)
-        VALUES (?, ?)";
+            VALUES (?, ?)";
         try {
             $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(
-                [
-                    $data->supervisor_id,
-                    $data->student_id
-                ]
-            );
+            $stmt->execute([$data->supervisor_id, $data->student_id]);
             return $this->sendPayload(null, "success", "Successfully added student to supervisor selection", 200);
         } catch (PDOException $e) {
             $errmsg = $e->getMessage();
-            $code = 400;
-            return $this->sendPayload(null, "failed", $errmsg, $code);
+            return $this->sendPayload(null, "failed", $errmsg, 400);
         }
     }
+    private function checkExistingAssignment($table, $condition1, $condition2, $id1, $id2)
+    {
+        $sql = "SELECT COUNT(*) AS assignment_count
+            FROM $table
+            WHERE $condition1 = ? AND $condition2 = ?";
+        try {
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$id1, $id2]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['assignment_count'] > 0;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
 
     public function createHiringRequest($data)
     {
@@ -569,7 +583,7 @@ class Post extends GlobalMethods
             $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
-                [   
+                [
                     $data->company_id,
                     $data->student_id,
                     $data->supervisor_id

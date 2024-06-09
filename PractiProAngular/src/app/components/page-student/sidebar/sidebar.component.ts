@@ -25,8 +25,8 @@ export class SidebarComponent {
     
     this.studentId = this.service.getCurrentUserId();
     this.service.getStudentProfile(this.studentId).subscribe(
-      (data: any[]) => {
-        this.registrationStatus = data[0].registrationstatus;
+      (res: any) => {
+        this.registrationStatus = res.payload[0].registrationstatus;
         console.log(`Registration Status: ${this.registrationStatus}`)
       },
       (error: any) => {

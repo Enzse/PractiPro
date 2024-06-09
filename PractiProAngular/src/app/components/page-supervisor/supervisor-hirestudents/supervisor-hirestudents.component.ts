@@ -91,10 +91,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
         this.companyForm.patchValue({
             student_id: student.id,
         });
-
-        console.log(this.companyForm.value)
         if (this.companyForm.valid) {
-            console.log(this.companyForm.value)
             this.service.createHiringRequest(this.companyForm.value).subscribe((res: any) => {
                 this.searchtext = '';
                 Swal.fire({

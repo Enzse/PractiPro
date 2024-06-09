@@ -24,7 +24,7 @@ export class AssigncoordpopupComponent {
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<AssigncoordpopupComponent>) {
     this.service.getClasses().subscribe(res => {
-      this.classlist = res;
+      this.classlist = res.payload;
     });
     this.service.getAdvisors().subscribe(res => {
       this.coordlist = res;

@@ -47,15 +47,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_users());
                 }
                 break;
-
-            case 'email':
-                if (count($request) > 1) {
-                    echo json_encode($get->getByEmail($request[1]));
-                } else {
-                    echo json_encode($get->getEmails());
-                }
-                break;
-
             case 'role':
                 if (count($request) > 1) {
                     echo json_encode($get->get_roles($request[1]));
@@ -91,13 +82,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 } else {
                     echo "ID not provided";
                     http_response_code(400);
-                }
-                break;
-            case 'class-coordinators':
-                if (count($request) > 1) {
-                    echo json_encode($get->get_classCoordinators($request[1]));
-                } else {
-                    echo json_encode($get->get_classCoordinators());
                 }
                 break;
 

@@ -28,10 +28,9 @@ export class SelectstudentspopupComponent {
   ngOnInit(): void {
     console.log(this.data.chosenblock)
     this.service.getClasses(this.data.chosenblock).subscribe((res: any) => {
-      console.log(res);
-      this.service.getStudentsByCourseAndYear(res[0].course, res[0].year_level).subscribe(
+      this.service.getStudentsByCourseAndYear(res.payload[0].course, res.payload[0].year_level).subscribe(
         (res: any) => {
-          this.datalist = res;
+          this.datalist = res.payload;
           console.log(this.datalist);
         },
         (error: any) => {

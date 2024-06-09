@@ -82,28 +82,6 @@ class Get extends GlobalMethods
         }
     }
 
-    public function getEmails($id = null)
-    {
-        $columns = "email";
-        $condition = ($id !== null) ? "id = $id" : null;
-        $result = $this->get_records('user', $condition, $columns);
-
-        if ($result['status']['remarks'] === 'success') {
-            $payloadData = $result['payload'];
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
-    }
-
-
-
-
     //ADMIN: GET USERS
     public function get_users($id = null)
     {
@@ -128,23 +106,13 @@ class Get extends GlobalMethods
         }
         return $this->get_records('supervisors', $condition);
     }
+
     public function get_student($userId = null)
     {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
+
         $condition = ($userId !== null) ? "id = $userId" : null;
-        $result = $this->get_records('students', $condition, $columns);
+        return $this->get_records('students', $condition);
 
-        if ($result['status']['remarks'] === 'success') {
-            $payloadData = $result['payload'];
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
     }
     public function getStudentsOjtInfo($userId = null)
     {
@@ -155,58 +123,17 @@ class Get extends GlobalMethods
 
     public function get_studentsFromClasses($block)
     {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
         $condition = "block = '$block'";
-        $result = $this->get_records('students', $condition, $columns);
-
-        if ($result['status']['remarks'] === 'success') {
-            $payloadData = $result['payload'];
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
+        return $this->get_records('students', $condition);
     }
-    public function get_studentByCourse($course)
-    {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
-        $condition = ($course !== null) ? "program = '$course'" : null;
-        $result = $this->get_records('students', $condition, $columns);
 
-        if ($result['status']['remarks'] === 'success') {
-            $payloadData = $result['payload'];
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
-    }
     public function get_studentByCourseAndYear($course, $year)
     {
         $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
         $condition = ($course !== null) ? "program = '$course' AND year = $year" : null;
-        $result = $this->get_records('students', $condition, $columns);
-
-        if ($result['status']['remarks'] === 'success') {
-            $payloadData = $result['payload'];
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
+        return $this->get_records('students', $condition, $columns);
     }
+
     public function get_coordinators($id = null)
     {
         $sql = "SELECT c.*, COUNT(r.block_name) AS number_of_classes
@@ -230,38 +157,9 @@ class Get extends GlobalMethods
     public function get_classes($id = null)
     {
         $condition = ($id !== null) ? "block_name = '$id'" : null;
-        $result = $this->get_records('class_blocks', $condition);
-
-        if ($result['status']['remarks'] === 'success') {
-            $payloadData = $result['payload'];
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
+        return $this->get_records('class_blocks', $condition);
     }
-    public function get_classCoordinators($id = null, $block = null)
-    {
-        $condition = ($id !== null) ? "coordinator_id = $id" : null;
-        $condition = ($block !== null) ? "block_name = $block" : null;
-        $result = $this->get_records('rl_class_coordinators', $condition);
 
-        if ($result['status']['remarks'] === 'success') {
-            $payloadData = $result['payload'];
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
-    }
     public function get_classes_ByCoordinator($coordinatorId)
     {
 
@@ -297,21 +195,7 @@ class Get extends GlobalMethods
     public function get_student_requirements($userId = null)
     {
         $condition = ($userId !== null) ? "student_id = $userId" : null;
-        $result = $this->get_records('student_requirements', $condition);
-
-        if ($result['status']['remarks'] === 'success') {
-
-            $payloadData = $result['payload'];
-
-
-            if (is_array($payloadData)) {
-                return $payloadData;
-            } else {
-                return array();
-            }
-        } else {
-            return array();
-        }
+        return $this->get_records('student_requirements', $condition);
     }
 
     public function getAvatar($userId)
@@ -413,8 +297,6 @@ class Get extends GlobalMethods
             echo "File not Found";
         }
     }
-
-
 
     //HANDLES ALL COMMENTS
     public function getSubmissionComments($table, $id)

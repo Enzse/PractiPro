@@ -32,7 +32,7 @@ export class AdminClassesComponent {
   Loaduser() {
     this.classes = this.service.getCurrentUserId();
     this.service.getClasses().subscribe(res => {
-      this.datalist = res;
+      this.datalist = res.payload;
       this.service.getAdvisors(this.datalist.coordinator_id).subscribe(res =>{
         // this.datalist[0].coordinator_id = `${res[0].first_name} ${res[0].last_name}`;
       })

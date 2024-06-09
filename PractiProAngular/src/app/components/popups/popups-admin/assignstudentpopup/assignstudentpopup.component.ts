@@ -32,11 +32,11 @@ export class AssignstudentpopupComponent {
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, @Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialogRef<AssignstudentpopupComponent>, private dialog2: MatDialog) {
     this.service.getClasses().subscribe(res => {
-      this.classlist = res;
+      this.classlist = res.payload;
     });
     this.service.getStudent().subscribe(res => {
 
-      this.studentlist = res;
+      this.studentlist = res.payload
 
       console.log(this.studentlist);
     });
@@ -103,8 +103,7 @@ export class AssignstudentpopupComponent {
     if (this.selection) {
       this.selection.forEach(data => {
         this.service.getStudent(data).subscribe((res: any) => {
-          console.log(res);
-          this.selectedlist.push(res[0]);
+          this.selectedlist.push(res.payload[0]);
         })
       });
     }

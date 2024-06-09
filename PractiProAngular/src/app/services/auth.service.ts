@@ -68,9 +68,6 @@ export class AuthService {
   GetAllRoles() {
     return this.http.get(`${this.apiurl}/role`);
   }
-  getEmails() {
-    return this.http.get<any>(`${this.apiurl}/email`);
-  }
   //GET STUDENTS
   getStudent(id: any = null) {
     if (id) {

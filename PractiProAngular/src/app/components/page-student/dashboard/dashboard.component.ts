@@ -34,8 +34,8 @@ export class DashboardComponent implements OnInit {
       );
       if (!this.registrationStatus)
         this.service.getStudentRequirements(userId).subscribe(
-          (res: any[]) => {
-            this.studentRequirements = res;
+          (res: any) => {
+            this.studentRequirements = res.payload;
           },
           (error: any) => {
             console.error('Error fetching student requirements:', error);
