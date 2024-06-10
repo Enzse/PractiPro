@@ -17,6 +17,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
     matchingStudent: any;
     user: any;
     userID: any;
+    existingConfirmations: any;
     searchForm: FormGroup;
     companyForm: FormGroup;
 
@@ -64,6 +65,10 @@ export class SupervisorHirestudentsComponent implements OnInit {
                             this.matchingStudent.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
                         }
                     });
+                    this.service.checkExistingAssignment('company_hiring_requests', 'company_id', 'student_id', this.user.company_id, this.matchingStudent.id).subscribe((res: any) => {
+                        this.existingConfirmations = res.payload[0].assignment_count
+                        console.log(this.existingConfirmations)
+                    });
                 }
             }, error => {
                 if (error.status === 403) {
@@ -87,18 +92,18 @@ export class SupervisorHirestudentsComponent implements OnInit {
         }
     }
 
-    hireStudent(student: any) {
+    sendHiringRequest(student: any) {
         this.companyForm.patchValue({
             student_id: student.id,
         });
         if (this.companyForm.valid) {
             this.service.createHiringRequest(this.companyForm.value).subscribe((res: any) => {
-                this.searchtext = '';
                 Swal.fire({
-                    title: "Success",
-                    text: "Student successfully added to company.",
+                    title: "Hiring Confirmation Sent",
+                    text: "Please wait until the student confirms it in their inbox.",
                     icon: "success"
                 });
+                this.matchingStudent = '';
             }, error => {
                 Swal.fire({
                     title: "Error",

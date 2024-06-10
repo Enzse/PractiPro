@@ -207,23 +207,26 @@
       </div>
 
       <div class="flex flex-col md:flex-row justify-evenly">
+
+        
         <div class="flex flex-col justify-center p-10 m-5 shadow-md rounded-xl bg-white">
-          <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalHoursWorked}}<span class="text-sm">hrs</span></h1>
+          <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalHoursWorked || '0.00'}}<span class="text-sm">hrs</span></h1>
           <h2 class="font-primary text-sm">Total Training Hours Accumulated</h2>
         </div>
+
+
+
         <div class="flex flex-col justify-center p-10 m-5 shadow-md rounded-xl bg-white">
-          <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalHoursWorked}}<span class="text-sm">hrs</span></h1>
+          <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.SeminarHours}}<span class="text-sm">hrs</span></h1>
           <h2 class="font-primary text-sm">Total Seminar Hours Accumulated</h2>
         </div>
       </div>
 
-      <div class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
-
-
+      <div *ngIf="student.company_id" class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
           <!-- First column content here -->
           <div class="w-full bg-white shadow-md p-3">
             <div>
-              <h1 class="font-primary font-bold text-lg">Currently working at:</h1>
+              <h1 class="font-primary font-bold text-lg">Currently working at: {{student.company_id}}</h1>
             </div>
           </div>
         

@@ -258,7 +258,10 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/studentsbysupervisor/${supervisorId}`);
   }
   removeStudentFromSupervisor(supervisorId: number, studentId: number) {
-    return this.http.delete(`${this.apiurl}/deleteuser/${supervisorId}/${studentId}`);
+    return this.http.delete(`${this.apiurl}/removestudentfromsupervisor/${supervisorId}/${studentId}`);
+  };
+  removeStudentFromCompany(companyId: number, studentId: number) {
+    return this.http.delete(`${this.apiurl}/removestudentfromcompany/${companyId}/${studentId}`);
   };
   getStudentJob(studentId: number) {
     return this.http.get<any>(`${this.apiurl}/getstudentjob/${studentId}`);
@@ -268,6 +271,11 @@ export class AuthService {
       return this.http.get<any>(`${this.apiurl}/supervisors/${id}`);
     }
     return this.http.get<any>(`${this.apiurl}/supervisors`);
+  }
+
+  
+  checkExistingAssignment(table:string, condition1:string, condition2:string, id1: number, id2: number) {
+    return this.http.get<any>(`${this.apiurl}/checkexistingassignment/${table}/${condition1}/${condition2}/${id1}/${id2}`);
   }
 
 

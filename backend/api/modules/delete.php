@@ -77,6 +77,31 @@ class Delete extends GlobalMethods
         }
     }
 
+    public function removeStudentFromCompany($company_id, $student_id)
+    {
+        $sql = "DELETE FROM rl_company_students
+                WHERE company_id = :company_id AND student_id = :student_id";
+
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':company_id', $company_id, PDO::PARAM_INT);
+            $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $this->pdo->commit();
+                return $this->sendPayload(null, 'success', "Successfully removed student from company.", 200);
+            } else {
+                $this->pdo->rollBack();
+                return $this->sendPayload(null, 'failed', "No student found from company", 404);
+            }
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
+
     public function removeStudentFromSupervisor($supervisor_id, $student_id)
     {
         $sql = "DELETE FROM rl_supervisor_students

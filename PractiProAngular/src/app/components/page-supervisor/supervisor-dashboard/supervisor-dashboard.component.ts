@@ -88,7 +88,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
     const popup = this.dialog.open(ViewtraineepopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
-      width: 'auto',
+      width: '90%',
       data: {
         student: student
       }
@@ -101,7 +101,8 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   }
 
   removeStudentFromSelection(id: number) {
-    // Implementation for removing a student from selection
+    this.service.removeStudentFromSupervisor(this.userId, id).subscribe((res: any) => {
+      this.loadData();
+    })
   }
 }
-  

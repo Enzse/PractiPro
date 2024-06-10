@@ -235,6 +235,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'checkexistingassignment':
+                if (isset($request[5])) {
+                    echo json_encode($get->checkExistingAssignment($request[1], $request[2], $request[3], $request[4], $request[5]));
+                } else {
+                    echo "Submission ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
             default:
                 echo "This is forbidden";
                 http_response_code(403);
@@ -398,6 +407,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'deletesubmission':
                 if (isset($request[1]) && isset($request[2])) {
                     echo json_encode($delete->deleteSubmission($request[1], $request[2]));
+                } else {
+                    echo "Submission IDs not provided";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'removestudentfromcompany':
+                if (isset($request[1]) && isset($request[2])) {
+                    echo json_encode($delete->removeStudentFromCompany($request[1], $request[2]));
                 } else {
                     echo "Submission IDs not provided";
                     http_response_code(400);

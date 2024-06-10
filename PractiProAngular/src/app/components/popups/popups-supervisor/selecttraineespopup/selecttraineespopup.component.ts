@@ -5,14 +5,15 @@ import { CommonModule } from '@angular/common';
 import { FilterPipe } from '../../../../filter.pipe';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { HirestudentspopupComponent } from '../hirestudentspopup/hirestudentspopup.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-selecttraineespopup',
   standalone: true,
-  imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
   templateUrl: './selecttraineespopup.component.html',
   styleUrl: './selecttraineespopup.component.css'
 })
@@ -47,6 +48,8 @@ export class SelecttraineespopupComponent implements OnInit {
           }
         })
       });
+
+      console.log(this.traineesList)
     })
   }
 
@@ -80,5 +83,33 @@ export class SelecttraineespopupComponent implements OnInit {
     });
   }
 
-
+  option1Action(id: number, firstName: string, lastName: string) {
+    Swal.fire({
+      title: "Request Confirmation",
+      text: `Are you sure you want to remove ${firstName} ${lastName} from your company?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#20284a",
+      confirmButtonText: "Remove student"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.removeStudentFromCompany(this.data.company_id, id).subscribe((res: any) => {
+          this.changeDetected = true;
+          Swal.fire({
+            title: "Student Removed!",
+            text: "The student has been successfully removed from your company.",
+            icon: "success"
+          });
+        }, error => {
+          Swal.fire({
+            title: "Request failed",
+            text: "You may not have permission to remove this user.",
+            icon: "error"
+          });
+        });
+        this.dialog.close();
+      }
+    });
+  }
 }

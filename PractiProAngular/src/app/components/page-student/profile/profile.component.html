@@ -137,7 +137,7 @@
                       Phone No.:
                     </p>
                     <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                      studentProfile[0]?.phoneNumber }}</span>
+                      studentProfile[0]?.phoneNumber || "Not Set" }}</span>
                   </div>
                 </div>
               </li>
@@ -149,7 +149,7 @@
                       Address:
                     </p>
                     <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                      studentProfile[0]?.address }}</span>
+                      studentProfile[0]?.address || "Not Set" }}</span>
                   </div>
                 </div>
               </li>
@@ -160,9 +160,7 @@
                       class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
                       Date of Birth:
                     </p>
-                    <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                      studentProfile[0]?.dateOfBirth | date : "longDate"
-                      }}</span>
+                    <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{ studentProfile[0]?.dateOfBirth ? (studentProfile[0]?.dateOfBirth | date : 'longDate') : 'Not Set' }}</span>
                   </div>
                 </div>
               </li>

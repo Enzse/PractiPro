@@ -377,4 +377,14 @@ class Get extends GlobalMethods
 
         return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
     }
+
+
+    public function checkExistingAssignment($table, $condition1, $condition2, $id1, $id2)
+    {
+        $sql = "SELECT COUNT(*) AS assignment_count
+            FROM $table
+            WHERE $condition1 = :id1 AND $condition2 = :id2";
+            
+        return $this->get_records(null, null, null, $sql, ['id1' => $id1, 'id2' => $id2]);
+    }
 }
