@@ -1,0 +1,91 @@
+<div class="p-1 xl:p-4 bg-slate-50">
+    <div class="flex justify-center">
+        <h1 class="text-orange-500 ml-5 font-bold text-center font-primary text-lg mb-1 ms-0">
+            Your Pending Invitations: ({{datalist.length}})
+        </h1>
+    </div>
+
+    <hr class="h-px w-[90%] mx-auto mb-3 bg-gray-200 border-0 dark:bg-gray-700" />
+
+    <div *ngIf="datalist.length === 0 ">
+        <div class="flex justify-center">
+            <img class="opacity-40 w-2/6" src="../../../../assets/empty1.png">
+        </div>
+        <div>
+            <h1 class="opacity-40 text-center text-xl font-secondary mt-2">
+                No Pending Invitations
+            </h1>
+        </div>
+    </div>
+
+    <div class="flex flex-wrap w-full justify-evenly space-x-3"> <!-- Trainee Containers -->
+        <div *ngFor="let data of datalist " class="flex flex-col max-lg:w-full mb-2 relative">
+
+            <button (click)="declineRequest(data.id)"
+                class="absolute top-0 right-0 m-2 opacity-30 hover:opacity-100 rounded-full ">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+
+            <div
+                class="w-auto p-3 shadow-md justify-around bg-bg-slate-50 hover:white hover:shadow-xl border-slate-100 max-lg:shadow-none max-lg:border-0">
+                <div class="avatar-container mx-auto">
+                    <img *ngIf="data.avatar; else placeholder" [src]="data.avatar" class="image-container"
+                        alt="Avatar" />
+                    <ng-template #placeholder>
+                        <div class="image-container avatar-placeholder"></div>
+                    </ng-template>
+                </div>
+
+                <div class="flow-root mt-3">
+                    <h5 class="mb-2 text-2xl mt-2 lg:text-2xl font-bold text-gray-900 font-primary text-center">
+                        {{ data.company_name }}
+                    </h5>
+                    <hr class="h-px w-[90%] mx-auto bg-gray-200 border-0 dark:bg-gray-700" />
+                    <ul role="list" class="flex flex-col flex-1 px-10 pt-3">
+                        <li class="mb-2">
+                            <div class="flex items-center">
+                                <div class="flex-1 min-w-0 ms-4">
+                                    <p
+                                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                        Sent by:
+                                    </p>
+                                    <span class="text-sm font-normal lg:text-base font-secondary">
+                                        {{ data.sFirstName}} {{ data.sLastName}}
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="mb-2">
+                            <div class="flex items-center">
+                                <div class="flex-1 min-w-0 ms-4">
+                                    <p
+                                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                        Date sent:
+                                    </p>
+                                    <span class="text-sm font-normal lg:text-base font-secondary">
+                                        {{ data.created_at | date : "longDate" }}
+                                    </span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="flex justify-center py-3">
+                        <button (click)="JoinCompany(data)"
+                            class="inline-flex items-center py-2 px-3 text-xs font-medium text-center text-white bg-green-500 rounded-lg  hover:shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide inline lucide-briefcase">
+                                <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                                <rect width="20" height="14" x="2" y="6" rx="2" />
+                            </svg>
+                            <span class="font-primary text-sm mx-2">Join this Company</span>
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>

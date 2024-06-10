@@ -3,6 +3,9 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { ViewhiringrequestsComponent } from '../../popups/popups-student/viewhiringrequests/viewhiringrequests.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,34 +16,69 @@ import { CommonModule } from '@angular/common';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private service: AuthService) { }
+  constructor(private service: AuthService, private dialog: MatDialog) { }
   registrationStatus: any;
   studentRequirements: any[] = [];
-  student:any;
+  student: any;
+  hiringRequests: any[] = [];
+  private subscriptions = new Subscription();
+
+
   ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData() {
     const userId = this.service.getCurrentUserId();
 
     if (userId) {
-      this.service.getStudentOjtInfo(userId).subscribe(
-        (res: any) => {
-          console.log(res)
-          this.registrationStatus = res.payload[0].registrationstatus;
-          this.student = res.payload[0];
-          console.log(`Status: ${this.registrationStatus}`)
-        },
-        (error: any) => {
-          console.error('Error fetching data.', error);
-        }
-      );
-      if (!this.registrationStatus)
-        this.service.getStudentRequirements(userId).subscribe(
+      this.subscriptions.add(
+        this.service.getStudentOjtInfo(userId).subscribe(
           (res: any) => {
-            this.studentRequirements = res.payload;
+            this.registrationStatus = res.payload[0].registrationstatus;
+            this.student = res.payload[0];
+            if (!this.registrationStatus)
+              this.subscriptions.add(
+                this.service.getStudentRequirements(userId).subscribe(
+                  (res: any) => {
+                    this.studentRequirements = res.payload;
+                  },
+                  (error: any) => {
+                    console.error('Error fetching student requirements:', error);
+                  }
+                ));
+            if (this.registrationStatus)
+              this.subscriptions.add(
+                this.service.getHiringRequests(userId).subscribe(
+                  (res: any) => {
+                    this.hiringRequests = res.payload;
+                  }
+                ));
           },
           (error: any) => {
-            console.error('Error fetching student requirements:', error);
+            console.error('Error fetching data.', error);
           }
-        );
+        ));
     }
   }
+
+
+  viewHiringRequests(id: number) {
+    const userId = this.service.getCurrentUserId();
+    const popup = this.dialog.open(ViewhiringrequestsComponent, {
+      enterAnimationDuration: "500ms",
+      exitAnimationDuration: "500ms",
+      width: 'auto',
+      data: {
+        student_id: userId
+      }
+    });
+    this.subscriptions.add(
+      popup.afterClosed().subscribe(res => {
+        this.loadData();
+      })
+    );
+  }
+
+
 }

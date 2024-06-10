@@ -127,6 +127,30 @@ class Delete extends GlobalMethods
         }
     }
 
+    public function deleteHiringRequest($id)
+    {
+        $sql = "DELETE FROM company_hiring_requests
+                WHERE id = :request_id";
+
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':request_id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $this->pdo->commit();
+                return $this->sendPayload(null, 'success', "Successfully deleted hiring request.", 200);
+            } else {
+                $this->pdo->rollBack();
+                return $this->sendPayload(null, 'failed', "No hiring request found", 404);
+            }
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
+
     public function deleteAvatar($id)
     {
         $sql = "DELETE FROM user_avatars

@@ -99,7 +99,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
         if (this.companyForm.valid) {
             this.service.createHiringRequest(this.companyForm.value).subscribe((res: any) => {
                 Swal.fire({
-                    title: "Hiring Confirmation Sent",
+                    title: "Invitation Sent",
                     text: "Please wait until the student confirms it in their inbox.",
                     icon: "success"
                 });

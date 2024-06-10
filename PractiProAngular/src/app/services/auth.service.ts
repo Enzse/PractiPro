@@ -273,7 +273,13 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/supervisors`);
   }
 
-  
+  getHiringRequests(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/gethiringrequests/${studentId}`);
+  }
+  deleteHiringRequest(id: number) {
+    return this.http.delete(`${this.apiurl}/deletehiringrequest/${id}`);
+  };
+
   checkExistingAssignment(table:string, condition1:string, condition2:string, id1: number, id2: number) {
     return this.http.get<any>(`${this.apiurl}/checkexistingassignment/${table}/${condition1}/${condition2}/${id1}/${id2}`);
   }

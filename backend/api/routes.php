@@ -235,11 +235,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'gethiringrequests':
+                if (isset($request[1])) {
+                    echo json_encode($get->getHiringRequests($request[1]));
+                } else {
+                    echo "Student ID not provided!";
+                    http_response_code(400);
+                }
+                break;
+
             case 'checkexistingassignment':
                 if (isset($request[5])) {
                     echo json_encode($get->checkExistingAssignment($request[1], $request[2], $request[3], $request[4], $request[5]));
                 } else {
-                    echo "Submission ID not provided";
+                    echo "Invalid Endpoints!";
                     http_response_code(400);
                 }
                 break;
@@ -427,6 +436,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($delete->removeStudentFromSupervisor($request[1], $request[2]));
                 } else {
                     echo "Submission IDs not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'deletehiringrequest':
+                if (isset($request[1])) {
+                    echo json_encode($delete->deleteHiringRequest($request[1]));
+                } else {
+                    echo "ID not provided";
                     http_response_code(400);
                 }
                 break;

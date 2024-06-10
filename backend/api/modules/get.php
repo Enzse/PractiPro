@@ -387,4 +387,18 @@ class Get extends GlobalMethods
             
         return $this->get_records(null, null, null, $sql, ['id1' => $id1, 'id2' => $id2]);
     }
+
+    public function getHiringRequests($id)
+    {
+        $sql = "SELECT hr.*, ip.company_name, s.firstName AS sFirstName, s.lastName AS sLastName
+        FROM company_hiring_requests hr
+        JOIN industry_partners ip
+        ON hr.company_id = ip.id
+        JOIN supervisors s
+        ON hr.supervisor_id = s.id
+        WHERE hr.student_id = :studentId";
+
+        return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
+    }
+    
 }
