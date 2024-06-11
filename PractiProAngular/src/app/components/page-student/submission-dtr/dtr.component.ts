@@ -6,11 +6,12 @@ import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
 import { Observable, timer } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-dtr',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, NgxPaginationModule],
   templateUrl: './dtr.component.html',
   styleUrl: './dtr.component.css'
 })
@@ -20,6 +21,7 @@ export class DtrComponent implements OnInit {
   public dateToday$: Observable<string>;
   userId: any
   datalist:any;
+  p: number = 1; /* starting no. of the list */
 
 
   constructor(private service: AuthService, private dialog: MatDialog) {
