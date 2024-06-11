@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -14,18 +14,23 @@ import { Subscription } from 'rxjs';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private service: AuthService, private dialog: MatDialog) { }
   registrationStatus: any;
   studentRequirements: any[] = [];
   student: any;
+  studentjob: any;
   hiringRequests: any[] = [];
   private subscriptions = new Subscription();
 
 
   ngOnInit(): void {
     this.loadData();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   loadData() {
@@ -47,12 +52,19 @@ export class DashboardComponent implements OnInit {
                     console.error('Error fetching student requirements:', error);
                   }
                 ));
-            if (this.registrationStatus)
+            if (this.registrationStatus && !this.student.company_id)
               this.subscriptions.add(
                 this.service.getHiringRequests(userId).subscribe(
                   (res: any) => {
                     this.hiringRequests = res.payload;
                   }
+                ));
+            if (this.registrationStatus && this.student.company_id)
+            console.log(userId);
+              this.subscriptions.add(
+                this.service.getStudentJob(userId).subscribe((res: any) => {
+                  this.studentjob = res.payload[0];
+                }
                 ));
           },
           (error: any) => {
