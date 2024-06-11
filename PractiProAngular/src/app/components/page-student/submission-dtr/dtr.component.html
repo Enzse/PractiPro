@@ -1,5 +1,5 @@
 <div class="p-2 sm:ml-56 font-secondary">
-  <div class="p-1 xl:px-10 xl:py-2">
+  <div class="p-1 xl:p-10">
     <div>
       <h1 class="indent-3 text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
         Daily Practicum Attendance
@@ -14,7 +14,7 @@
       class="p-5 w-11/12 mx-auto overflow-x-auto rounded-md max-lg:bg-slate-50 max-lg:shadow-md max-lg:border-2 max-lg:border-slate-100">
       <div class="flex flex-row w-full max-lg:flex-col justify-center max-lg:space-x-0 space-x-3">
 
-        <div class="w-full p-3  rounded-lg shadow-md bg-slate-50 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
+        <div class="w-full p-3 shadow-md bg-slate-50 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
           <!-- CONTENT -->
           <div class="flow-root mt-3">
             <!-- DATE TODAY -->
@@ -28,24 +28,24 @@
 
             <div class="flex pt-10 p-4 justify-evenly max-lg:p-2">
               <button (click)="clockIn()"
-                class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-green-500 rounded-lg focus:ring-4 focus:ring-green-200 dark:focus:ring-green-700 hover:bg-green-600">
+              class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-orange-500 rounded-lg focus:ring-4 focus:ring-orange-200 dark:focus:ring-orange-700 hover:bg-orange-600">
                 <svg class="w-4 h-4 mr-1 text-gray-800 dark:text-white" aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
                   <path fill-rule="evenodd"
                     d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
                     clip-rule="evenodd" />
                 </svg>
-                Time In
+                Clock In
               </button>
               <button (click)="clockOut()"
-                class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-red-600 rounded-lg focus:ring-4 focus:ring-red-200 dark:focus:ring-red-900 hover:bg-red-800">
+              class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-blue-900 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                 <svg class="w-4 h-4 mr-1 text-gray-800 dark:text-white" aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
                   <path fill-rule="evenodd"
                     d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
                     clip-rule="evenodd" />
                 </svg>
-                Time Out
+                Clock Out
               </button>
             </div>
           </div>
@@ -62,8 +62,8 @@
           <thead class=" text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr class="bg-slate-100 border-b dark:bg-gray-800 dark:border-gray-700 uppercase">
               <th class="table-data">Date</th>
-              <th class="table-data">Time In</th>
-              <th class="table-data">Time Out</th>
+              <th class="table-data">Clock In</th>
+              <th class="table-data">Clock Out</th>
               <th class="table-data">Total Hours</th>
               <th class="table-data">Status</th>
             </tr>

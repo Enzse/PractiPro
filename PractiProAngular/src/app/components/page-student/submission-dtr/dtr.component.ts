@@ -21,7 +21,9 @@ export class DtrComponent implements OnInit {
   public dateToday$: Observable<string>;
   userId: any
   datalist:any;
-  p: number = 1; /* starting no. of the list */
+  //Pagenation Settings
+  p: number = 1; 
+  itemsPerPage: number = 8
 
 
   constructor(private service: AuthService, private dialog: MatDialog) {
@@ -49,8 +51,15 @@ export class DtrComponent implements OnInit {
   loadData() {
     this.service.getDtrs(this.userId).subscribe((res: any) => {
       this.datalist = res.payload;
+      this.setInitialPage();
     }
     );
+  }
+
+  setInitialPage(): void {
+    const totalItems = this.datalist.length;
+    const totalPages = Math.ceil(totalItems / this.itemsPerPage);
+    this.p = totalPages;
   }
 
   clockIn() {
