@@ -285,10 +285,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->registerUser($data));
                 break;
-            case 'ojtsite':
-                // Return JSON-encoded data for adding users
-                echo json_encode($post->addOjtSite($request[1], $data));
-                break;
             case 'addclass':
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->add_class($data));
@@ -316,6 +312,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
             case 'assignjobtostudent':
                 if (isset($data)) {
+                    $delete->unassignJob($data->student_id);
                     echo json_encode($post->assignJobToStudent($data));
                 } else {
                     echo "No data Provided!";
@@ -439,6 +436,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+            case 'removestudentfromsupervisor2':
+                if (isset($request[1])) {
+                    echo json_encode($delete->removeStudentFromSupervisor($request[1]));
+                } else {
+                    echo "Submission IDs not provided";
+                    http_response_code(400);
+                }
+                break;
             case 'deletehiringrequest':
                 if (isset($request[1])) {
                     echo json_encode($delete->deleteHiringRequest($request[1]));
@@ -447,6 +452,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+
+            case 'unassignjob':
+                if (isset($request[1])) {
+                    echo json_encode($delete->unassignJob($request[1]));
+                } else {
+                    echo "User ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
             case 'deleteavatar':
                 if (isset($request[1])) {
                     echo json_encode($delete->deleteAvatar($request[1]));

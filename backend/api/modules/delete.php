@@ -91,6 +91,8 @@ class Delete extends GlobalMethods
 
             if ($stmt->rowCount() > 0) {
                 $this->pdo->commit();
+                $this->unassignJob($student_id);
+                $this->removeStudentFromSupervisor($student_id);
                 return $this->sendPayload(null, 'success', "Successfully removed student from company.", 200);
             } else {
                 $this->pdo->rollBack();
@@ -102,16 +104,22 @@ class Delete extends GlobalMethods
         }
     }
 
-    public function removeStudentFromSupervisor($supervisor_id, $student_id)
-    {
+    public function removeStudentFromSupervisor($student_id, $supervisor_id = null)
+    {   
         $sql = "DELETE FROM rl_supervisor_students
-                WHERE supervisor_id = :supervisor_id AND student_id = :student_id";
+                WHERE student_id = :student_id";
+
+        if($supervisor_id){
+            $sql .= " AND supervisor_id = :supervisor_id";
+        }
 
         try {
             $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':supervisor_id', $supervisor_id, PDO::PARAM_INT);
             $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
+            if($supervisor_id){
+                $stmt->bindParam(':supervisor_id', $supervisor_id, PDO::PARAM_INT);
+            }
             $stmt->execute();
 
             if ($stmt->rowCount() > 0) {
@@ -126,6 +134,32 @@ class Delete extends GlobalMethods
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
+
+    
+    public function unassignJob($student_id)
+    {
+        $sql = "DELETE FROM student_jobs
+                WHERE student_id = :student_id";
+
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $this->pdo->commit();
+                return $this->sendPayload(null, 'success', "Successfully unassigned job to student", 200);
+            } else {
+                $this->pdo->rollBack();
+                return $this->sendPayload(null, 'failed', "No student found", 404);
+            }
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
+
 
     public function deleteHiringRequest($id)
     {

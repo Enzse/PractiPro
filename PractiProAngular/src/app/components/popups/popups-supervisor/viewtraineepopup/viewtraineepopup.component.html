@@ -22,13 +22,21 @@
 
     <div class="grid grid-cols-5 max-sm:grid-cols-1 max-sm:gap-0 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
 
+        <div class="col-span-3 relative">
+            <!-- JOB SPECIFICATIONS DISPLAY -->
+            <div *ngIf="studentjob" class="w-full bg-white shadow-md p-3 relative">
 
-        <div class="col-span-3">
-            <!-- First column content here -->
-            <div *ngIf="studentjob" class="w-full bg-white shadow-md p-3">
                 <div>
                     <h1 class="font-primary font-bold text-lg">{{studentjob.job_title || "Unassigned"}}</h1>
                 </div>
+
+                <button (click)="editJob()" class="absolute top-3 right-3">
+                    <svg class="w-7 h-7 max-sm:w-5 max-sm:h-5 text-gray-800 opacity-60 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                    </svg>
+                </button>
 
                 <p class="font-primary">Job Title</p>
                 <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
@@ -53,8 +61,7 @@
                                         class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
                                         Start Date:
                                     </p>
-                                    <span class="text-sm font-normal lg:text-base font-secondary">{{
-                                        studentjob.start_date || "Sample Start Date"}}</span>
+                                    <span class="text-sm font-normal lg:text-base font-secondary">{{studentjob.start_date || "Sample Start Date"}}</span>
                                 </div>
                             </div>
                         </li>
@@ -65,8 +72,7 @@
                                         class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
                                         End Date:
                                     </p>
-                                    <span class="text-sm font-normal lg:text-base font-secondary">{{
-                                        studentjob.end_date || "Sample End Date"}}</span>
+                                    <span class="text-sm font-normal lg:text-base font-secondary">{{studentjob.end_date || "Sample End Date"}}</span>
                                 </div>
                             </div>
                         </li>
@@ -78,7 +84,7 @@
                                         Assigned by:
                                     </p>
                                     <span class="text-sm font-normal lg:text-base font-secondary">{{
-                                        studentjob.sfirstName}} {{ studentjob.slastName}}</span>
+                                        studentjob.sfirstName }} {{ studentjob.slastName }}</span>
                                 </div>
                             </div>
                         </li>
@@ -86,11 +92,20 @@
                 </div>
             </div>
             <div *ngIf="!studentjob" class="w-full bg-white shadow-md p-3">
+
+                <button (click)="editJob()" class="absolute top-3 right-3">
+                    <svg class="w-7 h-7 max-sm:w-5 max-sm:h-5 text-gray-800 opacity-60 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                    </svg>
+                </button>
                 <div>
                     <div class="flex justify-center">
                         <img class="h-48 opacity-50" src="../../../../../assets/empty1.png">
-                    </div>                
-                    <h1 class="font-secondary text-lg text-gray-800 my-2">This student has yet to be assigned a job.</h1>
+                    </div>
+                    <h1 class="font-secondary text-lg text-gray-800 my-2">This student has yet to be assigned a job.
+                    </h1>
                 </div>
             </div>
 
@@ -101,37 +116,37 @@
             <table class="w-full shadow-md bg-white">
                 <tbody>
                     <tr>
-                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Monday</td>
+                        <td class="px-4 py-2 text-left border font-secondary text-sm">Monday</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Tuesday</td>
+                        <td class="px-4 py-2 text-left border font-secondary text-sm">Tuesday</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Wednesday</td>
+                        <td class="px-4 py-2 text-left border font-secondary text-sm">Wednesday</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Thursday</td>
+                        <td class="px-4 py-2 text-left border font-secondary text-sm">Thursday</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Friday</td>
+                        <td class="px-4 py-2 text-left border font-secondary text-sm">Friday</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Saturday</td>
+                        <td class="px-4 py-2 text-left border font-secondary text-sm">Saturday</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
                     </tr>
                     <tr>
-                        <td class="px-4 py-2 text-left border  font-secondary text-sm">Sunday</td>
+                        <td class="px-4 py-2 text-left border font-secondary text-sm">Sunday</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">8:00</td>
                         <td class="text-center border px-4 py-2 font-secondary text-sm">4:00</td>
                     </tr>

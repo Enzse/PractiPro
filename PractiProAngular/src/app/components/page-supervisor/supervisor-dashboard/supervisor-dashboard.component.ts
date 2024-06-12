@@ -8,6 +8,7 @@ import { SelecttraineespopupComponent } from '../../popups/popups-supervisor/sel
 import { ViewtraineepopupComponent } from '../../popups/popups-supervisor/viewtraineepopup/viewtraineepopup.component';
 import { FilterPipe } from '../../../filter.pipe';
 import { Subscription } from 'rxjs';
+import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 
 @Component({
   selector: 'app-supervisor-dashboard',
@@ -19,12 +20,12 @@ import { Subscription } from 'rxjs';
 export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   userId: any;
   user: any;
-  traineesList: any;
+  traineesList: any[] = [];
   avatarUrl?: SafeUrl;
   searchtext: any;
   private subscriptions = new Subscription();
 
-  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
+  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
     this.userId = this.service.getCurrentUserId();
     this.subscriptions.add(
       this.service.getSupervisors(this.userId).subscribe((res: any) => {
@@ -35,6 +36,14 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData();
+
+    this.subscriptions.add(
+      this.changeDetection.changeDetected$.subscribe(changeDetected => {
+        if (changeDetected) {
+          this.loadData();
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -92,15 +101,10 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
         student: student
       }
     });
-    this.subscriptions.add(
-      popup.afterClosed().subscribe(res => {
-        console.log(`res: ${res}`);
-      })
-    );
   }
 
   removeStudentFromSelection(id: number) {
-    this.service.removeStudentFromSupervisor(this.userId, id).subscribe((res: any) => {
+    this.service.removeStudentFromSupervisor(id, this.userId).subscribe((res: any) => {
       this.loadData();
     })
   }

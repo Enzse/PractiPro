@@ -75,6 +75,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
 
+  
+
+
   viewHiringRequests(id: number) {
     const userId = this.service.getCurrentUserId();
     const popup = this.dialog.open(ViewhiringrequestsComponent, {

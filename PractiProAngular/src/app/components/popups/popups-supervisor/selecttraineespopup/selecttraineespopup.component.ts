@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import Swal from 'sweetalert2';
+import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
   selector: 'app-selecttraineespopup',
@@ -23,7 +24,7 @@ export class SelecttraineespopupComponent implements OnInit {
   selectionForm: FormGroup;
   changeDetected: any;
 
-  constructor(private router: Router, private builder: FormBuilder, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelecttraineespopupComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer) {
+  constructor(private router: Router, private builder: FormBuilder, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelecttraineespopupComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
     this.changeDetected = [false];
     this.selectionForm = this.builder.group({
       student_id: [''],
@@ -95,7 +96,7 @@ export class SelecttraineespopupComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.service.removeStudentFromCompany(this.data.company_id, id).subscribe((res: any) => {
-          this.changeDetected = true;
+          this.changeDetection.notifyChange(true);
           Swal.fire({
             title: "Student Removed!",
             text: "The student has been successfully removed from your company.",

@@ -1,0 +1,38 @@
+<div class="p-5 overflow-auto max-sm:max-h-96 bg-white shadow-lg rounded-lg font-secondary">
+
+    <form [formGroup]="jobForm" (ngSubmit)="editJob()">
+        <div class="grid gap-4 mb-6 grid-cols-1 sm:grid-cols-4">
+            <div class="sm:col-span-2">
+                <label for="job_title" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Job Title</label>
+                <input type="text" id="job_title"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(Job Title)" formControlName="job_title" />
+            </div>            
+            <div class="sm:col-span-1">
+                <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Start Date</label>
+                <input type="date" id="start_date"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(YYYY-MM-DD)" formControlName="start_date" />
+            </div>
+            <div class="sm:col-span-1">
+                <label for="end_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">End Date</label>
+                <input type="date" id="end_date"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(YYYY-MM-DD)" formControlName="end_date" />
+            </div>
+            <div class="sm:col-span-4">
+                <label for="job_description" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Job Description</label>
+                <input type="text" id="job_description"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(Enter text...)" formControlName="job_description" />
+            </div>  
+        </div>
+
+
+        <div class="mb-3 border-b border-gray-300"></div>
+        <div class="flex justify-center">
+            <button type="submit"
+                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-16 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+        </div>
+    </form>
+</div>

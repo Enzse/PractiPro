@@ -6,6 +6,7 @@ class Post extends GlobalMethods
 {
 
     private $pdo;
+
     public function __construct(\PDO $pdo)
     {
         $this->pdo = $pdo;
@@ -132,14 +133,27 @@ class Post extends GlobalMethods
 
     private function registerSupervisor($data)
     {
-        $sql = "INSERT INTO industry_partners (company_name, address) VALUES (?, ?)";
+        // Check if the company already exists
+        $sql = "SELECT id FROM industry_partners WHERE company_name = ?";
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute([
-            $data->company_name,
-            $data->address
-        ]);
-        $company_id = $this->pdo->lastInsertId();
+        $stmt->execute([$data->company_name]);
+        $company = $stmt->fetch(PDO::FETCH_ASSOC);
 
+        if (!$company) {
+            // If company doesn't exist, insert new company record
+            $sql = "INSERT INTO industry_partners (company_name, address) VALUES (?, ?)";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                $data->company_name,
+                $data->address
+            ]);
+            $company_id = $this->pdo->lastInsertId();
+        } else {
+            // If company exists, use its ID
+            $company_id = $company['id'];
+        }
+
+        // Update supervisor table with company_id
         $sql = "UPDATE supervisors SET company_id = ?, position = ?, phone = ? WHERE email = ?";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute([
@@ -149,6 +163,27 @@ class Post extends GlobalMethods
             $data->email
         ]);
     }
+
+    // private function registerSupervisor($data)
+    // {
+    //     $sql = "INSERT INTO industry_partners (company_name, address) VALUES (?, ?)";
+    //     $stmt = $this->pdo->prepare($sql);
+    //     $stmt->execute([
+    //         $data->company_name,
+    //         $data->address
+    //     ]);
+    //     $company_id = $this->pdo->lastInsertId();
+
+    //     $sql = "UPDATE supervisors SET company_id = ?, position = ?, phone = ? WHERE email = ?";
+    //     $stmt = $this->pdo->prepare($sql);
+    //     $stmt->execute([
+    //         $company_id,
+    //         $data->position,
+    //         $data->phone,
+    //         $data->email
+    //     ]);
+    // }
+
 
     private function handleException(PDOException $e)
     {
@@ -166,36 +201,6 @@ class Post extends GlobalMethods
     }
 
 
-
-
-
-    public function addOjtSite($student_id, $data)
-    {
-        $sql = "INSERT INTO ojt_sites(student_id, company_name, address, job_title, job_description, supervisor_name, supervisor_email, supervisor_phone)
-        VALUES (?, ?, ? ,?, ?, ?, ?, ?)";
-        try {
-
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute(
-                [
-                    $student_id,
-                    $data->company_name,
-                    $data->address,
-                    $data->job_title,
-                    $data->job_description,
-                    $data->supervisor_name,
-                    $data->supervisor_email,
-                    $data->supervisor_phone,
-                ]
-            );
-            return $this->sendPayload(null, "success", "Successfully created a new record", 200);
-        } catch (PDOException $e) {
-            $errmsg = $e->getMessage();
-            $code = 400;
-        }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
-    }
 
     public function add_class($data)
     {
@@ -652,17 +657,19 @@ class Post extends GlobalMethods
 
     public function assignJobToStudent($data)
     {
-        $sql = "INSERT INTO student_jobs(student_id, assigned_by, job_title, job_description)
-        VALUES (?, ?, ?, ?)";
+        $sql = "INSERT INTO student_jobs(student_id, assigned_by, job_title, job_description, start_date, end_date)
+        VALUES (?, ?, ?, ?, ?, ?)";
         try {
             $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
                     $data->student_id,
-                    $data->assigned_by,
+                    $data->supervisor_id,
                     $data->job_title,
-                    $data->job_description
+                    $data->job_description,
+                    $data->start_date,
+                    $data->end_date
                 ]
             );
             $this->pdo->commit();

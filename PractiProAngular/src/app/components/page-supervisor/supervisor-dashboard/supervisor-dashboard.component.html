@@ -18,19 +18,43 @@
 
             <button (click)="selectTrainees()"
                 class="bg-orange-500 font-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 " type="button">
+
+
+                <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd" d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z" clip-rule="evenodd"/>
+                  </svg>
+                  
+                  
                 Select Trainees
+
+
             </button>
         </div>
 
-        <div class="flex flex-wrap w-full mt-10 justify-evenly space-x-3"> <!-- Trainee Containers -->
+        <div *ngIf="traineesList.length === 0" class="mt-20 flex flex-col items-center">
+            <div>
+                <img class="opacity-40 h-44 w-44" src="../../../../assets/empty3.png">
+            </div>
+            <div>
+                <h1 class="opacity-40 text-center text-3xl font-primary mt-5">
+                    You don't have any selected students.
+                </h1>
+            </div>
+        </div>
+
+        <div *ngIf="traineesList" class="flex flex-wrap w-full mt-10 justify-evenly space-x-3">
+            <!-- Trainee Containers -->
             <div *ngFor="let data of traineesList | filter : searchtext"
                 class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewTrainee(data)">
 
-                <button (click)="removeStudentFromSelection(data.id); $event.stopPropagation()" class="absolute bottom-0 right-0 m-2 opacity-30 hover:opacity-100 rounded-full ">                   
-                    <svg class="inline w-4 h-4 opacity-50 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 16 4-4-4-4m6 8 4-4-4-4"/>
-                      </svg>
-                    Unselect                      
+                <button (click)="removeStudentFromSelection(data.id); $event.stopPropagation()"
+                    class="absolute bottom-0 right-0 m-2 opacity-30 hover:opacity-100 rounded-full ">
+                    <svg class="inline w-4 h-4 opacity-50 text-gray-800 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m7 16 4-4-4-4m6 8 4-4-4-4" />
+                    </svg>
+                    Unselect
                 </button>
 
                 <div
@@ -69,9 +93,8 @@
                                             class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
                                             Job Title:
                                         </p>
-                                        <span [ngClass]="{'text-red-500': !data.job_title}"
-                                            class="text-sm font-normal lg:text-base font-secondary">
-                                            {{ data.job_title || "Waiting for assignation" }}
+                                        <span class="text-sm font-normal lg:text-base font-secondary">
+                                            {{ data.job_title || "(Not Assigned)" }}
                                         </span>
                                     </div>
                                 </div>

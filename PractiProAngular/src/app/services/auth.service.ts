@@ -122,10 +122,6 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/classesbycoordinator/${Id}`);
   }
 
-
-  addOjtSite(id: number, inputdata: any) {
-    return this.http.post(`${this.apiurl}/ojtsite/${id}`, inputdata);
-  }
   addClass(inputdata: any) {
     return this.http.post(`${this.apiurl}/addclass`, inputdata);
   }
@@ -257,8 +253,8 @@ export class AuthService {
   getStudentsBySupervisor(supervisorId: number) {
     return this.http.get<any>(`${this.apiurl}/studentsbysupervisor/${supervisorId}`);
   }
-  removeStudentFromSupervisor(supervisorId: number, studentId: number) {
-    return this.http.delete(`${this.apiurl}/removestudentfromsupervisor/${supervisorId}/${studentId}`);
+  removeStudentFromSupervisor(studentId: number, supervisorId: number) {
+    return this.http.delete(`${this.apiurl}/removestudentfromsupervisor/${studentId}/${supervisorId}`);
   };
   removeStudentFromCompany(companyId: number, studentId: number) {
     return this.http.delete(`${this.apiurl}/removestudentfromcompany/${companyId}/${studentId}`);
@@ -280,10 +276,13 @@ export class AuthService {
     return this.http.delete(`${this.apiurl}/deletehiringrequest/${id}`);
   };
 
-  checkExistingAssignment(table:string, condition1:string, condition2:string, id1: number, id2: number) {
+  checkExistingAssignment(table: string, condition1: string, condition2: string, id1: number, id2: number) {
     return this.http.get<any>(`${this.apiurl}/checkexistingassignment/${table}/${condition1}/${condition2}/${id1}/${id2}`);
   }
 
+  assignJobToStudent(inputdata: any) {
+    return this.http.post(`${this.apiurl}/assignjobtostudent`, inputdata);
+  }
 
 
 }
