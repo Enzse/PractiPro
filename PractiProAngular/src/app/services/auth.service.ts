@@ -284,5 +284,15 @@ export class AuthService {
     return this.http.post(`${this.apiurl}/assignjobtostudent`, inputdata);
   }
 
+  getStudentSchedules(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/ojtschedules/${studentId}`);
+  }
+
+  assignSchedulesToStudent(studentId: number, inputdata: any) {
+    return this.http.post(`${this.apiurl}/assignschedulestostudent/${studentId}`, inputdata);
+  }
+  unassignSchedules(id: number) {
+    return this.http.delete(`${this.apiurl}/unassignschedules/${id}`);
+  };
 
 }

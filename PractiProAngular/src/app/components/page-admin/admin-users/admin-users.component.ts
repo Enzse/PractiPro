@@ -7,7 +7,7 @@ import { OnInit } from '@angular/core';
 import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
-import { FilterPipe } from '../../../filter.pipe';
+import { FilterPipe } from '../../../pipes/filter.pipe';
 import Swal from 'sweetalert2';
 import { NgxPaginationModule } from 'ngx-pagination';
 

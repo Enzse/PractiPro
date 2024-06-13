@@ -6,7 +6,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { SelecttraineespopupComponent } from '../../popups/popups-supervisor/selecttraineespopup/selecttraineespopup.component';
 import { ViewtraineepopupComponent } from '../../popups/popups-supervisor/viewtraineepopup/viewtraineepopup.component';
-import { FilterPipe } from '../../../filter.pipe';
+import { FilterPipe } from '../../../pipes/filter.pipe';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 

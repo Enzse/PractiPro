@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { FilterPipe } from '../../../../filter.pipe';
+import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';

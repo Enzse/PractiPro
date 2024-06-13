@@ -4,11 +4,11 @@ import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentationpopupComponent } from '../../popups/popups-coordinator/documentationpopup/documentationpopup.component';
 import { FormsModule } from '@angular/forms';
-import { FilterPipe } from '../../../filter.pipe';
+import { FilterPipe } from '../../../pipes/filter.pipe';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { ClassesStudentpopupComponent } from '../../popups/popups-admin/classes-studentpopup/classes-studentpopup.component';
 import { AddclassespopupComponent } from '../../popups/popups-admin/addclassespopup/addclassespopup.component';
-import { OrdinalPipe } from '../../../ordinal.pipe';
+import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({

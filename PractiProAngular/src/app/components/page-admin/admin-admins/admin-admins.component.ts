@@ -9,7 +9,7 @@ import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/upda
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
-import { FilterPipe } from '../../../filter.pipe';
+import { FilterPipe } from '../../../pipes/filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 
 

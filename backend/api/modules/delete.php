@@ -160,6 +160,30 @@ class Delete extends GlobalMethods
         }
     }
 
+    public function unassignSchedules($student_id)
+    {
+        $sql = "DELETE FROM student_ojt_schedules
+                WHERE student_id = :student_id";
+
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $this->pdo->commit();
+                return $this->sendPayload(null, 'success', "Successfully unassigned schedules to student", 200);
+            } else {
+                $this->pdo->rollBack();
+                return $this->sendPayload(null, 'failed', "No student found", 404);
+            }
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
+
 
     public function deleteHiringRequest($id)
     {

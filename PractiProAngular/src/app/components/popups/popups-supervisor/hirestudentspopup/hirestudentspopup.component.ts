@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FilterPipe } from '../../../../filter.pipe';
+import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 

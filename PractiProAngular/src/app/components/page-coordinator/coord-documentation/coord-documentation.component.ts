@@ -6,7 +6,7 @@ import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentationpopupComponent } from '../../popups/popups-coordinator/documentationpopup/documentationpopup.component';
 import { FormsModule } from '@angular/forms';
-import { FilterPipe } from '../../../filter.pipe';
+import { FilterPipe } from '../../../pipes/filter.pipe';
 import { BlockService } from '../../../services/block.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 

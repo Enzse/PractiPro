@@ -9,7 +9,7 @@ import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/upda
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
-import { FilterPipe } from '../../../filter.pipe';
+import { FilterPipe } from '../../../pipes/filter.pipe';
 import { DeptpopupComponent } from '../../popups/popups-admin/deptpopup/deptpopup.component';
 import { AssigncoordpopupComponent } from '../../popups/popups-admin/assigncoordpopup/assigncoordpopup.component';
 import { CheckclassesComponent } from '../../popups/popups-admin/checkclasses/checkclasses.component';

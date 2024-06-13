@@ -9,7 +9,7 @@ import { ViewsubmissionsComponent } from '../../popups/popups-admin/viewsubmissi
 import { ReviewsubmissionsComponent } from '../../popups/popups-admin/reviewsubmissions/reviewsubmissions.component';
 import { RequirementspopupComponent } from '../../popups/popups-coordinator/requirementspopup/requirementspopup.component';
 import { FormsModule } from '@angular/forms';
-import { FilterPipe } from '../../../filter.pipe';
+import { FilterPipe } from '../../../pipes/filter.pipe';
 import { BlockService } from '../../../services/block.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 

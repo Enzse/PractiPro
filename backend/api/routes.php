@@ -235,6 +235,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'ojtschedules':
+                if (isset($request[1])) {
+                    echo json_encode($get->getStudentSchedules($request[1]));
+                } else {
+                    echo "Student ID not provided!";
+                    http_response_code(400);
+                }
+                break;
+
             case 'gethiringrequests':
                 if (isset($request[1])) {
                     echo json_encode($get->getHiringRequests($request[1]));
@@ -314,6 +323,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 if (isset($data)) {
                     $delete->unassignJob($data->student_id);
                     echo json_encode($post->assignJobToStudent($data));
+                } else {
+                    echo "No data Provided!";
+                }
+                break;
+            case 'assignschedulestostudent':
+                if (isset($data)) {
+                    $delete->unassignSchedules($request[1]);
+                    echo json_encode($post->assignSchedulesToStudent($request[1], $data));
                 } else {
                     echo "No data Provided!";
                 }
@@ -456,6 +473,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'unassignjob':
                 if (isset($request[1])) {
                     echo json_encode($delete->unassignJob($request[1]));
+                } else {
+                    echo "User ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'unassignschedules':
+                if (isset($request[1])) {
+                    echo json_encode($delete->unassignSchedules($request[1]));
                 } else {
                     echo "User ID not provided";
                     http_response_code(400);

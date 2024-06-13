@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import { FilterPipe } from '../../../../filter.pipe';
+import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';

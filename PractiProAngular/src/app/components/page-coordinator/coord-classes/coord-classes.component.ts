@@ -2,10 +2,10 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FilterPipe } from '../../../filter.pipe';
+import { FilterPipe } from '../../../pipes/filter.pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { OrdinalPipe } from '../../../ordinal.pipe';
+import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
 
 @Component({
   selector: 'app-coord-classes',

@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { OrdinalPipe } from '../../../../ordinal.pipe';
+import { OrdinalPipe } from '../../../../pipes/ordinal.pipe';
 
 @Component({
   selector: 'app-selectstudentspopup',

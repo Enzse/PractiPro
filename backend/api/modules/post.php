@@ -684,6 +684,37 @@ class Post extends GlobalMethods
 
 
 
+    public function assignSchedulesToStudent($student, $schedules)
+    {
+        $sql = "INSERT INTO student_ojt_schedules (student_id, day_of_week, start_time, end_time, has_work)
+            VALUES (?, ?, ?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+
+            $stmt = $this->pdo->prepare($sql);
+
+            foreach ($schedules as $schedule) {
+                $stmt->execute([
+                    $student,
+                    $schedule->day_of_week,
+                    $schedule->start_time,
+                    $schedule->end_time,
+                    $schedule->has_work
+                ]);
+            }
+
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully assigned schedules to student", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+
+
 }
 
 
