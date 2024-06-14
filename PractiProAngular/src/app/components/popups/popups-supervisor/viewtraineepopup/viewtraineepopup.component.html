@@ -137,9 +137,11 @@
                         <tr *ngFor="let schedule of schedules">
                             <td class="px-4 py-1 text-left border font-secondary text-sm">{{ schedule.day_of_week }}
                             </td>
-                            <td class="text-center border px-4 py-1 font-secondary text-sm">{{schedule.start_time | time:schedule.end_time
+                            <td class="text-center border px-4 py-1 font-secondary text-sm">{{schedule.start_time |
+                                time:schedule.end_time
                                 }}</td>
-                            <td class="text-center border px-4 py-1 font-secondary text-sm">{{schedule.end_time | time:schedule.start_time
+                            <td class="text-center border px-4 py-1 font-secondary text-sm">{{schedule.end_time |
+                                time:schedule.start_time
                                 }}</td>
                         </tr>
                     </tbody>
@@ -163,7 +165,8 @@
                     <div class="flex justify-center">
                         <img class="h-32 opacity-50" src="../../../../../assets/empty1.png">
                     </div>
-                    <h1 class="font-secondary text-lg text-gray-800 my-2">This student has yet to be assigned work schedules.
+                    <h1 class="font-secondary text-lg text-gray-800 my-2">This student has yet to be assigned work
+                        schedules.
                     </h1>
                 </div>
             </div>
