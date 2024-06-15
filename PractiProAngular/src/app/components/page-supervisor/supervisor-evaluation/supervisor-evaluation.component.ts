@@ -1,12 +1,66 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../pipes/filter.pipe';
+import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from '../../../services/auth.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-supervisor-evaluation',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule, FilterPipe],
   templateUrl: './supervisor-evaluation.component.html',
   styleUrl: './supervisor-evaluation.component.css'
 })
-export class SupervisorEvaluationComponent {
+export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
+  userId: any;
+  user: any;
+  traineesList: any[] = [];
+  avatarUrl?: SafeUrl;
+  searchtext: any;
+  private subscriptions = new Subscription();
+
+  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
+    this.userId = this.service.getCurrentUserId();
+    this.subscriptions.add(
+      this.service.getSupervisors(this.userId).subscribe((res: any) => {
+        this.user = res.payload[0];
+      })
+    );
+  }
+
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  loadData() {
+    console.log("Loading Data...");
+    this.subscriptions.add(
+      this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
+        this.traineesList = res.payload.map((user: any) => {
+          return { ...user, avatar: '' };
+        });
+        this.traineesList.forEach((student: any) => {
+          this.subscriptions.add(
+            this.service.getAvatar(student.id).subscribe((res: any) => {
+              if (res.size > 0) {
+                const url = URL.createObjectURL(res);
+                student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+              }
+            })
+          );
+        });
+      })
+    );
+  }
+
+  viewDtrs(student: any) { }
 
 }

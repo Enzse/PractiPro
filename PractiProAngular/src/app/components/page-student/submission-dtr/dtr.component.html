@@ -28,7 +28,7 @@
 
             <div class="flex pt-10 p-4 justify-evenly max-lg:p-2">
               <button (click)="clockIn()"
-              class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-orange-500 rounded-lg focus:ring-4 focus:ring-orange-200 dark:focus:ring-orange-700 hover:bg-orange-600">
+                class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-orange-500 rounded-lg focus:ring-4 focus:ring-orange-200 dark:focus:ring-orange-700 hover:bg-orange-600">
                 <svg class="w-4 h-4 mr-1 text-gray-800 dark:text-white" aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
                   <path fill-rule="evenodd"
@@ -38,7 +38,7 @@
                 Clock In
               </button>
               <button (click)="clockOut()"
-              class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-blue-900 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-blue-900 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
                 <svg class="w-4 h-4 mr-1 text-gray-800 dark:text-white" aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
                   <path fill-rule="evenodd"
@@ -56,9 +56,11 @@
       </div>
 
       <!-- TABLE -->
-      <div class="flow-root bg-slate-50 px-5 pt-5 justify-center mt-10 text-center overflow-auto shadow-md shadow-slate-200 border border-gray-200 sm:rounded-lg">
+      <div
+        class="flow-root bg-slate-50 px-5 pt-5 justify-center mt-10 text-center overflow-auto shadow-md shadow-slate-200 border border-gray-200 sm:rounded-lg">
 
-        <table class="w-full border-2 border-slate-600  text-sm text-center rtl:text-right text-gray-900 dark:text-gray-400 font-secondary">
+        <table
+          class="w-full border-2 border-slate-600  text-sm text-center rtl:text-right text-gray-900 dark:text-gray-400 font-secondary">
           <thead class=" text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr class="bg-slate-100 border-b dark:bg-gray-800 dark:border-gray-700 uppercase">
               <th class="table-data">Date</th>
@@ -69,7 +71,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of datalist | paginate: { itemsPerPage: 8, currentPage: p  } "  class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
+            <tr *ngFor="let record of datalist | paginate: { itemsPerPage: 8, currentPage: p  } "
+              class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
               <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
               <td class="table-data border-2 border-slate-600">{{ record.startTime }}</td>
               <td class="table-data border-2 border-slate-600">{{ record.endTime }}</td>
@@ -83,11 +86,12 @@
         <div class="w-full mt-3 flex justify-center">
 
           <!-- pagination control -->
-        <pagination-controls [responsive]="true" class="my-pagination"  (pageChange)="p = $event"></pagination-controls>
+          <pagination-controls [responsive]="true" class="my-pagination"
+            (pageChange)="p = $event"></pagination-controls>
 
         </div>
-        
-        
+
+
       </div>
       <!-- TABLE -->
 

@@ -1,1 +1,120 @@
-<p>supervisor-war works!</p>
+<div class="p-2 sm:ml-56 font-secondary">
+    <div class="p-1 xl:p-10">
+        <div>
+            <h1 class="indent-3 text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
+                Daily Attendances:
+            </h1>
+            <div class="border-b border-gray-300"></div>
+            <br />
+        </div>
+
+        <div class="flex items-center space-x-4 mb-3">
+            <div class="form-outline flex-grow">
+                <input
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search for trainees..."
+                    aria-label="search" />
+            </div>
+        </div>
+
+        <div *ngIf="(traineesList$ | async) as traineesList">
+            <div *ngIf="traineesList.length > 0; else noStudents" class="flex flex-wrap w-full mt-10 justify-evenly space-x-3">
+                <!-- Trainee Containers -->
+                <div *ngFor="let data of traineesList | filter : searchtext"
+                    class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewWars(data)">
+                    <div
+                        class="w-auto p-3 shadow-md justify-around bg-slate-50 hover:bg-slate-100 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
+                        <div class="avatar-container mx-auto">
+                            <img *ngIf="data.avatar; else placeholder" [src]="data.avatar" class="image-container"
+                                alt="Avatar" />
+                            <ng-template #placeholder>
+                                <div class="image-container avatar-placeholder"></div>
+                            </ng-template>
+                        </div>
+
+                        <div class="flow-root mt-3">
+                            <h5 class="mb-2 text-2xl mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center">
+                                {{ data.firstName }}
+                                {{ data.lastName }}
+                            </h5>
+                            <ul role="list" class="flex flex-col flex-1 px-10 py-3">
+                                <li class="mb-2">
+                                    <div class="flex items-center">
+                                        <div class="flex-1 min-w-0 ms-4">
+                                            <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                                Hours Worked:
+                                            </p>
+                                            <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">
+                                                {{ data.TotalHoursWorked || 0 }}hrs
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="flex items-center">
+                                        <div class="flex-1 min-w-0 ms-4">
+                                            <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                                Job Title:
+                                            </p>
+                                            <span class="text-sm font-normal lg:text-base font-secondary">
+                                                {{ data.job_title || "(Not Assigned)" }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="flex items-center">
+                                        <div class="flex-1 min-w-0 ms-4 flex items-center">
+                                            <p class="text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white mr-2">
+                                                Activity Status:
+                                            </p>
+                                            <span class="flex items-center">
+                                                <span [ngClass]="{
+                                                        'bg-green-500': data.clock_status === 'Clocked In',
+                                                        'bg-red-500': data.clock_status === 'Clocked Out',
+                                                        'bg-black': data.clock_status === 'Offline',
+                                                        'bg-gray-500': data.clock_status === 'Idle'
+                                                    }" class="w-2 h-2 -mt-0.5 rounded-full mr-1"></span>
+                                                <span [ngClass]="{
+                                                        'text-red-500': data.clock_status === 'Clocked Out',
+                                                        'text-green-500': data.clock_status === 'Clocked In'
+                                                    }">
+                                                    {{ data.clock_status }}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="flex items-center">
+                                        <div class="flex-1 min-w-0 ms-4">
+                                            <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                                Date hired:
+                                            </p>
+                                            <span class="text-sm font-normal lg:text-base font-secondary">
+                                                {{ data.hire_date | date : "longDate" }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <ng-template #noStudents>
+                <div class="mt-20 flex flex-col items-center">
+                    <div>
+                        <img class="opacity-40 h-44 w-44" src="../../../../assets/empty3.png">
+                    </div>
+                    <div>
+                        <h1 class="opacity-40 text-center text-3xl font-primary mt-5">
+                            You don't have any selected students.
+                        </h1>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
