@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
@@ -8,6 +8,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { SpvDtrpopupComponent } from '../../popups/popups-supervisor/spv-dtrpopup/spv-dtrpopup.component';
+import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 
 @Component({
   selector: 'app-supervisor-dtr',
@@ -16,49 +17,54 @@ import { SpvDtrpopupComponent } from '../../popups/popups-supervisor/spv-dtrpopu
   templateUrl: './supervisor-dtr.component.html',
   styleUrls: ['./supervisor-dtr.component.css']
 })
-export class SupervisorDtrComponent {
+export class SupervisorDtrComponent implements OnInit {
   userId: any;
-  traineesList$: Observable<any[]>;
+  traineesList: any[] = [];
   searchtext: any;
+  private subscriptions = new Subscription();
 
   constructor(
     private service: AuthService,
     private dialog: MatDialog,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private changeDetection: ChangeDetectionService
   ) {
     this.userId = this.service.getCurrentUserId();
-    this.traineesList$ = this.loadTraineesWithAvatars();
-    console.log(this.traineesList$)
   }
 
-  private loadTraineesWithAvatars(): Observable<any> {
-    return this.service.getStudentsBySupervisor(this.userId).pipe(
-      switchMap((res: any) => {
-        if (!res.payload || res.payload.length === 0) {
-          return of([]);
+  ngOnInit(): void {
+    this.loadData();
+    this.subscriptions.add(
+      this.changeDetection.changeDetected$.subscribe(changeDetected => {
+        if (changeDetected) {
+          this.loadData();
         }
+      })
+    );
+  }
 
-        const trainees = res.payload.map((user: any) => ({
-          ...user,
-          avatar: ''
-        }));
-
-        const avatarObservables = trainees.map((student: any) =>
-          this.service.getAvatar(student.id).pipe(
-            map((res: any) => {
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+  
+  loadData() {
+    console.log("Loading Data...");
+    this.subscriptions.add(
+      this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
+        this.traineesList = res.payload.map((student: any) => {
+          return { ...student, avatar: '' };
+        });
+        this.traineesList.forEach((student: any) => {
+          this.subscriptions.add(
+            this.service.getAvatar(student.id).subscribe((res: any) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
               }
-              return student;
-            }),
-            catchError(() => of(student)) 
-          )
-        );
-
-        return forkJoin(avatarObservables);
-      }),
-      catchError(() => of([])) 
+            })
+          );
+        });
+      })
     );
   }
 

@@ -1,15 +1,20 @@
 <!-- <app-navbar></app-navbar> -->
 <div class="p-2 sm:ml-60">
-  <div class="p-1 xl:p-10">
+  <div class="pt-5 xl:p-10">
     <div>
-      <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
+      <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-xl mb-3">
+        <svg class="w-6 h-6 inline text-orange dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z" />
+        </svg>
         Documentation
       </h1>
       <div class="border-b border-gray-300"></div>
       <br />
     </div>
 
-    <p class="text-gray-800 font-secondary">
+    <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
       Upload clear documents of all your <b>Practicum Documentations</b> here.
       All documents should be in <b>Portable Document Format(.pdf).</b>
     </p>
@@ -18,22 +23,22 @@
     <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
-          <form class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto mt-8">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" [id]="'week' + weekNumber" [name]="'week' + weekNumber" />
           </form>
         </mat-tab>
       </mat-tab-group>
-      <div class="flex justify-end mr-0 pt-3">
+      <div class="flex justify-end items-center max-sm:text-xs pt-3">
         <button type="button" (click)="addNewTab()"
-            class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg focus:outline-none mr-5">
-            <svg class="w-5 h-5 -mt-1 text-gray-800 dark:text-white inline" aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-              <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-            </svg>
+          class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg focus:outline-none mr-5">
+          <svg class="w-5 h-5 -mt-1 text-gray-800 dark:text-white inline" aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
 
-            Add New Week
-          </button>
+          Add New Week
+        </button>
         <button type="button" (click)="submitFiles()"
           class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
           Submit File
@@ -59,9 +64,8 @@
             <th scope="col" class="px-6 py-3 font-secondary">File name</th>
             <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
             <th scope="col" class="px-6 py-3 font-secondary">Remarks</th>
-            <th scope="col" class="px-6 py-3 font-secondary">File</th>
             <th scope="col" class="px-6 py-3 font-secondary">Comments</th>
-            <th scope="col" class="px-6 py-3 font-secondary">Delete</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -85,11 +89,6 @@
               </p>
             </td>
             <td class="px-6 py-4">
-              <a (click)="downloadFile(data.id, data.file_name)"
-                class="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-green-900">Download</a>
-            </td>
-
-            <td class="px-6 py-4">
               <button (click)="viewComments(data.id, data.file_name)"
                 class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white inline" aria-hidden="true"
@@ -103,19 +102,39 @@
               </button>
             </td>
             <td class="px-6 py-4">
-
-              <button
-                class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
-                  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                  viewBox="0 0 24 24">
-                  <path fill-rule="evenodd"
-                    d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                    clip-rule="evenodd" />
+              <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-width="4"
+                    d="M12 6h.01M12 12h.01M12 18h.01" />
                 </svg>
+
+
               </button>
+              <mat-menu #menu="matMenu">
+                <li class="space-x-3 px-3">
+                  <button (click)="downloadFile(data.id, data.file_name)"
+                    class="text-white inline-flex items-center bg-green-500 hover:bg-green-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-download">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" x2="12" y1="15" y2="3" />
+                    </svg></button>
+                  <button
+                    class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"
+                    (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
+                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                      viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                        d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </button>
 
-
+                </li>
+              </mat-menu>
             </td>
           </tr>
         </tbody>
@@ -124,9 +143,13 @@
   </div>
 
   <ng-template #noDataMessage>
-    <h1 class="text-center font-secondary">
-      You have not submitted any files yet.
-    </h1>
+    <div class="flex justify-center">
+      <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
+    </div>
+    <div class="text-center">
+      <h1 class="opacity-40 text-center text-lg font-primary">
+        You have not submitted any documentations yet.
+      </h1>
+    </div>
   </ng-template>
 </div>
-

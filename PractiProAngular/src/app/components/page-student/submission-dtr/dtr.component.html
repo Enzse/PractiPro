@@ -1,8 +1,13 @@
 <div class="p-2 sm:ml-56 font-secondary">
-  <div class="p-1 xl:p-10">
+  <div class="pt-5 xl:p-10">
     <div>
-      <h1 class="indent-3 text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
-        Daily Practicum Attendance
+      <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-xl mb-3">
+        <svg class="w-6 h-6 text-orange-500 inline dark:text-white" aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+        </svg>
+        Daily OJT Attendance
       </h1>
       <div class="border-b border-gray-300"></div>
       <br />
@@ -56,8 +61,7 @@
       </div>
 
       <!-- TABLE -->
-      <div
-        class="flow-root bg-slate-50 px-5 pt-5 justify-center mt-10 text-center overflow-auto shadow-md shadow-slate-200 border border-gray-200 sm:rounded-lg">
+      <div *ngIf="datalist.length > 0"  class="flow-root bg-slate-50 px-5 pt-5 justify-center mt-10 text-center overflow-auto shadow-md shadow-slate-200 border border-gray-200 sm:rounded-lg">
 
         <table
           class="w-full border-2 border-slate-600  text-sm text-center rtl:text-right text-gray-900 dark:text-gray-400 font-secondary">
@@ -71,7 +75,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let record of datalist | paginate: { itemsPerPage: 8, currentPage: p  } "
+            <tr *ngFor="let record of datalist | paginate: { itemsPerPage: itemsPerPage, currentPage: p  } "
               class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
               <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
               <td class="table-data border-2 border-slate-600">{{ record.startTime }}</td>
@@ -94,6 +98,21 @@
 
       </div>
       <!-- TABLE -->
+
+      <div *ngIf="datalist.length === 0" class="mt-20 flex flex-col items-center">
+        <div>
+            <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
+        </div>
+        <div>
+            <h1 class="opacity-40 text-center text-3xl font-primary mt-5">
+                You haven't submitted any records yet.
+            </h1>
+            <h2 class="opacity-40 text-center text-md font-primary mt-5">
+                You can clock-in and clock-out in the section above.
+            </h2>
+        </div>
+    </div>
+
 
     </div>
   </div>

@@ -447,6 +447,7 @@ class Post extends GlobalMethods
         }
     }
 
+
     public function uploadFile($table, $user_id, $category = null)
     {
         if (!isset($_FILES["file"])) {
@@ -527,6 +528,41 @@ class Post extends GlobalMethods
 
             default:
                 return $this->sendPayload(null, "Failed", "Invalid category", 400);
+        }
+    }
+
+    public function uploadStudentEvaluation($user_id, $student_id)
+    {
+        if (!isset($_FILES["file"])) {
+            return $this->sendPayload(null, "failed", "No file selected", 400);
+        }
+        $fileName = basename($_FILES["file"]["name"]);
+        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileSize = $_FILES["file"]["size"];
+        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
+
+        $sql = "INSERT INTO supervisor_student_evaluations (user_id, student_id, file_name, file_type, file_size, file_data)
+         VALUES (?, ?, ?, ?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $user_id,
+                    $student_id,
+                    $fileName,
+                    $fileType,
+                    $fileSize,
+                    $fileData
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
         }
     }
 
@@ -714,6 +750,65 @@ class Post extends GlobalMethods
     }
 
 
+    public function updateDTRStatus($id, $data)
+    {
+        $sql = "UPDATE student_dailytimerecords SET status = ? WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        try {
+            $this->pdo->beginTransaction();
+            $stmt->execute([
+                $data->status,
+                $id
+            ]);
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully updated DTR.", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+    public function updateSupervisorApproval($table, $id, $data)
+    {
+        $sql = "UPDATE $table SET supervisor_approval = ? WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        try {
+            $this->pdo->beginTransaction();
+            $stmt->execute([
+                $data->supervisor_approval,
+                $id
+            ]);
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully updated approval.", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+    public function updateAdvisorApproval($table, $id, $data)
+    {
+        $sql = "UPDATE $table SET advisor_approval = ? WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        try {
+            $this->pdo->beginTransaction();
+            $stmt->execute([
+                $data->advisor_approval,
+                $id
+            ]);
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully updated approval.", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
 
 }
 

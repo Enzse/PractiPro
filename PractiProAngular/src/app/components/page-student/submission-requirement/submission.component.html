@@ -1,15 +1,20 @@
 <!-- <app-navbar></app-navbar> -->
 <div class="p-2 sm:ml-60">
-  <div class="p-1 xl:p-10">
+  <div class="pt-5 xl:p-10">
     <div>
-      <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
+      <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-xl mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6 inline text-orange-500">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+        </svg>
         Requirements
       </h1>
       <div class="border-b border-gray-300"></div>
       <br />
     </div>
 
-    <p class="text-gray-800 font-secondary">
+    <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
       Upload clear documents of all your <b>Requirement Documents</b> here. All
       documents should be in <b>Portable Document Format(.pdf).</b>
     </p>
@@ -18,47 +23,47 @@
     <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
       <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
         <mat-tab label="Resume">
-          <form class="h-96 w-auto flex justify-center items-center">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="resumeFile" name="resumeFile" />
           </form>
         </mat-tab>
         <mat-tab label="Application Letter">
-          <form class="h-96 w-auto flex justify-center items-center">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="applicationLetterFile" name="applicationLetterFile" />
           </form>
         </mat-tab>
         <mat-tab label="Acceptance Letter">
-          <form class="h-96 w-auto flex justify-center items-center">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="acceptanceLetterFile" name="acceptanceLetterFile" />
           </form>
         </mat-tab>
         <mat-tab label="Endorsement Letter">
-          <form class="h-96 w-auto flex justify-center items-center">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="endorsementLetterFile" name="endorsementLetterFile" />
           </form>
         </mat-tab>
         <mat-tab label="Parent's/Guardian's Waiver">
-          <form class="h-96 w-auto flex justify-center items-center">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="pgWaiverFile" name="pgWaiverFile" />
           </form>
         </mat-tab>
         <mat-tab label="Vaccination Card">
-          <form class="h-96 w-auto flex justify-center items-center">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="vaccinationCardFile" name="vaccinationCardFile" />
           </form>
         </mat-tab>
         <mat-tab label="Barangay Clearance">
-          <form class="h-96 w-auto flex justify-center items-center">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="brgyClearanceFile" name="brgyClearanceFile" />
           </form>
         </mat-tab>
         <mat-tab label="Medical Certificate">
-          <form class="h-96 w-auto flex justify-center items-center">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="medCertFile" name="medCertFile" />
           </form>
         </mat-tab>
       </mat-tab-group>
-      <div class="flex justify-end mr-0 pt-3">
+      <div class="flex justify-end items-center max-sm:text-xs pt-3">
         <button type="button" (click)="submitFiles()"
           class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
           Submit File
@@ -66,14 +71,15 @@
       </div>
     </div>
 
+
     <div class="mt-20">
       <div class="border-b border-gray-300"></div>
       <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4 font-primary">
         Your Submitted Requirements:
       </h1>
-
       <br />
     </div>
+
     <div *ngIf="datalist.length > 0; else noDataMessage"
       class="relative overflow-x-auto shadow-md shadow-slate-200 border border-gray-200 sm:rounded-lg">
       <table mat-table
@@ -84,9 +90,8 @@
             <th scope="col" class="px-6 py-3 font-secondary">File name</th>
             <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
             <th scope="col" class="px-6 py-3 font-secondary">Status</th>
-            <th scope="col" class="px-6 py-3 font-secondary">File</th>
             <th scope="col" class="px-6 py-3 font-secondary">Remarks</th>
-            <th scope="col" class="px-6 py-3 font-secondary">Delete</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -112,14 +117,8 @@
               </p>
             </td>
             <td class="px-6 py-4">
-              <a (click)="
-                  downloadFile(data.id, data.file_name)
-                "
-                class="cursor-pointer focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-green-900">Download</a>
-            </td>
-            <td class="px-6 py-4">
               <button (click)="viewComments(data.id, data.file_name)"
-              class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
+                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white inline" aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
                   <path fill-rule="evenodd"
@@ -131,19 +130,39 @@
               </button>
             </td>
             <td class="px-6 py-4">
-
-              <button
-                class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
-                  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                  viewBox="0 0 24 24">
-                  <path fill-rule="evenodd"
-                    d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                    clip-rule="evenodd" />
+              <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-width="4"
+                    d="M12 6h.01M12 12h.01M12 18h.01" />
                 </svg>
+
+
               </button>
+              <mat-menu #menu="matMenu">
+                <li class="space-x-3 px-3">
+                  <button (click)="downloadFile(data.id, data.file_name)"
+                    class="text-white inline-flex items-center bg-green-500 hover:bg-green-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-download">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" x2="12" y1="15" y2="3" />
+                    </svg></button>
+                  <button
+                    class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"
+                    (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
+                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                      viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                        d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </button>
 
-
+                </li>
+              </mat-menu>
             </td>
           </tr>
         </tbody>
@@ -152,25 +171,13 @@
   </div>
 
   <ng-template #noDataMessage>
-    <h1 class="text-center font-secondary">
-      You have not submitted any files yet.
-    </h1>
-  </ng-template>
-</div>
-
-<div class="toast-container">
-  <div *ngIf="successtoast" id="toast-success"
-    class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
-    role="alert">
-    <div
-      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
-      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-        viewBox="0 0 20 20">
-        <path
-          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
-      </svg>
-      <span class="sr-only">Warning icon</span>
+    <div class="flex justify-center">
+      <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
     </div>
-    <div class="ms-3 text-sm font-normal">Successfully submitted!</div>
-  </div>
+    <div class="text-center">
+      <h1 class="opacity-40 text-center text-lg font-primary">
+        You have not submitted any requirements yet.
+      </h1>
+    </div>
+  </ng-template>
 </div>

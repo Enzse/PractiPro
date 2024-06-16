@@ -4,23 +4,28 @@ import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
+import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-spv-dtrpopup',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule],
+  imports: [CommonModule, NgxPaginationModule, FormsModule],
   templateUrl: './spv-dtrpopup.component.html',
   styleUrl: './spv-dtrpopup.component.css'
 })
-export class SpvDtrpopupComponent implements OnInit, OnDestroy{
-  constructor(private service: AuthService,
+export class SpvDtrpopupComponent implements OnInit, OnDestroy {
+  constructor(private service: AuthService, private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SpvDtrpopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
   isLoading = true;
-  p: number = 1; 
-  itemsPerPage: number = 8
-  datalist:any[] = [];
+  p: number = 1;
+  itemsPerPage: number = 7
+  datalist: any[] = [];
+  groupedRecords: any[] = [];
+  private subscriptions = new Subscription();
 
   setInitialPage(): void {
     const totalItems = this.datalist.length;
@@ -33,47 +38,43 @@ export class SpvDtrpopupComponent implements OnInit, OnDestroy{
 
   }
   ngOnDestroy(): void {
-    
+    this.subscriptions.unsubscribe();
   }
 
   loadData() {
     console.log(this.data.student.id)
-    this.service.getDtrs(this.data.student.id).subscribe((res: any) => {
-      console.log(res)
-      this.datalist = res.payload;
-      console.log(this.datalist)
-      this.setInitialPage();
-    }
-    );
-    
+    this.subscriptions.add(
+      this.service.getDtrs(this.data.student.id).subscribe((res: any) => {
+        console.log(res)
+        this.datalist = res.payload;
+        this.datalist = this.addWeekNumberToRecords(res.payload, this.data.student.hire_date);
+        console.log(this.datalist);
+        this.setInitialPage();
+      }
+      ));
   }
 
+  addWeekNumberToRecords(records: any[], hireDate: string): any[] {
+    const hireDateObj = new Date(hireDate);
+    return records.map(record => {
+      const recordDate = new Date(record.date);
+      const weekNumber = Math.floor((recordDate.getTime() - hireDateObj.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1;
+      return { ...record, weekNumber };
+    });
+  }
 
-  toggleApproval(id: number, currentValue: number) {
-    let newValue: number;
-
-    if (currentValue === 0) {
-      newValue = 1;
-    } else if (currentValue === 1) {
-      newValue = -1;
-    } else {
-      newValue = 0;
-    }
-    const requestData = {
-      submissionId: id,
-      newRemark: newValue
-    };
-    this.service.toggleSubmissionRemark('dtr', requestData).subscribe(
-      (response) => {
-        console.log('Submission remark toggled successfully:', response);
-
-        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.id === id);
-        if (submissionIndex !== -1) {
-          this.studentSubmissions[submissionIndex].remarks = newValue;
+  onStatusChange(record: any) {
+    const updateData = { status: record.status };
+    this.subscriptions.add(
+      this.service.updateDTRStatus(record.id, updateData).subscribe(
+        res => {
+          console.log('Status updated successfully:', res);
+          this.changeDetection.notifyChange(true);
+        },
+        error => {
+          console.error('Error updating status:', error);
         }
-      },
-      (error) => console.error('Error toggling Submission remark:', error)
-    );
+      ));
   }
 
 }

@@ -196,6 +196,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'student-evaluation':
+                if (isset($request[2])) {
+                    echo json_encode($get->getStudentEvaluation($request[1], $request[2]));
+                } else {
+                    echo json_encode($get->getStudentEvaluation());
+                }
+                break;
+
             case 'getdtr':
                 if (count($request) > 1) {
                     echo json_encode($get->getStudentDTR($request[1]));
@@ -344,6 +352,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo "Invalid Endpoints!";
                 }
                 break;
+            case 'uploadevaluation':
+                if ($request[2]) {
+                    echo json_encode($post->uploadStudentEvaluation($request[1], $request[2]));
+                } else {
+                    echo "Invalid Endpoints!";
+                }
+                break;
             case 'dtrclockin':
                 echo json_encode($post->dtrClockIn($request[1]));
                 break;
@@ -369,6 +384,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
 
             case 'submission-comment':
                 echo json_encode($post->addSubmissionComment($request[1], $request[2], $data));
+                break;
+            case 'updatedtrstatus':
+                echo json_encode($post->updateDTRStatus($request[1], $data));
+                break;
+            case 'updatesupervisorapproval':
+                echo json_encode($post->updateSupervisorApproval($request[1], $request[2], $data));
+                break;
+            case 'updateadvisorapproval':
+                echo json_encode($post->updateAdvisorApproval($request[1], $request[2], $data));
                 break;
             // Toggle the student's status.
             case 'toggleRequirementStatus':

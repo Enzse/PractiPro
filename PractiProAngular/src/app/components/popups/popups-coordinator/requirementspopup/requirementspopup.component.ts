@@ -1,22 +1,20 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { saveAs } from 'file-saver';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
+import { MatMenuModule } from '@angular/material/menu';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-requirementspopup',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
+  imports: [ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule],
   templateUrl: './requirementspopup.component.html',
   styleUrl: './requirementspopup.component.css'
 })
@@ -72,6 +70,33 @@ export class RequirementspopupComponent {
         console.error('Error downloading submission:', error);
       }
     );
+  }
+  deleteSubmission(submissionId: number) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteSubmission(submissionId, 'submissions').subscribe((res: any) => {
+          Swal.fire({
+            title: "Your submission has been deleted",
+            icon: "success"
+          });
+          this.loadData();
+        }, error => {
+          Swal.fire({
+            title: "Delete failed",
+            text: "You may not have permission to delete this file.",
+            icon: "error"
+          });
+        });
+      }
+    });
   }
 
   viewComments(submissionId: number, fileName: string) {

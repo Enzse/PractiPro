@@ -23,7 +23,7 @@ export class DtrComponent implements OnInit {
   datalist:any;
   //Pagenation Settings
   p: number = 1; 
-  itemsPerPage: number = 8
+  itemsPerPage: number = 7
 
 
   constructor(private service: AuthService, private dialog: MatDialog) {

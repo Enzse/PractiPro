@@ -1,14 +1,14 @@
 <div class="p-3 rounded-md shadow-xl max-h-screen">
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Daily Attendances Submitted:</h1>
 
-    <div *ngIf="datalist.length > 0" 
-        class=" flow-root bg-slate-50 px-5 pt-5 justify-center text-center overflow-auto shadow-md
+    <div *ngIf="datalist.length > 0" class=" flow-root bg-slate-50 px-5 pt-5 justify-center text-center overflow-auto shadow-md
         shadow-slate-200 border border-gray-200 sm:rounded-lg">
 
         <table
             class="w-full border-2 border-slate-600  text-sm text-center rtl:text-right text-gray-900 dark:text-gray-400 font-secondary">
             <thead class=" text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr class="bg-slate-100 border-b dark:bg-gray-800 dark:border-gray-700 uppercase">
+                    <th class="table-data">Week</th>
                     <th class="table-data">Date</th>
                     <th class="table-data">Clock In</th>
                     <th class="table-data">Clock Out</th>
@@ -17,17 +17,23 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let record of datalist | paginate: { itemsPerPage: 8, currentPage: p  } "
+                <tr *ngFor="let record of datalist | paginate: { itemsPerPage: itemsPerPage, currentPage: p  } "
                     class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
+                    <td class="table-data border-2 border-slate-600">{{ record.weekNumber}}</td>
                     <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
                     <td class="table-data border-2 border-slate-600">{{ record.startTime }}</td>
                     <td class="table-data border-2 border-slate-600">{{ record.endTime }}</td>
                     <td class="table-data border-2 border-slate-600">{{record.totalHours}}</td>
-                    <td class="table-data border-2 border-slate-600">{{record.status}}</td>
+                    <td class="table-data border-2 border-slate-600">
+                        <select [(ngModel)]="record.status" (change)="onStatusChange(record)">
+                            <option value="Approved" class="text-green-500">Approved</option>
+                            <option value="Unapprove" class="text-red-500">Unapproved</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </td>
                 </tr>
             </tbody>
         </table>
-
 
         <div class="w-full mt-3 flex justify-center">
 
@@ -36,7 +42,16 @@
                 (pageChange)="p = $event"></pagination-controls>
 
         </div>
+    </div>
 
-
+    <div *ngIf="datalist.length === 0">
+        <div class="flex justify-center">
+            <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
+        </div>
+        <div class="text-center">
+            <h1 class="opacity-40 text-center text-lg font-primary">
+                This student has not submitted any records yet.
+            </h1>
+        </div>
     </div>
 </div>

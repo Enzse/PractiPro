@@ -5,15 +5,16 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import saveAs from 'file-saver';
-import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
   selector: 'app-exit-poll',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule],
+  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule],
   templateUrl: './exit-poll.component.html',
   styleUrl: './exit-poll.component.css'
 })
@@ -69,12 +70,10 @@ export class ExitPollComponent implements OnInit {
         });
       }
     });
-
-
   }
 
   viewTemplate() {
-    const pdfPath = '../../assets/pdfTemplates/WAR.pdf';
+    const pdfPath = '../../assets/pdfTemplates/ExitPoll.pdf';
     window.open(pdfPath, '_blank');
   }
 

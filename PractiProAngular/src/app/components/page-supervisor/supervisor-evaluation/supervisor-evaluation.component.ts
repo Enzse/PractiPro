@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from '../../../services/auth.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
+import { SpvEvaluationpopupComponent } from '../../popups/popups-supervisor/spv-evaluationpopup/spv-evaluationpopup.component';
 
 @Component({
   selector: 'app-supervisor-evaluation',
@@ -44,9 +45,10 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
     console.log("Loading Data...");
     this.subscriptions.add(
       this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
-        this.traineesList = res.payload.map((user: any) => {
-          return { ...user, avatar: '' };
+        this.traineesList = res.payload.map((student: any) => {
+          return { ...student, avatar: '' };
         });
+        this.traineesList = this.traineesList.filter((student: any) => student.TotalHoursWorked > 28);
         this.traineesList.forEach((student: any) => {
           this.subscriptions.add(
             this.service.getAvatar(student.id).subscribe((res: any) => {
@@ -61,6 +63,20 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
     );
   }
 
-  viewDtrs(student: any) { }
+  viewTemplate() {
+    const pdfPath = '../../assets/pdfTemplates/Evaluation.pdf';
+    window.open(pdfPath, '_blank');
+  }
 
+  viewEvaluation(student: any) {
+    const popup = this.dialog.open(SpvEvaluationpopupComponent, {
+      enterAnimationDuration: "500ms",
+      exitAnimationDuration: "500ms",
+      width: '90%',
+      data: {
+        student: student
+      }
+    });
+
+  }
 }

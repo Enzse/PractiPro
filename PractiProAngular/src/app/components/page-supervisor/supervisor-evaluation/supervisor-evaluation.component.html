@@ -15,23 +15,39 @@
                     type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search for trainees..."
                     aria-label="search" />
             </div>
+
+            <button type="button" (click)="viewTemplate()"
+                class="bg-blue-900 font-primary text-white px-4 py-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+                type="button">
+                <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 3v4a1 1 0 0 1-1 1H5m8 7.5 2.5 2.5M19 4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Zm-5 9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/>
+                  </svg>
+                  
+                View Template
+
+
+
+            </button>
         </div>
 
         <div *ngIf="traineesList.length === 0" class="mt-20 flex flex-col items-center">
             <div>
-                <img class="opacity-40 h-44 w-44" src="../../../../assets/empty3.png">
+                <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
             </div>
             <div>
                 <h1 class="opacity-40 text-center text-3xl font-primary mt-5">
-                    You don't have any selected students.
+                    You don't have students that meet the requirements for evaluation.
                 </h1>
+                <h2 class="opacity-40 text-center text-md font-primary mt-5">
+                    Students must meet atleast 200 hours of training in order to be evaluated.
+                </h2>
             </div>
         </div>
 
         <div *ngIf="traineesList" class="flex flex-wrap w-full mt-10 justify-evenly space-x-3">
             <!-- Trainee Containers -->
             <div *ngFor="let data of traineesList | filter : searchtext"
-                class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewDtrs(data)">
+                class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewEvaluation(data)">
 
 
                 <div

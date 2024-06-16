@@ -1,1 +1,87 @@
-<p>spv-evaluationpopup works!</p>
+<div class="max-h-screen overflow-auto p-5 xl:p-10">
+    <div>
+        <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg text-center mb-1 ms-0">
+            Student OJT Performance Evaluation
+        </h1>
+        <div class="border-b border-gray-300"></div>
+        <br />
+    </div>
+
+    <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
+        Kindly download the template and fill out the form for this student's <b>OJT Performance Evaluation</b>.
+    </p>
+    <br />
+
+    <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
+        <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="FinalReport" name="FinalReport" />
+        </form>
+        <div class="flex justify-between items-center max-sm:text-xs pt-3">
+            <button type="button" (click)="viewTemplate()"
+                class="text-white p-2 px-4 bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
+                View Template
+            </button>
+            <button type="button" (click)="submitFiles()"
+                class="text-white p-2 px-4 bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
+                Submit File
+            </button>
+
+        </div>
+    </div>
+
+    <div class="mt-14 mb-5">
+        <div class="border-b border-gray-300"></div>
+        <h1 class="text-orange-500 ml-5 font-bold text-lg max-sm:text-sm mb-1 mt-4 font-primary">
+            Your Submitted Evaluations for '{{data.student.firstName}} {{data.student.lastName}}'':
+        </h1>
+    </div>
+    <div *ngIf="datalist.length > 0; else noDataMessage"
+        class="relative overflow-x-auto shadow-md border border-gray-300 sm:rounded-lg">
+        <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 font-secondary">File name</th>
+                    <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
+                    <th scope="col" class="px-6 py-3 font-secondary">File</th>
+                    <th scope="col" class="px-6 py-3 font-secondary">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of datalist" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td class="px-6 py-4">
+                        {{ data.file_name }}
+                    </td>
+                    <td class="px-6 py-4">
+                        {{ data.created_at }}
+                    </td>
+                    <td class="px-6 py-4">
+                        <button (click)="viewFile(data.id)"
+                            class="focus:outline-none text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            View File</button>
+                    </td>
+                    <td class="px-6 py-4">
+
+                        <button
+                            class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                            (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
+                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                fill="white" viewBox="0 0 24 24">
+                                <path fill-rule="evenodd"
+                                    d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+
+
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<ng-template #noDataMessage>
+    <h1 class="text-center font-secondary">
+        You have not submitted any files yet.
+    </h1>
+</ng-template>

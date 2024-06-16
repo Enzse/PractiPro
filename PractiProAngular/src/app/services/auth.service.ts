@@ -145,8 +145,25 @@ export class AuthService {
       return this.http.get<any>(`${this.apiurl}/student-submission/${table}`);
     }
   }
+  getStudentEvaluation(id: any = null, condition: any = null) {
+    if (id && condition) {
+      return this.http.get<any>(`${this.apiurl}/student-evaluation/${id}/${condition}`);
+    }
+    else {
+      return this.http.get<any>(`${this.apiurl}/student-evaluation`);
+    }
+  }
   getSubmissionMaxWeeks(table: string, id: number) {
     return this.http.get<any>(`${this.apiurl}/submissionmaxweeks/${table}/${id}`);
+  }
+  updateDTRStatus(id: number, data: any) {
+    return this.http.post(`${this.apiurl}/updatedtrstatus/${id}`, data);
+  }
+  updateSupervisorApproval(table: string, id: number, data: any) {
+    return this.http.post(`${this.apiurl}/updatesupervisorapproval/${table}/${id}`, data);
+  }
+  updateAdvisorApproval(table: string, id: number, data: any) {
+    return this.http.post(`${this.apiurl}/updateadvisorapproval/${table}/${id}`, data);
   }
   toggleRequirementStatus(data: any) {
     return this.http.post(`${this.apiurl}/toggleRequirementStatus`, data);
@@ -201,9 +218,15 @@ export class AuthService {
   uploadSubmission(table: string, userId: number, file: File, category: any = null) {
     const formData = new FormData();
     formData.append('file', file);
-
     return this.http.post(`${this.apiurl}/uploadfile/${table}/${userId}/${category}`, formData);
   }
+  
+  uploadEvaluation(userId:number, studentId: number, file: File) {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post(`${this.apiurl}/uploadevaluation/${userId}/${studentId}`, formData);
+  }
+
   addComment(table: any, id: number, inputdata: any) {
     return this.http.post(`${this.apiurl}/submission-comment/${table}/${id}`, inputdata);
   }

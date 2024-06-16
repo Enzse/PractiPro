@@ -9,12 +9,14 @@ import saveAs from 'file-saver';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
   selector: 'app-weekly-accomplishment-rep',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule],
+  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule],
   templateUrl: './weekly-accomplishment-rep.component.html',
   styleUrl: './weekly-accomplishment-rep.component.css'
 })

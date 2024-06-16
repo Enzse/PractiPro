@@ -1,15 +1,20 @@
 <!-- <app-navbar></app-navbar> -->
 <div class="p-2 sm:ml-60">
-  <div class="p-1 xl:p-10">
+  <div class="pt-5 xl:p-10">
     <div>
-      <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
-        Final Report
+      <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-xl mb-3">
+        <svg class="w-6 h-6 text-orange inline dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M10 3v4a1 1 0 0 1-1 1H5m4 6 2 2 4-4m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
+        </svg>
+        Final Reports
       </h1>
       <div class="border-b border-gray-300"></div>
       <br />
     </div>
 
-    <p class="text-gray-800 font-secondary">
+    <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
       Upload a clear document of your <b>Final Report (Exit Poll)</b> here. All
       documents should be in <b>Portable Document Format(.pdf).</b>
     </p>
@@ -18,13 +23,13 @@
     <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
       <mat-tab-group #tabGroup>
         <mat-tab label="Final Report">
-          <form class="h-96 rounded-lg w-auto flex justify-center pt-40 pb-auto">
+          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="FinalReport" name="FinalReport" />
           </form>
         </mat-tab>
       </mat-tab-group>
-      <div class="flex justify-end items-center pt-3">
-        <!-- <button type="button" (click)="viewTemplate()"
+      <div class="flex justify-between items-center pt-3">
+        <button type="button" (click)="viewTemplate()"
           class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
 
 
@@ -32,7 +37,7 @@
 
 
 
-        </button> -->
+        </button>
         <button type="button" (click)="submitFiles()"
           class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
           Submit File
@@ -51,15 +56,14 @@
     </div>
     <div *ngIf="datalist.length > 0; else noDataMessage"
       class="relative overflow-x-auto shadow-md border border-gray-300 sm:rounded-lg">
-      <table mat-table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3 font-secondary">File name</th>
             <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
             <th scope="col" class="px-6 py-3 font-secondary">Status</th>
-            <th scope="col" class="px-6 py-3 font-secondary">File</th>
             <th scope="col" class="px-6 py-3 font-secondary">Comments</th>
-            <th scope="col" class="px-6 py-3 font-secondary">Delete</th>
+            <th scope="col" class="px-6 py-3 font-secondary">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -82,10 +86,6 @@
               </p>
             </td>
             <td class="px-6 py-4">
-              <a (click)="downloadFile(data.id, data.file_name)"
-                class="focus:outline-none text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-green-900">Download</a>
-            </td>
-            <td class="px-6 py-4">
               <button (click)="viewComments(data.id, data.file_name)"
                 class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
                 <svg class="w-6 h-6 text-gray-800 dark:text-white inline" aria-hidden="true"
@@ -99,19 +99,37 @@
               </button>
             </td>
             <td class="px-6 py-4">
-
-              <button
-                class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
-                  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                  viewBox="0 0 24 24">
-                  <path fill-rule="evenodd"
-                    d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                    clip-rule="evenodd" />
+              <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-width="4" d="M12 6h.01M12 12h.01M12 18h.01"/>
                 </svg>
+                
+
               </button>
+              <mat-menu #menu="matMenu">
+                <li class="space-x-3 px-3">
+                  <button (click)="downloadFile(data.id, data.file_name)"
+                    class="text-white inline-flex items-center bg-green-500 hover:bg-green-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-download">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" x2="12" y1="15" y2="3" />
+                    </svg></button>
+                  <button
+                    class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"
+                    (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
+                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                      viewBox="0 0 24 24">
+                      <path fill-rule="evenodd"
+                        d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </button>
 
-
+                </li>
+              </mat-menu>
             </td>
           </tr>
         </tbody>
@@ -120,8 +138,13 @@
   </div>
 
   <ng-template #noDataMessage>
-    <h1 class="text-center font-secondary">
-      You have not submitted any files yet.
-    </h1>
+    <div class="flex justify-center">
+      <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
+    </div>
+    <div class="text-center">
+      <h1 class="opacity-40 text-center text-lg font-primary">
+        You have not submitted any reports yet.
+      </h1>
+    </div>
   </ng-template>
 </div>

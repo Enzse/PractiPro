@@ -6,12 +6,13 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { saveAs } from 'file-saver';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-spv-warpopup',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './spv-warpopup.component.html',
   styleUrl: './spv-warpopup.component.css'
 })
@@ -72,7 +73,20 @@ export class SpvWarpopupComponent implements OnInit, OnDestroy {
     );
   }
 
+  onStatusChange(record: any) {
+    const updateData = { supervisor_approval: record.supervisor_approval };
+    this.service.updateSupervisorApproval('war', record.id, updateData).subscribe(
+      res => {
+        console.log('Status updated successfully:', res);
+      },
+      error => {
+        console.error('Error updating status:', error);
+      }
+    );
+  }
 
+
+  
   toggleApproval(id: number, currentValue: number) {
     let newValue: number;
 
