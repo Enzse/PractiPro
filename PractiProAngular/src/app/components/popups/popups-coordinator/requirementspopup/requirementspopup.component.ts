@@ -138,4 +138,6 @@ export class RequirementspopupComponent {
   }
 
 
+
+  
 }

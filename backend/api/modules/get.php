@@ -129,9 +129,8 @@ class Get extends GlobalMethods
 
     public function get_studentByCourseAndYear($course, $year)
     {
-        $columns = "id, firstName, lastName, studentId, program, year, block, email, phoneNumber, address, dateOfBirth, evaluation, registrationstatus";
         $condition = ($course !== null) ? "program = '$course' AND year = $year" : null;
-        return $this->get_records('students', $condition, $columns);
+        return $this->get_records('students', $condition);
     }
 
     public function get_coordinators($id = null)
@@ -278,18 +277,15 @@ class Get extends GlobalMethods
         return $this->get_records($table, $condition, $columns);
     }
 
-    public function getStudentEvaluation($id = null, $where = null)
-    {
-        $columns = "id, user_id, student_id, file_name, created_at";
-        $condition = null;
-        switch ($where) {
-            case 'supervisor':
-                $condition = "user_id=$id";
-                break;
-            case 'student':
-                $condition = "student_id=$id";
-        }
-        return $this->get_records('supervisor_student_evaluations', $condition, $columns);
+    public function getStudentEvaluation($id)
+    {        
+        $sql = "SELECT sse.id, sse.user_id, sse.student_id, sse.file_name, sse.created_at, sse.advisor_approval, sse.comments, s.firstName AS sfirstName, s.lastName AS slastName
+        FROM supervisor_student_evaluations sse
+        JOIN supervisors s
+        ON sse.user_id = s.id
+        WHERE sse.student_id = :studentId";
+
+        return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
     }
 
     public function getStudentDTR($id = null)
