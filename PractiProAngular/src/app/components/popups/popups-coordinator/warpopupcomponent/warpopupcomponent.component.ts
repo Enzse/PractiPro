@@ -1,22 +1,20 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule} from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { saveAs } from 'file-saver';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
+import Swal from 'sweetalert2';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-warpopupcomponent',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
+  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule],
   templateUrl: './warpopupcomponent.component.html',
   styleUrl: './warpopupcomponent.component.css'
 })
@@ -74,31 +72,44 @@ export class WarpopupcomponentComponent {
     );
   }
 
+  deleteSubmission(submissionId: number) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteSubmission(submissionId, 'war').subscribe((res: any) => {
+          Swal.fire({
+            title: "Your submission has been deleted",
+            icon: "success"
+          });
+          this.loadData();
+        }, error => {
+          Swal.fire({
+            title: "Delete failed",
+            text: "You may not have permission to delete this file.",
+            icon: "error"
+          });
+        });
+      }
+    });
+  }
 
-  toggleApproval(id: number, currentValue: number) {
-    let newValue: number;
 
-    if (currentValue === 0) {
-      newValue = 1;
-    } else if (currentValue === 1) {
-      newValue = -1;
-    } else {
-      newValue = 0;
-    }
-    const requestData = {
-      submissionId: id,
-      newRemark: newValue
-    };
-    this.service.toggleSubmissionRemark('war',requestData).subscribe(
-      (response) => {
-        console.log('Submission remark toggled successfully:', response);
-
-        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.id === id);
-        if (submissionIndex !== -1) {
-          this.studentSubmissions[submissionIndex].remarks = newValue;
-        }
+  onStatusChange(record: any) {
+    const updateData = { advisor_approval: record.advisor_approval };
+    this.service.updateAdvisorApproval('war', record.id, updateData).subscribe(
+      res => {
+        console.log('Status updated successfully:', res);
       },
-      (error) => console.error('Error toggling Submission remark:', error)
+      error => {
+        console.error('Error updating status:', error);
+      }
     );
   }
 

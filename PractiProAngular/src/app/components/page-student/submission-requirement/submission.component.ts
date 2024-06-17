@@ -11,11 +11,12 @@ import { MatDialog } from '@angular/material/dialog';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-submission',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule],
+  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule],
   templateUrl: './submission.component.html',
   styleUrl: './submission.component.css'
 })
@@ -23,9 +24,13 @@ export class SubmissionComponent {
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.loadData();
   }
-  successtoast = false;
-
+  user: any;
+  students: any;
+  datalist: any[] = [];
+  dataSource: any;
   selectedTabLabel: string = 'Resume';
+
+
   onTabChange(event: MatTabChangeEvent) {
     this.selectedTabLabel = event.tab.textLabel.split(" ").join("");
   }
@@ -71,10 +76,6 @@ export class SubmissionComponent {
 
 
 
-  user: any;
-  students: any;
-  datalist: any[] = [];
-  dataSource: any;
 
   loadData() {
     this.user = this.service.getCurrentUserId();

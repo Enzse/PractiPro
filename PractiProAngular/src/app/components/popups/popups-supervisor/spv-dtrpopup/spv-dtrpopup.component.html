@@ -13,7 +13,7 @@
                     <th class="table-data">Clock In</th>
                     <th class="table-data">Clock Out</th>
                     <th class="table-data">Total Hours</th>
-                    <th class="table-data">Status</th>
+                    <th class="table-data">Approval</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,13 +22,18 @@
                     <td class="table-data border-2 border-slate-600">{{ record.weekNumber}}</td>
                     <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
                     <td class="table-data border-2 border-slate-600">{{ record.startTime }}</td>
-                    <td class="table-data border-2 border-slate-600">{{ record.endTime }}</td>
-                    <td class="table-data border-2 border-slate-600">{{record.totalHours}}</td>
+                    <td class="table-data border-2 border-slate-600">{{ record.endTime || "Not set" }}</td>
+                    <td class="table-data border-2 border-slate-600">{{record.totalHours || "Not set"}}</td>
                     <td class="table-data border-2 border-slate-600">
-                        <select [(ngModel)]="record.status" (change)="onStatusChange(record)">
+                        <select class="border-0 shadow-md text-center rounded-lg cursor-pointer"
+                            [(ngModel)]="record.status" [ngClass]="{
+                            'text-green-500': record.status === 'Approved',
+                            'text-red-500': record.status === 'Unapproved',
+                            'text-gray-500': record.status === 'Pending'
+                          }" (change)="onStatusChange(record)">
                             <option value="Approved" class="text-green-500">Approved</option>
-                            <option value="Unapprove" class="text-red-500">Unapproved</option>
-                            <option value="Pending">Pending</option>
+                            <option value="Unapproved" class="text-red-500">Unapproved</option>
+                            <option value="Pending" class="text-gray-500">Pending</option>
                         </select>
                     </td>
                 </tr>

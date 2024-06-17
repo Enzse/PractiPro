@@ -9,11 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { BlockService } from '../../../services/block.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-coord-documentation',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule],
+  imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
   templateUrl: './coord-documentation.component.html',
   styleUrl: './coord-documentation.component.css'
 })
@@ -46,6 +48,7 @@ export class CoordDocumentationComponent implements OnInit {
     this.isLoading = true;
     this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
+      this.studentlist = this.studentlist.filter((student: any) => student.registrationstatus === 1);
       this.isLoading = false;
       console.log(this.studentlist);
     }, err => {

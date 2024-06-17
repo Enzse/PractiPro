@@ -9,11 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { BlockService } from '../../../services/block.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-coord-dtr',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule],
+  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
   templateUrl: './coord-dtr.component.html',
   styleUrl: './coord-dtr.component.css'
 })
@@ -47,6 +49,7 @@ export class CoordDtrComponent implements OnInit {
     this.isLoading = true;
     this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
+      this.studentlist = this.studentlist.filter((student: any) => student.registrationstatus === 1);
       this.isLoading = false;
       console.log(this.studentlist);
     }, err => {
@@ -56,19 +59,15 @@ export class CoordDtrComponent implements OnInit {
   }
 
 
-  viewSubmissions(code: any) {
+  viewSubmissions(student: any) {
     const popup = this.dialog.open(DtrpopupcomponentComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "80%",
       data: {
-        usercode: code
+        student: student
       }
     })
-    // popup.afterClosed().subscribe(res => {
-    //   this.loadHeldStudents()
-    // });
-
   }
 
 

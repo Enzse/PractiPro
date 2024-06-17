@@ -9,12 +9,13 @@ import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
   selector: 'app-exit-poll',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule],
+  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule],
   templateUrl: './exit-poll.component.html',
   styleUrl: './exit-poll.component.css'
 })

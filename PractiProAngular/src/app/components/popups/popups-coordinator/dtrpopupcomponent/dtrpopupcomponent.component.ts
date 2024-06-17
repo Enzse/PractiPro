@@ -1,121 +1,79 @@
 
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { saveAs } from 'file-saver';
-import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
-import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
+import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-dtrpopupcomponent',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
+  imports: [CommonModule, NgxPaginationModule, FormsModule],
   templateUrl: './dtrpopupcomponent.component.html',
   styleUrl: './dtrpopupcomponent.component.css'
 })
 export class DtrpopupcomponentComponent {
-  constructor(private builder: FormBuilder, private service: AuthService,
+  constructor(private service: AuthService, private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DtrpopupcomponentComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
   isLoading = true;
+  p: number = 1;
+  itemsPerPage: number = 7
+  datalist: any[] = [];
+  groupedRecords: any[] = [];
+  private subscriptions = new Subscription();
+
+  setInitialPage(): void {
+    const totalItems = this.datalist.length;
+    const totalPages = Math.ceil(totalItems / this.itemsPerPage);
+    this.p = totalPages;
+  }
 
   ngOnInit(): void {
     this.loadData();
 
   }
-
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   loadData() {
-    this.service.getSubmissionsByStudent('dtr', this.data.usercode).subscribe(
-      (res:any) => {
-        this.studentSubmissions = res.payload;
-        this.isLoading = false;
-        console.log(this.studentSubmissions);
-      },
-      (error: any) => {
-        console.error('Error fetching student submissions:', error);
+    console.log(this.data.student.id)
+    this.subscriptions.add(
+      this.service.getDtrs(this.data.student.id).subscribe((res: any) => {
+        console.log(res)
+        this.datalist = res.payload;
+        this.datalist = this.addWeekNumberToRecords(res.payload, this.data.student.hire_date);
+        console.log(this.datalist);
+        this.setInitialPage();
       }
-    );
+      ));
   }
 
-  viewFile(submissionId: number) {
-    this.service.getSubmissionFile('dtr', submissionId).subscribe(
-      (data: any) => {
-        const popup = this.dialog2.open(PdfviewerComponent, {
-          enterAnimationDuration: "0ms",
-          exitAnimationDuration: "500ms",
-          width: "90%",
-          data: {
-            selectedPDF: data
-          }
-        })
-      },
-      (error: any) => {
-        console.error('Error viewing submission:', error);
-      }
-    );
-  }
-
-  downloadFile(submissionId: number, submissionName: string) {
-    this.service.getSubmissionFile('dtr', submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, submissionName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    );
-  }
-
-  toggleApproval(id: number, currentValue: number) {
-    let newValue: number;
-
-    if (currentValue === 0) {
-      newValue = 1;
-    } else if (currentValue === 1) {
-      newValue = -1;
-    } else {
-      newValue = 0;
-    }
-    const requestData = {
-      submissionId: id,
-      newRemark: newValue
-    };
-    this.service.toggleSubmissionRemark('dtr', requestData).subscribe(
-      (response) => {
-        console.log('Submission remark toggled successfully:', response);
-
-        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.id === id);
-        if (submissionIndex !== -1) {
-          this.studentSubmissions[submissionIndex].remarks = newValue;
-        }
-      },
-      (error) => console.error('Error toggling Submission remark:', error)
-    );
-  }
-
-  viewComments(submissionId: number, fileName: string) {
-    const popup = this.dialog2.open(CommentspopupComponent, {
-      enterAnimationDuration: "350ms",
-      exitAnimationDuration: "500ms",
-      width: "95%",
-      data: {
-        submissionID: submissionId,
-        fileName: fileName,
-        table: 'comments_dtr'
-      }
-    })
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
+  addWeekNumberToRecords(records: any[], hireDate: string): any[] {
+    const hireDateObj = new Date(hireDate);
+    return records.map(record => {
+      const recordDate = new Date(record.date);
+      const weekNumber = Math.floor((recordDate.getTime() - hireDateObj.getTime()) / (7 * 24 * 60 * 60 * 1000)) + 1;
+      return { ...record, weekNumber };
     });
   }
 
+  onStatusChange(record: any) {
+    const updateData = { status: record.status };
+    this.subscriptions.add(
+      this.service.updateDTRStatus(record.id, updateData).subscribe(
+        res => {
+          console.log('Status updated successfully:', res);
+          this.changeDetection.notifyChange(true);
+        },
+        error => {
+          console.error('Error updating status:', error);
+        }
+      ));
+  }
 }

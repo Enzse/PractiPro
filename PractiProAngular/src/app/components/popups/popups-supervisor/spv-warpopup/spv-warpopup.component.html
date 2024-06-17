@@ -49,13 +49,13 @@
                         </td>
                         <td class="px-6 py-4">
                             <button (click)="viewFile(submission.id)"
-                                class="text-nowrap text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View
-                                File</button>
+                                class="focus:outline-none text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View</button>
                         </td>
+
                         <td class="px-6 py-4">
                             <button (click)="viewComments(submission.id, submission.file_name)"
-                                class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white inline" aria-hidden="true"
+                                class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
+                                <svg class="w-5 h-5 text-gray-800 dark:text-white inline" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
                                     viewBox="0 0 24 24">
                                     <path fill-rule="evenodd"
@@ -66,11 +66,16 @@
                             </button>
                         </td>
                         <td class="px-6 py-4">
-                            <select [(ngModel)]="submission.supervisor_approval" (change)="onStatusChange(submission)">
-                                <option value="Approved" class="text-green-500">Approved</option>
-                                <option value="Unapprove" class="text-red-500">Unapproved</option>
-                                <option value="Pending">Pending</option>
-                            </select>
+                            <select class="border-0 shadow-md text-center rounded-lg cursor-pointer"
+                            [(ngModel)]="submission.supervisor_approval" [ngClass]="{
+                            'text-green-500': submission.supervisor_approval === 'Approved',
+                            'text-red-500': submission.supervisor_approval === 'Unapproved',
+                            'text-gray-500': submission.supervisor_approval === 'Pending'
+                          }" (change)="onStatusChange(submission)">
+                            <option value="Approved" class="text-green-500">Approved</option>
+                            <option value="Unapproved" class="text-red-500">Unapproved</option>
+                            <option value="Pending" class="text-gray-500">Pending</option>
+                        </select>
                         </td>
                         <td class="px-6 py-4">
                             <button (click)="downloadFile(submission.id, submission.file_name)"

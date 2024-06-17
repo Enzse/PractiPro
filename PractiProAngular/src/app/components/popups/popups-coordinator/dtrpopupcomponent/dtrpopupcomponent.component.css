@@ -1,0 +1,22 @@
+.table-data{
+    padding-left: 1.5rem/* 24px */;
+    padding-right: 1.5rem/* 24px */;
+    padding-top: 0.5rem/* 12px */;
+    padding-bottom: 0.5rem/* 12px */;
+}
+
+.my-pagination ::ng-deep .ngx-pagination .current{
+    padding: .1875rem .625rem; 
+    background: #1e1b4b;
+    color: #fefefe;
+    cursor: default;
+}
+
+.my-pagination ::ng-deep .ngx-pagination li{
+  border-radius: 25px;
+  margin: 0 2px;
+}  
+
+.my-pagination ::ng-deep .ngx-pagination li :hover{
+border-radius: 25px;  
+}

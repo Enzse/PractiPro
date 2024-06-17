@@ -9,11 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { BlockService } from '../../../services/block.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-coord-finalreport',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule],
+  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
   templateUrl: './coord-finalreport.component.html',
   styleUrl: './coord-finalreport.component.css'
 })
@@ -47,6 +49,7 @@ export class CoordFinalreportComponent implements OnInit {
     this.isLoading = true;
     this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
+      this.studentlist = this.studentlist.filter((student: any) => student.TotalHoursWorked >= 28);
       this.isLoading = false;
       console.log(this.studentlist);
     }, err => {

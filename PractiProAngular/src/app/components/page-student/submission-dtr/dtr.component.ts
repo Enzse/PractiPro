@@ -7,11 +7,12 @@ import { CommentspopupComponent } from '../../popups/shared/commentspopup/commen
 import { Observable, timer } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-dtr',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule],
+  imports: [CommonModule, NgxPaginationModule, MatTooltipModule],
   templateUrl: './dtr.component.html',
   styleUrl: './dtr.component.css'
 })

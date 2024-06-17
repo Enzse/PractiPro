@@ -1,33 +1,38 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { saveAs } from 'file-saver';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { Subscription } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-finalreportpopup',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
+  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule],
   templateUrl: './finalreportpopup.component.html',
   styleUrl: './finalreportpopup.component.css'
 })
-export class FinalreportpopupComponent {
+export class FinalreportpopupComponent implements OnInit, OnDestroy {
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<FinalreportpopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
   isLoading: boolean = true;
+  private subscriptions = new Subscription();
+
 
   ngOnInit(): void {
     this.loadData();
+  }
+
+  ngOnDestroy(): void {
+
   }
 
   loadData() {
@@ -43,8 +48,20 @@ export class FinalreportpopupComponent {
     );
   }
 
+  onStatusChange(record: any) {
+    const updateData = { advisor_approval: record.advisor_approval };
+    this.service.updateAdvisorApproval('finalreports', record.id, updateData).subscribe(
+      res => {
+        console.log('Status updated successfully:', res);
+      },
+      error => {
+        console.error('Error updating status:', error);
+      }
+    );
+  }
+
   viewFile(submissionId: number) {
-    this.service.getSubmissionFile('finalreports',submissionId).subscribe(
+    this.service.getSubmissionFile('finalreports', submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
           enterAnimationDuration: "0ms",
@@ -72,6 +89,34 @@ export class FinalreportpopupComponent {
     );
   }
 
+  deleteSubmission(submissionId: number) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
+          Swal.fire({
+            title: "Your submission has been deleted",
+            icon: "success"
+          });
+          this.loadData();
+        }, error => {
+          Swal.fire({
+            title: "Delete failed",
+            text: "You may not have permission to delete this file.",
+            icon: "error"
+          });
+        });
+      }
+    });
+  }
+
   toggleApproval(id: number, currentValue: number) {
     let newValue: number;
 
@@ -86,7 +131,7 @@ export class FinalreportpopupComponent {
       submissionId: id,
       newRemark: newValue
     };
-    this.service.toggleSubmissionRemark('finalreports',requestData).subscribe(
+    this.service.toggleSubmissionRemark('finalreports', requestData).subscribe(
       (response) => {
         console.log('Submission remark toggled successfully:', response);
 

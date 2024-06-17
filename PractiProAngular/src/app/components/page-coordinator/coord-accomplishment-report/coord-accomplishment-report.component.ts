@@ -9,11 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { BlockService } from '../../../services/block.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-coord-accomplishment-report',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule],
+  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
   templateUrl: './coord-accomplishment-report.component.html',
   styleUrl: './coord-accomplishment-report.component.css'
 })
@@ -45,6 +47,7 @@ export class CoordAccomplishmentReportComponent implements OnInit {
     this.isLoading = true;
     this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
+      this.studentlist = this.studentlist.filter((student: any) => student.registrationstatus === 1);
       this.isLoading = false;
       console.log(this.studentlist);
     }, err => {

@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -10,11 +10,13 @@ import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import { MatMenuModule } from '@angular/material/menu';
 import Swal from 'sweetalert2';
+import { FilterPipe } from '../../../../pipes/filter.pipe';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-requirementspopup',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule],
+  imports: [ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, FormsModule, FilterPipe, NgxPaginationModule],
   templateUrl: './requirementspopup.component.html',
   styleUrl: './requirementspopup.component.css'
 })
@@ -23,7 +25,9 @@ export class RequirementspopupComponent {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<RequirementspopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
+  filteredSubmissions: any[] = [];
   isLoading = true;
+  searchtext: any;
 
   ngOnInit(): void {
     this.loadData();
@@ -40,6 +44,10 @@ export class RequirementspopupComponent {
         console.error('Error fetching student submissions:', error);
       }
     );
+  }
+
+  applyFilter(filterValue: string) {
+    this.searchtext = filterValue;
   }
 
   viewFile(submissionId: number) {
@@ -116,30 +124,15 @@ export class RequirementspopupComponent {
   }
 
 
-  toggleApproval(id: number, currentValue: number) {
-    let newValue: number;
-
-    if (currentValue === 0) {
-      newValue = 1;
-    } else if (currentValue === 1) {
-      newValue = -1;
-    } else {
-      newValue = 0;
-    }
-    const requestData = {
-      submissionId: id,
-      newRemark: newValue
-    };
-    this.service.toggleSubmissionRemark('submissions', requestData).subscribe(
-      (response) => {
-        console.log('Submission remark toggled successfully:', response);
-
-        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.id === id);
-        if (submissionIndex !== -1) {
-          this.studentSubmissions[submissionIndex].remarks = newValue;
-        }
+  onStatusChange(record: any) {
+    const updateData = { advisor_approval: record.advisor_approval };
+    this.service.updateAdvisorApproval('submissions', record.id, updateData).subscribe(
+      res => {
+        console.log('Status updated successfully:', res);
       },
-      (error) => console.error('Error toggling Submission remark:', error)
+      error => {
+        console.error('Error updating status:', error);
+      }
     );
   }
 

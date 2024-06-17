@@ -124,7 +124,7 @@ class Get extends GlobalMethods
     public function get_studentsFromClasses($block)
     {
         $condition = "block = '$block'";
-        return $this->get_records('students', $condition);
+        return $this->get_records('vw_student_ojt_status', $condition);
     }
 
     public function get_studentByCourseAndYear($course, $year)
@@ -261,16 +261,16 @@ class Get extends GlobalMethods
 
         switch ($table) {
             case 'submissions':
-                $columns = "id, user_id, submission_name, file_name, created_at, remarks, comments";
+                $columns = "id, user_id, submission_name, file_name, created_at, remarks, comments, advisor_approval";
                 break;
             case 'finalreports':
-                $columns = "id, user_id, file_name, created_at, remarks, comments";
+                $columns = "id, user_id, file_name, created_at, remarks, comments, advisor_approval";
                 break;
             case 'war':
                 $columns = "id, user_id, week, file_name, created_at, remarks, comments, supervisor_approval, advisor_approval";
                 break;
             default:
-                $columns = "id, user_id, week, file_name, created_at, remarks, comments";
+                $columns = "id, user_id, week, file_name, created_at, remarks, comments, advisor_approval";
                 break;
         }
         $condition = ($id != null) ? "user_id=$id" : null;

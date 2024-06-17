@@ -1,91 +1,56 @@
-<div class="p-3 rounded-md shadow-xl">
-    <h1 class="mb-2 text-orange-500 font-bold ml-1">Daily Attendance Forms Submitted:</h1>
-    <div *ngIf="isLoading" class="flex justify-center">
-        <p class="font-secondary text-2xl">Loading...</p>
-      </div>
-      <ng-container *ngIf="!isLoading">
-        <ng-container *ngIf="studentSubmissions.length > 0 else noDataMessage">
-        <table mat-table class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
+<div class="p-3 rounded-md shadow-xl max-h-screen">
+    <h1 class="mb-2 text-orange-500 font-bold ml-1">Daily Attendances Submitted:</h1>
 
-                    <th scope="col" class="px-6 py-3">
-                        Week:
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        File Name:
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Date Submitted:
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        View File:
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Download File:
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Remarks:
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                        Comments:
-                    </th>
+    <div *ngIf="datalist.length > 0" class=" flow-root bg-slate-50 px-5 pt-5 justify-center text-center overflow-auto shadow-md
+        shadow-slate-200 border border-gray-200 sm:rounded-lg">
+
+        <table
+            class="w-full border-2 border-slate-600  text-sm text-center rtl:text-right text-gray-900 dark:text-gray-400 font-secondary">
+            <thead class=" text-gray-700  bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr class="bg-slate-100 border-b dark:bg-gray-800 dark:border-gray-700 uppercase">
+                    <th class="table-data">Week</th>
+                    <th class="table-data">Date</th>
+                    <th class="table-data">Clock In</th>
+                    <th class="table-data">Clock Out</th>
+                    <th class="table-data">Total Hours</th>
+                    <th class="table-data">Supervisor Approval</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let submission of studentSubmissions"
-                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
-                    <td class="px-6 py-4">
-                        Week {{ submission.week }}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{ submission.file_name }}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{ submission.created_at }}
-                    </td>
-                    <td class="px-6 py-4">
-                        <button (click)="viewFile(submission.id)"
-                        class="focus:outline-none text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">View</button>
-                    </td>
-                    <td class="px-6 py-4">
-                        <button (click)="downloadFile(submission.id, submission.file_name)"
-                            class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Download</button>
-                    </td>
-                    <td class="px-6 py-4">
-                        <button (click)="toggleApproval(submission.id, submission.remarks)"
-                            class="btn-toggle">
-                            <p *ngIf="submission.remarks > 0" class="text-green-600">
-                                APPROVED
-                            </p>
-                            <p *ngIf="submission.remarks == 0" class="text-gray-800">
-                                PENDING
-                            </p>
-                            <p *ngIf="submission.remarks < 0" class="text-orange-500">
-                                UNAPPROVED
-                            </p>
-                        </button>
-                    </td>
-                    <td class="px-6 py-4">
-                        <button (click)="viewComments(submission.id, submission.file_name)"
-                            class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white inline" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                                viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M3.559 4.544c.355-.35.834-.544 1.33-.544H19.11c.496 0 .975.194 1.33.544.356.35.559.829.559 1.331v9.25c0 .502-.203.981-.559 1.331-.355.35-.834.544-1.33.544H15.5l-2.7 3.6a1 1 0 0 1-1.6 0L8.5 17H4.889c-.496 0-.975-.194-1.33-.544A1.868 1.868 0 0 1 3 15.125v-9.25c0-.502.203-.981.559-1.331ZM7.556 7.5a1 1 0 1 0 0 2h8a1 1 0 0 0 0-2h-8Zm0 3.5a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2H7.556Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <span class="ml-1">{{submission.comments}}</span>
-                        </button>
+                <tr *ngFor="let record of datalist | paginate: { itemsPerPage: itemsPerPage, currentPage: p  } "
+                    class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
+                    <td class="table-data border-2 border-slate-600">{{ record.weekNumber}}</td>
+                    <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
+                    <td class="table-data border-2 border-slate-600">{{ record.startTime }}</td>
+                    <td class="table-data border-2 border-slate-600">{{ record.endTime || "Not Set"}}</td>
+                    <td class="table-data border-2 border-slate-600">{{record.totalHours || "Not Set"}}</td>
+                    <td class="table-data border-2 border-slate-600">
+                        <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
+                            'text-red-500': record.status === 'Unapproved',
+                            'text-green-500': record.status === 'Approved'
+                          }">{{record.status}}</p>
                     </td>
                 </tr>
             </tbody>
         </table>
-    </ng-container>
-</ng-container>
-    <ng-template #noDataMessage>
-        <h1 class="text-center">This student has not submitted any data.</h1>
-    </ng-template>
+
+        <div class="w-full mt-3 flex justify-center">
+
+            <!-- pagination control -->
+            <pagination-controls [responsive]="true" class="my-pagination"
+                (pageChange)="p = $event"></pagination-controls>
+
+        </div>
+    </div>
+
+    <div *ngIf="datalist.length === 0">
+        <div class="flex justify-center">
+            <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
+        </div>
+        <div class="text-center">
+            <h1 class="opacity-40 text-center text-lg font-primary">
+                This student has not submitted any records yet.
+            </h1>
+        </div>
+    </div>
 </div>
