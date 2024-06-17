@@ -13,17 +13,17 @@ import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-finalreportpopup',
+  selector: 'app-coord-evaluationspopup',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule],
-  templateUrl: './finalreportpopup.component.html',
-  styleUrl: './finalreportpopup.component.css'
+  templateUrl: './coord-evaluationspopup.component.html',
+  styleUrl: './coord-evaluationspopup.component.css'
 })
-export class FinalreportpopupComponent implements OnInit, OnDestroy {
+export class CoordEvaluationspopupComponent {
   constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<FinalreportpopupComponent>, private dialog2: MatDialog) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CoordEvaluationspopupComponent>, private dialog2: MatDialog) { }
 
-  studentSubmissions: any[] = [];
+  datalist: any[] = [];
   isLoading: boolean = true;
   private subscriptions = new Subscription();
 
@@ -38,11 +38,10 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-    this.service.getSubmissionsByStudent('finalreports', this.data.usercode).subscribe(
-      (res: any) => {
-        this.studentSubmissions = res.payload;
+    this.service.getStudentEvaluation(this.data.student.id).subscribe(res => {
+        this.datalist = res.payload;
         this.isLoading = false;
-        console.log(this.studentSubmissions);
+        console.log(this.datalist);
       },
       (error: any) => {
         console.error('Error fetching student submissions:', error);
@@ -53,7 +52,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-    this.service.updateAdvisorApproval('finalreports', record.id, updateData).subscribe(
+    this.service.updateAdvisorApproval('supervisor_student_evaluations', record.id, updateData).subscribe(
       res => {
         this.changeDetection.notifyChange(true);
         console.log('Status updated successfully:', res);
@@ -66,7 +65,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
 
   viewFile(submissionId: number) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('finalreports', submissionId).subscribe(
+    this.service.getSubmissionFile('supervisor_student_evaluations', submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
           enterAnimationDuration: "0ms",
@@ -85,7 +84,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
 
   downloadFile(submissionId: number, submissionName: string) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('finalreports', submissionId).subscribe(
+    this.service.getSubmissionFile('supervisor_student_evaluations', submissionId).subscribe(
       (data: any) => {
         saveAs(data, submissionName);
       },
@@ -107,7 +106,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-        this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
+        this.service.deleteSubmission(submissionId, 'supervisor_student_evaluations').subscribe((res: any) => {
           Swal.fire({
             title: "Your submission has been deleted",
             icon: "success"
@@ -124,6 +123,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
     });
   }
   
+
   viewComments(submissionId: number, fileName: string) {
     const popup = this.dialog2.open(CommentspopupComponent, {
       enterAnimationDuration: "350ms",
@@ -132,7 +132,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
       data: {
         submissionID: submissionId,
         fileName: fileName,
-        table: 'comments_finalreports'
+        table: 'comments_evaluations'
       }
     })
     this.subscriptions.add(

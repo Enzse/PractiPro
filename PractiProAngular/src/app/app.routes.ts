@@ -41,6 +41,7 @@ import { SupervisorDashboardComponent } from './components/page-supervisor/super
 import { SupervisorWarComponent } from './components/page-supervisor/supervisor-war/supervisor-war.component';
 import { SupervisorEvaluationComponent } from './components/page-supervisor/supervisor-evaluation/supervisor-evaluation.component';
 import { SupervisorHirestudentsComponent } from './components/page-supervisor/supervisor-hirestudents/supervisor-hirestudents.component';
+import { CoordEvaluationsComponent } from './components/page-coordinator/coord-evaluations/coord-evaluations.component';
 
 
 export const routes: Routes = [
@@ -92,7 +93,8 @@ export const routes: Routes = [
             { path: 'coord-documentations', component: CoordDocumentationComponent, title: 'Documentations',  },
             { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records',  },
             { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports',  },
-            { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports',  },
+            { path: 'coord-evaluations', component: CoordEvaluationsComponent, title: 'Performance Evaluations',  },
+            { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports',  }
         ]
     },
     //Supervisor Pages

@@ -31,7 +31,8 @@ export class SpvEvaluationpopupComponent {
   }
 
   loadData() {
-    this.service.getStudentEvaluation(this.userId, 'supervisor').subscribe(res => {
+    this.service.getStudentEvaluation(this.data.student.id).subscribe(res => {
+      console.log(res);
       this.datalist = res.payload;
     });
   }

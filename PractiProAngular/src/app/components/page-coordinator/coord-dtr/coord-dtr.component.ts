@@ -11,6 +11,7 @@ import { BlockService } from '../../../services/block.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
 
 @Component({
   selector: 'app-coord-dtr',
@@ -70,5 +71,15 @@ export class CoordDtrComponent implements OnInit {
     })
   }
 
+  viewProfile(student:any) {
+    const popup = this.dialog.open(ViewprofilepopupComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "500ms",
+      width: "auto",
+      data: {
+        student: student
+      }
+    })
+  }
 
 }

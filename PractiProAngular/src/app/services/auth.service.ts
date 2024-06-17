@@ -145,13 +145,9 @@ export class AuthService {
       return this.http.get<any>(`${this.apiurl}/student-submission/${table}`);
     }
   }
-  getStudentEvaluation(id: any = null, condition: any = null) {
-    if (id && condition) {
-      return this.http.get<any>(`${this.apiurl}/student-evaluation/${id}/${condition}`);
-    }
-    else {
-      return this.http.get<any>(`${this.apiurl}/student-evaluation`);
-    }
+  getStudentEvaluation(id: number) {
+    return this.http.get<any>(`${this.apiurl}/student-evaluation/${id}`);
+
   }
   getSubmissionMaxWeeks(table: string, id: number) {
     return this.http.get<any>(`${this.apiurl}/submissionmaxweeks/${table}/${id}`);
@@ -220,8 +216,8 @@ export class AuthService {
     formData.append('file', file);
     return this.http.post(`${this.apiurl}/uploadfile/${table}/${userId}/${category}`, formData);
   }
-  
-  uploadEvaluation(userId:number, studentId: number, file: File) {
+
+  uploadEvaluation(userId: number, studentId: number, file: File) {
     const formData = new FormData();
     formData.append('file', file);
     return this.http.post(`${this.apiurl}/uploadevaluation/${userId}/${studentId}`, formData);

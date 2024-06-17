@@ -4,8 +4,8 @@
       <h1 class="text-orange-500 ml-5 font-bold font-primary text-left text-xl mb-3">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="w-6 h-6 text-orange-500 inline">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z" />
         </svg>
         Final Reports
       </h1>
@@ -20,7 +20,7 @@
           type="search" [(ngModel)]="searchtext" id="form1"
           class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="Search for students in {{currentBlock}}..." aria-label="search" />
-      </div>      
+      </div>
       <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <div *ngIf="isLoading" class="flex justify-center">
           <p class="font-secondary text-2xl">Loading...</p>
@@ -46,11 +46,14 @@
                     Evaluation
                   </th>
                   <th scope="col" class="px-6 py-3 text-center font-primary   ">
+                    Exit Poll
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-center font-primary   ">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody class="font-secondary">
+              <tbody class="font-secondary text-center">
 
                 <tr
                   *ngFor="let students of studentlist | paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
@@ -65,10 +68,14 @@
                   <td class="px-6 py-4 text-center">
                     <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
                       {{ students.TotalHoursWorked ? students.TotalHoursWorked + ' hrs' : 'Not started' }}
-                      <svg class="w-5 h-5 inline text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M18.425 10.271C19.499 8.967 18.57 7 16.88 7H7.12c-1.69 0-2.618 1.967-1.544 3.271l4.881 5.927a2 2 0 0 0 3.088 0l4.88-5.927Z" clip-rule="evenodd"/>
+                      <svg class="w-5 h-5 inline text-gray-700 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                          d="M18.425 10.271C19.499 8.967 18.57 7 16.88 7H7.12c-1.69 0-2.618 1.967-1.544 3.271l4.881 5.927a2 2 0 0 0 3.088 0l4.88-5.927Z"
+                          clip-rule="evenodd" />
                       </svg>
-                      
+
                     </button>
                     <mat-menu #menu="matMenu">
                       <ul class="px-5">
@@ -87,15 +94,17 @@
                     <a (click)="viewSubmissions(students.id)"
                       class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">View</a>
                   </td>
-                  <td class="px-6 py-4 text-center">
-                    <button (click)="toggleEvaluation(students.id, students.evaluation)" class="btn-toggle">
-                      <p *ngIf="students.evaluation" class="text-green-600 text-center font-secondary">
-                        <b>COMPLETE!</b>
-                      </p>
-                      <p *ngIf="!students.evaluation" class="text-orange-500 text-center font-secondary">
-                        INCOMPLETE
-                      </p>
-                    </button>
+                  <td class="px-6 py-4">
+                    <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
+                        'text-red-500': students.evaluation_status === 'Incomplete',
+                        'text-green-500': students.evaluation_status === 'Completed'
+                      }">{{students.evaluation_status}}</p>
+                  </td>
+                  <td class="px-6 py-4">
+                    <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
+                      'text-red-500': students.exitpoll_status === 'Incomplete',
+                      'text-green-500': students.exitpoll_status === 'Completed'
+                    }">{{students.exitpoll_status}}</p>
                   </td>
                   <td class="px-6 py-4 text-center">
                     <button [matMenuTriggerFor]="actionmenu" (click)="$event.stopPropagation()">
@@ -108,7 +117,7 @@
 
                     </button>
                     <mat-menu #actionmenu="matMenu">
-                      <button mat-menu-item>
+                      <button mat-menu-item (click)="viewProfile(students)">
                         <p>View Profile</p>
                       </button>
                     </mat-menu>

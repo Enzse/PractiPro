@@ -197,10 +197,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
 
             case 'student-evaluation':
-                if (isset($request[2])) {
-                    echo json_encode($get->getStudentEvaluation($request[1], $request[2]));
+                if (isset($request[1])) {
+                    echo json_encode($get->getStudentEvaluation($request[1]));
                 } else {
-                    echo json_encode($get->getStudentEvaluation());
+                    echo "ID not provided!";
                 }
                 break;
 

@@ -13,6 +13,7 @@ import { BlockService } from '../../../services/block.service';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
 
 
 @Component({
@@ -83,8 +84,17 @@ export class CoordinatorSubmissionComponent implements OnInit {
         usercode: code,
       }
     })
-    // popup.afterClosed().subscribe(res => {
-    //   this.loadHeldStudents()
-    // });
   }
+
+  viewProfile(student:any) {
+    const popup = this.dialog.open(ViewprofilepopupComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "500ms",
+      width: "auto",
+      data: {
+        student: student
+      }
+    })
+  }
+
 }

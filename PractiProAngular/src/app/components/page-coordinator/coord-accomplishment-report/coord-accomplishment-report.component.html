@@ -91,11 +91,9 @@
                         <path stroke="currentColor" stroke-linecap="round" stroke-width="4"
                           d="M12 6h.01M12 12h.01M12 18h.01" />
                       </svg>
-
-
                     </button>
                     <mat-menu #actionmenu="matMenu">
-                      <button mat-menu-item>
+                      <button mat-menu-item (click)="viewProfile(students)">
                         <p>View Profile</p>
                       </button>
                     </mat-menu>
