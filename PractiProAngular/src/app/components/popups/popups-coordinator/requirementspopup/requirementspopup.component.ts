@@ -28,6 +28,7 @@ export class RequirementspopupComponent {
   filteredSubmissions: any[] = [];
   isLoading = true;
   searchtext: any;
+  p: number = 1; /* starting no. of the list */
 
   ngOnInit(): void {
     this.loadData();

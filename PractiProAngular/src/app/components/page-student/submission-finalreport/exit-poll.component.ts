@@ -10,18 +10,21 @@ import { CommentspopupComponent } from '../../popups/shared/commentspopup/commen
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @Component({
   selector: 'app-exit-poll',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule],
+  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
   templateUrl: './exit-poll.component.html',
   styleUrl: './exit-poll.component.css'
 })
 export class ExitPollComponent implements OnInit {
   userId: any;
   datalist: any[] = [];
+  p: number = 1;
+
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();
   }

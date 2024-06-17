@@ -12,11 +12,12 @@ import { CommentspopupComponent } from '../../popups/shared/commentspopup/commen
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-documentation',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule],
+  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
   templateUrl: './documentation.component.html',
   styleUrl: './documentation.component.css'
 })
@@ -24,6 +25,7 @@ export class DocumentationComponent implements OnInit {
   userId: any;
   datalist: any[] = [];
   tabWeekNumbers: number[] = [1];
+  p: number = 1;
 
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();

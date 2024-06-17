@@ -10,11 +10,12 @@ import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import Swal from 'sweetalert2';
 import { MatMenuModule } from '@angular/material/menu';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-warpopupcomponent',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule],
+  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
   templateUrl: './warpopupcomponent.component.html',
   styleUrl: './warpopupcomponent.component.css'
 })
@@ -24,6 +25,7 @@ export class WarpopupcomponentComponent {
 
   studentSubmissions: any[] = [];
   isLoading: boolean = true;
+  p: number = 1;
 
   ngOnInit(): void {
     this.loadData();
