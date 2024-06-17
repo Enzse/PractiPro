@@ -48,7 +48,7 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
         this.traineesList = res.payload.map((student: any) => {
           return { ...student, avatar: '' };
         });
-        this.traineesList = this.traineesList.filter((student: any) => student.TotalHoursWorked >= 20);
+        this.traineesList = this.traineesList.filter((student: any) => student.TotalHoursWorked >= 200);
         this.traineesList.forEach((student: any) => {
           this.subscriptions.add(
             this.service.getAvatar(student.id).subscribe((res: any) => {
