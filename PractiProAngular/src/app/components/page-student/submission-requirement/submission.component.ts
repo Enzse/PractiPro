@@ -12,11 +12,12 @@ import { CommentspopupComponent } from '../../popups/shared/commentspopup/commen
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-submission',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule],
+  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
   templateUrl: './submission.component.html',
   styleUrl: './submission.component.css'
 })
@@ -29,6 +30,7 @@ export class SubmissionComponent {
   datalist: any[] = [];
   dataSource: any;
   selectedTabLabel: string = 'Resume';
+  p: number = 1;
 
 
   onTabChange(event: MatTabChangeEvent) {

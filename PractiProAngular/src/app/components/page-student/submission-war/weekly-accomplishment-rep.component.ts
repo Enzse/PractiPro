@@ -11,12 +11,13 @@ import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @Component({
   selector: 'app-weekly-accomplishment-rep',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule],
+  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, NgxPaginationModule],
   templateUrl: './weekly-accomplishment-rep.component.html',
   styleUrl: './weekly-accomplishment-rep.component.css'
 })
@@ -24,6 +25,7 @@ export class WeeklyAccomplishmentRepComponent {
   userId: any;
   datalist: any[] = [];
   tabWeekNumbers: number[] = [1];
+  p: number = 1;
 
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();

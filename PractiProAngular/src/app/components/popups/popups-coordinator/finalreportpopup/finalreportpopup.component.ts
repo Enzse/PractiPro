@@ -10,12 +10,14 @@ import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup
 import { MatMenuModule } from '@angular/material/menu';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+
 
 @Component({
   selector: 'app-finalreportpopup',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule],
+  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
   templateUrl: './finalreportpopup.component.html',
   styleUrl: './finalreportpopup.component.css'
 })
@@ -26,6 +28,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
   studentSubmissions: any[] = [];
   isLoading: boolean = true;
   private subscriptions = new Subscription();
+  p: number = 1; /* starting no. of the list */
 
 
   ngOnInit(): void {

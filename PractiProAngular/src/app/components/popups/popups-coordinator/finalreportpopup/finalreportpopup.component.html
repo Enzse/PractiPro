@@ -31,7 +31,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let submission of studentSubmissions"
+                    <tr *ngFor="let submission of studentSubmissions | paginate: { itemsPerPage: 5, currentPage: p  }"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
 
@@ -108,6 +108,13 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div class="w-full mt-3 flex justify-center">
+                <!-- pagination control -->
+                <pagination-controls [responsive]="true" class="my-pagination"
+                  (pageChange)="p = $event"></pagination-controls>
+              </div>
+
         </ng-container>
     </ng-container>
     <ng-template #noDataMessage>

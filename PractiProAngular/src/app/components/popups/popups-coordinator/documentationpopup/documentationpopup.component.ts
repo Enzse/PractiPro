@@ -10,11 +10,12 @@ import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import { MatMenuModule } from '@angular/material/menu';
 import Swal from 'sweetalert2';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-documentationpopup',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, FormsModule],
+  imports: [ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
   templateUrl: './documentationpopup.component.html',
   styleUrl: './documentationpopup.component.css'
 })
@@ -24,6 +25,7 @@ export class DocumentationpopupComponent {
 
   studentSubmissions: any[] = [];
   isLoading = true;
+  p: number = 1; /* starting no. of the list */
 
   ngOnInit(): void {
     this.loadData();
