@@ -1,0 +1,10 @@
+<div *ngIf="pdfUrl">
+    <div *ngIf="pdfUrl">
+        <iframe [src]="pdfUrl" width="100%" height="600px"></iframe>
+      </div>
+  </div>
+  
+  <div *ngIf="!pdfUrl">
+    <p>No file</p>
+  </div>
+  

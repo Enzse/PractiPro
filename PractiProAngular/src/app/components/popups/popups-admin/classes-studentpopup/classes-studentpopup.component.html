@@ -14,9 +14,6 @@
                     <th scope="col" class="px-6 py-3 text-center">
                         Student ID:
                     </th>
-                    <th scope="col" class="px-6 py-3 text-center">
-                        Practicum Status
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -36,14 +33,6 @@
                     </td>
                     <td class="px-6 py-4 text-center">
                         {{ student.studentId }}
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <p *ngIf="student.evaluation > 0" class="text-green-600">
-                            <b>COMPLETED</b>
-                        </p>
-                        <p *ngIf="student.evaluation == 0" class="text-orange-500">
-                            INCOMPLETE
-                        </p>
                     </td>
                 </tr>
             </tbody>

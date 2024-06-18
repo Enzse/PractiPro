@@ -27,51 +27,24 @@
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Program</label>
                 <select id="program" formControlName="program"
                     class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-
-                    <!-- <optgroup label="CAHS Department:">
-                        <option value="BSM">BSM</option>
-                        <option value="BSN">BSN</option>
-                    </optgroup>
-
-                    <optgroup label="CBA Department:">
-                        <option value="BSA">BSA</option>
-                        <option value="BSBA-FM">BSBA-FM</option>
-                        <option value="BSBA-HRM">BSBA-HRM</option>
-                        <option value="BSBA-MM">BSBA-MM</option>
-                        <option value="BSCA">BSCA</option>
-                    </optgroup> -->
-
-
                     <optgroup label="CCS Department:">
                         <option value="BSCS">BSCS</option>
                         <option value="BSEMC">BSEMC</option>
                         <option value="BSIT">BSIT</option>
                     </optgroup>
-
-                    <!-- <optgroup label="CEAS Department:">
-                        <option value="BACOMM">BACOMM</option>
-                        <option value="BCAEd">BCAEd</option>
-                        <option value="BEED">BEED</option>
-                        <option value="BPEd">BPEd</option>
-                        <option value="BSEd-English">BSEd-English</option>
-                        <option value="BSEd-Filipino">BSEd-Filipino</option>
-                        <option value="BSEd-Mathematics">BSEd-Mathematics</option>
-                        <option value="BSEd-Science">BSEd-Science</option>
-                        <option value="BSEd-Social Studies">BSEd-Social Studies</option>
-                    </optgroup>
-
-                    <optgroup label="CHTM Department:">
-                        <option value="BSHM">BSHM</option>
-                        <option value="BSTM">BSTM</option>
-                    </optgroup> -->
-
                 </select>
             </div>
             <div>
-                <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year Level</label>
-                <input type="number" id="year"
-                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="(1 2 3 4)" formControlName="year" />
+                <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year
+                    Level</label>
+                <select id="year" formControlName="year"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="" disabled selected hidden>Select Year Level:</option>
+                    <option value="1">1st Year</option>
+                    <option value="2">2nd Year</option>
+                    <option value="3">3rd Year</option>
+                    <option value="4">4th Year</option>
+                </select>
             </div>
             <div>
                 <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone

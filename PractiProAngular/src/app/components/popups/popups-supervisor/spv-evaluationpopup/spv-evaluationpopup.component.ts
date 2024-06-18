@@ -1,9 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import saveAs from 'file-saver';
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';

@@ -219,10 +219,24 @@ export class AuthService {
 
   uploadEvaluation(userId: number, studentId: number, file: File) {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', file)
     return this.http.post(`${this.apiurl}/uploadevaluation/${userId}/${studentId}`, formData);
   }
-
+  
+  uploadSeminarRecord(studentId: number, data: any) {
+    return this.http.post(`${this.apiurl}/uploadseminarrecord/${studentId}`, data);
+  }
+  getSeminarRecords(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/student-seminarrecords/${studentId}`);
+  }
+  deletSeminarRecord(id:number) {
+    return this.http.delete(`${this.apiurl}/deleteseminarrecord/${id}`);
+  };
+  uploadSeminarCertificate(studentId: number, file: File) {
+    const formData = new FormData();
+    formData.append('file', file)
+    return this.http.post(`${this.apiurl}/uploadseminarcertificate/${studentId}`, formData);
+  }
   addComment(table: any, id: number, inputdata: any) {
     return this.http.post(`${this.apiurl}/submission-comment/${table}/${id}`, inputdata);
   }

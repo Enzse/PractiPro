@@ -204,6 +204,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'student-seminarrecords':
+                if (isset($request[1])) {
+                    echo json_encode($get->getSeminarRecords($request[1]));
+                } else {
+                    echo "ID not provided!";
+                }
+                break;
+
             case 'getdtr':
                 if (count($request) > 1) {
                     echo json_encode($get->getStudentDTR($request[1]));
@@ -359,6 +367,20 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo "Invalid Endpoints!";
                 }
                 break;
+            case 'uploadseminarrecord':
+                if ($request[1]) {
+                    echo json_encode($post->uploadSeminarRecord($request[1], $data));
+                } else {
+                    echo "Invalid Endpoints!";
+                }
+                break;
+            case 'uploadseminarcertificate':
+                if ($request[1]) {
+                    echo json_encode($post->uploadSeminarCertificate($request[1]));
+                } else {
+                    echo "Invalid Endpoints!";
+                }
+                break;
             case 'dtrclockin':
                 echo json_encode($post->dtrClockIn($request[1]));
                 break;
@@ -488,6 +510,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'deletehiringrequest':
                 if (isset($request[1])) {
                     echo json_encode($delete->deleteHiringRequest($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'deleteseminarrecord':
+                if (isset($request[1])) {
+                    echo json_encode($delete->deleteSeminarRecord($request[1]));
                 } else {
                     echo "ID not provided";
                     http_response_code(400);

@@ -278,7 +278,7 @@ class Get extends GlobalMethods
     }
 
     public function getStudentEvaluation($id)
-    {        
+    {
         $sql = "SELECT sse.id, sse.user_id, sse.student_id, sse.file_name, sse.created_at, sse.advisor_approval, sse.comments, s.firstName AS sfirstName, s.lastName AS slastName
         FROM supervisor_student_evaluations sse
         JOIN supervisors s
@@ -320,7 +320,14 @@ class Get extends GlobalMethods
     // FOR DOWNLOADS!!!!!!!!!
     public function getSubmissionFile($table, $id)
     {
-        $condition = "id=$id";
+        switch ($table) {
+            case "student_seminar_certificates":
+                $condition = "record_id=$id";
+                break;
+            default:
+                $condition = "id=$id";
+                break;
+        }
         $result = $this->get_records($table, $condition);
         if ($result['status']['remarks'] === 'success' && isset($result['payload'][0]['file_data'])) {
             $fileData = base64_decode($result['payload'][0]['file_data']);
@@ -414,6 +421,12 @@ class Get extends GlobalMethods
         return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
     }
 
+    public function getSeminarRecords($id)
+    {
+        $condition = "student_id=$id";
+
+        return $this->get_records('student_seminar_records', $condition);
+    }
 
     public function getStudentSchedules($id)
     {

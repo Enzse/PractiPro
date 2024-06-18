@@ -1,0 +1,39 @@
+<div class="bg-slate-50 rounded-lg sm:w-[600px] p-5 shadow-md border border-gray-200">
+    <form [formGroup]="seminarRecordForm" (ngSubmit)="submitFiles()">
+        <div class="grid gap-4 mb-6 grid-cols-1 sm:grid-cols-8">
+            <div class="sm:col-span-4">
+                <label for="event_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Name</label>
+                <input type="text" id="event_name"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(Event Name)" formControlName="event_name" />
+            </div>
+            <div class="sm:col-span-4">
+                <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Date</label>
+                <input type="date" id="start_date"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(YYYY-MM-DD)" formControlName="event_date" />
+            </div>
+            <div class="sm:col-span-4">
+                <label for="event_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Type</label>
+                <select id="event_type" formControlName="event_type"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="" disabled selected hidden>Select Category:</option>
+                    <option value="Seminar">Seminar</option>
+                    <option value="Webinar">Webinar</option>
+                </select>
+            </div>
+            <div class="sm:col-span-4">
+                <label for="duration" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration (hours)</label>
+                <input type="number" id="duration"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(8.00)" formControlName="duration" />
+            </div>
+        </div>
+
+        <div class="mb-3 border-b border-gray-300"></div>
+        <div class="flex justify-center">
+            <button type="submit"
+                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-16 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Record</button>
+        </div>
+    </form>
+</div>

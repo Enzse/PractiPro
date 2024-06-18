@@ -566,6 +566,70 @@ class Post extends GlobalMethods
         }
     }
 
+
+    // post.php
+
+    public function uploadSeminarRecord($student_id, $data)
+    {
+
+        $sql = "INSERT INTO student_seminar_records (student_id, event_name, event_date, event_type, duration)
+            VALUES (?, ?, ?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $student_id,
+                    $data->event_name,
+                    $data->event_date,
+                    $data->event_type,
+                    $data->duration
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully uploaded record", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            return $this->sendPayload(null, "failed", $errmsg, 400);
+        }
+    }
+
+    public function uploadSeminarCertificate($id)
+    {
+        if (!isset($_FILES["file"])) {
+            return $this->sendPayload(null, "failed", "No file selected", 400);
+        }
+        $fileName = basename($_FILES["file"]["name"]);
+        $fileType = pathinfo($fileName, PATHINFO_EXTENSION);
+        $fileSize = $_FILES["file"]["size"];
+        $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
+
+        $sql = "INSERT INTO student_seminar_certificates (record_id, file_name, file_type, file_size, file_data)
+         VALUES (?, ?, ?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $id,
+                    $fileName,
+                    $fileType,
+                    $fileSize,
+                    $fileData
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully uploaded file", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+
     public function uploadAvatar($id)
     {
         $fileData = file_get_contents($_FILES["file"]["tmp_name"]);
@@ -769,7 +833,7 @@ class Post extends GlobalMethods
             return $this->sendPayload(null, "failed", $errmsg, $code);
         }
     }
-    
+
 
     public function updateSupervisorApproval($table, $id, $data)
     {
