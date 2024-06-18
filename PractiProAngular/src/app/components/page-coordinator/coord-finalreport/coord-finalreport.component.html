@@ -84,7 +84,7 @@
                         </li>
                         <div class="border-b border-gray-300 my-2"></div>
                         <li>
-                          <h1>Seminar Hours: {{ students.SeminarHours != 0 ? students.SeminarHours + ' hrs' : 'Not started' }}</h1>
+                          <h1>Seminar Hours: {{ students.TotalSeminarHours != 0 ? students.TotalSeminarHours + ' hrs' : 'Not started' }}</h1>
                         </li>
 
                       </ul>
@@ -127,7 +127,7 @@
             </table>
 
             <h2 class="opacity-40 text-center text-sm font-primary mt-5">
-              Only students that have met 200 of total training hours will be displayed.
+              Only students that have met 200 total training hours will be displayed.
             </h2>
             <div class="w-full mt-3 flex justify-center">
               <!-- pagination control -->

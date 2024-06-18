@@ -194,7 +194,7 @@ class Get extends GlobalMethods
     public function get_student_requirements($userId = null)
     {
         $condition = ($userId !== null) ? "student_id = $userId" : null;
-        return $this->get_records('student_requirements', $condition);
+        return $this->get_records('vw_student_requirements', $condition);
     }
 
     public function getAvatar($userId)

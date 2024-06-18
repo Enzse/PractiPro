@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
+import { Subscription } from 'rxjs';
+import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 
 
 @Component({
@@ -23,70 +25,75 @@ import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/
   templateUrl: './coordinator-submission.component.html',
   styleUrl: './coordinator-submission.component.css'
 })
-export class CoordinatorSubmissionComponent implements OnInit {
+export class CoordinatorSubmissionComponent implements OnInit, OnDestroy {
 
-  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {}
+  constructor(private changeDetection: ChangeDetectionService, private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
 
   students: any;
   studentlist: any;
   searchtext: any;
   currentBlock: any;
+  private subscriptions = new Subscription();
   isLoading: boolean = false;
   p: number = 1; /* starting no. of the list */
 
 
   ngOnInit(): void {
-    this.blockService.selectedBlock$.subscribe(block => {
-      this.currentBlock = block;
-      if (this.currentBlock) {
+    this.subscriptions.add(
+      this.blockService.selectedBlock$.subscribe(block => {
+        this.currentBlock = block;
         this.loadHeldStudents();
-      } else {
-        console.log(`Submissions: no block selected`);
-      }
+        this.subscriptions.add(
+          this.changeDetection.changeDetected$.subscribe(changeDetected => {
+            if (changeDetected) {
+              this.loadHeldStudents();
+            }
+          })
+        );
+      }));
+  }
 
-      console.log(`Submissions: ${this.currentBlock}`);
-    });
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
   loadHeldStudents() {
     this.isLoading = true;
-    this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
-      this.studentlist = res.payload;
-      this.isLoading = false;
-      console.log(this.studentlist);
-    }, err => {
-      this.isLoading = false;
-      console.error(err);
-    });
+    this.subscriptions.add(
+      this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+        this.studentlist = res.payload;
+        this.isLoading = false;
+        console.log(this.studentlist);
+      }, err => {
+        this.isLoading = false;
+        console.error(err);
+      }));
   }
 
 
-  Updateuser(code: any) {
+  viewRequirementsStatus(code: any) {
     const popup = this.dialog.open(ViewsubmissionsComponent, {
-      enterAnimationDuration: "1000ms",
+      enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
-      width: "80%",
+      width: "auto",
       data: {
         usercode: code
       }
     })
-    popup.afterClosed().subscribe(res => {
-      this.loadHeldStudents()
-    });
   }
 
-  viewSubmissions(code: any) {
+  viewSubmissions(student: any) {
     const popup = this.dialog.open(RequirementspopupComponent, {
       enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "80%",
       data: {
-        usercode: code,
+        student: student,
       }
     })
   }
 
-  viewProfile(student:any) {
+  viewProfile(student: any) {
     const popup = this.dialog.open(ViewprofilepopupComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "500ms",

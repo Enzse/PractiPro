@@ -59,7 +59,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.service.getStudentOjtInfo(this.userId).subscribe(
           (res: any) => {
-            this.registrationStatus = res.payload[0].registrationstatus;
+            this.registrationStatus = res.payload[0].registration_status;
             this.student = res.payload[0];
             if (!this.registrationStatus)
               this.subscriptions.add(

@@ -112,7 +112,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
         this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
           Swal.fire({
-            title: "Your submission has been deleted",
+            title: "The submission has been deleted",
             icon: "success"
           });
           this.loadData();

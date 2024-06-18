@@ -38,6 +38,7 @@ export class RegistrationadminComponent implements OnInit {
     lastName: this.builder.control('', Validators.required),
     email: this.builder.control('', Validators.compose([Validators.required, Validators.email])),
     password: this.builder.control('', [Validators.required, this.passwordStrength]),
+    terms: this.builder.control('', Validators.requiredTrue),
     role: this.builder.control('', Validators.required)
   });
 

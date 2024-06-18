@@ -116,14 +116,14 @@
                     </p>
                     <span [ngClass]="{'text-red-500': !studentProfile[0]?.year}"
                       class="text-sm font-normal lg:text-base font-secondary">
-                      {{ studentProfile[0]?.year || "Not set" }}
+                      {{ studentProfile[0]?.year | ordinal }} Year
                     </span>
                   </div>
                 </div>
               </li>
             </ul>
 
-            <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
+            <hr class="h-px w-[90%] mx-auto my-3 bg-gray-300 border-0 dark:bg-gray-700" />
 
             <h5 class="mb-2 text-2xl mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center">
               Personal Information

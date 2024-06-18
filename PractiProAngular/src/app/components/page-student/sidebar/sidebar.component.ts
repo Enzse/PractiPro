@@ -29,7 +29,7 @@ export class SidebarComponent {
       (res: any) => {
         this.student = res.payload[0];
         console.log(this.student)
-        this.registrationStatus = res.payload[0].registrationstatus;
+        this.registrationStatus = res.payload[0].registration_status;
       },
       (error: any) => {
         console.error('Error fetching student requirements:', error);

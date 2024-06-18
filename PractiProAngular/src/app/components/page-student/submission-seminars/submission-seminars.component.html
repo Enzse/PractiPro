@@ -15,7 +15,7 @@
         <div class="flex flex-col -mt-3 md:flex-row justify-evenly">
             <div class="flex flex-col justify-center text-center p-5 rounded-xl bg-white">
                 <ng-container *ngIf="user$ | async as user">
-                    <h1 class="font-primary font-bold text-blue-800 text-5xl">{{user.SeminarHours}}<span
+                    <h1 class="font-primary font-bold text-blue-800 text-5xl">{{user.TotalSeminarHours || '0.00'}}<span
                             class="text-sm">hrs</span></h1>
                     <h2 class="font-primary text-sm">Total Seminar Hours Accumulated
                         <svg
@@ -55,7 +55,7 @@
         </div>
         <div *ngIf="datalist.length === 0" class="mt-20 flex flex-col items-center">
             <div>
-                <img class="opacity-40 h-44 w-44" src="../../../../assets/empty3.png">
+                <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
             </div>
             <div>
                 <h1 class="opacity-40 text-center text-3xl font-primary mt-5">
@@ -97,14 +97,14 @@
                                 <h2 class="text-sm opacity-70 font-bold font-secondary text-gray-900">
                                     Category:
                                 </h2>
-                                <h1 class="text-2xl font-bold font-primary text-orange-500">
+                                <h1 class="text-2xl font-bold font-primary text-blue-900">
                                     {{ data.event_type || "Others" }}
                                 </h1>
                             </div>
                         </div>
                         <div class="flex-1 mt-4 text-center">
                             <p class="text-lg font-normal font-secondary"
-                                [ngClass]="{'text-red-500': data.advisor_approval === 'Unapproved','text-blue-500': data.advisor_approval === 'Approved','text-gray-400': data.advisor_approval === 'Pending'}">
+                                [ngClass]="{'text-red-500': data.advisor_approval === 'Unapproved','text-green-500': data.advisor_approval === 'Approved','text-gray-400': data.advisor_approval === 'Pending'}">
                                 {{data.advisor_approval}}
                                 <svg class="w-4 h-4 inline -mt-0.5 text-gray-500 dark:text-white" aria-hidden="true"
                                     matTooltip="This submission is to be approved by your ADVISOR."

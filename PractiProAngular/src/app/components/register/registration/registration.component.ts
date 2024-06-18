@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { TermsofserviceComponent } from '../../popups/popups-registration/termsofservice/termsofservice.component';
 import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive, MatTooltipModule],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.css'
 })
@@ -39,6 +40,8 @@ export class RegistrationComponent implements OnInit {
     lastName: this.builder.control('', Validators.required),
     email: this.builder.control('', Validators.compose([Validators.required, Validators.email])),
     password: this.builder.control('', [Validators.required, this.passwordStrength]),
+    // manual: [false, Validators.requiredTrue],
+    terms: [false, Validators.requiredTrue],
     role: this.builder.control('', [Validators.required]),
 
 
@@ -52,31 +55,31 @@ export class RegistrationComponent implements OnInit {
 
 
   proceedregistration() {
-    if (this.registerform.valid) {   
-          this.service.proceedRegister(this.registerform.value).subscribe(() => {
-            console.log('Registered successfully. Please contact admin for activation.');
-            this.router.navigate(['login']);
-            Swal.fire({
-              title: "Registration Successful!",
-              text: "Please contact admin for activation.",
-              icon: "success"
-            });
-          }, error => {
-            if (error.status === 400) {
-              Swal.fire({
-                title: "Email already exists!",
-                text: 'Please use a different email address.',
-                icon: "warning"
-              });
-            } else if (error.status === 409) {
-              Swal.fire({
-                title: "Student already exists!",
-                text: 'Please use a different Student ID.',
-                icon: "warning"
-              });
-            }
+    if (this.registerform.valid) {
+      this.service.proceedRegister(this.registerform.value).subscribe(() => {
+        console.log('Registered successfully. Please contact admin for activation.');
+        this.router.navigate(['login']);
+        Swal.fire({
+          title: "Registration Successful!",
+          text: "Please contact admin for activation.",
+          icon: "success"
+        });
+      }, error => {
+        if (error.status === 400) {
+          Swal.fire({
+            title: "Email already exists!",
+            text: 'Please use a different email address.',
+            icon: "warning"
           });
-        
+        } else if (error.status === 409) {
+          Swal.fire({
+            title: "Student already exists!",
+            text: 'Please use a different Student ID.',
+            icon: "warning"
+          });
+        }
+      });
+
     } else {
       Swal.fire({
         title: "Please enter valid data.",

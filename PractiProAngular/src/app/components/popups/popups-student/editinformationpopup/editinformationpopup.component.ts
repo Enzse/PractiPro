@@ -52,7 +52,7 @@ export class EditinformationpopupComponent implements OnInit {
     year: this.builder.control(''),
     phoneNumber: this.builder.control('', [Validators.maxLength(11)]),
     address: this.builder.control(''),
-    dateOfBirth: this.builder.control(''),
+    dateOfBirth: this.builder.control('')
   });
 
   //This is for the Submit button functionality.

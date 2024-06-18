@@ -102,7 +102,7 @@ export class DocumentationpopupComponent {
       if (result.isConfirmed) {
         this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
           Swal.fire({
-            title: "Your submission has been deleted",
+            title: "The submission has been deleted",
             icon: "success"
           });
           this.loadData();

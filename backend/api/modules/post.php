@@ -334,22 +334,6 @@ class Post extends GlobalMethods
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
-
-    public function toggleRequirementStatus($studentId, $requirement, $status)
-    {
-        $sql = "UPDATE student_requirements SET $requirement = ? WHERE student_id = ?";
-        try {
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([$status, $studentId]);
-            return $this->sendPayload(null, "success", "Successfully updated requirement status", 200);
-        } catch (PDOException $e) {
-            $errmsg = $e->getMessage();
-            $code = 400;
-        }
-
-        return $this->sendPayload(null, "failed", $errmsg, $code);
-    }
-
     public function toggleSubmissionRemark($table, $submissionId, $newRemark)
     {
         $sql = "UPDATE $table SET remarks = ? WHERE id = ?";

@@ -7,11 +7,12 @@ import { EditinformationpopupComponent } from '../../popups/popups-student/editi
 import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
+import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [NavbarComponent, CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe],
+  imports: [NavbarComponent, CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe, OrdinalPipe],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })

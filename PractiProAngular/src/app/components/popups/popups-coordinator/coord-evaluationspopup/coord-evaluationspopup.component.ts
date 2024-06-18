@@ -108,7 +108,7 @@ export class CoordEvaluationspopupComponent {
         this.subscriptions.add(
         this.service.deleteSubmission(submissionId, 'supervisor_student_evaluations').subscribe((res: any) => {
           Swal.fire({
-            title: "Your submission has been deleted",
+            title: "The submission has been deleted",
             icon: "success"
           });
           this.loadData();

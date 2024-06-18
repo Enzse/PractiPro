@@ -39,6 +39,7 @@ export class RegistrationadvisorComponent implements OnInit {
     lastName: this.builder.control('', Validators.required),
     email: this.builder.control('', Validators.compose([Validators.required, Validators.email])),
     password: this.builder.control('', [Validators.required, this.passwordStrength]),
+    terms: [false, Validators.requiredTrue],
     role: this.builder.control('', Validators.required),
     department: this.builder.control('', Validators.required),
   });

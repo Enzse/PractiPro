@@ -20,10 +20,9 @@ export class RegistrationsupervisorComponent implements OnInit {
 
   passwordStrength(control: AbstractControl): { [key: string]: boolean } | null {
     const password = control.value;
-    // Password must contain at least one uppercase letter, one lowercase letter, and one digit
     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
     if (!regex.test(password)) {
-      return { 'weakPassword': true }; // Return specific error for weak password
+      return { 'weakPassword': true };
     }
     return null;
   }
@@ -39,6 +38,7 @@ export class RegistrationsupervisorComponent implements OnInit {
     lastName: this.builder.control('', Validators.required),
     email: this.builder.control('', Validators.compose([Validators.required, Validators.email])),
     password: this.builder.control('', [Validators.required, this.passwordStrength]),
+    terms: [false, Validators.requiredTrue],
     role: this.builder.control('', [Validators.required]),
 
     company_name: this.builder.control('', [Validators.required]),

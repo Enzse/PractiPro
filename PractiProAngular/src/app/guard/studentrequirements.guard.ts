@@ -15,7 +15,7 @@ export const studentrequirementsGuard: CanActivateFn = (childRoute: ActivatedRou
     map((res: any) => {
       const student = res.payload[0];
       console.log(student);
-      if (student && student.registrationstatus === 1) {
+      if (student && student.registration_status === 1) {
         return true;
       } else {
         Swal.fire({

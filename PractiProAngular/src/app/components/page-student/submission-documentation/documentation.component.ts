@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { saveAs } from 'file-saver';
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
@@ -13,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-documentation',
@@ -21,11 +21,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
   templateUrl: './documentation.component.html',
   styleUrl: './documentation.component.css'
 })
-export class DocumentationComponent implements OnInit {
+export class DocumentationComponent implements OnInit, OnDestroy {
   userId: any;
   datalist: any[] = [];
   tabWeekNumbers: number[] = [1];
   p: number = 1;
+  private subscriptions = new Subscription();
 
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();
@@ -34,6 +35,7 @@ export class DocumentationComponent implements OnInit {
 
   ngOnInit() {
     this.loadData();
+    this.subscriptions.add(
     this.service.getSubmissionMaxWeeks('documentations',this.userId).subscribe(
       res => {
         this.tabWeekNumbers = res;
@@ -41,13 +43,19 @@ export class DocumentationComponent implements OnInit {
       error => {
         console.error('Error fetching week numbers:', error);
       }
-    );
+    ));
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+  
   loadData() {
+    this.subscriptions.add(
     this.service.getSubmissionsByStudent('documentations', this.userId).subscribe(res => {
       console.log(res);
       this.datalist = res.payload;
-    });
+    }));
   }
 
 
@@ -68,6 +76,7 @@ export class DocumentationComponent implements OnInit {
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
+        this.subscriptions.add(
         this.service.uploadSubmission('documentations', this.userId, file, this.selectedTabLabel).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
@@ -82,7 +91,7 @@ export class DocumentationComponent implements OnInit {
           error => {
             console.error('Error uploading file:', error);
           }
-        );
+        ));
       }
       else if (file == null) {
         Swal.fire({
@@ -97,6 +106,7 @@ export class DocumentationComponent implements OnInit {
 
 
   downloadFile(submissionId: number, fileName: string) {
+    this.subscriptions.add(
     this.service.getSubmissionFile('documentations', submissionId).subscribe(
       (data: any) => {
         saveAs(data, fileName);
@@ -104,7 +114,7 @@ export class DocumentationComponent implements OnInit {
       (error: any) => {
         console.error('Error downloading submission:', error);
       }
-    );
+    ));
   }
 
   deleteSubmission(submissionId: number) {
@@ -118,6 +128,7 @@ export class DocumentationComponent implements OnInit {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
+        this.subscriptions.add(
         this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
           Swal.fire({
             title: "Your submission has been deleted",
@@ -130,7 +141,7 @@ export class DocumentationComponent implements OnInit {
               text: "You may not have permission to delete this file.",
               icon: "error"
             });
-        });
+        }));
       }
     });
   }

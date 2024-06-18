@@ -8,7 +8,6 @@ import Swal from 'sweetalert2';
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 import { MatDialog } from '@angular/material/dialog';
-import { UpdatepopupComponent } from '../popups/popups-admin/updatepopup/updatepopup.component';
 import { ChooseRolePopupComponent } from '../popups/popups-registration/choose-role-popup/choose-role-popup.component';
 
 @Component({

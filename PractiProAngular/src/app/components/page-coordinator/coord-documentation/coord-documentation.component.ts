@@ -49,7 +49,7 @@ export class CoordDocumentationComponent implements OnInit {
     this.isLoading = true;
     this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
-      this.studentlist = this.studentlist.filter((student: any) => student.registrationstatus === 1);
+      this.studentlist = this.studentlist.filter((student: any) => student.registration_status === 1);
       this.isLoading = false;
       console.log(this.studentlist);
     }, err => {

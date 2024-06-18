@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import Swal from 'sweetalert2';
 import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { Subscription } from 'rxjs';
+import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
   selector: 'app-requirementspopup',
@@ -20,13 +22,14 @@ import { NgxPaginationModule } from 'ngx-pagination';
   templateUrl: './requirementspopup.component.html',
   styleUrl: './requirementspopup.component.css'
 })
-export class RequirementspopupComponent {
-  constructor(private builder: FormBuilder, private service: AuthService,
+export class RequirementspopupComponent implements OnInit, OnDestroy {
+  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<RequirementspopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
   filteredSubmissions: any[] = [];
   isLoading = true;
+  private subscriptions = new Subscription();
   searchtext: any;
   p: number = 1; /* starting no. of the list */
 
@@ -34,8 +37,13 @@ export class RequirementspopupComponent {
     this.loadData();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   loadData() {
-    this.service.getSubmissionsByStudent('submissions', this.data.usercode).subscribe(
+    this.subscriptions.add(
+    this.service.getSubmissionsByStudent('submissions', this.data.student.id).subscribe(
       (res: any) => {
         this.studentSubmissions = res.payload;
         this.isLoading = false;
@@ -44,11 +52,16 @@ export class RequirementspopupComponent {
       (error: any) => {
         console.error('Error fetching student submissions:', error);
       }
-    );
+    ));
   }
 
   applyFilter(filterValue: string) {
-    this.searchtext = filterValue;
+    if (filterValue === "All") {
+      this.searchtext = '';
+    }else{
+      this.searchtext = filterValue;
+    }
+    
   }
 
   viewFile(submissionId: number) {
@@ -91,9 +104,10 @@ export class RequirementspopupComponent {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
+        this.subscriptions.add(
         this.service.deleteSubmission(submissionId, 'submissions').subscribe((res: any) => {
           Swal.fire({
-            title: "Your submission has been deleted",
+            title: "The submission has been deleted",
             icon: "success"
           });
           this.loadData();
@@ -103,7 +117,7 @@ export class RequirementspopupComponent {
             text: "You may not have permission to delete this file.",
             icon: "error"
           });
-        });
+        }));
       }
     });
   }
@@ -119,25 +133,28 @@ export class RequirementspopupComponent {
         table: 'comments_requirements'
       }
     })
+    this.subscriptions.add(
     popup.afterClosed().subscribe(res => {
       this.loadData()
-    });
+    }));
   }
 
 
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
+    this.subscriptions.add(
     this.service.updateAdvisorApproval('submissions', record.id, updateData).subscribe(
       res => {
+        this.changeDetection.notifyChange(true);
         console.log('Status updated successfully:', res);
       },
       error => {
         console.error('Error updating status:', error);
       }
-    );
+    ));
   }
 
 
 
-  
+
 }

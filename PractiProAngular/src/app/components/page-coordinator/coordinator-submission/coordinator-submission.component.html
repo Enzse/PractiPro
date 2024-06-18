@@ -60,20 +60,20 @@
                     {{student.lastName}}, {{ student.firstName }}
                   </td>
                   <td class="px-6 py-4 text-center">
-                    <p *ngIf="student.registrationstatus > 0" class="text-green-600">
+                    <p *ngIf="student.registration_status > 0" class="text-green-600">
                       <b>CLEARED</b>
                     </p>
-                    <p *ngIf="student.registrationstatus == 0" class="text-orange-500">
+                    <p *ngIf="student.registration_status == 0" class="text-orange-500">
                       NOT CLEARED
                     </p>
                   </td>
                   <td class="px-6 py-4 text-center">
-                    <a (click)="viewSubmissions(student.id)"
-                      class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-900 focus:outline-none dark:focus:ring-blue-800">View</a>
+                    <a (click)="viewSubmissions(student)"
+                      class="text-white bg-blue-900 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-900 focus:outline-none dark:focus:ring-blue-800">View</a>
                   </td>
                   <td class="px-6 py-4 text-center">
-                    <a (click)="Updateuser(student.id)"
-                      class="focus:outline-none text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-2 dark:focus:ring-orange-900">Update</a>
+                    <a (click)="viewRequirementsStatus(student.id)"
+                    class="text-white bg-blue-900 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-900 focus:outline-none dark:focus:ring-blue-800">View</a>
                   </td>
                   <td class="px-6 py-4 text-center">
                     <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">

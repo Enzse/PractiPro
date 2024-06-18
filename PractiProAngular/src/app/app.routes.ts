@@ -45,6 +45,7 @@ import { CoordEvaluationsComponent } from './components/page-coordinator/coord-e
 import { SubmissionSeminarsComponent } from './components/page-student/submission-seminars/submission-seminars.component';
 import { studentrequirementsGuard } from './guard/studentrequirements.guard';
 import { studenthoursworkedGuard } from './guard/studenthoursworked.guard';
+import { CoordSeminarsComponent } from './components/page-coordinator/coord-seminars/coord-seminars.component';
 
 
 export const routes: Routes = [
@@ -71,7 +72,7 @@ export const routes: Routes = [
             { path: 'student-weekly-report', component: WeeklyAccomplishmentRepComponent, title: 'Weekly Accomplishment Report', canActivate: [studentrequirementsGuard] },
             { path: 'student-exit-poll', component: ExitPollComponent, title: 'Exit Poll',  canActivate: [studentrequirementsGuard, studenthoursworkedGuard]},
             { path: 'student-seminars', component: SubmissionSeminarsComponent, title: 'Seminars Attended', canActivate: [studentrequirementsGuard]},
-            { path: 'student-feedback', component: FeedbackComponent, title: 'Feedback',  },
+            { path: 'feedback', component: FeedbackComponent, title: 'Feedback',  },
         ]
     },
     //Admin Pages
@@ -96,9 +97,10 @@ export const routes: Routes = [
             { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Submissions',  },
             { path: 'coord-documentations', component: CoordDocumentationComponent, title: 'Documentations',  },
             { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records',  },
+            { path: 'coord-seminars', component: CoordSeminarsComponent, title: 'Seminar Records',  },
             { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports',  },
             { path: 'coord-evaluations', component: CoordEvaluationsComponent, title: 'Performance Evaluations',  },
-            { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports',  }
+            { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports',  },
         ]
     },
     //Supervisor Pages
