@@ -50,9 +50,6 @@
 
       <!-- COLUMN DATA: -->
       <tbody>
-        <tr *ngIf="(traineesList | filter : searchtext)?.length === 0">
-          <td colspan="7" class="px-6 py-4 text-center text-red-500 font-primary">No Trainees Found</td>
-        </tr>
         <tr *ngFor="let data of traineesList | filter : searchtext" (click)="addStudentToSelection(data.id)"
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-slate-100">
           <td class="px-6 py-4"><img *ngIf="data.avatar; else placeholder" [src]="data.avatar"
@@ -86,12 +83,23 @@
               </svg>
             </button>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="option1Action(data.id, data.firstName, data.lastName)"><p class="text-red-500">Remove Student from Company</p></button>
+              <button mat-menu-item (click)="option1Action(data.id, data.firstName, data.lastName)">
+                <p class="text-red-500">Remove Student from Company</p>
+              </button>
             </mat-menu>
           </td>
         </tr>
       </tbody>
     </table>
-
+    <div class="my-5" *ngIf="(traineesList | filter : searchtext)?.length === 0">
+      <div class="flex justify-center">
+        <img class="opacity-30 h-44 w-44" src="../../../../assets/empty1.png">
+      </div>
+      <div class="text-center mb-5">
+        <h1 class="opacity-40 text-center text-xl font-primary">
+          No students found...
+        </h1>
+      </div>
+    </div>
   </div>
 </div>

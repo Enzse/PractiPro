@@ -42,19 +42,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngIf="(datalist | filter : searchtext)?.length === 0">
-            <td colspan="7" class="px-6 py-4 text-center text-red-500">
-              No Data Found
-            </td>
-          </tr>
           <tr *ngFor="let data of datalist | paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
               {{ data.block_name }}
             </th>
-            <!-- <td class="px-6 py-4 text-center">
-                            {{ data.coordinator_id }}
-                        </td> -->
             <td class="px-6 py-4 text-center">
               {{ data.department }}
             </td>
@@ -68,18 +60,32 @@
               : "Not set"
               }}
             </td>
-            <td class="px-6 py-4 text-center">
-              <a (click)="viewData(data.block_name)"
-                class="text-white bg-blue-900 hover:bg-blue-800 cursor-pointer focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">View</a>
+            <td class="px-6 py-4 flex justify-center text-nowrap">
+              <button (click)="viewData(data.block_name)"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide mr-1 inline lucide-search">
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>See All</button>
             </td>
           </tr>
         </tbody>
       </table>
-
+      <div class="my-5" *ngIf="(datalist | filter : searchtext)?.length === 0">
+        <div class="flex justify-center">
+          <img class="opacity-30 h-44 w-44" src="../../../../assets/empty1.png">
+        </div>
+        <div class="text-center mb-5">
+          <h1 class="opacity-40 text-center text-xl font-primary">
+            No classes found...
+          </h1>
+        </div>
+        <div class="mb-3 border-b border-gray-200"></div>
+      </div>
       <div class="w-full mt-3 flex justify-center">
 
         <!-- pagination control -->
-        <pagination-controls [responsive]="true"  class="my-pagination"  (pageChange)="p = $event"></pagination-controls>
+        <pagination-controls [responsive]="true" class="my-pagination" (pageChange)="p = $event"></pagination-controls>
 
       </div>
 

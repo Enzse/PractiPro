@@ -85,7 +85,7 @@ export class AdminCoordinatorsComponent {
     const popup = this.dialog.open(DeptpopupComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "300ms",
-      width: "90%",
+      width: "auto",
       data: {
         usercode: code
       }

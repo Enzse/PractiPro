@@ -65,6 +65,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
   }
 
   viewFile(submissionId: number) {
+    this.subscriptions.add(
     this.service.getSubmissionFile('submissions', submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
@@ -79,11 +80,12 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
       (error: any) => {
         console.error('Error viewing submission:', error);
       }
-    );
+    ));
   }
 
 
   downloadFile(submissionId: number, submissionName: string) {
+    this.subscriptions.add(
     this.service.getSubmissionFile('submissions', submissionId).subscribe(
       (data: any) => {
         saveAs(data, submissionName);
@@ -91,7 +93,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
       (error: any) => {
         console.error('Error downloading submission:', error);
       }
-    );
+    ));
   }
   deleteSubmission(submissionId: number) {
     Swal.fire({

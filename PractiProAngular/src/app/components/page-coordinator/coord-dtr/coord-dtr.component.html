@@ -119,7 +119,17 @@
                 </tr>
               </tbody>
             </table>
-
+            <div class="my-5" *ngIf="(studentlist | filter : searchtext)?.length === 0">
+              <div class="flex justify-center">
+                <img class="opacity-30 h-44 w-44" src="../../../../assets/empty1.png">
+              </div>
+              <div class="text-center mb-5">
+                <h1 class="opacity-40 text-center text-xl font-primary">
+                  No students found...
+                </h1>
+              </div>
+              <div class="mb-3 border-b border-gray-200"></div>
+            </div>
             <h2 class="opacity-40 text-center text-sm font-primary mt-5">
               Only students with a cleared registration status will be displayed.
             </h2>

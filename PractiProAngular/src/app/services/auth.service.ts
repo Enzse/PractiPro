@@ -10,9 +10,9 @@ export class AuthService {
 
   isLoggedIn = false;
 
-  apiurl = 'http://localhost/PractiPro/backend/api';
+  // apiurl = 'http://localhost/PractiPro/backend/api';
 
-  // apiurl = 'http://gcpractipro.online/backend/api';
+  apiurl = 'http://gcpractipro.online/backend/api';
 
 
 

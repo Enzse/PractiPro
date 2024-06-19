@@ -113,6 +113,30 @@
                 <div class="flex-1 min-w-0 ms-4">
                   <p
                     class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                    On-Site Hours:
+                  </p>
+                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
+                    studentProfile.TotalHoursWorked || "0.00" }} hrs</span>
+                </div>
+              </div>
+            </li>
+            <li class="mb-2">
+              <div class="flex items-center">
+                <div class="flex-1 min-w-0 ms-4">
+                  <p
+                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                    Seminar Hours:
+                  </p>
+                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
+                    studentProfile.TotalSeminarHours || "0.00" }} hrs</span>
+                </div>
+              </div>
+            </li>
+            <li class="mb-2">
+              <div class="flex items-center">
+                <div class="flex-1 min-w-0 ms-4">
+                  <p
+                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
                     Currently working at:
                   </p>
                   <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
@@ -143,7 +167,7 @@
                     studentProfile.hire_date | date : "longDate" }}</span>
                 </div>
               </div>
-            </li>
+            </li>            
           </ul>
         </div>
       </div>

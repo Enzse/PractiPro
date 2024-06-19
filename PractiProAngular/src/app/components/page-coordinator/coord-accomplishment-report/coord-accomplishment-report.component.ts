@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -12,6 +12,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-coord-accomplishment-report',
@@ -20,7 +21,7 @@ import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/
   templateUrl: './coord-accomplishment-report.component.html',
   styleUrl: './coord-accomplishment-report.component.css'
 })
-export class CoordAccomplishmentReportComponent implements OnInit {
+export class CoordAccomplishmentReportComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {}
   Coordinator: any;
   students: any;  
@@ -28,24 +29,23 @@ export class CoordAccomplishmentReportComponent implements OnInit {
   searchtext: any;
   currentBlock: any;
   isLoading: boolean = false;
-  p: number = 1; /* starting no. of the list */
+  private subscriptions = new Subscription();
+  p: number = 1;
 
   ngOnInit(): void {
     this.blockService.selectedBlock$.subscribe(block => {
       this.currentBlock = block;
-      if (this.currentBlock) {
         this.loadHeldStudents();
-      } else {
-        console.log(`Submissions: no block selected`);
-      }
-
-      console.log(`Submissions: ${this.currentBlock}`);
     });
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   loadHeldStudents() {
     this.isLoading = true;
+    this.subscriptions.add(
     this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
       this.studentlist = this.studentlist.filter((student: any) => student.registration_status === 1);
@@ -54,7 +54,7 @@ export class CoordAccomplishmentReportComponent implements OnInit {
     }, err => {
       this.isLoading = false;
       console.error(err);
-    });
+    }));
   }
   
   viewSubmissions(code: any) {

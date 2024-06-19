@@ -1,6 +1,6 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { SupervisorSidebarComponent } from '../supervisor-sidebar/supervisor-sidebar.component';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { JwtService } from '../../../services/jwt.service';
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
@@ -8,7 +8,7 @@ import { initFlowbite } from 'flowbite';
 @Component({
   selector: 'app-supervisor-navbar',
   standalone: true,
-  imports: [SupervisorSidebarComponent, RouterOutlet],
+  imports: [SupervisorSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './supervisor-navbar.component.html',
   styleUrl: './supervisor-navbar.component.css'
 })

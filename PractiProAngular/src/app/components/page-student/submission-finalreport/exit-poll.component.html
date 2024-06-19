@@ -30,16 +30,26 @@
       </mat-tab-group>
       <div class="flex justify-between items-center pt-3">
         <button type="button" (click)="viewTemplate()"
-          class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
-
-
+          class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="inline -mt-0.5 lucide lucide-file-search">
+            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+            <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
+            <path d="m9 18-1.5-1.5" />
+            <circle cx="5" cy="14" r="3" />
+          </svg>
           View Template
-
-
-
         </button>
         <button type="button" (click)="submitFiles()"
-          class="text-white p-2 px-5 bg-blue-700 hover:bg-blue-800 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
+          class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
+            <path d="m18 9-6-6-6 6" />
+            <path d="M12 3v14" />
+            <path d="M5 21h14" />
+          </svg>
           Submit File
         </button>
 
@@ -74,7 +84,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let data of datalist | paginate: { itemsPerPage: 5, currentPage: p  }" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+          <tr *ngFor="let data of datalist | paginate: { itemsPerPage: 5, currentPage: p  }"
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
             <td class="px-6 py-4">
               {{ data.file_name }}
             </td>
@@ -138,8 +149,7 @@
 
       <div class="w-full mt-3 flex justify-center">
         <!-- pagination control -->
-        <pagination-controls [responsive]="true" class="my-pagination"
-          (pageChange)="p = $event"></pagination-controls>
+        <pagination-controls [responsive]="true" class="my-pagination" (pageChange)="p = $event"></pagination-controls>
       </div>
 
     </div>

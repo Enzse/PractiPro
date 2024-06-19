@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,7 @@ import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup
 import { MatMenuModule } from '@angular/material/menu';
 import Swal from 'sweetalert2';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-documentationpopup',
@@ -19,19 +20,25 @@ import { NgxPaginationModule } from 'ngx-pagination';
   templateUrl: './documentationpopup.component.html',
   styleUrl: './documentationpopup.component.css'
 })
-export class DocumentationpopupComponent {
+export class DocumentationpopupComponent implements OnInit, OnDestroy {
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DocumentationpopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
   isLoading = true;
+  private subscriptions = new Subscription();
   p: number = 1; /* starting no. of the list */
 
   ngOnInit(): void {
     this.loadData();
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   loadData(){
+    this.subscriptions.add(
     this.service.getSubmissionsByStudent('documentations', this.data.usercode).subscribe(
       (res: any) => {
         this.studentSubmissions = res.payload;
@@ -41,7 +48,7 @@ export class DocumentationpopupComponent {
       (error: any) => {
         console.error('Error fetching student submissions:', error);
       }
-    );
+    ));
   }
 
   viewFile(submissionId: number) {
@@ -73,12 +80,14 @@ export class DocumentationpopupComponent {
         table: 'comments_documentation'
       }
     })
+    this.subscriptions.add(
     popup.afterClosed().subscribe(res => {
       this.loadData()
-    });
+    }));
   }
 
   downloadFile(submissionId: number, submissionName: string) {
+    this.subscriptions.add(
     this.service.getSubmissionFile('documentations', submissionId).subscribe(
       (data: any) => {
         saveAs(data, submissionName);
@@ -86,7 +95,7 @@ export class DocumentationpopupComponent {
       (error: any) => {
         console.error('Error downloading submission:', error);
       }
-    );
+    ));
   }
 
   deleteSubmission(submissionId: number) {
@@ -100,6 +109,7 @@ export class DocumentationpopupComponent {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
+        this.subscriptions.add(
         this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
           Swal.fire({
             title: "The submission has been deleted",
@@ -112,13 +122,14 @@ export class DocumentationpopupComponent {
             text: "You may not have permission to delete this file.",
             icon: "error"
           });
-        });
+        }));
       }
     });
   }
 
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
+    this.subscriptions.add(
     this.service.updateAdvisorApproval('documentations', record.id, updateData).subscribe(
       res => {
         console.log('Status updated successfully:', res);
@@ -126,7 +137,7 @@ export class DocumentationpopupComponent {
       error => {
         console.error('Error updating status:', error);
       }
-    );
+    ));
   }
 
 
