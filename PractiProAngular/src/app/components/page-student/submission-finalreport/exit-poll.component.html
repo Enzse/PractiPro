@@ -54,95 +54,104 @@
 
       <br />
     </div>
-    <div *ngIf="datalist.length > 0; else noDataMessage"
-      class="relative overflow-x-auto shadow-md border border-gray-300 sm:rounded-lg">
-      <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" class="px-6 py-3 font-secondary">File name</th>
-            <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
-            <th scope="col" class="px-6 py-3 font-secondary">Approval
-              <svg class="w-5 h-5 inline -mt-0.5 text-gray-500 dark:text-white" aria-hidden="true"
-                matTooltip="This submission is to be approved by your ADVISOR." xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-              </svg>
-            </th>
-            <th scope="col" class="px-6 py-3 font-secondary">Comments</th>
-            <th scope="col" class="px-6 py-3 font-secondary">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let data of datalist | paginate: { itemsPerPage: 5, currentPage: p  }" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <td class="px-6 py-4">
-              {{ data.file_name }}
-            </td>
-            <td class="px-6 py-4">
-              {{ data.created_at }}
-            </td>
-            <td class="px-6 py-4">
-              <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
-                  'text-red-500': data.advisor_approval === 'Unapproved',
-                  'text-green-500': data.advisor_approval === 'Approved'
-                }">{{data.advisor_approval}}</p>
-            </td>
-            <td class="px-6 py-4">
-              <button (click)="viewComments(data.id, data.file_name)"
-                class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
-                <svg class="w-5 h-5 text-gray-800 dark:text-white inline" aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                  <path fill-rule="evenodd"
-                    d="M3.559 4.544c.355-.35.834-.544 1.33-.544H19.11c.496 0 .975.194 1.33.544.356.35.559.829.559 1.331v9.25c0 .502-.203.981-.559 1.331-.355.35-.834.544-1.33.544H15.5l-2.7 3.6a1 1 0 0 1-1.6 0L8.5 17H4.889c-.496 0-.975-.194-1.33-.544A1.868 1.868 0 0 1 3 15.125v-9.25c0-.502.203-.981.559-1.331ZM7.556 7.5a1 1 0 1 0 0 2h8a1 1 0 0 0 0-2h-8Zm0 3.5a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2H7.556Z"
-                    clip-rule="evenodd" />
-                </svg>
-                <span class="ml-1">{{data.comments}}</span>
-              </button>
-            </td>
-            <td class="px-6 py-4">
-              <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                  width="24" height="24" fill="none" viewBox="0 0 24 24">
-                  <path stroke="currentColor" stroke-linecap="round" stroke-width="4"
-                    d="M12 6h.01M12 12h.01M12 18h.01" />
-                </svg>
-              </button>
-              <mat-menu #menu="matMenu">
-                <li class="space-x-3 px-3">
-                  <button (click)="downloadFile(data.id, data.file_name)"
-                    class="text-white inline-flex items-center bg-green-500 hover:bg-green-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
-                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      class="lucide lucide-download">
-                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                      <polyline points="7 10 12 15 17 10" />
-                      <line x1="12" x2="12" y1="15" y2="3" />
-                    </svg></button>
-                  <button
-                    class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"
-                    (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
-                      aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                      viewBox="0 0 24 24">
-                      <path fill-rule="evenodd"
-                        d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                        clip-rule="evenodd" />
-                    </svg>
-                  </button>
 
-                </li>
-              </mat-menu>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="w-full mt-3 flex justify-center">
-        <!-- pagination control -->
-        <pagination-controls [responsive]="true" class="my-pagination"
-          (pageChange)="p = $event"></pagination-controls>
-      </div>
-
+    <div *ngIf="isLoading" class="grid w-full h-full py-6 rounded-md justify-center">
+      <h1 class="text-4xl font-semibold font-primary text-slate-500" >
+        Loading...
+      </h1>
     </div>
+
+    <div *ngIf="!isLoading">
+      <div *ngIf="datalist.length > 0; else noDataMessage"
+        class="relative overflow-x-auto shadow-md border border-gray-300 sm:rounded-lg">
+        <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-6 py-3 font-secondary">File name</th>
+              <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
+              <th scope="col" class="px-6 py-3 font-secondary">Approval
+                <svg class="w-5 h-5 inline -mt-0.5 text-gray-500 dark:text-white" aria-hidden="true"
+                  matTooltip="This submission is to be approved by your ADVISOR." xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+              </th>
+              <th scope="col" class="px-6 py-3 font-secondary">Comments</th>
+              <th scope="col" class="px-6 py-3 font-secondary">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of datalist | paginate: { itemsPerPage: 5, currentPage: p  }" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <td class="px-6 py-4">
+                {{ data.file_name }}
+              </td>
+              <td class="px-6 py-4">
+                {{ data.created_at }}
+              </td>
+              <td class="px-6 py-4">
+                <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
+                    'text-red-500': data.advisor_approval === 'Unapproved',
+                    'text-green-500': data.advisor_approval === 'Approved'
+                  }">{{data.advisor_approval}}</p>
+              </td>
+              <td class="px-6 py-4">
+                <button (click)="viewComments(data.id, data.file_name)"
+                  class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
+                  <svg class="w-5 h-5 text-gray-800 dark:text-white inline" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                      d="M3.559 4.544c.355-.35.834-.544 1.33-.544H19.11c.496 0 .975.194 1.33.544.356.35.559.829.559 1.331v9.25c0 .502-.203.981-.559 1.331-.355.35-.834.544-1.33.544H15.5l-2.7 3.6a1 1 0 0 1-1.6 0L8.5 17H4.889c-.496 0-.975-.194-1.33-.544A1.868 1.868 0 0 1 3 15.125v-9.25c0-.502.203-.981.559-1.331ZM7.556 7.5a1 1 0 1 0 0 2h8a1 1 0 0 0 0-2h-8Zm0 3.5a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2H7.556Z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  <span class="ml-1">{{data.comments}}</span>
+                </button>
+              </td>
+              <td class="px-6 py-4">
+                <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-width="4"
+                      d="M12 6h.01M12 12h.01M12 18h.01" />
+                  </svg>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <li class="space-x-3 px-3">
+                    <button (click)="downloadFile(data.id, data.file_name)"
+                      class="text-white inline-flex items-center bg-green-500 hover:bg-green-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-download">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" x2="12" y1="15" y2="3" />
+                      </svg></button>
+                    <button
+                      class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"
+                      (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
+                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                        viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                          d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
+                          clip-rule="evenodd" />
+                      </svg>
+                    </button>
+
+                  </li>
+                </mat-menu>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="w-full mt-3 flex justify-center">
+          <!-- pagination control -->
+          <pagination-controls [responsive]="true" class="my-pagination"
+            (pageChange)="p = $event"></pagination-controls>
+        </div>
+
+      </div>
+    </div>  
   </div>
 
   <ng-template #noDataMessage>

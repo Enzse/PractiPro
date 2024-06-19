@@ -49,7 +49,6 @@ export class SupervisorWarComponent {
             catchError(() => of(student)) 
           )
         );
-
         return forkJoin(avatarObservables);
       }),
       catchError(() => of([])) 

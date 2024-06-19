@@ -26,6 +26,7 @@ export class WeeklyAccomplishmentRepComponent {
   datalist: any[] = [];
   tabWeekNumbers: number[] = [1];
   p: number = 1;
+  isLoading: boolean = true;
 
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();
@@ -46,6 +47,7 @@ export class WeeklyAccomplishmentRepComponent {
   loadData() {
     this.service.getSubmissionsByStudent('war', this.userId).subscribe(res => {
       this.datalist = res.payload;
+      this.isLoading = false;
     });
   }
   

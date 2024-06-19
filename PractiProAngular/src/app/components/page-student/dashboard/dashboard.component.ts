@@ -54,7 +54,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-
     if (this.userId) {
       this.subscriptions.add(
         this.service.getStudentOjtInfo(this.userId).subscribe(

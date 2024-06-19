@@ -25,12 +25,14 @@ export class ClassesStudentpopupComponent {
 
   datalist: any[] = [];
   avatarlist: any[] = [];
+  isLoading: boolean = true; 
 
   ngOnInit(): void {
     console.log(this.data.usercode)
     if (this.data.usercode != null && this.data.usercode != '') {
       this.service.getAllStudentsFromClass(this.data.usercode).subscribe(
         (res: any) => {
+          this.isLoading = false;this.isLoading = false;
           this.datalist = res.payload.map((user:any) => {
             return { ...user, avatar: '' };
           });
@@ -40,7 +42,6 @@ export class ClassesStudentpopupComponent {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
-                
               }
             })
           });

@@ -23,6 +23,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   traineesList: any[] = [];
   avatarUrl?: SafeUrl;
   searchtext: any;
+  isLoading: boolean = true;
   private subscriptions = new Subscription();
 
   constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
@@ -54,6 +55,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
     console.log("Loading Data...");
     this.subscriptions.add(
       this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
+        this.isLoading = false;
         this.traineesList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });

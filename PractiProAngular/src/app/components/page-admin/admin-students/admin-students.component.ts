@@ -31,6 +31,7 @@ export class AdminStudentsComponent implements OnInit {
   dataSource: any;
   searchtext: any;
   p: number = 1; /* starting no. of the list */
+  isLoading: boolean = true;
 
   ngOnInit(): void {
 
@@ -40,6 +41,7 @@ export class AdminStudentsComponent implements OnInit {
     this.service.getStudent().subscribe(res => {
       this.studentlist = res.payload;
       this.dataSource = new MatTableDataSource(this.studentlist);
+      this.isLoading = false;
     });
   }
 

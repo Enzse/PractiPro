@@ -22,6 +22,7 @@ export class SupervisorDtrComponent implements OnInit {
   traineesList: any[] = [];
   searchtext: any;
   private subscriptions = new Subscription();
+  isLoading: boolean = true;
 
   constructor(
     private service: AuthService,
@@ -51,6 +52,7 @@ export class SupervisorDtrComponent implements OnInit {
     console.log("Loading Data...");
     this.subscriptions.add(
       this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
+        this.isLoading = false;
         this.traineesList = res.payload.map((student: any) => {
           return { ...student, avatar: '' };
         });

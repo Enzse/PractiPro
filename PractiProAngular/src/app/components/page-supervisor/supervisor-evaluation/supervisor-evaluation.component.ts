@@ -21,6 +21,7 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
   traineesList: any[] = [];
   avatarUrl?: SafeUrl;
   searchtext: any;
+  isLoading: boolean = true;
   private subscriptions = new Subscription();
 
   constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
@@ -49,6 +50,7 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
           return { ...student, avatar: '' };
         });
         this.traineesList = this.traineesList.filter((student: any) => student.TotalHoursWorked >= 20);
+        this.isLoading = false;
         this.traineesList.forEach((student: any) => {
           this.subscriptions.add(
             this.service.getAvatar(student.id).subscribe((res: any) => {

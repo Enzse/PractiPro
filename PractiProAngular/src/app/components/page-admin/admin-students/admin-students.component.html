@@ -20,82 +20,92 @@
     </div>
 
 
-    <div class="relative overflow-x-auto border border-gray-300 sm:rounded-lg">
-      <table mat-table
-        class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-          <tr>
-            <th scope="col" class="px-6 py-3 font-primary">Full Name</th>
-            <th scope="col" class="px-6 py-3 font-primary">Student ID</th>
-            <th scope="col" class="px-6 py-3 font-primary">Program</th>
-            <th scope="col" class="px-6 py-3 font-primary">Year Level</th>
-            <th scope="col" class="px-6 py-3 font-primary">Block</th>
-            <th scope="col" class="px-6 py-3 font-primary">
-              Profile Information
-            </th>
-            <th scope="col" class="px-6 py-3 font-primary">Submissions</th>
-            <th scope="col" class="px-6 py-3 font-primary">
-              Requirements Status
-            </th>
-            <th scope="col" class="px-6 py-3 font-primary">Registration Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngIf="(studentlist | filter : searchtext)?.length === 0">
-            <td colspan="7" class="px-6 py-4 text-center text-red-500">
-              No Data Found
-            </td>
-          </tr>
-          <tr *ngFor="let students of studentlist | paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
-            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-            <td class="px-6 py-4 text-nowrap">
-              {{students.lastName}}, {{ students.firstName }}
-            </td>
-            <td class="px-6 py-4">
-              {{ students.studentId ? students.studentId : "Not set" }}
-            </td>
-            <td class="px-6 py-4">
-              {{ students.program ? students.program : "Not set" }}
-            </td>
-            <td class="px-6 py-4 text-nowrap">
-              {{
-              students.year ? (students.year | ordinal) + " Year" : "Not set"
-              }}
-            </td>
-            <td class="px-6 py-4 text-nowrap">
-              {{ students.block ? students.block : "Not set" }}
-            </td>
-            <td class="px-6 py-4">
-              <a (click)="viewInfo(students.id, students.studentId)"
-                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">View</a>
-            </td>
-            <td class="px-6 py-4">
-              <a (click)="viewSubmissions(students.id)"
-                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">View</a>
-            </td>
-            <td class="px-6 py-4">
-              <a (click)="updateRqStatus(students.id)"
-                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5  mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">Update</a>
-            </td>
-            <td class="px-6 py-4">
-                <p *ngIf="students.registrationstatus" class="text-green-600 text-center">
-                  <b>CLEARED</b>
-                </p>
-                <p *ngIf="!students.registrationstatus" class="text-blue-900 text-center">
-                  <b>NOT CLEARED</b>
-                </p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <!-- tables -->
 
-      <div class="w-full mt-3 flex justify-center">
+    <div *ngIf="isLoading" class="text-center py-5">
+      <h1 class="text-3xl font-semibold text-slate-400">
+        Loading...
+      </h1>
+    </div>
 
-        <!-- pagination control -->
-        <pagination-controls [responsive]="true"  class="my-pagination"  (pageChange)="p = $event"></pagination-controls>
+    <div *ngIf="!isLoading">
+      <div class="relative overflow-x-auto border border-gray-300 sm:rounded-lg">
+        <table mat-table
+          class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-6 py-3 font-primary">Full Name</th>
+              <th scope="col" class="px-6 py-3 font-primary">Student ID</th>
+              <th scope="col" class="px-6 py-3 font-primary">Program</th>
+              <th scope="col" class="px-6 py-3 font-primary">Year Level</th>
+              <th scope="col" class="px-6 py-3 font-primary">Block</th>
+              <th scope="col" class="px-6 py-3 font-primary">
+                Profile Information
+              </th>
+              <th scope="col" class="px-6 py-3 font-primary">Submissions</th>
+              <th scope="col" class="px-6 py-3 font-primary">
+                Requirements Status
+              </th>
+              <th scope="col" class="px-6 py-3 font-primary">Registration Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="(studentlist | filter : searchtext)?.length === 0">
+              <td colspan="7" class="px-6 py-4 text-center text-red-500">
+                No Data Found
+              </td>
+            </tr>
+            <tr *ngFor="let students of studentlist | paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
+              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <td class="px-6 py-4 text-nowrap">
+                {{students.lastName}}, {{ students.firstName }}
+              </td>
+              <td class="px-6 py-4">
+                {{ students.studentId ? students.studentId : "Not set" }}
+              </td>
+              <td class="px-6 py-4">
+                {{ students.program ? students.program : "Not set" }}
+              </td>
+              <td class="px-6 py-4 text-nowrap">
+                {{
+                students.year ? (students.year | ordinal) + " Year" : "Not set"
+                }}
+              </td>
+              <td class="px-6 py-4 text-nowrap">
+                {{ students.block ? students.block : "Not set" }}
+              </td>
+              <td class="px-6 py-4">
+                <a (click)="viewInfo(students.id, students.studentId)"
+                  class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">View</a>
+              </td>
+              <td class="px-6 py-4">
+                <a (click)="viewSubmissions(students.id)"
+                  class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">View</a>
+              </td>
+              <td class="px-6 py-4">
+                <a (click)="updateRqStatus(students.id)"
+                  class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5  mb-2 dark:bg-blue-600 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800 cursor-pointer">Update</a>
+              </td>
+              <td class="px-6 py-4">
+                  <p *ngIf="students.registrationstatus" class="text-green-600 text-center">
+                    <b>CLEARED</b>
+                  </p>
+                  <p *ngIf="!students.registrationstatus" class="text-blue-900 text-center">
+                    <b>NOT CLEARED</b>
+                  </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="w-full mt-3 flex justify-center">
+
+          <!-- pagination control -->
+          <pagination-controls [responsive]="true"  class="my-pagination"  (pageChange)="p = $event"></pagination-controls>
+
+        </div>
 
       </div>
-
-    </div>
+    </div>  
   </div>
 </div>

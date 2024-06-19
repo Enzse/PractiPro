@@ -20,7 +20,7 @@ export class DtrpopupcomponentComponent {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DtrpopupcomponentComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
-  isLoading = true;
+  isLoading: boolean = true;
   p: number = 1;
   itemsPerPage: number = 7
   datalist: any[] = [];
@@ -47,6 +47,7 @@ export class DtrpopupcomponentComponent {
       this.service.getDtrs(this.data.student.id).subscribe((res: any) => {
         console.log(res)
         this.datalist = res.payload;
+        this.isLoading = false;
         this.datalist = this.addWeekNumberToRecords(res.payload, this.data.student.hire_date);
         console.log(this.datalist);
         this.setInitialPage();

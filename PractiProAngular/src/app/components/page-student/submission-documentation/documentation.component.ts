@@ -26,6 +26,7 @@ export class DocumentationComponent implements OnInit {
   datalist: any[] = [];
   tabWeekNumbers: number[] = [1];
   p: number = 1;
+  isLoading: boolean = true;
 
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();
@@ -47,6 +48,7 @@ export class DocumentationComponent implements OnInit {
     this.service.getSubmissionsByStudent('documentations', this.userId).subscribe(res => {
       console.log(res);
       this.datalist = res.payload;
+      this.isLoading = false;
     });
   }
 

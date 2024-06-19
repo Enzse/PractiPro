@@ -26,6 +26,7 @@ export class AdminUsersComponent implements OnInit {
   userlist: any; //ARRAY OF ALL USERS FETCHED FROM DATABASE
   userrole: any; //ROLE OF USER THE IS LOGGED IN (to check if admin / superadmin)
   p: number = 1; /* starting no. of the list */
+  isLoading: boolean = true;
 
 
   //This block executes upon opening this page:
@@ -42,6 +43,7 @@ export class AdminUsersComponent implements OnInit {
         //The "res" variable automatically contains an object that contains the payload(payload = fetched data).
         this.userlist = res.payload.filter((user: any) => user.id !== currentUserId);
         this.userlist = res.payload.filter((user: any) => user.role !== "admin" && user.role !== "superadmin");
+        this.isLoading = false;
         console.log(this.userlist);
       });
     }

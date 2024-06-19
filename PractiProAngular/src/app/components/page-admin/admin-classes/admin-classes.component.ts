@@ -28,11 +28,13 @@ export class AdminClassesComponent {
   dataSource: any;
   searchtext: any;
   p: number = 1; /* starting no. of the list */
+  isLoading: boolean = true;
 
   Loaduser() {
     this.classes = this.service.getCurrentUserId();
     this.service.getClasses().subscribe(res => {
       this.datalist = res.payload;
+      this.isLoading = false;
       this.service.getAdvisors(this.datalist.coordinator_id).subscribe(res =>{
         // this.datalist[0].coordinator_id = `${res[0].first_name} ${res[0].last_name}`;
       })

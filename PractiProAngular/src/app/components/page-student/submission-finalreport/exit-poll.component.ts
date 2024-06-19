@@ -24,6 +24,7 @@ export class ExitPollComponent implements OnInit {
   userId: any;
   datalist: any[] = [];
   p: number = 1;
+  isLoading: boolean = true;
 
   constructor(private service: AuthService, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();
@@ -38,6 +39,7 @@ export class ExitPollComponent implements OnInit {
       if (res) {
         console.log(res);
         this.datalist = res.payload;
+        this.isLoading = false;
       }
     });
   }

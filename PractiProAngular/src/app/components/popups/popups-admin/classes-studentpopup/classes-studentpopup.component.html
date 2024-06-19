@@ -1,55 +1,61 @@
 <div class="p-3 rounded-md shadow-xl">
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Class Students: {{this.data.usercode}}</h1>
-    <div *ngIf="datalist.length > 0 else noDataMessage"
-        class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
-        <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3 text-center">
-                        Avatar:
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-center">
-                        Full Name:
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-center">
-                        Student ID:
-                    </th>
-                    <th scope="col" class="px-6 py-3 text-center">
-                        Practicum Status
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let student of datalist" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
-                    <td class="px-6 py-4 text-center">
-                        <img *ngIf="student.avatar; else placeholder" [src]="student.avatar"
-                            class="mx-auto w-20 h-20 rounded-full">
-                        <ng-template #placeholder>
-                            <div class="mx-auto w-20 h-20 image-container avatar-placeholder">
-                        
-                            </div>
-                        </ng-template>
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        {{student.lastName}}, {{ student.firstName }}
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        {{ student.studentId }}
-                    </td>
-                    <td class="px-6 py-4 text-center">
-                        <p *ngIf="student.evaluation > 0" class="text-green-600">
-                            <b>COMPLETED</b>
-                        </p>
-                        <p *ngIf="student.evaluation == 0" class="text-orange-500">
-                            INCOMPLETE
-                        </p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div *ngIf="isLoading" class="flex justify-center">
+        <p class="font-secondary text-2xl">Loading...</p>
     </div>
 
+    <div *ngIf="!isLoading">
+        <div *ngIf="datalist.length > 0 else noDataMessage"
+            class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
+            <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Avatar:
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Full Name:
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Student ID:
+                        </th>
+                        <th scope="col" class="px-6 py-3 text-center">
+                            Practicum Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let student of datalist" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                        <td class="px-6 py-4 text-center">
+                            <img *ngIf="student.avatar; else placeholder" [src]="student.avatar"
+                                class="mx-auto w-20 h-20 rounded-full">
+                            <ng-template #placeholder>
+                                <div class="mx-auto w-20 h-20 image-container avatar-placeholder">
+                            
+                                </div>
+                            </ng-template>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            {{student.lastName}}, {{ student.firstName }}
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            {{ student.studentId }}
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <p *ngIf="student.evaluation > 0" class="text-green-600">
+                                <b>COMPLETED</b>
+                            </p>
+                            <p *ngIf="student.evaluation == 0" class="text-orange-500">
+                                INCOMPLETE
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <ng-template #noDataMessage>
         <h1 class="text-center">This block currently has no students.</h1>
     </ng-template>

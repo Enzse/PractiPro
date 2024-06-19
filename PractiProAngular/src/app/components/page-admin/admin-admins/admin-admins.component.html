@@ -12,71 +12,82 @@
         aria-label="search"
       />
     </div>
-    <div class="relative overflow-x-auto border border-gray-300 sm:rounded-lg">
-      <table
-        class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400"
-      >
-        <thead
-          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+
+    <!-- Tables -->
+
+    <div *ngIf="isLoading" class="text-center py-5">
+      <h1 class="text-3xl font-semibold text-slate-400">
+        Loading...
+      </h1>
+    </div>
+
+    <div *ngIf="!isLoading">
+      <div class="relative overflow-x-auto border border-gray-300 sm:rounded-lg">
+        <table
+          class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400"
         >
-          <tr>
-            <th scope="col" class="px-6 py-3 font-primary">ID</th>
-            <th scope="col" class="px-6 py-3 font-primary">Name</th>
-            <th scope="col" class="px-6 py-3 font-primary">Email</th>
-            <th scope="col" class="px-6 py-3 font-primary">isActive</th>
-            <th scope="col" class="px-6 py-3 font-primary">Role</th>
-            <th scope="col" class="px-6 py-3 font-primary">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngIf="(userlist | filter : searchtext)?.length === 0">
-            <td colspan="7" class="px-6 py-4 text-center text-red-500">
-              No Data Found
-            </td>
-          </tr>
-          <tr
-            *ngFor="let user of userlist | paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
-            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
           >
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            <tr>
+              <th scope="col" class="px-6 py-3 font-primary">ID</th>
+              <th scope="col" class="px-6 py-3 font-primary">Name</th>
+              <th scope="col" class="px-6 py-3 font-primary">Email</th>
+              <th scope="col" class="px-6 py-3 font-primary">isActive</th>
+              <th scope="col" class="px-6 py-3 font-primary">Role</th>
+              <th scope="col" class="px-6 py-3 font-primary">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngIf="(userlist | filter : searchtext)?.length === 0">
+              <td colspan="7" class="px-6 py-4 text-center text-red-500">
+                No Data Found
+              </td>
+            </tr>
+            <tr
+              *ngFor="let user of userlist | paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
+              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
             >
-              {{ user.id }}
-            </th>
-            <td class="px-6 py-4">{{ user.lastName }}, {{ user.firstName }}</td>
-            <td class="px-6 py-4">
-              {{ user.email }}
-            </td>
-            <td class="px-6 py-4">
-              <p *ngIf="user.isActive === 1" class="text-green-600">ACTIVE</p>
-              <p *ngIf="user.isActive === 0" class="text-orange-500">
-                INACTIVE
-              </p>
-            </td>
-            <td class="px-6 py-4">
-              {{ user.role }}
-            </td>
-            <td class="px-6 py-4">
-              <a 
-                (click)="Updateuser(user.id)"
-                [ngClass]="{'disabled': !isUpdateButtonVisible(user.role)}"
-                [attr.disabled]="!isUpdateButtonVisible(user.role) ? true : null"
-                class="focus:outline-none cursor-pointer text-nowrap text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:focus:ring-blue-900">
-                {{ isUpdateButtonVisible(user.role) ? 'Update' : 'Unallowed' }}
-              </a>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+              >
+                {{ user.id }}
+              </th>
+              <td class="px-6 py-4">{{ user.lastName }}, {{ user.firstName }}</td>
+              <td class="px-6 py-4">
+                {{ user.email }}
+              </td>
+              <td class="px-6 py-4">
+                <p *ngIf="user.isActive === 1" class="text-green-600">ACTIVE</p>
+                <p *ngIf="user.isActive === 0" class="text-orange-500">
+                  INACTIVE
+                </p>
+              </td>
+              <td class="px-6 py-4">
+                {{ user.role }}
+              </td>
+              <td class="px-6 py-4">
+                <a 
+                  (click)="Updateuser(user.id)"
+                  [ngClass]="{'disabled': !isUpdateButtonVisible(user.role)}"
+                  [attr.disabled]="!isUpdateButtonVisible(user.role) ? true : null"
+                  class="focus:outline-none cursor-pointer text-nowrap text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:focus:ring-blue-900">
+                  {{ isUpdateButtonVisible(user.role) ? 'Update' : 'Unallowed' }}
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-      <div class="w-full mt-3 flex justify-center">
+        <div class="w-full mt-3 flex justify-center">
 
-        <!-- pagination control -->
-        <pagination-controls [responsive]="true"  class="my-pagination"  (pageChange)="p = $event"></pagination-controls>
+          <!-- pagination control -->
+          <pagination-controls [responsive]="true"  class="my-pagination"  (pageChange)="p = $event"></pagination-controls>
+
+        </div>
 
       </div>
-
     </div>
   </div>
 </div>

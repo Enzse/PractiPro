@@ -25,6 +25,7 @@ export class DtrComponent implements OnInit {
   //Pagenation Settings
   p: number = 1; 
   itemsPerPage: number = 7
+  isLoading: boolean = true;
 
 
   constructor(private service: AuthService, private dialog: MatDialog) {
@@ -52,6 +53,7 @@ export class DtrComponent implements OnInit {
   loadData() {
     this.service.getDtrs(this.userId).subscribe((res: any) => {
       this.datalist = res.payload;
+      this.isLoading = false;
       this.setInitialPage();
     }
     );

@@ -18,6 +18,7 @@ export class ReviewsubmissionsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ReviewsubmissionsComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
+  isLoading = true;
 
   ngOnInit(): void {
     this.loadData();
@@ -28,6 +29,7 @@ export class ReviewsubmissionsComponent implements OnInit {
     this.service.getSubmissionsByStudent('submissions', this.data.usercode).subscribe(
       (res: any) => {
         this.studentSubmissions = res.payload;
+        this.isLoading = false;
         console.log(this.studentSubmissions);
       },
       (error: any) => {

@@ -212,8 +212,7 @@
         <div class="grid grid-cols-5 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
 
           <div class="col-span-3">
-            <!-- First column content here -->
-            <div *ngIf="studentjob" class="w-full h-full bg-white shadow-md p-3">
+            <div *ngIf="studentjob"  class="w-full h-full bg-white shadow-md p-3">    
               <div>
                 <h1 class="font-primary font-bold text-lg">{{studentjob.job_title || "Unassigned"}}</h1>
               </div>
@@ -273,6 +272,7 @@
                 </ul>
               </div>
             </div>
+
             <div *ngIf="!studentjob" class="w-full bg-white shadow-md p-3">
               <div>
                 <div class="flex justify-center">
@@ -281,7 +281,6 @@
                 <h1 class="font-secondary text-lg text-gray-800 my-2">This student has yet to be assigned a job.</h1>
               </div>
             </div>
-
           </div>
 
           <div class="col-span-2 max-sm:mt-3 max-sm:mx-auto shadow-md w-full p-3 bg-white relative">

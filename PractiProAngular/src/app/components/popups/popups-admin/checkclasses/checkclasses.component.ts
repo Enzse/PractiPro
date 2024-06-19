@@ -25,6 +25,7 @@ export class CheckclassesComponent {
 
   datalist: any;
   currentuser: any;
+  isLoading: boolean = true;
 
   ngOnInit(): void {
     if (this.data.usercode != null && this.data.usercode != '') {
@@ -41,6 +42,7 @@ export class CheckclassesComponent {
     this.service.getClassesByCoordinator(this.data.usercode).subscribe(
       (res: any) => {
         this.datalist = res?.payload;
+        this.isLoading = false;
         console.log(this.datalist);
       },
       (error: any) => {

@@ -31,6 +31,7 @@ export class SubmissionComponent {
   dataSource: any;
   selectedTabLabel: string = 'Resume';
   p: number = 1;
+  isLoading: boolean = true;
 
 
   onTabChange(event: MatTabChangeEvent) {
@@ -84,6 +85,7 @@ export class SubmissionComponent {
     this.service.getSubmissionsByStudent('submissions', this.user).subscribe(res => {
       if (res) {
         this.datalist = res.payload;
+        this.isLoading = false;
         this.dataSource = new MatTableDataSource(this.datalist);
         console.log(this.datalist);
       } else {

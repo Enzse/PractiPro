@@ -32,12 +32,14 @@ export class AdminAdminsComponent implements OnInit {
   searchtext: any;
   userrole: any;
   p: number = 1; /* starting no. of the list */
+  isLoading: boolean = true;
 
   loadUsers() {
     const currentUserId = this.service.getCurrentUserId();
     if (currentUserId !== null) {
       this.service.getAllAdmins().subscribe((res:any) => {
         this.userlist = res.payload.filter((user:any) => user.id !== currentUserId);
+        this.isLoading = false;
         console.log(this.userlist);
       });
     }

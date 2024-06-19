@@ -33,6 +33,7 @@ export class AdminCoordinatorsComponent {
   dataSource: any;
   searchtext: any;
   p: number = 1; /* starting no. of the list */
+  isLoading: boolean = true;
 
 
 
@@ -40,6 +41,7 @@ export class AdminCoordinatorsComponent {
     this.service.getAdvisors().subscribe(res => {
       this.userlist = res;
       this.dataSource = new MatTableDataSource(this.userlist);
+      this.isLoading = false;
     });
   }
 
