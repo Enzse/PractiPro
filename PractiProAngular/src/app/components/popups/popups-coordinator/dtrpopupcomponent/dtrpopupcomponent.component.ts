@@ -7,11 +7,15 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { Subscription } from 'rxjs';
+import { FilterPipe } from '../../../../pipes/filter.pipe';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-dtrpopupcomponent',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule, FormsModule],
+  imports: [CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule, FilterPipe, FormsModule],
   templateUrl: './dtrpopupcomponent.component.html',
   styleUrl: './dtrpopupcomponent.component.css'
 })
@@ -19,7 +23,8 @@ export class DtrpopupcomponentComponent {
   constructor(private service: AuthService, private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DtrpopupcomponentComponent>, private dialog2: MatDialog) { }
 
-  studentSubmissions: any[] = [];
+  origlist:any;
+  searchtext:any;
   isLoading = true;
   p: number = 1;
   itemsPerPage: number = 7
@@ -42,17 +47,35 @@ export class DtrpopupcomponentComponent {
   }
 
   loadData() {
-    console.log(this.data.student.id)
     this.subscriptions.add(
       this.service.getDtrs(this.data.student.id).subscribe((res: any) => {
-        console.log(res)
         this.datalist = res.payload;
         this.datalist = this.addWeekNumberToRecords(res.payload, this.data.student.hire_date);
-        console.log(this.datalist);
+        this.origlist = this.datalist;
         this.setInitialPage();
       }
       ));
   }
+
+  setFilter(filter: string) {
+    this.p = 1;
+    this.datalist = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.datalist = this.origlist;
+        break;
+      case 'approved':
+        this.datalist = this.datalist.filter((user: any) => user.status === 'Approved');
+        break;
+      case 'unapproved':
+        this.datalist = this.datalist.filter((user: any) => user.status === 'Unapproved');
+        break;
+      case 'pending':
+        this.datalist = this.datalist.filter((user: any) => user.status === 'Pending');
+        break;
+    }
+  }
+
 
   addWeekNumberToRecords(records: any[], hireDate: string): any[] {
     const hireDateObj = new Date(hireDate);

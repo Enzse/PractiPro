@@ -27,7 +27,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<RequirementspopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
-  filteredSubmissions: any[] = [];
+  origlist: any;
   isLoading = true;
   private subscriptions = new Subscription();
   searchtext: any;
@@ -46,8 +46,8 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
     this.service.getSubmissionsByStudent('submissions', this.data.student.id).subscribe(
       (res: any) => {
         this.studentSubmissions = res.payload;
+        this.origlist = this.studentSubmissions;
         this.isLoading = false;
-        console.log(this.studentSubmissions);
       },
       (error: any) => {
         console.error('Error fetching student submissions:', error);
@@ -55,14 +55,51 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
     ));
   }
 
-  applyFilter(filterValue: string) {
-    if (filterValue === "All") {
-      this.searchtext = '';
-    }else{
-      this.searchtext = filterValue;
+  setFilter(filter: string) {
+    this.p = 1;
+    this.studentSubmissions = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.studentSubmissions = this.origlist;
+        break;
+      case 'resume':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'Resume');
+        break;
+      case 'application':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'ApplicationLetter');
+        break;
+      case 'acceptance':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'AcceptanceLetter');
+        break;
+      case 'endorsement':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'EndorsementLetter');
+        break;
+      case 'parents':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === "Parent's");
+        break;
+      case 'vaccination':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'VaccinationCard');
+        break;
+      case 'barangay':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'BarangayClearance');
+        break;
+      case 'medcert':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'MedicalCertificate');
+        break;
+        case 'approved':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Approved');
+        break;
+      case 'unapproved':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Unapproved');
+        break;
+      case 'pending':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Pending');
+        break;    
     }
-    
   }
+
+
+
 
   viewFile(submissionId: number) {
     this.subscriptions.add(

@@ -43,6 +43,7 @@
                     Submissions
                   </th>
                   <th scope="col" class="px-6 py-3 text-center font-primary   ">
+                    Performance
                     Evaluation
                   </th>
                   <th scope="col" class="px-6 py-3 text-center font-primary   ">
@@ -96,14 +97,14 @@
                   </td>
                   <td class="px-6 py-4">
                     <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
-                        'text-red-500': students.evaluation_status === 'Incomplete',
-                        'text-green-500': students.evaluation_status === 'Completed'
+                        'text-gray-500': students.evaluation_status === 'Incomplete',
+                        'text-green-500': students.evaluation_status === 'Completed!'
                       }">{{students.evaluation_status}}</p>
                   </td>
                   <td class="px-6 py-4">
                     <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
-                      'text-red-500': students.exitpoll_status === 'Incomplete',
-                      'text-green-500': students.exitpoll_status === 'Completed'
+                      'text-gray-500': students.exitpoll_status === 'Incomplete',
+                      'text-green-500': students.exitpoll_status === 'Completed!'
                     }">{{students.exitpoll_status}}</p>
                   </td>
                   <td class="px-6 py-4 text-center">

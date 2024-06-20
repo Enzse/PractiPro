@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { AuthService } from '../../../services/auth.service';
@@ -14,36 +14,69 @@ import { DeptpopupComponent } from '../../popups/popups-admin/deptpopup/deptpopu
 import { AssigncoordpopupComponent } from '../../popups/popups-admin/assigncoordpopup/assigncoordpopup.component';
 import { CheckclassesComponent } from '../../popups/popups-admin/checkclasses/checkclasses.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-coordinators',
   standalone: true,
-  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent, NgxPaginationModule],
+  imports: [AdminSidebarComponent, MatButtonModule, MatMenuModule, MatTooltipModule, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent, NgxPaginationModule],
   templateUrl: './admin-coordinators.component.html',
   styleUrl: './admin-coordinators.component.css'
 })
-export class AdminCoordinatorsComponent {
+export class AdminCoordinatorsComponent implements OnInit, OnDestroy {
+  userlist: any[] = [];
+  origlist: any;
+  searchtext: any;
+  private subscriptions = new Subscription();
+  p: number = 1; /* starting no. of the list */
   constructor(private service: AuthService, private dialog: MatDialog) {
-    this.Loaduser();
+
   }
   ngOnInit(): void {
-
+    this.Loaduser();
   }
-  userlist: any;
-  dataSource: any;
-  searchtext: any;
-  p: number = 1; /* starting no. of the list */
-
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
 
   Loaduser() {
+    this.subscriptions.add(
     this.service.getAdvisors().subscribe(res => {
-      this.userlist = res;
-      this.dataSource = new MatTableDataSource(this.userlist);
-    });
+      this.userlist = res.payload;
+      this.origlist = this.userlist;
+    }));
   }
 
-
+  setFilter(filter: string) {
+    console.log(filter);
+    console.log(this.userlist)
+    console.log(this.origlist)
+    this.userlist = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.userlist = this.origlist;
+        break;
+      case 'CCS':
+        this.userlist = this.userlist.filter((user: any) => user.department === 'CCS');
+        break;
+      case 'CEAS':
+        this.userlist = this.userlist.filter((user: any) => user.department === 'CEAS');
+        break;
+      case 'CHTM':
+        this.userlist = this.userlist.filter((user: any) => user.department === 'CHTM');
+        break;
+      case 'CAHS':
+        this.userlist = this.userlist.filter((user: any) => user.department === 'CAHS');
+        break;
+      case 'CBA':
+        this.userlist = this.userlist.filter((user: any) => user.department === 'CBA');
+        break;
+    }
+  }
 
   closeModal() {
     // Add code to close the modal here
@@ -75,9 +108,10 @@ export class AdminCoordinatorsComponent {
         usercode: code
       }
     })
+    this.subscriptions.add(
     popup.afterClosed().subscribe(res => {
       this.Loaduser()
-    });
+    }));
 
   }
 
@@ -90,9 +124,10 @@ export class AdminCoordinatorsComponent {
         usercode: code
       }
     })
+    this.subscriptions.add(
     popup.afterClosed().subscribe(res => {
       this.Loaduser()
-    });
+    }));
 
   }
 
@@ -106,9 +141,10 @@ export class AdminCoordinatorsComponent {
         // usercode: code
       }
     })
+    this.subscriptions.add(
     popup.afterClosed().subscribe(res => {
       this.Loaduser()
-    });
+    }));
 
   }
 

@@ -23,8 +23,9 @@ import { Subscription } from 'rxjs';
 export class WarpopupcomponentComponent implements OnInit, OnDestroy {
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<WarpopupcomponentComponent>, private dialog2: MatDialog) { }
-
+  searchtext:any;
   studentSubmissions: any[] = [];
+  origlist:any;
   isLoading: boolean = true;
   private subscriptions = new Subscription();
   p: number = 1;
@@ -42,6 +43,7 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
     this.service.getSubmissionsByStudent('war', this.data.usercode).subscribe(
       (res) => {
         this.studentSubmissions = res.payload;
+        this.origlist = this.studentSubmissions;
         this.isLoading = false;
         console.log(this.studentSubmissions);
       },
@@ -49,6 +51,33 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
         console.error('Error fetching student submissions:', error);
       }
     ));
+  }
+
+  setFilter(filter: string) {
+    this.studentSubmissions = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.studentSubmissions = this.origlist;
+        break;
+      case 'a-approved':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Approved');
+        break;
+      case 'a-unapproved':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Unapproved');
+        break;
+      case 'a-pending':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Pending');
+        break;
+      case 's-approved':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.supervisor_approval === 'Approved');
+        break;
+      case 's-unapproved':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.supervisor_approval === 'Unapproved');
+        break;
+      case 's-pending':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.supervisor_approval === 'Pending');
+        break;
+    }
   }
 
   viewFile(submissionId: number) {

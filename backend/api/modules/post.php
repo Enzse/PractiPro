@@ -204,14 +204,13 @@ class Post extends GlobalMethods
 
     public function add_class($data)
     {
-        $sql = "INSERT INTO class_blocks(block_name, department, course, year_level)
-        VALUES (?, ?, ? ,?)";
+        $sql = "INSERT INTO class_blocks(block_name, course, year_level)
+        VALUES (?, ? ,?)";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
                 [
                     $data->block_name,
-                    $data->department,
                     $data->course,
                     $data->year_level,
                 ]

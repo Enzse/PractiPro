@@ -24,6 +24,7 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class SeminarspopupComponent {
   datalist: any[] = [];
+  origlist:any;
   searchtext: any;
   private subscriptions = new Subscription();
 
@@ -33,7 +34,6 @@ export class SeminarspopupComponent {
 
   ngOnInit(): void {
     this.loadData();
-
     this.subscriptions.add(
       this.changeDetection.changeDetected$.subscribe(changeDetected => {
         if (changeDetected) {
@@ -52,8 +52,39 @@ export class SeminarspopupComponent {
       this.service.getSeminarRecords(this.data.student.id).subscribe((res: any) => {
         console.log(res);
         this.datalist = res.payload
+        this.origlist = this.datalist
       })
     );
+  }
+
+  setFilter(filter: string) {
+    this.datalist = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.datalist = this.origlist;
+        break;
+      case 'seminar':
+        this.datalist = this.datalist.filter((user: any) => user.event_type === 'Seminar');
+        break;
+      case 'webinar':
+        this.datalist = this.datalist.filter((user: any) => user.event_type === 'Webinar');
+        break;
+      case 'approved':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
+        break;
+      case 'unapproved':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Unapproved');
+        break;
+      case 'pending':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
+        break;
+      case 'certified':
+        this.datalist = this.datalist.filter((user: any) => user.certified === 1);
+        break;
+      case 'notcertified':
+        this.datalist = this.datalist.filter((user: any) => user.certified === 0);
+        break;
+    }
   }
 
   viewCertificate(seminar_id: number) {

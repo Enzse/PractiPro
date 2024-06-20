@@ -5,6 +5,65 @@
         <p class="font-secondary text-2xl">Loading...</p>
     </div>
     <ng-container *ngIf="!isLoading">
+        <div class="flex items-center mb-3">
+            <div class="form-outline flex-grow">
+                <input
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    type="search" [(ngModel)]="searchtext" id="form1"
+                    class=" bg-gray-50 border border-gray-300 rounded-s-md text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search submissions for any text..." aria-label="search" />
+            </div>
+            <div class="flex justify-center space-x-4">
+                <div>
+                    <div>
+                        <button [matMenuTriggerFor]="filtermenu" matTooltip="Filter"
+                            class="bg-blue-900 border border-blue-900 font-primary rounded-e-md text-white px-3 py-2  hover:bg-blue-800 "
+                            type="button">
+                            <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
+                            </svg>
+                        </button>
+                        <mat-menu #filtermenu="matMenu">
+                            <ul class="px-2 space-y-1 font-primary">
+                                <li class="flex justify-center">
+                                    <button class="rounded-md ms-2 text-orange-500 bg-slate-200 hover:bg-slate-300 px-5"
+                                      (click)="setFilter('all')">Show All</button>
+                                  </li>
+                                  <h1 class="font-primary">By Supervisor Approval:</h1>
+                                  <li class="m-0.5 flex">
+                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                      (click)="setFilter('s-approved')">Approved</button>
+                                  </li>
+                                  <li class="m-0.5">
+                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                      (click)="setFilter('s-unapproved')">Unapproved</button>
+                                  </li>
+                                  <li class="m-0.5">
+                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                      (click)="setFilter('s-pending')">Pending</button>
+                                  </li>
+                                  <h1 class="font-primary">By Advisor Approval:</h1>
+                                  <li class="m-0.5 flex">
+                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                      (click)="setFilter('a-approved')">Approved</button>
+                                  </li>
+                                  <li class="m-0.5">
+                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                      (click)="setFilter('a-unapproved')">Unapproved</button>
+                                  </li>
+                                  <li class="m-0.5">
+                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                      (click)="setFilter('a-pending')">Pending</button>
+                                  </li>
+                            </ul>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+        </div>
         <ng-container *ngIf="studentSubmissions.length > 0 else noDataMessage">
             <table mat-table
                 class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">

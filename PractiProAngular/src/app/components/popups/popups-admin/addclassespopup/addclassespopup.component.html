@@ -6,26 +6,6 @@
         <form [formGroup]="insertform" (ngSubmit)="submitForm()">
             <div class="grid gap-2 mb-6 md:grid-cols-1 lg:w-96">
                 <div>
-                    <label for="block_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Block
-                        Name:</label>
-                    <input type="text" id="block_name"
-                        class="bg-transparent border-0 border-b-2  border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="BSCS1-A" formControlName="block_name">
-                </div>
-                <!-- <div>
-                    <label for="department"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Department:</label>
-                    <select
-                        class="bg-transparent border-0 border-b-2  border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        id="department" formControlName="department" placeholder="CCS, CEAS, etc.">
-                        <option value="CCS">CCS</option>
-                        <option value="CEAS">CEAS</option>
-                        <option value="CHTM">CHTM</option>
-                        <option value="CAHS">CAHS</option>
-                        <option value="CBA">CBA</option>
-                    </select>
-                </div> -->
-                <div>
                     <label for="course"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Program</label>
                     <select id="course" formControlName="course"
@@ -51,6 +31,13 @@
                         <option value="4">4th Year</option>
 
                     </select>
+                </div>
+                <div>
+                    <label for="block_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Block
+                        Name:</label>
+                    <input type="text" id="block_name"
+                        class="bg-transparent border-0 border-b-2  border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="BSCS1-A" formControlName="block_name">
                 </div>
 
 

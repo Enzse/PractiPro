@@ -28,13 +28,14 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
   userId: any;
   user$: Observable<any>;
   datalist: any[] = [];
+  origlist: any;
   searchtext: any;
   private subscriptions = new Subscription();
 
   constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
-    this.userId = this.service.getCurrentUserId();    
+    this.userId = this.service.getCurrentUserId();
     this.user$ = this.service.getStudentOjtInfo(this.userId).pipe(
-      map((res:any) => res.payload[0])
+      map((res: any) => res.payload[0])
     );
   }
 
@@ -45,6 +46,9 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
       this.changeDetection.changeDetected$.subscribe(changeDetected => {
         if (changeDetected) {
           this.loadData();
+          this.user$ = this.service.getStudentOjtInfo(this.userId).pipe(
+            map((res: any) => res.payload[0])
+          );
         }
       })
     );
@@ -59,11 +63,41 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
       this.service.getSeminarRecords(this.userId).subscribe((res: any) => {
         console.log(res);
         this.datalist = res.payload
+        this.origlist = this.datalist;
       })
     );
   }
 
-  
+  setFilter(filter: string) {
+    this.datalist = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.datalist = this.origlist;
+        break;
+      case 'seminar':
+        this.datalist = this.datalist.filter((user: any) => user.event_type === 'Seminar');
+        break;
+      case 'webinar':
+        this.datalist = this.datalist.filter((user: any) => user.event_type === 'Webinar');
+        break;
+      case 'approved':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
+        break;
+      case 'unapproved':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Unapproved');
+        break;
+      case 'pending':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
+        break;
+      case 'certified':
+        this.datalist = this.datalist.filter((user: any) => user.certified === 1);
+        break;
+      case 'notcertified':
+        this.datalist = this.datalist.filter((user: any) => user.certified === 0);
+        break;
+    }
+  }
+
   addSeminar() {
     const popup = this.dialog.open(AddseminarpopupComponent, {
       enterAnimationDuration: "500ms",
@@ -77,21 +111,21 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
 
   viewCertificate(seminar_id: number) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('student_seminar_certificates', seminar_id).subscribe(
-      (data: any) => {
-        const popup = this.dialog.open(PdfviewerComponent, {
-          enterAnimationDuration: "0ms",
-          exitAnimationDuration: "500ms",
-          width: "90%",
-          data: {
-            selectedPDF: data
-          }
-        })
-      },
-      (error: any) => {
-        console.error('Error viewing submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('student_seminar_certificates', seminar_id).subscribe(
+        (data: any) => {
+          const popup = this.dialog.open(PdfviewerComponent, {
+            enterAnimationDuration: "0ms",
+            exitAnimationDuration: "500ms",
+            width: "90%",
+            data: {
+              selectedPDF: data
+            }
+          })
+        },
+        (error: any) => {
+          console.error('Error viewing submission:', error);
+        }
+      ));
   }
 
 
@@ -119,12 +153,13 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         this.subscriptions.add(
           this.service.deletSeminarRecord(id).subscribe((res: any) => {
+            this.changeDetection.notifyChange(true);
             Swal.fire({
               title: "Successfully deleted record!",
               icon: "success"
-          });
+            });
             this.loadData();
-            
+
           }))
       }
     });
@@ -145,5 +180,5 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
       this.loadData()
     });
   }
-  
+
 }

@@ -3,34 +3,79 @@
     <h1 class="mb-2 text-orange-500 font-bold ml-1 font-primary text-base">
       Advisors List
     </h1>
-    <div class="flex items-center space-x-4 mb-3">
+    <div class="flex items-center mb-3">
       <div class="form-outline flex-grow">
         <input
-          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          type="search"
-          [(ngModel)]="searchtext"
-          id="form1"
-          placeholder="Search advisors for any text..."
-          aria-label="search"
-        />
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search advisors for any text..."
+          aria-label="search" />
       </div>
-
-      <button
-        (click)="assignCoordinators()"
-        class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-700 focus:ring-4 focus:ring-orange-300"
-        type="button"
-      >
-        Assign Classes
-      </button>
+      <div>
+        <div>
+          <button [matMenuTriggerFor]="filtermenu" matTooltip="Filter"
+            class="bg-blue-900 border border-blue-900 font-primary rounded-e-md text-white px-3 py-2  hover:bg-blue-800 "
+            type="button">
+            <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+              <path
+                d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
+            </svg>
+          </button>
+          <mat-menu #filtermenu="matMenu">
+            <ul class="px-3 space-y-1 font-primary">
+              <li class="flex mt-2">
+                <button class="rounded-md ms-2 max-sm:text-sm text-orange-500 bg-slate-200 hover:bg-slate-300 px-5"
+                  (click)="setFilter('all')">Show All</button>
+              </li>
+              <h1 class="font-primary">By Department:</h1>
+              <li>
+                <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-5"
+                  (click)="setFilter('CCS')">CCS</button>
+              </li>
+              <li>
+                <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-5"
+                  (click)="setFilter('CEAS')">CEAS</button>
+              </li>
+              <li>
+                <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-5"
+                  (click)="setFilter('CAHS')">CAHS</button>
+              </li>
+              <li>
+                <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-5"
+                  (click)="setFilter('CHTM')">CHTM</button>
+              </li>
+              <li>
+                <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-5"
+                  (click)="setFilter('CBA')">CBA</button>
+              </li>
+            </ul>
+          </mat-menu>
+        </div>
+      </div>
+      <div class="ml-3">
+        <button (click)="assignCoordinators()"
+          class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-700 focus:ring-4 focus:ring-orange-300"
+          type="button">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide inline mr-0.5 lucide-replace">
+            <path d="M14 4c0-1.1.9-2 2-2" />
+            <path d="M20 2c1.1 0 2 .9 2 2" />
+            <path d="M22 8c0 1.1-.9 2-2 2" />
+            <path d="M16 10c-1.1 0-2-.9-2-2" />
+            <path d="m3 7 3 3 3-3" />
+            <path d="M6 10V5c0-1.7 1.3-3 3-3h1" />
+            <rect width="8" height="8" x="2" y="14" rx="2" />
+          </svg>
+          Assign Classes
+        </button>
+      </div>
     </div>
 
+
     <div class="relative overflow-x-auto border border-gray-300 sm:rounded-lg">
-      <table
-        class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400"
-      >
-        <thead
-          class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-        >
+      <table class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3 font-primary">ID:</th>
             <th scope="col" class="px-6 py-3 font-primary">Name:</th>
@@ -41,14 +86,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr
-            *ngFor="let user of userlist?.payload| paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
-            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-          >
-            <th
-              scope="row"
-              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-            >
+          <tr *ngFor="let user of userlist| paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
               {{ user.id }}
             </th>
             <td class="px-6 py-4">
@@ -64,38 +104,33 @@
                             <a (click)="deptPopup(user.id)">{{ user.number_of_classes }}</a>
                         </td> -->
             <td class="px-6 py-4 text-center text-nowrap">
-              <a
-                (click)="checkClassesPopup(user.id)"
-                class="focus:outline-none text-center text-white bg-blue-900 hover:bg-blue-800 cursor-pointer focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 mb-2 dark:focus:ring-blue-900"
-                >{{ user.number_of_classes }}
-                {{ user.number_of_classes === 1 ? "Class" : "Classes" }}</a
-              >
+              <a (click)="checkClassesPopup(user.id)"
+                class="focus:outline-none text-center text-white bg-blue-900 hover:bg-blue-800 cursor-pointer focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 mb-2 dark:focus:ring-blue-900">{{
+                user.number_of_classes }}
+                {{ user.number_of_classes === 1 ? "Class" : "Classes" }}</a>
             </td>
             <td class="px-6 py-4">
-              <button
-                (click)="deptPopup(user.id)"
-               ><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-user-cog inline">
-                <circle cx="18" cy="15" r="3" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M10 15H6a4 4 0 0 0-4 4v2" />
-                <path d="m21.7 16.4-.9-.3" />
-                <path d="m15.2 13.9-.9-.3" />
-                <path d="m16.6 18.7.3-.9" />
-                <path d="m19.1 12.2.3-.9" />
-                <path d="m19.6 18.7-.4-1" />
-                <path d="m16.8 12.3-.4-1" />
-                <path d="m14.3 16.6 1-.4" />
-                <path d="m20.7 13.8 1-.4" />
-              </svg></button
-              >
+              <button (click)="deptPopup(user.id)"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-user-cog inline">
+                  <circle cx="18" cy="15" r="3" />
+                  <circle cx="9" cy="7" r="4" />
+                  <path d="M10 15H6a4 4 0 0 0-4 4v2" />
+                  <path d="m21.7 16.4-.9-.3" />
+                  <path d="m15.2 13.9-.9-.3" />
+                  <path d="m16.6 18.7.3-.9" />
+                  <path d="m19.1 12.2.3-.9" />
+                  <path d="m19.6 18.7-.4-1" />
+                  <path d="m16.8 12.3-.4-1" />
+                  <path d="m14.3 16.6 1-.4" />
+                  <path d="m20.7 13.8 1-.4" />
+                </svg></button>
             </td>
           </tr>
         </tbody>
       </table>
 
-      <div class="my-5" *ngIf="(userlist?.payload | filter : searchtext)?.length === 0">
+      <div class="my-5" *ngIf="(userlist | filter : searchtext)?.length === 0">
         <div class="flex justify-center">
           <img class="opacity-30 h-44 w-44" src="../../../../assets/empty1.png">
         </div>
@@ -109,7 +144,7 @@
       <div class="w-full mt-3 flex justify-center">
 
         <!-- pagination control -->
-        <pagination-controls [responsive]="true" class="my-pagination"  (pageChange)="p = $event"></pagination-controls>
+        <pagination-controls [responsive]="true" class="my-pagination" (pageChange)="p = $event"></pagination-controls>
 
       </div>
 

@@ -2,15 +2,78 @@
     <div>
         <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg text-center mb-2 ms-0">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6 -mt-0.5 mr-1 inline text-orange-500">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
-                </svg>Seminar Records of '{{this.data.student.firstName}} {{this.data.student.lastName}}'
+                stroke="currentColor" class="w-6 h-6 -mt-0.5 mr-1 inline text-orange-500">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+            </svg>Seminar Records of '{{this.data.student.firstName}} {{this.data.student.lastName}}'
         </h1>
         <div class="border-b border-gray-300"></div>
         <br />
     </div>
 
+    <div class="flex items-center mb-3">
+        <div class="form-outline flex-grow">
+            <input
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-s-md focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search for records..."
+                aria-label="search" />
+        </div>
+        <div>
+            <button [matMenuTriggerFor]="filtermenu" matTooltip="Filter"
+                class="bg-blue-900 border border-blue-900 font-primary rounded-e-md text-white px-3 py-2  hover:bg-blue-800 "
+                type="button">
+                <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
+                    <path
+                        d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
+                </svg>
+            </button>
+            <mat-menu #filtermenu="matMenu">
+                <ul class="px-3 space-y-1 font-primary">
+                    <div class="flex mt-2 justify-center">
+                        <button
+                            class="rounded-md ms-2 max-sm:text-sm text-orange-500 bg-slate-200 hover:bg-slate-300 px-5"
+                            (click)="setFilter('all')">Show All</button>
+                    </div>
+                    <h1 class="font-primary">By Category:</h1>
+                    <div class="flex justify-center flex-wrap">
+                        <div>
+                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                (click)="setFilter('seminar')">Seminars</button>
+                        </div>
+                        <div>
+                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                (click)="setFilter('webinar')">Webinars</button>
+                        </div>
+                    </div>
+                    <h1 class="font-primary">By Approval:</h1>
+                        <li class="m-0.5 flex">
+                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                            (click)="setFilter('approved')">Approved</button>
+                        </li>
+                        <li class="m-0.5">
+                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                            (click)="setFilter('unapproved')">Unapproved</button>
+                        </li>
+                        <li class="m-0.5">
+                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                            (click)="setFilter('pending')">Pending</button>
+                        </li>
+                    <h1 class="font-primary">By Certification:</h1>
+                    <div class="flex justify-center flex-wrap">
+                        <div>
+                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                            (click)="setFilter('certified')">Certified</button>
+                        </div>
+                        <div>
+                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                            (click)="setFilter('notcertified')">Not Certified</button>
+                        </div>
+                    </div>
+                </ul>
+            </mat-menu>
+        </div>
+    </div>
 
     <div *ngIf="datalist.length === 0" class="flex flex-col items-center">
         <div class="flex justify-center">
@@ -63,15 +126,15 @@
                     </div>
                     <div class="flex-1 mt-4 text-center">
                         <select class="border-0 shadow-md text-center rounded-lg cursor-pointer"
-                                [(ngModel)]="data.advisor_approval" [ngClass]="{
+                            [(ngModel)]="data.advisor_approval" [ngClass]="{
                                   'text-green-500': data.advisor_approval === 'Approved',
                                   'text-red-500': data.advisor_approval === 'Unapproved',
                                   'text-gray-500': data.advisor_approval === 'Pending'
                                 }" (change)="onStatusChange(data)">
-                                <option value="Approved" class="text-green-500">Approved</option>
-                                <option value="Unapproved" class="text-red-500">Unapproved</option>
-                                <option value="Pending" class="text-gray-500">Pending</option>
-                            </select>
+                            <option value="Approved" class="text-green-500">Approved</option>
+                            <option value="Unapproved" class="text-red-500">Unapproved</option>
+                            <option value="Pending" class="text-gray-500">Pending</option>
+                        </select>
                     </div>
                 </div>
             </div>

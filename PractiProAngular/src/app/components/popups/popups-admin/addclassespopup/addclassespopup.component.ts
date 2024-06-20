@@ -26,7 +26,6 @@ export class AddclassespopupComponent {
 
   insertform = this.builder.group({
     block_name: this.builder.control('', Validators.required),
-    department: this.builder.control('', Validators.required),
     course: this.builder.control('', Validators.required),
     year_level: this.builder.control('', Validators.required)
   });

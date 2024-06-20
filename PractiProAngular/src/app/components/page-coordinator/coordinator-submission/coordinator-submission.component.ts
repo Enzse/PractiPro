@@ -28,7 +28,6 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
 export class CoordinatorSubmissionComponent implements OnInit, OnDestroy {
 
   constructor(private changeDetection: ChangeDetectionService, private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
-
   students: any;
   studentlist: any;
   searchtext: any;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
@@ -13,25 +13,38 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../pipes/filter.pipe';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-submission',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
+  imports: [NavbarComponent, MatTabsModule, FilterPipe, CommonModule, FormsModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
   templateUrl: './submission.component.html',
   styleUrl: './submission.component.css'
 })
-export class SubmissionComponent {
-  constructor(private service: AuthService, private dialog: MatDialog) {
-    this.loadData();
-  }
-  user: any;
+export class SubmissionComponent implements OnInit, OnDestroy {
+  userId: any;
+  searchtext: any;
   students: any;
   datalist: any[] = [];
-  dataSource: any;
+  origlist: any;
+  private subscriptions = new Subscription();
   selectedTabLabel: string = 'Resume';
   p: number = 1;
+  constructor(private service: AuthService, private dialog: MatDialog) {
+    this.userId = this.service.getCurrentUserId();
+  }
 
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   onTabChange(event: MatTabChangeEvent) {
     this.selectedTabLabel = event.tab.textLabel.split(" ").join("");
@@ -39,32 +52,30 @@ export class SubmissionComponent {
 
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
-    const userId = this.service.getCurrentUserId();
-
-    if (!userId) {
+    if (!this.userId) {
       console.error('User ID not found.');
       return;
     }
-
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
-        this.service.uploadSubmission('submissions', userId, file, this.selectedTabLabel).subscribe(
-          response => {
-            console.log('File uploaded successfully:', response);
-            Swal.fire({
-              title: "Uploaded Successfully!",
-              text: "You can view your submissions and their approval status on the table below.",
-              icon: "success"
-            });
-            this.loadData();
+        this.subscriptions.add(
+          this.service.uploadSubmission('submissions', this.userId, file, this.selectedTabLabel).subscribe(
+            response => {
+              console.log('File uploaded successfully:', response);
+              Swal.fire({
+                title: "Uploaded Successfully!",
+                text: "You can view your submissions and their approval status on the table below.",
+                icon: "success"
+              });
+              this.loadData();
 
-            fileInput.value = '';
-          },
-          error => {
-            console.error('Error uploading file:', error);
-          }
-        );
+              fileInput.value = '';
+            },
+            error => {
+              console.error('Error uploading file:', error);
+            }
+          ));
       }
       else if (file == null) {
         Swal.fire({
@@ -77,32 +88,80 @@ export class SubmissionComponent {
   }
 
 
-
-
   loadData() {
-    this.user = this.service.getCurrentUserId();
-    this.service.getSubmissionsByStudent('submissions', this.user).subscribe(res => {
-      if (res) {
-        this.datalist = res.payload;
-        this.dataSource = new MatTableDataSource(this.datalist);
-        console.log(this.datalist);
-      } else {
-        console.log("No submissions yet.")
-      }
-    }, error => {
-      console.log(error);
-    });
+    this.subscriptions.add(
+      this.service.getSubmissionsByStudent('submissions', this.userId).subscribe(res => {
+        if (res) {
+          this.datalist = res.payload;
+          this.origlist = this.datalist;
+        } else {
+          console.log("No submissions yet.")
+        }
+      }, error => {
+        console.log(error);
+      }));
   }
 
+
+
+  setFilter(filter: string) {
+    this.datalist = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.datalist = this.origlist;
+        break;
+      case 'resume':
+        this.datalist = this.datalist.filter((user: any) => user.submission_name === 'Resume');
+        break;
+      case 'application':
+        this.datalist = this.datalist.filter((user: any) => user.submission_name === 'ApplicationLetter');
+        break;
+      case 'acceptance':
+        this.datalist = this.datalist.filter((user: any) => user.submission_name === 'AcceptanceLetter');
+        break;
+      case 'endorsement':
+        this.datalist = this.datalist.filter((user: any) => user.submission_name === 'EndorsementLetter');
+        break;
+      case 'parents':
+        this.datalist = this.datalist.filter((user: any) => user.submission_name === "Parent's");
+        break;
+      case 'vaccination':
+        this.datalist = this.datalist.filter((user: any) => user.submission_name === 'VaccinationCard');
+        break;
+      case 'barangay':
+        this.datalist = this.datalist.filter((user: any) => user.submission_name === 'BarangayClearance');
+        break;
+      case 'medcert':
+        this.datalist = this.datalist.filter((user: any) => user.submission_name === 'MedicalCertificate');
+        break;
+        case 'approved':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
+        break;
+      case 'unapproved':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Unapproved');
+        break;
+      case 'pending':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
+        break;    
+    }
+  }
+
+
+
+
+
+
+
   downloadFile(submissionId: number, fileName: string) {
-    this.service.getSubmissionFile('submissions', submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, fileName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    );
+    this.subscriptions.add(
+      this.service.getSubmissionFile('submissions', submissionId).subscribe(
+        (data: any) => {
+          saveAs(data, fileName);
+        },
+        (error: any) => {
+          console.error('Error downloading submission:', error);
+        }
+      ));
   }
 
 
@@ -117,19 +176,20 @@ export class SubmissionComponent {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.deleteSubmission(submissionId, 'submissions').subscribe((res: any) => {
-          Swal.fire({
-            title: "Your submission has been deleted",
-            icon: "success"
-          });
-          this.loadData();
-        }, error => {
+        this.subscriptions.add(
+          this.service.deleteSubmission(submissionId, 'submissions').subscribe((res: any) => {
+            Swal.fire({
+              title: "Your submission has been deleted",
+              icon: "success"
+            });
+            this.loadData();
+          }, error => {
             Swal.fire({
               title: "Delete failed",
               text: "You may not have permission to delete this file.",
               icon: "error"
             });
-        });
+          }));
       }
     });
   }
@@ -146,9 +206,10 @@ export class SubmissionComponent {
         table: 'comments_requirements'
       }
     })
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    });
+    this.subscriptions.add(
+      popup.afterClosed().subscribe(res => {
+        this.loadData()
+      }));
   }
 
 }

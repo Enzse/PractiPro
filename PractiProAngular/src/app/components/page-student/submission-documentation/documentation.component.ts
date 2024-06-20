@@ -13,17 +13,21 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription } from 'rxjs';
+import { FormsModule } from '@angular/forms';
+import { FilterPipe } from '../../../pipes/filter.pipe';
 
 @Component({
   selector: 'app-documentation',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
+  imports: [NavbarComponent, MatTabsModule, FilterPipe, FormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
   templateUrl: './documentation.component.html',
   styleUrl: './documentation.component.css'
 })
 export class DocumentationComponent implements OnInit, OnDestroy {
   userId: any;
   datalist: any[] = [];
+  origlist: any
+  searchtext: any;
   tabWeekNumbers: number[] = [1];
   p: number = 1;
   private subscriptions = new Subscription();
@@ -36,26 +40,51 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadData();
     this.subscriptions.add(
-    this.service.getSubmissionMaxWeeks('documentations',this.userId).subscribe(
-      res => {
-        this.tabWeekNumbers = res;
-      },
-      error => {
-        console.error('Error fetching week numbers:', error);
-      }
-    ));
+      this.service.getSubmissionMaxWeeks('documentations', this.userId).subscribe(
+        res => {
+          this.tabWeekNumbers = res;
+        },
+        error => {
+          console.error('Error fetching week numbers:', error);
+        }
+      ));
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-  
+
   loadData() {
     this.subscriptions.add(
-    this.service.getSubmissionsByStudent('documentations', this.userId).subscribe(res => {
-      console.log(res);
-      this.datalist = res.payload;
-    }));
+      this.service.getSubmissionsByStudent('documentations', this.userId).subscribe(res => {
+        console.log(res);
+        this.datalist = res.payload;
+        this.origlist = this.datalist;
+      }));
+  }
+
+  setFilter(filter: string) {
+    this.datalist = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.datalist = this.origlist;
+        break;
+      case 'approved':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
+        break;
+      case 'unapproved':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Unapproved');
+        break;
+      case 'pending':
+        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
+        break;
+    }
+  }
+
+  setFilterWeek(week: any) {
+    this.datalist = this.origlist;
+    this.datalist = this.datalist.filter((user: any) => user.week === week);
+    
   }
 
 
@@ -77,21 +106,21 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       const file = fileInput.files[0];
       if (file) {
         this.subscriptions.add(
-        this.service.uploadSubmission('documentations', this.userId, file, this.selectedTabLabel).subscribe(
-          response => {
-            console.log('File uploaded successfully:', response);
-            Swal.fire({
-              title: "Uploaded Successfully!",
-              text: "Please wait for your coordinator's approval.",
-              icon: "success"
-            });
-            this.loadData();
-            fileInput.value = '';
-          },
-          error => {
-            console.error('Error uploading file:', error);
-          }
-        ));
+          this.service.uploadSubmission('documentations', this.userId, file, this.selectedTabLabel).subscribe(
+            response => {
+              console.log('File uploaded successfully:', response);
+              Swal.fire({
+                title: "Uploaded Successfully!",
+                text: "Please wait for your coordinator's approval.",
+                icon: "success"
+              });
+              this.loadData();
+              fileInput.value = '';
+            },
+            error => {
+              console.error('Error uploading file:', error);
+            }
+          ));
       }
       else if (file == null) {
         Swal.fire({
@@ -107,14 +136,14 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   downloadFile(submissionId: number, fileName: string) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('documentations', submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, fileName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('documentations', submissionId).subscribe(
+        (data: any) => {
+          saveAs(data, fileName);
+        },
+        (error: any) => {
+          console.error('Error downloading submission:', error);
+        }
+      ));
   }
 
   deleteSubmission(submissionId: number) {
@@ -129,19 +158,19 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-        this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
-          Swal.fire({
-            title: "Your submission has been deleted",
-            icon: "success"
-          });
-          this.loadData();
-        }, error => {
+          this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
+            Swal.fire({
+              title: "Your submission has been deleted",
+              icon: "success"
+            });
+            this.loadData();
+          }, error => {
             Swal.fire({
               title: "Delete failed",
               text: "You may not have permission to delete this file.",
               icon: "error"
             });
-        }));
+          }));
       }
     });
   }

@@ -5,60 +5,99 @@
         <p class="font-secondary text-2xl">Loading...</p>
     </div>
     <ng-container *ngIf="!isLoading">
-        <ng-container *ngIf="studentSubmissions.length > 0 else noDataMessage">
-            <div class="flex items-center space-x-4 mb-3">
-                <div class="form-outline flex-grow">
-                    <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-6 h-6 inline text-orange-500">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
-                        </svg>
-                        Requirements: '{{this.data.student.firstName}} {{this.data.student.lastName}}'
-                    </h1>
-                </div>
-
-                <button [matMenuTriggerFor]="filtermenu"
-                    class="bg-orange-500 font-primary text-white px-4 py-2 rounded-lg hover:bg-orange-600 "
-                    type="button">
-                    <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                        <path
-                            d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
+        <div class="flex items-center space-x-4 mb-4 mt-1">
+            <div class="form-outline flex-grow">
+                <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-xl">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="w-6 h-6 inline text-orange-500">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
                     </svg>
-                    Filter
-                </button>
-                <mat-menu #filtermenu="matMenu">
-                    <ul class="px-2">
-                        <li class="hover:bg-slate-100 font-secondary"><button
-                            (click)="applyFilter('All')">Show All Files</button></li>
-                    <div class="border-b border-gray-300"></div>
-                        <li class="hover:bg-slate-100 font-secondary"><button
-                                (click)="applyFilter('Resume')">Resume</button></li>
-                        <div class="border-b border-gray-300"></div>
-                        <li class="hover:bg-slate-100 font-secondary"><button
-                                (click)="applyFilter('ApplicationLetter')">Application Letter</button></li>
-                        <div class="border-b border-gray-300"></div>
-                        <li class="hover:bg-slate-100 font-secondary"><button
-                                (click)="applyFilter('AcceptanceLetter')">Acceptance Letter</button></li>
-                        <div class="border-b border-gray-300"></div>
-                        <li class="hover:bg-slate-100 font-secondary"><button
-                                (click)="applyFilter('EndorsementLetter')">Endorsement Letter</button></li>
-                        <div class="border-b border-gray-300"></div>
-                        <li class="hover:bg-slate-100 font-secondary"><button
-                                (click)="applyFilter('Parent\'s')">Parent's/Guardian's Waiver</button></li>
-                        <div class="border-b border-gray-300"></div>
-                        <li class="hover:bg-slate-100 font-secondary"><button
-                                (click)="applyFilter('VaccinationCard')">Vaccination Card</button></li>
-                        <div class="border-b border-gray-300"></div>
-                        <li class="hover:bg-slate-100 font-secondary"><button
-                                (click)="applyFilter('BaranggayClearance')">Baranggay Clearance</button></li>
-                        <div class="border-b border-gray-300"></div>
-                        <li class="hover:bg-slate-100 font-secondary"><button
-                                (click)="applyFilter('MedicalCertificate')">Medical Certificate</button></li>
-                    </ul>
-                </mat-menu>
+                    Requirements: '{{this.data.student.firstName}} {{this.data.student.lastName}}'
+                </h1>
             </div>
+        </div>
+        <div class="flex items-center mb-3">
+            <div class="form-outline flex-grow">
+                <input
+                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    type="search" [(ngModel)]="searchtext" id="form1"
+                    class=" bg-gray-50 border border-gray-300 rounded-s-md text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Search submissions for any text..." aria-label="search" />
+            </div>
+            <div class="flex justify-center space-x-4">
+                <div>
+                    <div>
+                        <button [matMenuTriggerFor]="filtermenu" matTooltip="Filter"
+                            class="bg-blue-900 border border-blue-900 font-primary rounded-e-md text-white px-3 py-2  hover:bg-blue-800 "
+                            type="button">
+                            <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                                viewBox="0 0 24 24">
+                                <path
+                                    d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
+                            </svg>
+                        </button>
+                        <mat-menu #filtermenu="matMenu">
+                            <ul class="px-2 space-y-1 font-primary">
+                                <li class="flex justify-center">
+                                    <button class="rounded-md ms-2 text-orange-500 bg-slate-200 hover:bg-slate-300 px-5"
+                                        (click)="setFilter('all')">Show All</button>
+                                </li>
+                                <h1 class="font-primary">By Category:</h1>
+                                <li>
+                                    <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
+                                        (click)="setFilter('resume')">Resumes</button>
+                                </li>
+                                <li>
+                                    <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
+                                        (click)="setFilter('application')">Application Letters</button>
+                                </li>
+                                <li>
+                                    <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
+                                        (click)="setFilter('acceptance')">Acceptance Letters</button>
+                                </li>
+                                <li>
+                                    <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
+                                        (click)="setFilter('endorsement')">Endorsement Letters</button>
+                                </li>
+                                <li>
+                                    <button
+                                        class="rounded-md ms-2 truncate text-sm bg-slate-200 hover:bg-slate-300 px-5"
+                                        (click)="setFilter('parents')">Parents'/Guardians' Waivers</button>
+                                </li>
+                                <li>
+                                    <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
+                                        (click)="setFilter('vaccination')">Vaccination Cards</button>
+                                </li>
+                                <li>
+                                    <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
+                                        (click)="setFilter('barangay')">Baranggay Clearances</button>
+                                </li>
+                                <li>
+                                    <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
+                                        (click)="setFilter('medcert')">Medical Certificates</button>
+                                </li>
+                                <h1 class="font-primary">By Approval:</h1>
+                                <li class="m-0.5 flex">
+                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                        (click)="setFilter('approved')">Approved</button>
+                                </li>
+                                <li class="m-0.5">
+                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                        (click)="setFilter('unapproved')">Unapproved</button>
+                                </li>
+                                <li class="m-0.5">
+                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
+                                        (click)="setFilter('pending')">Pending</button>
+                                </li>
+                            </ul>
+                        </mat-menu>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="studentSubmissions.length > 0 else noDataMessage">
             <table mat-table
                 class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

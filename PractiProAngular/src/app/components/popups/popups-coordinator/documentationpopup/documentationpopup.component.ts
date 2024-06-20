@@ -12,11 +12,12 @@ import { MatMenuModule } from '@angular/material/menu';
 import Swal from 'sweetalert2';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription } from 'rxjs';
+import { FilterPipe } from '../../../../pipes/filter.pipe';
 
 @Component({
   selector: 'app-documentationpopup',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
+  imports: [ReactiveFormsModule, FilterPipe, CommonModule, FormsModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
   templateUrl: './documentationpopup.component.html',
   styleUrl: './documentationpopup.component.css'
 })
@@ -25,6 +26,8 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DocumentationpopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
+  origlist: any;
+  searchtext:any;
   isLoading = true;
   private subscriptions = new Subscription();
   p: number = 1; /* starting no. of the list */
@@ -42,6 +45,7 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
     this.service.getSubmissionsByStudent('documentations', this.data.usercode).subscribe(
       (res: any) => {
         this.studentSubmissions = res.payload;
+        this.origlist = this.studentSubmissions;
         this.isLoading = false;
         console.log(this.studentSubmissions);
       },
@@ -49,6 +53,25 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
         console.error('Error fetching student submissions:', error);
       }
     ));
+  }
+
+  setFilter(filter: string) {
+    this.p = 1;
+    this.studentSubmissions = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.studentSubmissions = this.origlist;
+        break;
+      case 'approved':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Approved');
+        break;
+      case 'unapproved':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Unapproved');
+        break;
+      case 'pending':
+        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Pending');
+        break;
+    }
   }
 
   viewFile(submissionId: number) {
