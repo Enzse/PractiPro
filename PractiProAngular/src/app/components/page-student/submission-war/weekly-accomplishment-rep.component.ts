@@ -14,6 +14,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -24,16 +26,18 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './weekly-accomplishment-rep.component.css'
 })
 export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
-  searchweek:any;
+  searchweek: any;
   userId: any;
   datalist: any[] = [];
   origlist: any;
   searchtext: any;
   tabWeekNumbers: number[] = [1];
+  file: any;
+  pdfPreview?: SafeResourceUrl;
   private subscriptions = new Subscription();
   p: number = 1;
 
-  constructor(private service: AuthService, private dialog: MatDialog) {
+  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
     this.userId = this.service.getCurrentUserId();
   }
 
@@ -62,6 +66,24 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       }));
   }
 
+  onFileChange(event: any) {
+    const files = event.target.files as FileList;
+    if (files.length > 0) {
+      this.file = files[0];
+      this.previewPDF();
+    }
+  }
+
+  previewPDF() {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const fileURL = e.target?.result as string;
+      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+    };
+    reader.readAsDataURL(this.file);
+  }
+
+
   setFilter(filter: string) {
     this.datalist = this.origlist;
     switch (filter) {
@@ -88,11 +110,11 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
         break;
     }
   }
-  
+
   setFilterWeek(week: any) {
     this.datalist = this.origlist;
     this.datalist = this.datalist.filter((user: any) => user.week === week);
-    
+
   }
 
   //SUBMISSION LOGIC
@@ -104,6 +126,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   selectedTabLabel: number = 1;
   onTabChange(event: MatTabChangeEvent) {
     this.selectedTabLabel = parseInt(event.tab.textLabel.replace('Week ', ''), 10);
+    this.pdfPreview = undefined;
   }
 
   submitFiles() {
@@ -121,6 +144,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
                 icon: "success"
               });
               this.loadData();
+              this.pdfPreview = undefined;
               fileInput.value = '';
             },
             error => {
@@ -144,6 +168,18 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
     const pdfPath = '../../assets/pdfTemplates/WAR.pdf';
     window.open(pdfPath, '_blank');
   }
+
+  viewFile() {
+    const popup = this.dialog.open(PdfviewerComponent, {
+      enterAnimationDuration: "0ms",
+      exitAnimationDuration: "500ms",
+      width: "90%",
+      data: {
+        templateName: '../../assets/pdfTemplates/WAR.pdf'
+      }
+    })
+  }
+
 
 
   downloadFile(submissionId: number, fileName: string) {

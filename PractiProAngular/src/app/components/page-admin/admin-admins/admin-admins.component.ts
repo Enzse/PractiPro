@@ -1,48 +1,68 @@
-import { Component } from '@angular/core';
-import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
-import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
+import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
-import { initFlowbite } from 'flowbite';
 import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTableDataSource } from '@angular/material/table';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { Subscription } from 'rxjs';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
   selector: 'app-admin-admins',
   standalone: true,
-  imports: [AdminSidebarComponent, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, NgxPaginationModule],
+  imports: [CommonModule, UpdatepopupComponent, MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, NgxPaginationModule],
   templateUrl: './admin-admins.component.html',
   styleUrl: './admin-admins.component.css'
 })
-export class AdminAdminsComponent implements OnInit {
+export class AdminAdminsComponent implements OnInit, OnDestroy {
+  userlist: any;
+  origlist:any;
+  searchtext: any;
+  userId:any;
+  userrole: any;
+  private subscriptions = new Subscription();
+  p: number = 1; /* starting no. of the list */
   constructor(private service: AuthService, private dialog: MatDialog) {
+    this.userId = this.service.getCurrentUserId();
   }
   
   ngOnInit(): void {
     this.loadUsers();
     this.userrole = this.service.GetUserRole();
   }
-  userlist: any;
-  searchtext: any;
-  userrole: any;
-  p: number = 1; /* starting no. of the list */
-
-  loadUsers() {
-    const currentUserId = this.service.getCurrentUserId();
-    if (currentUserId !== null) {
-      this.service.getAllAdmins().subscribe((res:any) => {
-        this.userlist = res.payload.filter((user:any) => user.id !== currentUserId);
-        console.log(this.userlist);
-      });
-    }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
+
+  loadUsers() {
+    this.subscriptions.add(
+      this.service.getAllAdmins().subscribe((res:any) => {
+        this.userlist = res.payload.filter((user:any) => user.id !== this.userId);
+        this.origlist = this.userlist;
+      }));
+  }
+
+  setFilter(filter: string) {
+    this.userlist = this.origlist;
+    switch (filter) {
+      case 'all':
+        this.userlist = this.origlist;
+        break;
+      case 'active':
+        this.userlist = this.userlist.filter((user: any) => user.isActive === 1);
+        break;
+      case 'inactive':
+        this.userlist = this.userlist.filter((user: any) => user.isActive === 0);
+        break;
+    }
+  }
 
   closeModal() {
     const modal = document.getElementById('crud-modal');
@@ -59,9 +79,10 @@ export class AdminAdminsComponent implements OnInit {
         userrole: this.userrole
       }
     })
+    this.subscriptions.add(
     popup.afterClosed().subscribe(res => {
       this.loadUsers()
-    });
+    }));
 
   }
 

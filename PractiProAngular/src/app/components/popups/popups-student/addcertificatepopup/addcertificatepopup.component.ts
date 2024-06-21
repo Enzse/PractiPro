@@ -6,25 +6,45 @@ import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-addcertificatepopup',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './addcertificatepopup.component.html',
   styleUrl: './addcertificatepopup.component.css'
 })
 export class AddcertificatepopupComponent {
   userId:any
+  file:any;
+  pdfPreview?: SafeResourceUrl;
   constructor(
     private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data:any,
     private dialogRef: MatDialogRef<AddcertificatepopupComponent>,
-    private changeDetection: ChangeDetectionService){
-
+    private changeDetection: ChangeDetectionService,
+    private sanitizer:DomSanitizer){
     this.userId = this.service.getCurrentUserId();
   }
   
+  onFileChange(event: any) {
+    const files = event.target.files as FileList;
+    if (files.length > 0) {
+      this.file = files[0];
+      this.previewPDF(); 
+    }
+  }
+
+  previewPDF() {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const fileURL = e.target?.result as string;
+      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+    };
+    reader.readAsDataURL(this.file);
+  }
+
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
     fileInputs.forEach((fileInput: any) => {

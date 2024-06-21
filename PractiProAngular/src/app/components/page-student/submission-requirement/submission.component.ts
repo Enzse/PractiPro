@@ -16,6 +16,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { Subscription } from 'rxjs';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-submission',
@@ -30,10 +31,13 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   students: any;
   datalist: any[] = [];
   origlist: any;
+  pdfPreview?: SafeResourceUrl; 
+  file:any; 
+
   private subscriptions = new Subscription();
   selectedTabLabel: string = 'Resume';
   p: number = 1;
-  constructor(private service: AuthService, private dialog: MatDialog) {
+  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
     this.userId = this.service.getCurrentUserId();
   }
 
@@ -48,6 +52,24 @@ export class SubmissionComponent implements OnInit, OnDestroy {
 
   onTabChange(event: MatTabChangeEvent) {
     this.selectedTabLabel = event.tab.textLabel.split(" ").join("");
+    this.pdfPreview = undefined;
+  }
+
+  onFileChange(event: any) {
+    const files = event.target.files as FileList;
+    if (files.length > 0) {
+      this.file = files[0];
+      this.previewPDF(); 
+    }
+  }
+
+  previewPDF() {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const fileURL = e.target?.result as string;
+      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+    };
+    reader.readAsDataURL(this.file);
   }
 
   submitFiles() {
@@ -68,8 +90,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
                 text: "You can view your submissions and their approval status on the table below.",
                 icon: "success"
               });
+              this.pdfPreview = undefined;
               this.loadData();
-
               fileInput.value = '';
             },
             error => {
@@ -105,6 +127,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
 
 
   setFilter(filter: string) {
+    this.p = 1;
     this.datalist = this.origlist;
     switch (filter) {
       case 'all':

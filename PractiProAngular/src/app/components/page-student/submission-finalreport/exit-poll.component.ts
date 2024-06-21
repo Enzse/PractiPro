@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
@@ -11,6 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
 
 
 @Component({
@@ -20,27 +23,52 @@ import { NgxPaginationModule } from 'ngx-pagination';
   templateUrl: './exit-poll.component.html',
   styleUrl: './exit-poll.component.css'
 })
-export class ExitPollComponent implements OnInit {
+export class ExitPollComponent implements OnInit, OnDestroy {
   userId: any;
   datalist: any[] = [];
   p: number = 1;
+  file:any;
+  pdfPreview?: SafeResourceUrl;
+  private subscriptions = new Subscription();
 
-  constructor(private service: AuthService, private dialog: MatDialog) {
+  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer:DomSanitizer) {
     this.userId = this.service.getCurrentUserId();
   }
 
   ngOnInit(): void {
     this.loadData();
   }
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
 
   loadData() {
+    this.subscriptions.add(
     this.service.getSubmissionsByStudent('finalreports', this.userId).subscribe(res => {
       if (res) {
         console.log(res);
         this.datalist = res.payload;
       }
-    });
+    }));
   }
+
+  onFileChange(event: any) {
+    const files = event.target.files as FileList;
+    if (files.length > 0) {
+      this.file = files[0];
+      this.previewPDF(); 
+    }
+  }
+
+  previewPDF() {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const fileURL = e.target?.result as string;
+      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+    };
+    reader.readAsDataURL(this.file);
+  }
+
 
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
@@ -49,6 +77,7 @@ export class ExitPollComponent implements OnInit {
       const file = fileInput.files[0];
       console.log(file);
       if (file) {
+        this.subscriptions.add(
         this.service.uploadSubmission('finalreports', this.userId, file).subscribe(
           response => {
             console.log('File uploaded successfully:', response);
@@ -58,13 +87,13 @@ export class ExitPollComponent implements OnInit {
               icon: "success"
             });
             this.loadData();
-
+            this.pdfPreview = undefined;
             fileInput.value = '';
           },
           error => {
             console.error('Error uploading file:', error);
           }
-        );
+        ));
       }
       else if (file == null) {
         Swal.fire({
@@ -81,8 +110,21 @@ export class ExitPollComponent implements OnInit {
     window.open(pdfPath, '_blank');
   }
 
+  viewFile() {
+    const popup = this.dialog.open(PdfviewerComponent, {
+      enterAnimationDuration: "0ms",
+      exitAnimationDuration: "500ms",
+      width: "90%",
+      data: {
+        templateName: '../../assets/pdfTemplates/ExitPoll.pdf'
+      }
+    })
+  }
+
+
 
   downloadFile(submissionId: number, fileName: string) {
+    this.subscriptions.add(
     this.service.getSubmissionFile('finalreports', submissionId).subscribe(
       (data: any) => {
         saveAs(data, fileName);
@@ -90,7 +132,7 @@ export class ExitPollComponent implements OnInit {
       (error: any) => {
         console.error('Error downloading submission:', error);
       }
-    );
+    ));
   }
 
   deleteSubmission(submissionId: number) {
@@ -104,6 +146,7 @@ export class ExitPollComponent implements OnInit {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
+        this.subscriptions.add(
         this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
           Swal.fire({
             title: "Your submission has been deleted",
@@ -116,7 +159,7 @@ export class ExitPollComponent implements OnInit {
               text: "You may not have permission to delete this file.",
               icon: "error"
             });
-        });
+        }));
       }
     });
   }
@@ -133,9 +176,10 @@ export class ExitPollComponent implements OnInit {
         table: 'comments_finalreports'
       }
     })
+    this.subscriptions.add(
     popup.afterClosed().subscribe(res => {
       this.loadData()
-    });
+    }));
   }
 
 }

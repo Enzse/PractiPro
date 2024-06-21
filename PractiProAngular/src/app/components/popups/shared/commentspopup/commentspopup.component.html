@@ -19,7 +19,7 @@
                                 <span class="opacity-40" *ngIf="data.commenter == this.userName">(You)</span>
                             </div>
                             <div class="text-sm text-gray-500">
-                                {{data.created_at }}
+                                Sent on {{data.created_at | date: "medium" }}
                             </div>
                         </div>
                     </div>

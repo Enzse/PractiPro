@@ -16,16 +16,18 @@
     <!-- <p class="text-gray-800 max-sm:text-sm text-center font-secondary">
         <b>Don't worry, your record may still be approved even without a certification.</b>
     </p> -->
-    
+
     <p class="text-gray-800 text-base text-center font-secondary">
         All certifications should be in <b>Portable Document Format(.pdf).</b>
     </p>
     <br />
 
     <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
-        <form class=" rounded-lg w-auto flex justify-center py-24">
-            <input type="file" id="FinalReport" name="FinalReport" />
+        <form [ngClass]="{'hidden':pdfPreview}" class=" rounded-lg w-auto flex justify-center py-24">
+            <input type="file" id="FinalReport" name="FinalReport" (change)="onFileChange($event)" />
         </form>
+        <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+            class="object-cover object-center w-full h-96 rounded-md" />
         <div class="mt-1 mb-2 border-b border-gray-300"></div>
         <div class="flex justify-center items-center max-sm:text-xs pt-3">
             <button type="button" (click)="submitFiles()"

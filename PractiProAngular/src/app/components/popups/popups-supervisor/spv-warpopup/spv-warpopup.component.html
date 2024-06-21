@@ -45,7 +45,7 @@
                             {{ submission.file_name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ submission.created_at }}
+                            {{ submission.created_at | date: "medium" }}
                         </td>
                         <td class="px-6 py-4">
                             <button (click)="viewFile(submission.id)"

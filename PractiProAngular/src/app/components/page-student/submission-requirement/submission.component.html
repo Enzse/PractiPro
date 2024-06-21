@@ -22,47 +22,77 @@
 
     <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
       <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
+
         <mat-tab label="Resume">
-          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="resumeFile" name="resumeFile" />
+          <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="resumeFile" name="resumeFile" accept="application/pdf" (change)="onFileChange($event)" />
           </form>
+            <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+              class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
+
         <mat-tab label="Application Letter">
-          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="applicationLetterFile" name="applicationLetterFile" />
+          <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="applicationLetterFile" name="applicationLetterFile" accept="application/pdf"
+              (change)="onFileChange($event)" />              
           </form>
+          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+              class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
+
         <mat-tab label="Acceptance Letter">
-          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="acceptanceLetterFile" name="acceptanceLetterFile" />
+          <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="acceptanceLetterFile" name="acceptanceLetterFile" (change)="onFileChange($event)" />
           </form>
+          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+              class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
+
         <mat-tab label="Endorsement Letter">
-          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="endorsementLetterFile" name="endorsementLetterFile" />
+          <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="endorsementLetterFile" name="endorsementLetterFile" accept="application/pdf"
+              (change)="onFileChange($event)" />
           </form>
+          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+              class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
+
         <mat-tab label="Parent's/Guardian's Waiver">
-          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="pgWaiverFile" name="pgWaiverFile" />
+          <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="pgWaiverFile" name="pgWaiverFile" accept="application/pdf" (change)="onFileChange($event)" />
           </form>
+          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+              class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
+
         <mat-tab label="Vaccination Card">
-          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="vaccinationCardFile" name="vaccinationCardFile" />
+          <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="vaccinationCardFile" name="vaccinationCardFile" accept="application/pdf"
+              (change)="onFileChange($event)" />
           </form>
+          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+              class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
+
         <mat-tab label="Barangay Clearance">
-          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="brgyClearanceFile" name="brgyClearanceFile" />
+          <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="brgyClearanceFile" name="brgyClearanceFile" accept="application/pdf"
+              (change)="onFileChange($event)" />
           </form>
+          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+              class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
+
         <mat-tab label="Medical Certificate">
-          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="medCertFile" name="medCertFile" />
+          <form [ngClass]="{'hidden': pdfPreview }" class="rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="medCertFile" name="medCertFile" accept="application/pdf" (change)="onFileChange($event)" />
           </form>
+          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+              class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
+
       </mat-tab-group>
+
       <div class="flex justify-end items-center max-sm:text-xs pt-3">
         <button type="button" (click)="submitFiles()"
           class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
@@ -197,7 +227,7 @@
               {{ data.file_name }}
             </td>
             <td class="px-6 py-4">
-              {{ data.created_at }}
+              {{ data.created_at | date: "medium"}}
             </td>
             <td class="px-6 py-4">
               <p class="rounded-lg text-base px-4 py-2" [ngClass]="{

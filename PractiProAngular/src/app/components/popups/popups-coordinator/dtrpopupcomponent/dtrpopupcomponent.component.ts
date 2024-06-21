@@ -11,11 +11,12 @@ import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TimePipe } from '../../../../pipes/time.pipe';
 
 @Component({
   selector: 'app-dtrpopupcomponent',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule, FilterPipe, FormsModule],
+  imports: [CommonModule, MatButtonModule, MatMenuModule, TimePipe, MatTooltipModule, NgxPaginationModule, FilterPipe, FormsModule],
   templateUrl: './dtrpopupcomponent.component.html',
   styleUrl: './dtrpopupcomponent.component.css'
 })

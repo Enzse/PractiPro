@@ -64,7 +64,7 @@
                                     </p>
                                     <span
                                         class="text-sm font-normal lg:text-base font-secondary">{{studentjob.start_date
-                                        || "Sample Start Date"}}</span>
+                                        || "Sample Start Date" | date: "longDate"}}</span>
                                 </div>
                             </div>
                         </li>
@@ -76,7 +76,7 @@
                                         End Date:
                                     </p>
                                     <span class="text-sm font-normal lg:text-base font-secondary">{{studentjob.end_date
-                                        || "Sample End Date"}}</span>
+                                        || "Sample End Date" | date: "longDate"}}</span>
                                 </div>
                             </div>
                         </li>

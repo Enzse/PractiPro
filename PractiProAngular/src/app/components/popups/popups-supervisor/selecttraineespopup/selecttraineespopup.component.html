@@ -62,7 +62,7 @@
             data.firstName }} {{ data.lastName }}</th>
           <td class="px-6 py-4">{{ data.job_title || "Not set" }}</td>
           <td class="px-6 py-4">{{ data.TotalHoursWorked || "Not started" }}</td>
-          <td class="px-6 py-4">{{ data.hire_date }}</td>
+          <td class="px-6 py-4">{{ data.hire_date | date: "longDate" }}</td>
           <td class="px-6 py-4">{{ data.sFirstName }} {{ data.sLastName }}</td>
           <td class="px-6 flex justify-center mt-10">
             <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">

@@ -42,7 +42,6 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
-    console.log("Loading Data...");
     this.subscriptions.add(
       this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
         this.traineesList = res.payload.map((student: any) => {

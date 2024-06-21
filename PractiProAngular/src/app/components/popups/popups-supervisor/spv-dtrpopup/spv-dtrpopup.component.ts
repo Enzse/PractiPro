@@ -7,11 +7,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { Subscription } from 'rxjs';
+import { TimePipe } from '../../../../pipes/time.pipe';
 
 @Component({
   selector: 'app-spv-dtrpopup',
   standalone: true,
-  imports: [CommonModule, NgxPaginationModule, FormsModule],
+  imports: [CommonModule, NgxPaginationModule, FormsModule, TimePipe],
   templateUrl: './spv-dtrpopup.component.html',
   styleUrl: './spv-dtrpopup.component.css'
 })

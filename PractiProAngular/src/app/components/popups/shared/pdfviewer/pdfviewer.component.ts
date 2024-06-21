@@ -14,22 +14,27 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 export class PdfviewerComponent implements OnInit {
 
   fileData: any;
+  templateName: any;
   pdfUrl: SafeResourceUrl | undefined;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<PdfviewerComponent>, private sanitizer: DomSanitizer) {
-    this.fileData = data.selectedPDF;
+    if (data.selectedPDF) {
+      this.fileData = data.selectedPDF;
+    }
+    if (data.templateName) {
+      this.templateName = data.templateName;
+    }
   }
 
 
   ngOnInit(): void {
-    console.log(this.fileData);
 
     if (this.fileData) {
-
       const url = URL.createObjectURL(this.fileData);
-
       this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-      console.log(this.pdfUrl)
+    }
+    else if (this.templateName) {
+      this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.templateName);
     }
   }
 

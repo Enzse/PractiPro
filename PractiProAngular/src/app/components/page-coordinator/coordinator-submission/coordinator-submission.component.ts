@@ -62,7 +62,6 @@ export class CoordinatorSubmissionComponent implements OnInit, OnDestroy {
       this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
         this.studentlist = res.payload;
         this.isLoading = false;
-        console.log(this.studentlist);
       }, err => {
         this.isLoading = false;
         console.error(err);

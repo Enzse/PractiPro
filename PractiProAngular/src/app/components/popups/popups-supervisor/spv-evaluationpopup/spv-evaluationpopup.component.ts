@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-spv-evaluationpopup',
@@ -16,11 +17,14 @@ import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 export class SpvEvaluationpopupComponent {
   userId: any;
   datalist: any[] = [];
+  file:any;
+  pdfPreview?: SafeResourceUrl;
   constructor(
     private service: AuthService,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogref: MatDialogRef<SpvEvaluationpopupComponent>) {
+    private dialogref: MatDialogRef<SpvEvaluationpopupComponent>,
+    private sanitizer: DomSanitizer) {
     this.userId = this.service.getCurrentUserId();
   }
 
@@ -33,6 +37,23 @@ export class SpvEvaluationpopupComponent {
       console.log(res);
       this.datalist = res.payload;
     });
+  }
+
+  onFileChange(event: any) {
+    const files = event.target.files as FileList;
+    if (files.length > 0) {
+      this.file = files[0];
+      this.previewPDF(); 
+    }
+  }
+
+  previewPDF() {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const fileURL = e.target?.result as string;
+      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+    };
+    reader.readAsDataURL(this.file);
   }
 
   submitFiles() {
@@ -48,6 +69,7 @@ export class SpvEvaluationpopupComponent {
               icon: "success"
             });
             this.loadData();
+            this.pdfPreview = '';
             fileInput.value = '';
           },
           error => {
@@ -64,10 +86,15 @@ export class SpvEvaluationpopupComponent {
       }
     });
   }
-
   viewTemplate() {
-    const pdfPath = '../../assets/pdfTemplates/ExitPoll.pdf';
-    window.open(pdfPath, '_blank');
+    const popup = this.dialog.open(PdfviewerComponent, {
+      enterAnimationDuration: "0ms",
+      exitAnimationDuration: "500ms",
+      width: "90%",
+      data: {
+        templateName: '../../assets/pdfTemplates/Evaluation.pdf'
+      }
+    })
   }
 
 

@@ -15,6 +15,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-documentation',
@@ -28,11 +29,13 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   datalist: any[] = [];
   origlist: any
   searchtext: any;
+  pdfPreview?: SafeResourceUrl;
+  file:any;
   tabWeekNumbers: number[] = [1];
   p: number = 1;
   private subscriptions = new Subscription();
 
-  constructor(private service: AuthService, private dialog: MatDialog) {
+  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
     this.userId = this.service.getCurrentUserId();
   }
 
@@ -57,13 +60,76 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   loadData() {
     this.subscriptions.add(
       this.service.getSubmissionsByStudent('documentations', this.userId).subscribe(res => {
-        console.log(res);
         this.datalist = res.payload;
         this.origlist = this.datalist;
       }));
   }
 
+  onFileChange(event: any) {
+    const files = event.target.files as FileList;
+    if (files.length > 0) {
+      this.file = files[0];
+      this.previewPDF(); 
+    }
+  }
+
+  previewPDF() {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const fileURL = e.target?.result as string;
+      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
+    };
+    reader.readAsDataURL(this.file);
+  }
+  
+  //SUBMISSION LOGIC
+  addNewTab() {
+    const nextWeekNumber = this.tabWeekNumbers[this.tabWeekNumbers.length - 1] + 1;
+    this.tabWeekNumbers.push(nextWeekNumber);
+  }
+
+  selectedTabLabel: number = 1;
+  onTabChange(event: MatTabChangeEvent) {
+    this.selectedTabLabel = parseInt(event.tab.textLabel.replace('Week ', ''), 10);
+    this.pdfPreview = undefined;
+  }
+
+  submitFiles() {
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+
+    fileInputs.forEach((fileInput: any) => {
+      const file = fileInput.files[0];
+      if (file) {
+        this.subscriptions.add(
+          this.service.uploadSubmission('documentations', this.userId, file, this.selectedTabLabel).subscribe(
+            response => {
+              console.log('File uploaded successfully:', response);
+              Swal.fire({
+                title: "Uploaded Successfully!",
+                text: "Please wait for your coordinator's approval.",
+                icon: "success"
+              });
+              this.loadData();
+              this.pdfPreview = undefined;
+              fileInput.value = '';
+            },
+            error => {
+              console.error('Error uploading file:', error);
+            }
+          ));
+      }
+      else if (file == null) {
+        Swal.fire({
+          title: "No File to Upload",
+          text: "Please select a file to upload first.",
+          icon: "error"
+        });
+      }
+    });
+  }
+  
   setFilter(filter: string) {
+    this.p = 1;
     this.datalist = this.origlist;
     switch (filter) {
       case 'all':
@@ -86,53 +152,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.datalist = this.datalist.filter((user: any) => user.week === week);
     
   }
-
-
-  //SUBMISSION LOGIC
-  addNewTab() {
-    const nextWeekNumber = this.tabWeekNumbers[this.tabWeekNumbers.length - 1] + 1;
-    this.tabWeekNumbers.push(nextWeekNumber);
-  }
-
-  selectedTabLabel: number = 1;
-  onTabChange(event: MatTabChangeEvent) {
-    this.selectedTabLabel = parseInt(event.tab.textLabel.replace('Week ', ''), 10);
-  }
-
-  submitFiles() {
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-
-    fileInputs.forEach((fileInput: any) => {
-      const file = fileInput.files[0];
-      if (file) {
-        this.subscriptions.add(
-          this.service.uploadSubmission('documentations', this.userId, file, this.selectedTabLabel).subscribe(
-            response => {
-              console.log('File uploaded successfully:', response);
-              Swal.fire({
-                title: "Uploaded Successfully!",
-                text: "Please wait for your coordinator's approval.",
-                icon: "success"
-              });
-              this.loadData();
-              fileInput.value = '';
-            },
-            error => {
-              console.error('Error uploading file:', error);
-            }
-          ));
-      }
-      else if (file == null) {
-        Swal.fire({
-          title: "No File to Upload",
-          text: "Please select a file to upload first.",
-          icon: "error"
-        });
-      }
-    });
-  }
-
-
 
   downloadFile(submissionId: number, fileName: string) {
     this.subscriptions.add(

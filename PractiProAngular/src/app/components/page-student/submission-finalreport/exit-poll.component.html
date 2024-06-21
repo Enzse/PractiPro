@@ -23,13 +23,15 @@
     <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
       <mat-tab-group #tabGroup>
         <mat-tab label="Final Report">
-          <form class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="FinalReport" name="FinalReport" />
+          <form [ngClass]="{'hidden':pdfPreview}" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
+            <input type="file" id="FinalReport" name="FinalReport" (change)="onFileChange($event)" />
           </form>
+          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+          class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
       </mat-tab-group>
       <div class="flex justify-between items-center pt-3">
-        <button type="button" (click)="viewTemplate()"
+        <button type="button" (click)="viewFile()"
           class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -39,7 +41,7 @@
             <path d="m9 18-1.5-1.5" />
             <circle cx="5" cy="14" r="3" />
           </svg>
-          View Template
+          View Worksheet <b>(Answerable)</b>
         </button>
         <button type="button" (click)="submitFiles()"
           class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
@@ -90,7 +92,7 @@
               {{ data.file_name }}
             </td>
             <td class="px-6 py-4">
-              {{ data.created_at }}
+              {{ data.created_at | date: "medium" }}
             </td>
             <td class="px-6 py-4">
               <p class="rounded-lg text-base px-4 py-2" [ngClass]="{

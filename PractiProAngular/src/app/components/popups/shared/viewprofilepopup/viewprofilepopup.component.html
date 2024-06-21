@@ -146,8 +146,7 @@
                                         class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
                                         Total Hours Worked:
                                     </p>
-                                    <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                                        studentProfile.TotalHoursWorked || "Not Started" }}</span>
+                                    <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{studentProfile.TotalHoursWorked ? (studentProfile.TotalHoursWorked + " hrs") : "Not Started" }}</span>
                                 </div>
                             </div>
                         </li>
