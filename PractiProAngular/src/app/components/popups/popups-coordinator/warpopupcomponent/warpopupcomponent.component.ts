@@ -146,10 +146,28 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
     this.service.updateAdvisorApproval('war', record.id, updateData).subscribe(
       res => {
-        console.log('Status updated successfully:', res);
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          backdrop: false,
+          title: `Submission successfully set to '${record.advisor_approval}'.`,
+          icon: "success",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
       },
       error => {
-        console.error('Error updating status:', error);
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          backdrop: false,
+          title: `Error occured. You might no have permission to edit this record.`,
+          icon: "error",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
       }
     ));
   }

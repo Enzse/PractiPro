@@ -24,12 +24,12 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class SeminarspopupComponent {
   datalist: any[] = [];
-  origlist:any;
+  origlist: any;
   searchtext: any;
   private subscriptions = new Subscription();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data:any, private dialogRef: MatDialogRef<SeminarspopupComponent>, private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
-    
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<SeminarspopupComponent>, private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+
   }
 
   ngOnInit(): void {
@@ -89,21 +89,21 @@ export class SeminarspopupComponent {
 
   viewCertificate(seminar_id: number) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('student_seminar_certificates', seminar_id).subscribe(
-      (data: any) => {
-        const popup = this.dialog.open(PdfviewerComponent, {
-          enterAnimationDuration: "0ms",
-          exitAnimationDuration: "500ms",
-          width: "90%",
-          data: {
-            selectedPDF: data
-          }
-        })
-      },
-      (error: any) => {
-        console.error('Error viewing submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('student_seminar_certificates', seminar_id).subscribe(
+        (data: any) => {
+          const popup = this.dialog.open(PdfviewerComponent, {
+            enterAnimationDuration: "0ms",
+            exitAnimationDuration: "500ms",
+            width: "90%",
+            data: {
+              selectedPDF: data
+            }
+          })
+        },
+        (error: any) => {
+          console.error('Error viewing submission:', error);
+        }
+      ));
   }
 
   onStatusChange(record: any) {
@@ -111,10 +111,28 @@ export class SeminarspopupComponent {
     this.service.updateAdvisorApproval('student_seminar_records', record.id, updateData).subscribe(
       res => {
         this.changeDetection.notifyChange(true);
-        console.log('Status updated successfully:', res);
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          backdrop: false,
+          title: `Record successfully set to '${record.advisor_approval}'.`,
+          icon: "success",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
       },
       error => {
-        console.error('Error updating status:', error);
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          backdrop: false,
+          title: `Error occured. You might no have permission to edit this record.`,
+          icon: "error",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
       }
     );
   }
@@ -135,9 +153,9 @@ export class SeminarspopupComponent {
             Swal.fire({
               title: "Successfully deleted record!",
               icon: "success"
-          });
+            });
             this.loadData();
-            
+
           }))
       }
     });
@@ -158,5 +176,5 @@ export class SeminarspopupComponent {
       this.loadData()
     });
   }
-  
+
 }

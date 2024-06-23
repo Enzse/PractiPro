@@ -167,9 +167,9 @@
                                       'text-red-500': submission.advisor_approval === 'Unapproved',
                                       'text-gray-500': submission.advisor_approval === 'Pending'
                                     }" (change)="onStatusChange(submission)">
+                                <option *ngIf="submission.advisor_approval === 'Pending'" value="Pending" hidden class="text-gray-500">Pending</option>
                                 <option value="Approved" class="text-green-500">Approved</option>
                                 <option value="Unapproved" class="text-red-500">Unapproved</option>
-                                <option value="Pending" class="text-gray-500">Pending</option>
                             </select>
                         </td>
                         <td class="px-6 py-4">
