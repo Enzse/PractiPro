@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { FormBuilder, FormsModule} from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -23,9 +23,9 @@ import { Subscription } from 'rxjs';
 export class WarpopupcomponentComponent implements OnInit, OnDestroy {
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<WarpopupcomponentComponent>, private dialog2: MatDialog) { }
-  searchtext:any;
+  searchtext: any;
   studentSubmissions: any[] = [];
-  origlist:any;
+  origlist: any;
   isLoading: boolean = true;
   private subscriptions = new Subscription();
   p: number = 1;
@@ -40,17 +40,19 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-    this.service.getSubmissionsByStudent('war', this.data.usercode).subscribe(
-      (res) => {
-        this.studentSubmissions = res.payload;
-        this.origlist = this.studentSubmissions;
-        this.isLoading = false;
-        console.log(this.studentSubmissions);
-      },
-      (error: any) => {
-        console.error('Error fetching student submissions:', error);
-      }
-    ));
+      this.service.getSubmissionsByStudent('war', this.data.usercode).subscribe(
+        (res) => {
+          this.studentSubmissions = res.payload.sort((a: any, b: any) => {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          });
+          this.origlist = this.studentSubmissions;
+          this.isLoading = false;
+          console.log(this.studentSubmissions);
+        },
+        (error: any) => {
+          console.error('Error fetching student submissions:', error);
+        }
+      ));
   }
 
   setFilter(filter: string) {
@@ -82,33 +84,33 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
 
   viewFile(submissionId: number) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('war',submissionId).subscribe(
-      (data: any) => {
-        const popup = this.dialog2.open(PdfviewerComponent, {
-          enterAnimationDuration: "0ms",
-          exitAnimationDuration: "500ms",
-          width: "90%",
-          data: {
-            selectedPDF: data
-          }
-        })
-      },
-      (error: any) => {
-        console.error('Error viewing submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('war', submissionId).subscribe(
+        (data: any) => {
+          const popup = this.dialog2.open(PdfviewerComponent, {
+            enterAnimationDuration: "0ms",
+            exitAnimationDuration: "500ms",
+            width: "90%",
+            data: {
+              selectedPDF: data
+            }
+          })
+        },
+        (error: any) => {
+          console.error('Error viewing submission:', error);
+        }
+      ));
   }
 
   downloadFile(submissionId: number, submissionName: string) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('war',submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, submissionName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('war', submissionId).subscribe(
+        (data: any) => {
+          saveAs(data, submissionName);
+        },
+        (error: any) => {
+          console.error('Error downloading submission:', error);
+        }
+      ));
   }
 
   deleteSubmission(submissionId: number) {
@@ -123,19 +125,19 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-        this.service.deleteSubmission(submissionId, 'war').subscribe((res: any) => {
-          Swal.fire({
-            title: "The submission has been deleted",
-            icon: "success"
-          });
-          this.loadData();
-        }, error => {
-          Swal.fire({
-            title: "Delete failed",
-            text: "You may not have permission to delete this file.",
-            icon: "error"
-          });
-        }));
+          this.service.deleteSubmission(submissionId, 'war').subscribe((res: any) => {
+            Swal.fire({
+              title: "The submission has been deleted",
+              icon: "success"
+            });
+            this.loadData();
+          }, error => {
+            Swal.fire({
+              title: "Delete failed",
+              text: "You may not have permission to delete this file.",
+              icon: "error"
+            });
+          }));
       }
     });
   }
@@ -144,32 +146,32 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-    this.service.updateAdvisorApproval('war', record.id, updateData).subscribe(
-      res => {
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          backdrop: false,
-          title: `Submission successfully set to '${record.advisor_approval}'.`,
-          icon: "success",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
-      },
-      error => {
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          backdrop: false,
-          title: `Error occured. You might no have permission to edit this record.`,
-          icon: "error",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
-      }
-    ));
+      this.service.updateAdvisorApproval('war', record.id, updateData).subscribe(
+        res => {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Submission successfully set to '${record.advisor_approval}'.`,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        },
+        error => {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Error occured. You might no have permission to edit this record.`,
+            icon: "error",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+      ));
   }
 
   viewComments(submissionId: number, fileName: string) {
@@ -184,9 +186,9 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
       }
     })
     this.subscriptions.add(
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    }));
+      popup.afterClosed().subscribe(res => {
+        this.loadData()
+      }));
   }
 
 }

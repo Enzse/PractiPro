@@ -38,78 +38,80 @@ export class CoordEvaluationspopupComponent {
 
   loadData() {
     this.subscriptions.add(
-    this.service.getStudentEvaluation(this.data.student.id).subscribe(res => {
-        this.datalist = res.payload;
+      this.service.getStudentEvaluation(this.data.student.id).subscribe(res => {
+        this.datalist = res.payload.sort((a: any, b: any) => {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
         this.isLoading = false;
         console.log(this.datalist);
       },
-      (error: any) => {
-        console.error('Error fetching student submissions:', error);
-      }
-    ));
+        (error: any) => {
+          console.error('Error fetching student submissions:', error);
+        }
+      ));
   }
 
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-    this.service.updateAdvisorApproval('supervisor_student_evaluations', record.id, updateData).subscribe(
-      res => {
-        this.changeDetection.notifyChange(true);
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          backdrop: false,
-          title: `Submission successfully set to '${record.advisor_approval}'.`,
-          icon: "success",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
-      },
-      error => {
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          backdrop: false,
-          title: `Error occured. You might no have permission to edit this record.`,
-          icon: "error",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
-      }
-    ));
+      this.service.updateAdvisorApproval('supervisor_student_evaluations', record.id, updateData).subscribe(
+        res => {
+          this.changeDetection.notifyChange(true);
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Submission successfully set to '${record.advisor_approval}'.`,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        },
+        error => {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Error occured. You might no have permission to edit this record.`,
+            icon: "error",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+      ));
   }
 
   viewFile(submissionId: number) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('supervisor_student_evaluations', submissionId).subscribe(
-      (data: any) => {
-        const popup = this.dialog2.open(PdfviewerComponent, {
-          enterAnimationDuration: "0ms",
-          exitAnimationDuration: "500ms",
-          width: "90%",
-          data: {
-            selectedPDF: data
-          }
-        })
-      },
-      (error: any) => {
-        console.error('Error viewing submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('supervisor_student_evaluations', submissionId).subscribe(
+        (data: any) => {
+          const popup = this.dialog2.open(PdfviewerComponent, {
+            enterAnimationDuration: "0ms",
+            exitAnimationDuration: "500ms",
+            width: "90%",
+            data: {
+              selectedPDF: data
+            }
+          })
+        },
+        (error: any) => {
+          console.error('Error viewing submission:', error);
+        }
+      ));
   }
 
   downloadFile(submissionId: number, submissionName: string) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('supervisor_student_evaluations', submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, submissionName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('supervisor_student_evaluations', submissionId).subscribe(
+        (data: any) => {
+          saveAs(data, submissionName);
+        },
+        (error: any) => {
+          console.error('Error downloading submission:', error);
+        }
+      ));
   }
 
   deleteSubmission(submissionId: number) {
@@ -124,23 +126,23 @@ export class CoordEvaluationspopupComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-        this.service.deleteSubmission(submissionId, 'supervisor_student_evaluations').subscribe((res: any) => {
-          Swal.fire({
-            title: "The submission has been deleted",
-            icon: "success"
-          });
-          this.loadData();
-        }, error => {
-          Swal.fire({
-            title: "Delete failed",
-            text: "You may not have permission to delete this file.",
-            icon: "error"
-          });
-        }));
+          this.service.deleteSubmission(submissionId, 'supervisor_student_evaluations').subscribe((res: any) => {
+            Swal.fire({
+              title: "The submission has been deleted",
+              icon: "success"
+            });
+            this.loadData();
+          }, error => {
+            Swal.fire({
+              title: "Delete failed",
+              text: "You may not have permission to delete this file.",
+              icon: "error"
+            });
+          }));
       }
     });
   }
-  
+
 
   viewComments(submissionId: number, fileName: string) {
     const popup = this.dialog2.open(CommentspopupComponent, {
@@ -154,9 +156,9 @@ export class CoordEvaluationspopupComponent {
       }
     })
     this.subscriptions.add(
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    }));
+      popup.afterClosed().subscribe(res => {
+        this.loadData()
+      }));
   }
 
 }

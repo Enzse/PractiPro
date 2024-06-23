@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -27,7 +27,7 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
 
   studentSubmissions: any[] = [];
   origlist: any;
-  searchtext:any;
+  searchtext: any;
   isLoading = true;
   private subscriptions = new Subscription();
   p: number = 1; /* starting no. of the list */
@@ -40,19 +40,21 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  loadData(){
+  loadData() {
     this.subscriptions.add(
-    this.service.getSubmissionsByStudent('documentations', this.data.usercode).subscribe(
-      (res: any) => {
-        this.studentSubmissions = res.payload;
-        this.origlist = this.studentSubmissions;
-        this.isLoading = false;
-        console.log(this.studentSubmissions);
-      },
-      (error: any) => {
-        console.error('Error fetching student submissions:', error);
-      }
-    ));
+      this.service.getSubmissionsByStudent('documentations', this.data.usercode).subscribe(
+        (res: any) => {
+          this.studentSubmissions = res.payload.sort((a: any, b: any) => {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          });
+          this.origlist = this.studentSubmissions;
+          this.isLoading = false;
+          console.log(this.studentSubmissions);
+        },
+        (error: any) => {
+          console.error('Error fetching student submissions:', error);
+        }
+      ));
   }
 
   setFilter(filter: string) {
@@ -104,21 +106,21 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
       }
     })
     this.subscriptions.add(
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    }));
+      popup.afterClosed().subscribe(res => {
+        this.loadData()
+      }));
   }
 
   downloadFile(submissionId: number, submissionName: string) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('documentations', submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, submissionName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('documentations', submissionId).subscribe(
+        (data: any) => {
+          saveAs(data, submissionName);
+        },
+        (error: any) => {
+          console.error('Error downloading submission:', error);
+        }
+      ));
   }
 
   deleteSubmission(submissionId: number) {
@@ -133,19 +135,19 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-        this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
-          Swal.fire({
-            title: "The submission has been deleted",
-            icon: "success"
-          });
-          this.loadData();
-        }, error => {
-          Swal.fire({
-            title: "Delete failed",
-            text: "You may not have permission to delete this file.",
-            icon: "error"
-          });
-        }));
+          this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
+            Swal.fire({
+              title: "The submission has been deleted",
+              icon: "success"
+            });
+            this.loadData();
+          }, error => {
+            Swal.fire({
+              title: "Delete failed",
+              text: "You may not have permission to delete this file.",
+              icon: "error"
+            });
+          }));
       }
     });
   }
@@ -153,32 +155,32 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-    this.service.updateAdvisorApproval('documentations', record.id, updateData).subscribe(
-      res => {
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          backdrop: false,
-          title: `Submission successfully set to '${record.advisor_approval}'.`,
-          icon: "success",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
-      },
-      error => {
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          backdrop: false,
-          title: `Error occured. You might no have permission to edit this record.`,
-          icon: "error",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
-      }
-    ));
+      this.service.updateAdvisorApproval('documentations', record.id, updateData).subscribe(
+        res => {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Submission successfully set to '${record.advisor_approval}'.`,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        },
+        error => {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Error occured. You might no have permission to edit this record.`,
+            icon: "error",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+      ));
   }
 
 

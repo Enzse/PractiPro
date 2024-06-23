@@ -46,8 +46,9 @@ export class ExitPollComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
     this.service.getSubmissionsByStudent('finalreports', this.userId).subscribe(res => {
       if (res) {
-        console.log(res);
-        this.datalist = res.payload;
+        this.datalist = res.payload.sort((a: any, b: any) => {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
       }
     }));
   }

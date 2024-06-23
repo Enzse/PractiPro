@@ -35,7 +35,9 @@ export class SpvWarpopupComponent implements OnInit, OnDestroy {
   loadData() {
     this.service.getSubmissionsByStudent('war', this.data.student.id).subscribe(
       (res) => {
-        this.studentSubmissions = res.payload;
+        this.studentSubmissions = res.payload.sort((a: any, b: any) => {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
         this.isLoading = false;
         console.log(this.studentSubmissions);
       },
