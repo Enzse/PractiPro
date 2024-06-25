@@ -39,3 +39,38 @@
 .my-pagination ::ng-deep .ngx-pagination li :hover{
 border-radius: 25px;  
 }
+
+@media screen and (max-width: 501px) {
+  .my-pagination ::ng-deep .ngx-pagination .pagination-next{
+    border-radius: 25px;
+    margin: 0 2px; 
+    background: #e6e6e6;
+    color: #fefefe;
+    cursor: default;
+  }
+  
+  .my-pagination ::ng-deep .ngx-pagination .pagination-previous {
+    border-radius: 25px;
+    margin: 0 2px; 
+    background: #e6e6e6;
+    color: #fefefe;
+    cursor: default;
+  }
+
+  .my-pagination ::ng-deep .ngx-pagination .disabled{
+    border-radius: 25px;
+    margin: 0 2px; 
+    background: #e6e6e6;
+    color: gray;
+    cursor: default;
+  }
+
+  .my-pagination ::ng-deep .ngx-pagination .small-screen{
+    border-radius: 25px;
+    padding: .1875rem .625rem;
+    margin: 0 2px; 
+    background: #1e1b4b;
+    color: #e6e6e6;
+    cursor: default;
+  }
+}

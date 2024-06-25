@@ -131,7 +131,7 @@
           </thead>
           <tbody>
             <tr
-              *ngFor="let record of datalist | paginate: { itemsPerPage: itemsPerPage, currentPage: p  } | filter: searchtext "
+              *ngFor="let record of datalist | filter : searchtext | paginate: { itemsPerPage: itemsPerPage, currentPage: p  }"
               class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
               <td class="table-data border-2 border-slate-600">{{ record.weekNumber}}</td>
               <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
