@@ -46,6 +46,7 @@ import { SubmissionSeminarsComponent } from './components/page-student/submissio
 import { studentrequirementsGuard } from './guard/studentrequirements.guard';
 import { studenthoursworkedGuard } from './guard/studenthoursworked.guard';
 import { CoordSeminarsComponent } from './components/page-coordinator/coord-seminars/coord-seminars.component';
+import { ResetPasswordFormComponent } from './components/reset-password/reset-password-form/reset-password-form.component';
 
 
 export const routes: Routes = [
@@ -57,22 +58,23 @@ export const routes: Routes = [
     { path: 'registrationadvisor', component: RegistrationadvisorComponent, title: 'Registration' },
     { path: 'registrationadmin', component: RegistrationadminComponent, title: 'Registration' },
     { path: 'registrationsupervisor', component: RegistrationsupervisorComponent, title: 'Registration' },
+    { path: 'resetpassword', component: ResetPasswordFormComponent, title: 'Reset Password' },
 
     //Student Pages
     {
         path: '',
         component: NavbarComponent,
-        canActivateChild: [studentGuard], 
+        canActivateChild: [studentGuard],
         children: [
-            { path: 'student-dashboard', component: DashboardComponent, title: 'Dashboard',  },
-            { path: 'student-profile', component: ProfileComponent, title: 'Profile',  },
-            { path: 'student-submission', component: SubmissionComponent, title: 'Submit a File',  },
+            { path: 'student-dashboard', component: DashboardComponent, title: 'Dashboard', },
+            { path: 'student-profile', component: ProfileComponent, title: 'Profile', },
+            { path: 'student-submission', component: SubmissionComponent, title: 'Submit a File', },
             { path: 'student-documentation', component: DocumentationComponent, title: 'Documentation', canActivate: [studentrequirementsGuard] },
             { path: 'student-dtr', component: DtrComponent, title: 'Daily Time Records', canActivate: [studentrequirementsGuard] },
             { path: 'student-weekly-report', component: WeeklyAccomplishmentRepComponent, title: 'Weekly Accomplishment Report', canActivate: [studentrequirementsGuard] },
-            { path: 'student-exit-poll', component: ExitPollComponent, title: 'Exit Poll',  canActivate: [studentrequirementsGuard, studenthoursworkedGuard]},
-            { path: 'student-seminars', component: SubmissionSeminarsComponent, title: 'Seminars Attended', canActivate: [studentrequirementsGuard]},
-            { path: 'feedback', component: FeedbackComponent, title: 'Feedback',  },
+            { path: 'student-exit-poll', component: ExitPollComponent, title: 'Exit Poll', canActivate: [studentrequirementsGuard, studenthoursworkedGuard] },
+            { path: 'student-seminars', component: SubmissionSeminarsComponent, title: 'Seminars Attended', canActivate: [studentrequirementsGuard] },
+            { path: 'feedback', component: FeedbackComponent, title: 'Feedback', },
         ]
     },
     //Admin Pages
@@ -81,40 +83,40 @@ export const routes: Routes = [
         component: AdminNavbarComponent,
         canActivateChild: [adminGuard],
         children: [
-            { path: 'admin-users', component: AdminUsersComponent, title: 'Users',  },
-            { path: 'admin-admins', component: AdminAdminsComponent, title: 'Admins',  },
-            { path: 'admin-students', component: AdminStudentsComponent, title: 'Students',  },
-            { path: 'admin-coordinators', component: AdminCoordinatorsComponent, title: 'Advisors',  },
-            { path: 'admin-classes', component: AdminClassesComponent, title: 'Classes',  },
+            { path: 'admin-users', component: AdminUsersComponent, title: 'Users', },
+            { path: 'admin-admins', component: AdminAdminsComponent, title: 'Admins', },
+            { path: 'admin-students', component: AdminStudentsComponent, title: 'Students', },
+            { path: 'admin-coordinators', component: AdminCoordinatorsComponent, title: 'Advisors', },
+            { path: 'admin-classes', component: AdminClassesComponent, title: 'Classes', },
         ]
     },
     //Coordinator Pages
     {
         path: '',
-        component: CoordNavbarComponent,  
-        canActivateChild: [coordGuard],      
+        component: CoordNavbarComponent,
+        canActivateChild: [coordGuard],
         children: [
-            { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Submissions',  },
-            { path: 'coord-documentations', component: CoordDocumentationComponent, title: 'Documentations',  },
-            { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records',  },
-            { path: 'coord-seminars', component: CoordSeminarsComponent, title: 'Seminar Records',  },
-            { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports',  },
-            { path: 'coord-evaluations', component: CoordEvaluationsComponent, title: 'Performance Evaluations',  },
-            { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports',  },
+            { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Submissions', },
+            { path: 'coord-documentations', component: CoordDocumentationComponent, title: 'Documentations', },
+            { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records', },
+            { path: 'coord-seminars', component: CoordSeminarsComponent, title: 'Seminar Records', },
+            { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports', },
+            { path: 'coord-evaluations', component: CoordEvaluationsComponent, title: 'Performance Evaluations', },
+            { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports', },
         ]
     },
     //Supervisor Pages
     {
         path: '',
-        component: SupervisorNavbarComponent,  
-        canActivateChild: [supervisorGuard],      
+        component: SupervisorNavbarComponent,
+        canActivateChild: [supervisorGuard],
         children: [
-            { path: 'supervisor-dashboard', component: SupervisorDashboardComponent, title: 'Dashboard',  },
-            { path: 'supervisor-hirestudents', component: SupervisorHirestudentsComponent, title: 'Hire Students',  },
-            { path: 'supervisor-profile', component: SupervisorProfileComponent, title: 'Company Profile',  },
-            { path: 'supervisor-dtr', component: SupervisorDtrComponent, title: 'Daily Time Records',  },
-            { path: 'supervisor-war', component: SupervisorWarComponent, title: 'Weekly Accomplishment Reports',  },
-            { path: 'supervisor-evaluation', component: SupervisorEvaluationComponent, title: 'Student Performance Evaluation',  },
+            { path: 'supervisor-dashboard', component: SupervisorDashboardComponent, title: 'Dashboard', },
+            { path: 'supervisor-hirestudents', component: SupervisorHirestudentsComponent, title: 'Hire Students', },
+            { path: 'supervisor-profile', component: SupervisorProfileComponent, title: 'Company Profile', },
+            { path: 'supervisor-dtr', component: SupervisorDtrComponent, title: 'Daily Time Records', },
+            { path: 'supervisor-war', component: SupervisorWarComponent, title: 'Weekly Accomplishment Reports', },
+            { path: 'supervisor-evaluation', component: SupervisorEvaluationComponent, title: 'Student Performance Evaluation', },
         ]
     },
     { path: '**', redirectTo: 'login', pathMatch: 'full' }

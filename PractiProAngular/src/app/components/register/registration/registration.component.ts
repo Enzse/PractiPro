@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 import { TermsofserviceComponent } from '../../popups/popups-registration/termsofservice/termsofservice.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { emailDomainValidator } from '../../../validators/email-domain.validator';
+import { passwordStrengthValidator } from '../../../validators/password-strength.validator';
 
 @Component({
   selector: 'app-registration',
@@ -17,17 +19,17 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class RegistrationComponent implements OnInit {
   constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private dialog: MatDialog) { }
-
-
-
-  passwordStrength(control: AbstractControl): { [key: string]: boolean } | null {
-    const password = control.value;
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-    if (!regex.test(password)) {
-      return { 'weakPassword': true };
-    }
-    return null;
-  }
+  registerform = this.builder.group({
+    firstName: this.builder.control('', Validators.required),
+    lastName: this.builder.control('', Validators.required),
+    email: this.builder.control('', Validators.compose([Validators.required, Validators.email, emailDomainValidator('gordoncollege.edu.ph')])),
+    password: this.builder.control('', [Validators.required, passwordStrengthValidator]),
+    terms: [false, Validators.requiredTrue],
+    role: this.builder.control('', [Validators.required]),
+    studentId: this.builder.control('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]),
+    program: this.builder.control('', [Validators.required]),
+    year: this.builder.control('', [Validators.required]),
+  });
 
   ngOnInit(): void {
     this.registerform.patchValue({
@@ -35,33 +37,13 @@ export class RegistrationComponent implements OnInit {
     });
   }
 
-  registerform = this.builder.group({
-    firstName: this.builder.control('', Validators.required),
-    lastName: this.builder.control('', Validators.required),
-    email: this.builder.control('', Validators.compose([Validators.required, Validators.email])),
-    password: this.builder.control('', [Validators.required, this.passwordStrength]),
-    // manual: [false, Validators.requiredTrue],
-    terms: [false, Validators.requiredTrue],
-    role: this.builder.control('', [Validators.required]),
-
-
-    studentId: this.builder.control('', [Validators.required]),
-    program: this.builder.control('', [Validators.required]),
-    year: this.builder.control('', [Validators.required]),
-    // terms: [false, Validators.requiredTrue]
-  });
-
-
-
-
   proceedregistration() {
     if (this.registerform.valid) {
       this.service.proceedRegister(this.registerform.value).subscribe(() => {
-        console.log('Registered successfully. Please contact admin for activation.');
         this.router.navigate(['login']);
         Swal.fire({
           title: "Registration Successful!",
-          text: "Please contact admin for activation.",
+          text: "Please wait for admin activation.",
           icon: "success"
         });
       }, error => {
@@ -79,7 +61,6 @@ export class RegistrationComponent implements OnInit {
           });
         }
       });
-
     } else {
       Swal.fire({
         title: "Please enter valid data.",

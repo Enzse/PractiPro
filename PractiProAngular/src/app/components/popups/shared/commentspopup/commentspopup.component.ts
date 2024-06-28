@@ -44,8 +44,9 @@ export class CommentspopupComponent implements OnInit {
 
   loadData() {
     this.service.getSubmissionComments(this.data.table, this.fileID).subscribe((res: any) => {
-      this.commentsList = res.payload;
-      console.log(this.commentsList);
+      this.commentsList = res.payload.sort((a: any, b: any) => {
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+    });
     });
   }
 
@@ -56,8 +57,6 @@ export class CommentspopupComponent implements OnInit {
 
   submitComment() {
     if (this.commentForm.valid) {
-      console.log(this.commentForm.value);
-
       this.service.addComment(this.data.table, this.fileID, this.commentForm.value).subscribe((res: any) => {
         Swal.fire({
           title: "Comment Submitted!",

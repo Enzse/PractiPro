@@ -83,11 +83,14 @@
                 placeholder="Company Address" formControlName="address" />
             </div>
             <div class="mb-6">
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password <span
-                  class="opacity-60">(Requires 1 uppercase letter, 1 lowercase letter, and 1 number)</span></label>
+              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
               <input type="password" id="password"
                 class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="(Please read label for password strength)" formControlName="password" />
+                <p *ngIf="registerform.get('password')?.hasError('shortPassword')" class="text-xs text-red-500">Password
+                  must be at least 8 characters long.</p>
+                <p *ngIf="registerform.get('password')?.hasError('weakPassword')" class="text-xs text-red-500">(Requires 1
+                  uppercase letter, 1 lowercase letter, and 1 number)</p>
             </div>
   
             <div class="flex items-start mb-6">

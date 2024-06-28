@@ -30,7 +30,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   origlist: any
   searchtext: any;
   pdfPreview?: SafeResourceUrl;
-  file:any;
+  file: any;
   tabWeekNumbers: number[] = [1];
   p: number = 1;
   private subscriptions = new Subscription();
@@ -60,7 +60,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   loadData() {
     this.subscriptions.add(
       this.service.getSubmissionsByStudent('documentations', this.userId).subscribe(res => {
-        this.datalist = res.payload;
+        this.datalist = res.payload.sort((a: any, b: any) => {
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        });
         this.origlist = this.datalist;
       }));
   }
@@ -69,7 +71,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     const files = event.target.files as FileList;
     if (files.length > 0) {
       this.file = files[0];
-      this.previewPDF(); 
+      this.previewPDF();
     }
   }
 
@@ -81,7 +83,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     };
     reader.readAsDataURL(this.file);
   }
-  
+
   //SUBMISSION LOGIC
   addNewTab() {
     const nextWeekNumber = this.tabWeekNumbers[this.tabWeekNumbers.length - 1] + 1;
@@ -127,7 +129,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       }
     });
   }
-  
+
   setFilter(filter: string) {
     this.p = 1;
     this.datalist = this.origlist;
@@ -150,7 +152,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   setFilterWeek(week: any) {
     this.datalist = this.origlist;
     this.datalist = this.datalist.filter((user: any) => user.week === week);
-    
+
   }
 
   downloadFile(submissionId: number, fileName: string) {

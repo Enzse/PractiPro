@@ -416,10 +416,6 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'updateadvisorapproval':
                 echo json_encode($post->updateAdvisorApproval($request[1], $request[2], $data));
                 break;
-            // Toggle the student's status.
-            case 'toggleRequirementStatus':
-                echo json_encode($post->toggleRequirementStatus($data->studentId, $data->requirement, $data->status));
-                break;
             // Toggle a student submission's remark.
             case 'togglesubmissionremark':
                 echo json_encode($post->toggleSubmissionRemark($request[1], $data->submissionId, $data->newRemark));
@@ -443,6 +439,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'addstudenttosupervisor':
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->addStudentToSupervisor($data));
+                break;
+
+            case 'resetpasswordtoken':
+                echo json_encode($post->resetPasswordToken($data));
                 break;
 
             default:

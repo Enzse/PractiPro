@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { NoticetosupervisorsComponent } from '../../../popups/popups-registration/noticetosupervisors/noticetosupervisors.component';
 import { TermsofserviceComponent } from '../../../popups/popups-registration/termsofservice/termsofservice.component';
+import { passwordStrengthValidator } from '../../../../validators/password-strength.validator';
 
 @Component({
   selector: 'app-registrationsupervisor',
@@ -18,15 +19,6 @@ import { TermsofserviceComponent } from '../../../popups/popups-registration/ter
 export class RegistrationsupervisorComponent implements OnInit {
   constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private dialog: MatDialog) { }
 
-  passwordStrength(control: AbstractControl): { [key: string]: boolean } | null {
-    const password = control.value;
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/;
-    if (!regex.test(password)) {
-      return { 'weakPassword': true };
-    }
-    return null;
-  }
-
   ngOnInit(): void {
     this.registerform.patchValue({
       role: 'supervisor'
@@ -37,10 +29,9 @@ export class RegistrationsupervisorComponent implements OnInit {
     firstName: this.builder.control('', Validators.required),
     lastName: this.builder.control('', Validators.required),
     email: this.builder.control('', Validators.compose([Validators.required, Validators.email])),
-    password: this.builder.control('', [Validators.required, this.passwordStrength]),
+    password: this.builder.control('', [Validators.required, passwordStrengthValidator]),
     terms: [false, Validators.requiredTrue],
     role: this.builder.control('', [Validators.required]),
-
     company_name: this.builder.control('', [Validators.required]),
     position: this.builder.control('', [Validators.required]),
     phone: this.builder.control('', [Validators.required]),
@@ -50,11 +41,11 @@ export class RegistrationsupervisorComponent implements OnInit {
   proceedregistration() {
     if (this.registerform.valid) {
       this.service.proceedRegister(this.registerform.value).subscribe(() => {
-        console.log('Registered successfully. Please contact admin for activation.');
+        console.log('Registered successfully. Please wait for admin activation.');
         this.router.navigate(['login']);
         Swal.fire({
           title: "Registration Successful!",
-          text: "Please contact admin for activation.",
+          text: "Please wait for admin activation.",
           icon: "success"
         });
       }, error => {

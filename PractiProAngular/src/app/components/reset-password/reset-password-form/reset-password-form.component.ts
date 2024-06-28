@@ -1,42 +1,41 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
+import { AuthService } from '../../../services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { TermsofserviceComponent } from '../../../popups/popups-registration/termsofservice/termsofservice.component';
+import { TermsofserviceComponent } from '../../popups/popups-registration/termsofservice/termsofservice.component';
 import { MatDialog } from '@angular/material/dialog';
-import { passwordStrengthValidator } from '../../../../validators/password-strength.validator';
-import { emailDomainValidator } from '../../../../validators/email-domain.validator';
-
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { emailDomainValidator } from '../../../validators/email-domain.validator';
+import { passwordStrengthValidator } from '../../../validators/password-strength.validator';
 @Component({
-  selector: 'app-registrationadvisor',
+  selector: 'app-reset-password-form',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
-  templateUrl: './registrationadvisor.component.html',
-  styleUrl: './registrationadvisor.component.css'
+  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive, MatTooltipModule],
+  templateUrl: './reset-password-form.component.html',
+  styleUrl: './reset-password-form.component.css'
 })
-export class RegistrationadvisorComponent implements OnInit {
+export class ResetPasswordFormComponent implements OnInit {
   constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private dialog: MatDialog) { }
-
-  ngOnInit(): void {
-    this.registerform.patchValue({
-      role: 'advisor'
-    });
-  }
-
-
   registerform = this.builder.group({
     firstName: this.builder.control('', Validators.required),
     lastName: this.builder.control('', Validators.required),
     email: this.builder.control('', Validators.compose([Validators.required, Validators.email, emailDomainValidator('gordoncollege.edu.ph')])),
     password: this.builder.control('', [Validators.required, passwordStrengthValidator]),
     terms: [false, Validators.requiredTrue],
-    role: this.builder.control('', Validators.required),
-    department: this.builder.control('', Validators.required),
+    role: this.builder.control('', [Validators.required]),
+    studentId: this.builder.control('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]),
+    program: this.builder.control('', [Validators.required]),
+    year: this.builder.control('', [Validators.required]),
   });
 
-  
+  ngOnInit(): void {
+    this.registerform.patchValue({
+      role: 'student'
+    });
+  }
+
   proceedregistration() {
     if (this.registerform.valid) {
       this.service.proceedRegister(this.registerform.value).subscribe(() => {
@@ -53,15 +52,14 @@ export class RegistrationadvisorComponent implements OnInit {
             text: 'Please use a different email address.',
             icon: "warning"
           });
-        } else {
+        } else if (error.status === 409) {
           Swal.fire({
-            title: "Unable to register now.",
-            text: 'Please try again another time.',
+            title: "Student already exists!",
+            text: 'Please use a different Student ID.',
             icon: "warning"
           });
         }
       });
-
     } else {
       Swal.fire({
         title: "Please enter valid data.",
@@ -81,4 +79,5 @@ export class RegistrationadvisorComponent implements OnInit {
       }
     })
   }
+
 }

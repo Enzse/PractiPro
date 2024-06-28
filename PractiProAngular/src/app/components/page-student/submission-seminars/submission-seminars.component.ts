@@ -41,7 +41,7 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData();
-    this.subscriptions.add(        
+    this.subscriptions.add(
       this.changeDetection.changeDetected$.subscribe(changeDetected => {
         if (changeDetected) {
           this.loadData();
@@ -60,7 +60,9 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
   loadData() {
     this.subscriptions.add(
       this.service.getSeminarRecords(this.userId).subscribe((res: any) => {
-        this.datalist = res.payload
+        this.datalist = res.payload.sort((a: any, b: any) => {
+          return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
+        })
         this.origlist = this.datalist;
       })
     );

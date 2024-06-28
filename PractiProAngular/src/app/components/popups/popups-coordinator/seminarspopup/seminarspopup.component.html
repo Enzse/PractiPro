@@ -133,7 +133,7 @@
                                 }" (change)="onStatusChange(data)">
                             <option value="Approved" class="text-green-500">Approved</option>
                             <option value="Unapproved" class="text-red-500">Unapproved</option>
-                            <option value="Pending" class="text-gray-500">Pending</option>
+                            <option *ngIf="data.advisor_approval === 'Pending'" hidden value="Pending" class="text-gray-500">Pending</option>
                         </select>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
             <div class="absolute bottom-0 right-0">
                 <button *ngIf="data.certified === 1" (click)="viewCertificate(data.id)"
                     class="text-white inline-flex items-center focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
-                        matTooltip="This record is certified." xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        matTooltip="Click here to view attached certification." xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round" class="lucide lucide-award text-yellow-400">
                         <path

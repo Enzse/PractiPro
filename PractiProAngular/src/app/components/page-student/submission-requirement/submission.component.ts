@@ -31,8 +31,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   students: any;
   datalist: any[] = [];
   origlist: any;
-  pdfPreview?: SafeResourceUrl; 
-  file:any; 
+  pdfPreview?: SafeResourceUrl;
+  file: any;
 
   private subscriptions = new Subscription();
   selectedTabLabel: string = 'Resume';
@@ -59,7 +59,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     const files = event.target.files as FileList;
     if (files.length > 0) {
       this.file = files[0];
-      this.previewPDF(); 
+      this.previewPDF();
     }
   }
 
@@ -114,7 +114,9 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.service.getSubmissionsByStudent('submissions', this.userId).subscribe(res => {
         if (res) {
-          this.datalist = res.payload;
+          this.datalist = res.payload.sort((a: any, b: any) => {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          });
           this.origlist = this.datalist;
         } else {
           console.log("No submissions yet.")
@@ -157,7 +159,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       case 'medcert':
         this.datalist = this.datalist.filter((user: any) => user.submission_name === 'MedicalCertificate');
         break;
-        case 'approved':
+      case 'approved':
         this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
         break;
       case 'unapproved':
@@ -165,7 +167,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
         break;
       case 'pending':
         this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
-        break;    
+        break;
     }
   }
 

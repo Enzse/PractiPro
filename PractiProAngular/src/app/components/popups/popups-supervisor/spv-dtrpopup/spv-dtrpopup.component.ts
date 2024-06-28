@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { Subscription } from 'rxjs';
 import { TimePipe } from '../../../../pipes/time.pipe';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-spv-dtrpopup',
@@ -68,12 +69,30 @@ export class SpvDtrpopupComponent implements OnInit, OnDestroy {
     const updateData = { status: record.status };
     this.subscriptions.add(
       this.service.updateDTRStatus(record.id, updateData).subscribe(
-        res => {
-          console.log('Status updated successfully:', res);
+        res => {          
           this.changeDetection.notifyChange(true);
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Submission successfully set to '${record.status}'.`,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
         },
         error => {
-          console.error('Error updating status:', error);
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Error occured. You might no have permission to edit this record.`,
+            icon: "error",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
         }
       ));
   }

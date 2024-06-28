@@ -12,7 +12,7 @@ export class AuthService {
 
   apiurl = 'http://localhost/PractiPro/backend/api';
 
-  /* apiurl = 'http://gcpractipro.online/backend/api'; */
+  // apiurl = 'http://gcpractipro.online/backend/api';
 
 
   //User handlers. 
@@ -326,5 +326,9 @@ export class AuthService {
   unassignSchedules(id: number) {
     return this.http.delete(`${this.apiurl}/unassignschedules/${id}`);
   };
+
+  resetPasswordToken(inputdata: any) {
+    return this.http.post(`${this.apiurl}/resetpasswordtoken`, inputdata);
+  }
 
 }

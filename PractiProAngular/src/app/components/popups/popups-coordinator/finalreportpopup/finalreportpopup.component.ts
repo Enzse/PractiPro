@@ -41,61 +41,81 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-    this.service.getSubmissionsByStudent('finalreports', this.data.usercode).subscribe(
-      (res: any) => {
-        this.studentSubmissions = res.payload;
-        this.isLoading = false;
-        console.log(this.studentSubmissions);
-      },
-      (error: any) => {
-        console.error('Error fetching student submissions:', error);
-      }
-    ));
+      this.service.getSubmissionsByStudent('finalreports', this.data.usercode).subscribe(
+        (res: any) => {
+          this.studentSubmissions = res.payload.sort((a: any, b: any) => {
+            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+          });
+          this.isLoading = false;
+          console.log(this.studentSubmissions);
+        },
+        (error: any) => {
+          console.error('Error fetching student submissions:', error);
+        }
+      ));
   }
 
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-    this.service.updateAdvisorApproval('finalreports', record.id, updateData).subscribe(
-      res => {
-        this.changeDetection.notifyChange(true);
-        console.log('Status updated successfully:', res);
-      },
-      error => {
-        console.error('Error updating status:', error);
-      }
-    ));
+      this.service.updateAdvisorApproval('finalreports', record.id, updateData).subscribe(
+        res => {
+          this.changeDetection.notifyChange(true);
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Submission successfully set to '${record.advisor_approval}'.`,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        },
+        error => {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Error occured. You might no have permission to edit this record.`,
+            icon: "error",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+      ));
   }
 
   viewFile(submissionId: number) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('finalreports', submissionId).subscribe(
-      (data: any) => {
-        const popup = this.dialog2.open(PdfviewerComponent, {
-          enterAnimationDuration: "0ms",
-          exitAnimationDuration: "500ms",
-          width: "90%",
-          data: {
-            selectedPDF: data
-          }
-        })
-      },
-      (error: any) => {
-        console.error('Error viewing submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('finalreports', submissionId).subscribe(
+        (data: any) => {
+          const popup = this.dialog2.open(PdfviewerComponent, {
+            enterAnimationDuration: "0ms",
+            exitAnimationDuration: "500ms",
+            width: "90%",
+            data: {
+              selectedPDF: data
+            }
+          })
+        },
+        (error: any) => {
+          console.error('Error viewing submission:', error);
+        }
+      ));
   }
 
   downloadFile(submissionId: number, submissionName: string) {
     this.subscriptions.add(
-    this.service.getSubmissionFile('finalreports', submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, submissionName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    ));
+      this.service.getSubmissionFile('finalreports', submissionId).subscribe(
+        (data: any) => {
+          saveAs(data, submissionName);
+        },
+        (error: any) => {
+          console.error('Error downloading submission:', error);
+        }
+      ));
   }
 
   deleteSubmission(submissionId: number) {
@@ -110,23 +130,23 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-        this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
-          Swal.fire({
-            title: "The submission has been deleted",
-            icon: "success"
-          });
-          this.loadData();
-        }, error => {
-          Swal.fire({
-            title: "Delete failed",
-            text: "You may not have permission to delete this file.",
-            icon: "error"
-          });
-        }));
+          this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
+            Swal.fire({
+              title: "The submission has been deleted",
+              icon: "success"
+            });
+            this.loadData();
+          }, error => {
+            Swal.fire({
+              title: "Delete failed",
+              text: "You may not have permission to delete this file.",
+              icon: "error"
+            });
+          }));
       }
     });
   }
-  
+
   viewComments(submissionId: number, fileName: string) {
     const popup = this.dialog2.open(CommentspopupComponent, {
       enterAnimationDuration: "350ms",
@@ -139,9 +159,9 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
       }
     })
     this.subscriptions.add(
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    }));
+      popup.afterClosed().subscribe(res => {
+        this.loadData()
+      }));
   }
 
 }
