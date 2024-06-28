@@ -52,7 +52,7 @@
                 </tr>
               </thead>
               <tbody class="font-secondary">
-                <tr *ngFor="let student of studentlist |  paginate: { itemsPerPage: 8, currentPage: p  } | filter: searchtext" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr *ngFor="let student of studentlist | filter : searchtext | paginate: { itemsPerPage: 8, currentPage: p  }" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th scope="row" class="px-6 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {{ student.studentId || 'Not set' }}
                   </th>

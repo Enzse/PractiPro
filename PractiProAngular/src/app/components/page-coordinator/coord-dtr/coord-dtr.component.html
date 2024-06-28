@@ -52,7 +52,7 @@
               </thead>
               <tbody class="font-secondary">
                 <tr
-                  *ngFor="let students of studentlist |  paginate: { itemsPerPage: 8, currentPage: p  } | filter : searchtext"
+                  *ngFor="let students of studentlist | filter : searchtext | paginate: { itemsPerPage: 8, currentPage: p  }"
                   class="bg-white border-b hover:bg-slate-100 dark:bg-gray-800 dark:border-gray-700">
                   <th scope="row"
                     class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white text-center">
