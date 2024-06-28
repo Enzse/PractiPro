@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { TermsofserviceComponent } from '../../popups/popups-registration/termsofservice/termsofservice.component';
@@ -17,7 +17,6 @@ import { passwordStrengthValidator } from '../../../validators/password-strength
   styleUrl: './reset-password-form.component.css'
 })
 export class ResetPasswordFormComponent implements OnInit {
-  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private dialog: MatDialog) { }
   registerform = this.builder.group({
     firstName: this.builder.control('', Validators.required),
     lastName: this.builder.control('', Validators.required),
@@ -29,8 +28,13 @@ export class ResetPasswordFormComponent implements OnInit {
     program: this.builder.control('', [Validators.required]),
     year: this.builder.control('', [Validators.required]),
   });
+  token:string;
+  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private route:ActivatedRoute) {
+    this.token = this.route.snapshot.queryParams['token'];
+    console.log(this.token);
+   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.registerform.patchValue({
       role: 'student'
     });
@@ -69,15 +73,5 @@ export class ResetPasswordFormComponent implements OnInit {
     }
   }
 
-  termsOfService() {
-    const popup = this.dialog.open(TermsofserviceComponent, {
-      enterAnimationDuration: "350ms",
-      exitAnimationDuration: "300ms",
-      width: 'auto',
-      height: '90%',
-      data: {
-      }
-    })
-  }
 
 }

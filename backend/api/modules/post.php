@@ -891,7 +891,8 @@ class Post extends GlobalMethods
             $mail->addAddress($data->email);
             $mail->Subject = "Password Reset";
             $mail->Body = <<<END
-            Click <a href="google.com">here</a> to reset your password.
+            Click <a href="http://localhost:4200/resetpassword?token=$token">here</a> to reset your password.
+
             END;
 
             try {

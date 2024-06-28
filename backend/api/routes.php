@@ -278,6 +278,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'getresettoken':
+                if (isset($request[1])) {
+                    echo json_encode($get->getResetPasswordToken($request[1]));
+                } else {
+                    echo "No Token Provided!";
+                    http_response_code(400);
+                }
+                break;
+
             default:
                 echo "This is forbidden";
                 http_response_code(403);

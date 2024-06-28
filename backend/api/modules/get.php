@@ -435,4 +435,25 @@ class Get extends GlobalMethods
         return $this->get_records('student_ojt_schedules', $condition);
     }
 
+    public function getResetPasswordToken($token)
+    {
+        $token_hash = hash("sha256", $token);
+
+        $sql = "SELECT * FROM user WHERE reset_token_hash = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$token_hash]);
+        $matchinguser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        //Check if a matching user was found
+        if (!$matchinguser) {
+            return $this->sendPayload(null, 'failed', "Token Not Found", 404);
+        }
+        //Check if the token has expired
+        if (strtotime($matchinguser['reset_token_expires_at']) <= time()) {
+            return $this->sendPayload(null, 'failed', "Token Expired", 400);
+        }
+
+        return $this->sendPayload(null, 'success', "Token Found!", 200);
+    }
+
 }
