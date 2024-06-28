@@ -858,6 +858,67 @@ class Post extends GlobalMethods
         }
     }
 
+    public function resetPasswordToken($data)
+    {
+        $sql = "SELECT email FROM user WHERE email = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$data->email]);
+        $email = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$email) {
+            return $this->sendPayload(null, "failed", "Email not found.", 404);
+        }
+
+        $token = bin2hex(random_bytes(16));
+        $token_hash = hash("sha256", $token);
+        $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
+        $sql = "UPDATE user SET reset_token_hash = ?, reset_token_expires_at = ?
+                WHERE email = ?";
+        $stmt = $this->pdo->prepare($sql);
+        try {
+            $this->pdo->beginTransaction();
+            $stmt->execute([
+                $token_hash,
+                $expiry,
+                $data->email
+            ]);
+            $this->pdo->commit();     
+            
+            
+            require __DIR__ . "../../src/Mailer.php";
+            $mail = initializeMailer();
+
+            $mail->setFrom("GCPractiPro@gcpractipro.online", "GCPractiProAdmin");
+            $mail->addAddress($data->email);
+            $mail->Subject = "Password Reset";
+            $mail->Body = <<<END
+            Click <a href="google.com">here</a> to reset your password.
+            END;
+
+            try {
+                $mail->send();
+                return $this->sendPayload(null, "success", "Successfully generated reset token.", 200);
+            } catch (Exception $e) {
+                $this->pdo->rollBack();
+                $code = 400;
+                return $this->sendPayload(null, "failed", $mail->ErrorInfo, $code);
+            }
+
+
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+
+
+
+
+
+
+
 }
 
 

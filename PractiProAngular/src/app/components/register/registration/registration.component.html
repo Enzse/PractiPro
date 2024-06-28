@@ -1,5 +1,6 @@
 <div class="relative">
-  <div class="w-2/4 fixed inset-0 bg-cover bg-right blur-md" style="background-image: url('../../../assets/logo.png')"></div>
+  <div class="w-2/4 fixed inset-0 bg-cover bg-right blur-md max-sm:hidden"
+    style="background-image: url('../../../assets/logo.png')"></div>
   <div class="relative z-10">
     <!-- background -->
     <div class="background"></div>
@@ -8,49 +9,67 @@
       <!-- header -->
       <div class="max-md:mb-4 w-full h-10 p-4 flex justify-items-start font-primary">
         <a routerLink="/login" routerLinkActive="active" class="flex flex-row h-7 justify-items-center text-gray-900">
-          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m15 19-7-7 7-7" />
+          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+            width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="m15 19-7-7 7-7" />
           </svg>
           <span class="ml-2 text-center">Login</span>
         </a>
       </div>
-      
+
       <!-- img and forms div -->
-      <div class="flex-row p-8 max-md:flex-col grid grid-flow-col max-md:p-0 max-xl:mt-0 max-xl:p-0 max-md:grid-flow-row">
-        <div class="h-auto text-3xl p-2 -mt-16 mx-16 max-md:my-auto max-md:mx-auto text-center flex justify-center max-md:size-2/4 flex-col max-md:text-2xl">
+      <div
+        class="flex-row p-8 max-md:flex-col grid grid-flow-col max-md:p-0 max-xl:mt-0 max-xl:p-0 max-md:grid-flow-row">
+        <div
+          class="h-auto text-3xl p-2 -mt-16 mx-16 max-md:my-auto max-md:mx-auto text-center flex justify-center max-md:size-2/4 flex-col max-md:text-2xl">
           <img src="../../../assets/logo.png" alt="PractiPro" />
           <h1 class="-mt-8 max-md:-mt-0">Practi<span class="text-orange-500">Pro</span></h1>
         </div>
-        
+
         <div class="px-10 py-5 max-sm:mt-4 max font-secondary">
           <form [formGroup]="registerform" (ngSubmit)="proceedregistration()">
             <div class="grid gap-2 mb-6 md:grid-cols-2">
               <div>
-                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First name</label>
+                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
+                  name</label>
                 <input type="text" id="first_name"
                   class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="First name" formControlName="firstName" />
               </div>
               <div>
-                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last name</label>
+                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
+                  name</label>
                 <input type="text" id="last_name"
                   class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Last name" formControlName="lastName" />
               </div>
               <div>
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email address</label>
+                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
+                  address</label>
                 <input type="email" id="email"
                   class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="(2022XXXXX@gordoncollege.edu.ph)" formControlName="email" />
+                <div *ngIf="registerform.get('email')?.hasError('emailDomain') && registerform.get('email')?.touched">
+                  <p class="text-xs text-red-500">Email must be from the domain &#64;gordoncollege.edu.ph.</p>
+                </div>
               </div>
               <div>
-                <label for="studentId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student ID</label>
+                <label for="studentId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Student
+                  ID</label>
                 <input type="text" id="studentId"
                   class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="(202211557)" formControlName="studentId" />
+                <div *ngIf="registerform.get('studentId')?.touched">
+                  <p *ngIf="registerform.get('studentId')?.hasError('minlength')" class="text-xs text-red-500">
+                    Student ID must be exactly 9 characters long.</p>
+                  <p *ngIf="registerform.get('studentId')?.hasError('maxlength')" class="text-xs text-red-500">
+                    Student ID must be exactly 9 characters long.</p>
+                </div>
               </div>
               <div>
-                <label for="program" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Program</label>
+                <label for="program"
+                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Program</label>
                 <select id="program" formControlName="program"
                   class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <option value="" disabled selected hidden>Select Program:</option>
@@ -62,7 +81,8 @@
                 </select>
               </div>
               <div>
-                <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year Level</label>
+                <label for="year" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year
+                  Level</label>
                 <select id="year" formControlName="year"
                   class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   <option value="" disabled selected hidden>Select Year Level:</option>
@@ -74,10 +94,14 @@
               </div>
             </div>
             <div class="mb-6">
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password <span class="opacity-60">(Requires 1 uppercase letter, 1 lowercase letter, and 1 number)</span></label>
+              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
               <input type="password" id="password"
                 class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 placeholder="(Please read label for password strength)" formControlName="password" />
+              <p *ngIf="registerform.get('password')?.hasError('shortPassword')" class="text-xs text-red-500">Password
+                must be at least 8 characters long.</p>
+              <p *ngIf="registerform.get('password')?.hasError('weakPassword')" class="text-xs text-red-500">(Requires 1
+                uppercase letter, 1 lowercase letter, and 1 number)</p>
             </div>
             <div class="flex items-start mb-6">
               <div class="flex items-center h-5">
@@ -85,7 +109,8 @@
                   class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
                   required />
               </div>
-              <label class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Have you already purchased a copy of 'Practicum Manual for ITE Students'?</label>
+              <label class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Have you already purchased a copy
+                of 'Practicum Manual for ITE Students'?</label>
             </div>
             <div class="flex items-start mb-6">
               <div class="flex items-center h-5">
@@ -93,7 +118,8 @@
                   class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
                   required />
               </div>
-              <label class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree to PractiPro's <a class="text-blue-500 cursor-pointer" (click)="termsOfService()">Terms of Service</a></label>
+              <label class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree to PractiPro's <a
+                  class="text-blue-500 cursor-pointer" (click)="termsOfService()">Terms of Service</a></label>
             </div>
             <div class="flex justify-center">
               <button type="submit" [class.disabled]="!registerform.valid"
@@ -103,7 +129,7 @@
             </div>
           </form>
         </div>
-      </div>  
+      </div>
     </div>
   </div>
 </div>

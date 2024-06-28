@@ -327,4 +327,8 @@ export class AuthService {
     return this.http.delete(`${this.apiurl}/unassignschedules/${id}`);
   };
 
+  resetPasswordToken(inputdata: any) {
+    return this.http.post(`${this.apiurl}/resetpasswordtoken`, inputdata);
+  }
+
 }

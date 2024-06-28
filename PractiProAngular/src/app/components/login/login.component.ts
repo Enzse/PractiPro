@@ -9,6 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 import { MatDialog } from '@angular/material/dialog';
 import { ChooseRolePopupComponent } from '../popups/popups-registration/choose-role-popup/choose-role-popup.component';
+import { ForgotpasswordComponent } from '../popups/popups-registration/forgotpassword/forgotpassword.component';
 
 @Component({
   selector: 'app-login',
@@ -96,8 +97,16 @@ export class LoginComponent {
       data: {
       }
     })
+  }
 
-
+  forgotPassword() {
+    const popup = this.dialog.open(ForgotpasswordComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "300ms",
+      width: 'auto',
+      data: {
+      }
+    })
   }
 
 
