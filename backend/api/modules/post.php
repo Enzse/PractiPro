@@ -910,10 +910,31 @@ class Post extends GlobalMethods
             $errmsg = $e->getMessage();
             $code = 400;
             return $this->sendPayload(null, "failed", $errmsg, $code);
-        }
+        }       
     }
 
-
+    public function resetPassword($data)
+    {
+        $this->pdo->beginTransaction();
+        try {
+            $hashed_password = password_hash($data->password, PASSWORD_DEFAULT);
+            $token_hash = hash("sha256", $data->token);
+            
+            $sql = "UPDATE user 
+                    SET password = ?, reset_token_hash = NULL, reset_token_expires_at = NULL  
+                    WHERE reset_token_hash = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                $hashed_password,
+                $token_hash
+            ]);
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully reset password", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->handleException($e);
+        }
+    }
 
 
 

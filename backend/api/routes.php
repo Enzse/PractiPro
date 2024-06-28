@@ -454,6 +454,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode($post->resetPasswordToken($data));
                 break;
 
+            case 'resetpassword':
+                echo json_encode($post->resetPassword($data));
+                break;
+
             default:
                 // Return a 403 response for unsupported requests
                 echo "No Such Request";

@@ -4,11 +4,9 @@ import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { TermsofserviceComponent } from '../../popups/popups-registration/termsofservice/termsofservice.component';
-import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { emailDomainValidator } from '../../../validators/email-domain.validator';
 import { passwordStrengthValidator } from '../../../validators/password-strength.validator';
+import { passwordMatchValidator } from '../../../validators/password-match.validator';
 @Component({
   selector: 'app-reset-password-form',
   standalone: true,
@@ -17,52 +15,51 @@ import { passwordStrengthValidator } from '../../../validators/password-strength
   styleUrl: './reset-password-form.component.css'
 })
 export class ResetPasswordFormComponent implements OnInit {
-  registerform = this.builder.group({
-    firstName: this.builder.control('', Validators.required),
-    lastName: this.builder.control('', Validators.required),
-    email: this.builder.control('', Validators.compose([Validators.required, Validators.email, emailDomainValidator('gordoncollege.edu.ph')])),
+  passwordForm = this.builder.group({
     password: this.builder.control('', [Validators.required, passwordStrengthValidator]),
-    terms: [false, Validators.requiredTrue],
-    role: this.builder.control('', [Validators.required]),
-    studentId: this.builder.control('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]),
-    program: this.builder.control('', [Validators.required]),
-    year: this.builder.control('', [Validators.required]),
-  });
-  token:string;
-  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private route:ActivatedRoute) {
-    this.token = this.route.snapshot.queryParams['token'];
-    console.log(this.token);
-   }
+    repeatPassword: this.builder.control('', [Validators.required, passwordMatchValidator]),
+    token: this.builder.control('')
+  }, { validators: passwordMatchValidator });
+  token: string;
+  status: any;
 
-  ngOnInit(): void {    
-    this.registerform.patchValue({
-      role: 'student'
+  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private route: ActivatedRoute) {
+    this.token = this.route.snapshot.queryParams['token'];    
+    // alert(this.token);
+    // Swal.fire({
+    //   title: `${this.token}`
+    // });
+  }
+
+  ngOnInit(): void {
+    this.service.getResetPasswordToken(this.token).subscribe((res: any) => {
+      this.status = 'valid';
+      this.passwordForm.patchValue({
+        token: this.token
+      })
+    }, error => {
+      if (error.status === 401) {
+        this.status = 'expired';
+        alert("This request for password reset has expired. Please issue another request. You are now being redirected to the login page.");
+        this.router.navigate(['/login']);
+      }
+      if (error.status === 404) {
+        this.status = 'invalid';
+        alert("No such token is found. You are now being redirected to the login page.");
+        this.router.navigate(['/login']);
+      }
     });
   }
 
-  proceedregistration() {
-    if (this.registerform.valid) {
-      this.service.proceedRegister(this.registerform.value).subscribe(() => {
+  proceedReset() {
+    if (this.passwordForm.valid) {
+      this.service.resetPassword(this.passwordForm.value).subscribe(() => {
         this.router.navigate(['login']);
         Swal.fire({
-          title: "Registration Successful!",
-          text: "Please wait for admin activation.",
+          title: "Password Reset Successful!",
+          text: "Be sure to remember your new password.",
           icon: "success"
         });
-      }, error => {
-        if (error.status === 400) {
-          Swal.fire({
-            title: "Email already exists!",
-            text: 'Please use a different email address.',
-            icon: "warning"
-          });
-        } else if (error.status === 409) {
-          Swal.fire({
-            title: "Student already exists!",
-            text: 'Please use a different Student ID.',
-            icon: "warning"
-          });
-        }
       });
     } else {
       Swal.fire({

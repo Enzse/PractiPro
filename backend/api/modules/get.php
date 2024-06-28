@@ -450,7 +450,7 @@ class Get extends GlobalMethods
         }
         //Check if the token has expired
         if (strtotime($matchinguser['reset_token_expires_at']) <= time()) {
-            return $this->sendPayload(null, 'failed', "Token Expired", 400);
+            return $this->sendPayload(null, 'failed', "Token Expired", 401);
         }
 
         return $this->sendPayload(null, 'success', "Token Found!", 200);

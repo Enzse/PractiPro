@@ -221,14 +221,14 @@ export class AuthService {
     formData.append('file', file)
     return this.http.post(`${this.apiurl}/uploadevaluation/${userId}/${studentId}`, formData);
   }
-  
+
   uploadSeminarRecord(studentId: number, data: any) {
     return this.http.post(`${this.apiurl}/uploadseminarrecord/${studentId}`, data);
   }
   getSeminarRecords(studentId: number) {
     return this.http.get<any>(`${this.apiurl}/student-seminarrecords/${studentId}`);
   }
-  deletSeminarRecord(id:number) {
+  deletSeminarRecord(id: number) {
     return this.http.delete(`${this.apiurl}/deleteseminarrecord/${id}`);
   };
   uploadSeminarCertificate(studentId: number, file: File) {
@@ -329,6 +329,12 @@ export class AuthService {
 
   resetPasswordToken(inputdata: any) {
     return this.http.post(`${this.apiurl}/resetpasswordtoken`, inputdata);
+  }
+  getResetPasswordToken(token:any) {
+    return this.http.get<any>(`${this.apiurl}/getresettoken/${token}`);
+  }
+  resetPassword(inputdata: any) {
+    return this.http.post(`${this.apiurl}/resetpassword`, inputdata);
   }
 
 }
