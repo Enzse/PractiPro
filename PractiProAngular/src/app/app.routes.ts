@@ -47,6 +47,7 @@ import { studentrequirementsGuard } from './guard/studentrequirements.guard';
 import { studenthoursworkedGuard } from './guard/studenthoursworked.guard';
 import { CoordSeminarsComponent } from './components/page-coordinator/coord-seminars/coord-seminars.component';
 import { ResetPasswordFormComponent } from './components/reset-password/reset-password-form/reset-password-form.component';
+import { ActivateAccountComponent } from './components/redirects/activate-account/activate-account/activate-account.component';
 
 
 export const routes: Routes = [
@@ -59,6 +60,7 @@ export const routes: Routes = [
     { path: 'registrationadmin', component: RegistrationadminComponent, title: 'Registration' },
     { path: 'registrationsupervisor', component: RegistrationsupervisorComponent, title: 'Registration' },
     { path: 'resetpassword', component: ResetPasswordFormComponent, title: 'Reset Password' },
+    { path: 'activateaccount', component: ActivateAccountComponent, title: 'Activate Account' },
 
     //Student Pages
     {

@@ -337,4 +337,11 @@ export class AuthService {
     return this.http.post(`${this.apiurl}/resetpassword`, inputdata);
   }
 
+  getAccountActivationToken(token:any) {
+    return this.http.get<any>(`${this.apiurl}/getactivationtoken/${token}`);
+  }
+  activateAccount(inputdata: any) {
+    return this.http.post(`${this.apiurl}/activateaccount`, inputdata);
+  }
+
 }

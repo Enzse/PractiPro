@@ -1,104 +1,1611 @@
-<div class="max-h-screen overflow-auto p-5 xl:p-10">
-    <div>
-        <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg text-center mb-1 ms-0">
-            Student OJT Performance Evaluation
-        </h1>
-        <div class="border-b border-gray-300"></div>
-        <br />
+<div class="w-full h-screen overflow-y-scroll">
+  <div class="p-5 w-full">
+      
+      <!-- header -->
+    <div class="w-full">
+      <p class="mb-6 text-base font-primary text-gray-500 dark:text-gray-400">
+        Direction: Please evaluate the student according to company
+        standards/job specifications and individual standard of performance.
+        Check on the appropriate spaces opposite each item, the characteristics
+        you think best describe the student-trainee based on the following
+        ratings:
+      </p>
     </div>
 
-    <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
-        Kindly download the template and fill out the form for this student's <b>OJT Performance Evaluation</b>.
-    </p>
-    <br />
-
-    <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
-        <form [ngClass]="{'hidden':pdfPreview}" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="FinalReport" name="FinalReport" (change)="onFileChange($event)" />
-        </form>
-        <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-          class="object-cover object-center w-full h-96 rounded-md" />
-        <div class="flex justify-between items-center max-sm:text-xs pt-3">
-            <button type="button" (click)="viewTemplate()"
-            class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="inline -mt-0.5 lucide lucide-file-search">
-              <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-              <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
-              <path d="m9 18-1.5-1.5" />
-              <circle cx="5" cy="14" r="3" />
-            </svg>
-            View Form Sheet <b>(Answerable)</b>
-          </button>
-          <button type="button" (click)="submitFiles()"
-            class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-              class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-              <path d="m18 9-6-6-6 6" />
-              <path d="M12 3v14" />
-              <path d="M5 21h14" />
-            </svg>
-            Submit File
-          </button>
-
+    <div class="text-center justify-center my-5">
+        <p><b>Rating Scale:</b></p>
+        <div class="flex text-center justify-center gap-6 text-sm">
+          <p>5 - Excellent</p>
+          <p>4 - Very Good</p>
+          <p>3 - Good</p>
+          <p>2 - Fair</p>
+          <p>1 - Poor</p>
         </div>
-    </div>
+      </div>
 
-    <div class="mt-14 mb-5">
-        <div class="border-b border-gray-300"></div>
-        <h1 class="text-orange-500 ml-5 font-bold text-lg max-sm:text-sm mb-1 mt-4 font-primary">
-            Your Submitted Evaluations for '{{data.student.firstName}} {{data.student.lastName}}'':
-        </h1>
-    </div>
-    <div *ngIf="datalist.length > 0; else noDataMessage"
-        class="relative overflow-x-auto shadow-md border border-gray-300 sm:rounded-lg">
-        <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                    <th scope="col" class="px-6 py-3 font-secondary">File name</th>
-                    <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
-                    <th scope="col" class="px-6 py-3 font-secondary">File</th>
-                    <th scope="col" class="px-6 py-3 font-secondary">Delete</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let data of datalist" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td class="px-6 py-4">
-                        {{ data.file_name }}
-                    </td>
-                    <td class="px-6 py-4">
-                        {{ data.created_at | date: "medium"}}
-                    </td>
-                    <td class="px-6 py-4">
-                        <button (click)="viewFile(data.id)"
-                            class="focus:outline-none text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            View File</button>
-                    </td>
-                    <td class="px-6 py-4">
-
-                        <button
-                            class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                            (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
-                                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                fill="white" viewBox="0 0 24 24">
-                                <path fill-rule="evenodd"
-                                    d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                        </button>
-
-
-                    </td>
-                </tr>
-            </tbody>
+    <form action="">
+      <!-- table -->
+      <div
+        class="relative overflow-x-auto shadow-md sm:rounded-lg border border-gray-300"
+      >
+        <table
+          class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+        >
+          <!-- KNOWLEDGE -->
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          >
+            <tr>
+              <th scope="col" class="px-6 py-3 w-[70%] text-center">
+                KNOWLEDGE
+              </th>
+              <th scope="col" class="px-6 py-3">1</th>
+              <th scope="col" class="px-6 py-3">2</th>
+              <th scope="col" class="px-6 py-3">3</th>
+              <th scope="col" class="px-6 py-3">4</th>
+              <th scope="col" class="px-6 py-3">5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                1. Identifies problems, gathers data related to the problem,
+                analyzes the data gathered and selects appropriate actions.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                2. Sets priorities in the workplace based on the identified
+                needs.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                3. Formulates plan based on priority needs and problems in the
+                workplace.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                4. Promotes Safety measures in all aspects of the job assigned
+                to him/her.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                5. Applies appropriate IT/CS principles on the task at hand.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+          </tbody>
+          <!-- SKILLS -->
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          >
+            <tr>
+              <th scope="col" class="px-6 py-3 w-[70%] text-center">SKILLS</th>
+              <th scope="col" class="px-6 py-3">1</th>
+              <th scope="col" class="px-6 py-3">2</th>
+              <th scope="col" class="px-6 py-3">3</th>
+              <th scope="col" class="px-6 py-3">4</th>
+              <th scope="col" class="px-6 py-3">5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                1. Analyzes the tasks assigned to him/her.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                2. Works with thoroughness, accuracy, orderliness and neatness.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                3. Sets systems objectives in their order of priority.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                4. Has the initiative and ingenuity in finding ways and means to
+                accomplish objectives.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                5. Relates IT/CS principles correctly to the assigned task.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                6. Prepares and administers necessary and appropriate evaluation
+                for the accomplished work
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                7. Maintains accurate and updated documentation of the work
+                done.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                8. Provides safety measures for the prevention of accidents.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+          </tbody>
+          <!-- ATTITUDE -->
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          >
+            <tr>
+              <th scope="col" class="px-6 py-3 w-[70%] text-center">
+                ATTITUDE
+              </th>
+              <th scope="col" class="px-6 py-3">1</th>
+              <th scope="col" class="px-6 py-3">2</th>
+              <th scope="col" class="px-6 py-3">3</th>
+              <th scope="col" class="px-6 py-3">4</th>
+              <th scope="col" class="px-6 py-3">5</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                1. Reports in the workplace on time regularly.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                2. Never leaves the area without permission from his/her
+                superior.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                3. Practices good grooming.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                4. Carries self with dignity and respect, projects a positive
+                self-image.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                5. Observes personal and professional decorum.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                6. Establishes friendliness but not familiarity.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                7. Gives due respect to the superiors; always tactful in dealing
+                with them.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                8. Behaves in accordance with the set policies and standards of
+                the university and company
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                9. Works collaboratively and cooperates with other members of
+                the company as necessary.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                10. Works harmoniously with others towards overall efficiency of
+                the organization.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                11 Accepts constructive criticisms and suggestions given by
+                superior and co-worker.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                12. Helps in keeping the immediate environment clean and
+                orderly.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+            <tr
+              class="bg-white w-full border-b "
+            >
+              <th
+                scope="row"
+                class="px-6 w-[70%] py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white"
+              >
+                13. Submits requirements on time.
+              </th>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+              <td class="px-6 py-4">
+                <input
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+              </td>
+            </tr>
+          </tbody>
+          <!-- TOTAL -->
+          <thead
+            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+          >
+            <tr>
+              <td scope="col" class="px-6 py-3 w-[70%] text-center">TOTAL</td>
+              <td scope="col" class="px-6 py-3">__</td>
+              <td scope="col" class="px-6 py-3">__</td>
+              <td scope="col" class="px-6 py-3">__</td>
+              <td scope="col" class="px-6 py-3">__</td>
+              <td scope="col" class="px-6 py-3">__</td>
+            </tr>
+          </thead>
         </table>
-    </div>
-</div>
+      </div>
+      <!-- OVERALL PERFORMANCE: -->
+      <div>
+        <div class="mt-5">
+          <h3 class="mb-2.5 ms-1 font-semibold text-gray-900 dark:text-white">
+            OVERALL PERFORMANCE:
+          </h3>
+          <ul
+            class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          >
+            <li
+              class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
+            >
+              <div class="flex items-center ps-3">
+                <input
+                  id="excellent"
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+                <label
+                  for="excellent"
+                  class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >Excellent</label
+                >
+              </div>
+            </li>
+            <li
+              class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
+            >
+              <div class="flex items-center ps-3">
+                <input
+                  id="very-good"
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+                <label
+                  for="very-good"
+                  class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >Very Good</label
+                >
+              </div>
+            </li>
+            <li
+              class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
+            >
+              <div class="flex items-center ps-3">
+                <input
+                  id="good"
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+                <label
+                  for="good"
+                  class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >Good</label
+                >
+              </div>
+            </li>
+            <li
+              class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
+            >
+              <div class="flex items-center ps-3">
+                <input
+                  id="fair"
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+                <label
+                  for="fair"
+                  class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >Fair</label
+                >
+              </div>
+            </li>
+            <li
+              class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600"
+            >
+              <div class="flex items-center ps-3">
+                <input
+                  id="poor"
+                  type="radio"
+                  value=""
+                 
+                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0"
+                />
+                <label
+                  for="poor"
+                  class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  >Poor</label
+                >
+              </div>
+            </li>
+          </ul>
+        </div>
 
-<ng-template #noDataMessage>
-    <h1 class="text-center font-secondary">
-        You have not submitted any files yet.
-    </h1>
-</ng-template>
+        <div class="mt-5">
+          <label
+            for="message"
+            class="mb-2.5 ms-1 font-semibold text-gray-900 dark:text-white"
+            >STUDENT’S MAJOR STRONG POINTS ARE:
+          </label>
+          <textarea
+            id="message"
+            rows="4"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Write your thoughts here..."
+          ></textarea>
+        </div>
+
+        <div class="mt-5">
+          <label
+            for="message"
+            class="mb-2.5 ms-1 font-semibold text-gray-900 dark:text-white"
+            >THESE MIGHT BE UTILIZED MORE EFFECTIVELY BY:
+          </label>
+          <textarea
+            id="message"
+            rows="4"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Write your thoughts here..."
+          ></textarea>
+        </div>
+
+        <div class="mt-5">
+          <label
+            for="message"
+            class="mb-2.5 ms-1 font-semibold text-gray-900 dark:text-white"
+            >STUDENT’S MAJOR WEAK POINTS ARE:
+          </label>
+          <textarea
+            id="message"
+            rows="4"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Write your thoughts here..."
+          ></textarea>
+        </div>
+
+        <div class="mt-5">
+          <label
+            for="message"
+            class="mb-2.5 ms-1 font-semibold text-gray-900 dark:text-white"
+            >THESE MIGHT BE CORRECTED BY:
+          </label>
+          <textarea
+            id="message"
+            rows="4"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Write your thoughts here..."
+          ></textarea>
+        </div>
+
+        <div class="mt-5">
+          <label
+            for="message"
+            class="mb-2.5 ms-1 font-semibold text-gray-900 dark:text-white"
+            >OTHER COMMENTS / SUGGESTIONS:
+          </label>
+          <textarea
+            id="message"
+            rows="4"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Write your thoughts here..."
+          ></textarea>
+        </div>
+
+        <div class="mt-5">
+          <label
+            for="message"
+            class="mb-2.5 ms-1 font-semibold text-gray-900 dark:text-white"
+            >WOULD YOU RECOMMEND THIS STUDENT FOR FURTHER EMPLOYMENT IN YOUR OWN
+            FIRM?
+          </label>
+          <textarea
+            id="message"
+            rows="4"
+            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Write your thoughts here..."
+          ></textarea>
+        </div>
+      </div>
+      <button type="submit" class="text-white mt-3.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+
+    </form>
+
+    <footer class="mb-6 mt-7 text-center text-sm w-full font-primary text-gray-500 dark:text-gray-400">
+        THIS WORKSHEET TEMPLATE IS USED FROM THE PRACTICUM MANUAL FOR ITE STUDENTS,
+        © 2023, AUTHORED BY ERLINDA S. CASELA-ABARINTOS, BERNANDINO P. MALANG, AND
+        ARNOLD P. VERGARA. ALL RIGHTS RESERVED. THIS MATERIAL IS BEING USED FOR
+        ACADEMIC PURPOSES AS PART OF OUR COURSEWORK AT GORDON COLLEGE OLONGAPO
+      </footer>
+  </div>
+</div>

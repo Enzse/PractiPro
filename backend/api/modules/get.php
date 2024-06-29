@@ -456,4 +456,20 @@ class Get extends GlobalMethods
         return $this->sendPayload(null, 'success', "Token Found!", 200);
     }
 
+    public function getAccountActivationToken($token)
+    {
+        $token_hash = hash("sha256", $token);
+
+        $sql = "SELECT * FROM user WHERE account_activation_hash = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$token_hash]);
+        $matchinguser = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        //Check if a matching user was found
+        if (!$matchinguser) {
+            return $this->sendPayload(null, 'failed', "Token Not Found", 404);
+        }
+        return $this->sendPayload(null, 'success', "Token Found!", 200);
+    }
+
 }

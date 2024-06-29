@@ -42,9 +42,10 @@ export class RegistrationComponent implements OnInit {
       this.service.proceedRegister(this.registerform.value).subscribe(() => {
         this.router.navigate(['login']);
         Swal.fire({
-          title: "Registration Successful!",
-          text: "Please wait for admin activation.",
-          icon: "success"
+          title: "Email Confirmation Sent!",
+          text: "Please check your email for account activation.",
+          icon: "success",
+          footer: "(This to prove the email is <b>valid </b>and is <b>yours</b>.)"
         });
       }, error => {
         if (error.status === 400) {

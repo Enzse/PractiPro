@@ -49,9 +49,8 @@ class Post extends GlobalMethods
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([$email]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return $result; // Return email or null
+            return $result;
         } catch (PDOException $e) {
-            // Handle database error
             return array();
         }
     }
@@ -61,20 +60,42 @@ class Post extends GlobalMethods
         $this->pdo->beginTransaction();
         try {
             $hashed_password = password_hash($data->password, PASSWORD_DEFAULT);
-            $sql = "INSERT INTO user (firstName, lastName, email, password, role) VALUES (?, ?, ?, ?, ?)";
+            $activation_token = bin2hex(random_bytes(16));
+            $activation_token_hash = hash("sha256", $activation_token);
+            $sql = "INSERT INTO user (firstName, lastName, email, password, role, account_activation_hash) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 $data->firstName,
                 $data->lastName,
                 $data->email,
                 $hashed_password,
-                $data->role
+                $data->role,
+                $activation_token_hash
             ]);
+
 
             $this->registerRoleSpecificData($data);
 
             $this->pdo->commit();
-            return $this->sendPayload(null, "success", "Successfully registered user", 200);
+            require __DIR__ . "../../src/Mailer.php";
+            $mail = initializeMailer();
+
+            $mail->setFrom("GCPractiPro@gcpractipro.online", "GCPractiProAdmin");
+            $mail->addAddress($data->email);
+            $mail->Subject = "Account Activation";
+            $mail->Body = <<<END
+            Click <a href="http://localhost:4200/activateaccount?token=$activation_token">here</a> to activate your account.
+
+            END;
+
+            try {
+                $mail->send();
+                return $this->sendPayload(null, "success", "Successfully sent activation email", 200);
+            } catch (Exception $e) {
+                $this->pdo->rollBack();
+                $code = 400;
+                return $this->sendPayload(null, "failed", $mail->ErrorInfo, $code);
+            }            
         } catch (PDOException $e) {
             $this->pdo->rollBack();
             return $this->handleException($e);
@@ -94,7 +115,6 @@ class Post extends GlobalMethods
                 $this->registerSupervisor($data);
                 break;
             case 'admin':
-                // No additional data to register for admin
                 break;
             default:
                 throw new Exception("Unknown role: " . $data->role);
@@ -163,27 +183,6 @@ class Post extends GlobalMethods
             $data->email
         ]);
     }
-
-    // private function registerSupervisor($data)
-    // {
-    //     $sql = "INSERT INTO industry_partners (company_name, address) VALUES (?, ?)";
-    //     $stmt = $this->pdo->prepare($sql);
-    //     $stmt->execute([
-    //         $data->company_name,
-    //         $data->address
-    //     ]);
-    //     $company_id = $this->pdo->lastInsertId();
-
-    //     $sql = "UPDATE supervisors SET company_id = ?, position = ?, phone = ? WHERE email = ?";
-    //     $stmt = $this->pdo->prepare($sql);
-    //     $stmt->execute([
-    //         $company_id,
-    //         $data->position,
-    //         $data->phone,
-    //         $data->email
-    //     ]);
-    // }
-
 
     private function handleException(PDOException $e)
     {
@@ -881,9 +880,9 @@ class Post extends GlobalMethods
                 $expiry,
                 $data->email
             ]);
-            $this->pdo->commit();     
-            
-            
+            $this->pdo->commit();
+
+
             require __DIR__ . "../../src/Mailer.php";
             $mail = initializeMailer();
 
@@ -910,7 +909,7 @@ class Post extends GlobalMethods
             $errmsg = $e->getMessage();
             $code = 400;
             return $this->sendPayload(null, "failed", $errmsg, $code);
-        }       
+        }
     }
 
     public function resetPassword($data)
@@ -919,7 +918,7 @@ class Post extends GlobalMethods
         try {
             $hashed_password = password_hash($data->password, PASSWORD_DEFAULT);
             $token_hash = hash("sha256", $data->token);
-            
+
             $sql = "UPDATE user 
                     SET password = ?, reset_token_hash = NULL, reset_token_expires_at = NULL  
                     WHERE reset_token_hash = ?";
@@ -936,7 +935,26 @@ class Post extends GlobalMethods
         }
     }
 
+    public function activateAccount($data)
+    {
+        $this->pdo->beginTransaction();
+        try {
+            $token_hash = hash("sha256", $data->token);
 
+            $sql = "UPDATE user 
+                    SET isActive = 1, account_activation_hash = NULL
+                    WHERE account_activation_hash = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                $token_hash
+            ]);
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully activated account.", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->handleException($e);
+        }
+    }
 
 
 

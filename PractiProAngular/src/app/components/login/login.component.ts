@@ -75,7 +75,7 @@ export class LoginComponent {
       if (error.status == 403) {
         Swal.fire({
           title: "Inactive User!",
-          text: "Please contact admin for activation of your account.",
+          text: "Please check the inbox of your email for account activation.",
           icon: "warning"
         });
       };

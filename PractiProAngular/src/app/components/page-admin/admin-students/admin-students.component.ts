@@ -44,9 +44,8 @@ export class AdminStudentsComponent implements OnInit, OnDestroy {
   Loaduser() {
     this.subscription.add(
       this.service.getStudent().subscribe(res => {
-        this.studentlist = res.payload;
+        this.studentlist = res.payload.sort((a: any, b: any) => b.id - a.id);
         this.origlist = this.studentlist;
-        console.log(this.origlist)
       }));
   }
 

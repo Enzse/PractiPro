@@ -47,9 +47,10 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   loadUsers() {
     this.service.getAllUsers().subscribe((res: any) => {
       //The "res" variable automatically contains an object that contains the payload(payload contains fetched data).
-      this.userlist = res.payload.filter((user: any) => user.id !== this.userId);
-      this.userlist = res.payload.filter((user: any) => user.role !== "admin" && user.role !== "superadmin");
-      this.origlist = this.userlist;
+      this.userlist = res.payload
+      .filter((user: any) => user.id !== this.userId && user.role !== "admin" && user.role !== "superadmin")
+      .sort((a: any, b: any) => b.id - a.id);
+    this.origlist = this.userlist;
     });
   }
 
