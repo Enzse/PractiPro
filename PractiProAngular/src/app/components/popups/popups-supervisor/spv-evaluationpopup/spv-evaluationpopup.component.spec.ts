@@ -8,10 +8,9 @@ describe('SpvEvaluationpopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SpvEvaluationpopupComponent]
-    })
-    .compileComponents();
-    
+      imports: [SpvEvaluationpopupComponent],
+    }).compileComponents();
+
     fixture = TestBed.createComponent(SpvEvaluationpopupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -14,6 +14,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
+import { AnswerFinalreportComponent } from '../../popups/popups-student/answer-finalreport/answer-finalreport.component';
 
 
 @Component({
@@ -112,12 +113,11 @@ export class ExitPollComponent implements OnInit, OnDestroy {
   }
 
   viewFile() {
-    const popup = this.dialog.open(PdfviewerComponent, {
-      enterAnimationDuration: "0ms",
+    const popup = this.dialog.open(AnswerFinalreportComponent, {
+      enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "90%",
       data: {
-        templateName: '../../assets/pdfTemplates/ExitPoll.pdf'
       }
     })
   }

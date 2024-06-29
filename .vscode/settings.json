@@ -1,5 +1,7 @@
 {
-    "editor.stickyScroll.scrollWithEditor": false,
-    "workbench.tree.enableStickyScroll": false,
-    "css.lint.unknownAtRules": "ignore"
+  "editor.stickyScroll.scrollWithEditor": false,
+  "workbench.tree.enableStickyScroll": false,
+  "css.lint.unknownAtRules": "ignore",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }

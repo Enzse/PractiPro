@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
+import { AnswerWarComponent } from '../../popups/popups-student/answer-war/answer-war.component';
 
 
 @Component({
@@ -76,6 +77,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
     }
   }
 
+  
   previewPDF() {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -172,12 +174,11 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   }
 
   viewFile() {
-    const popup = this.dialog.open(PdfviewerComponent, {
-      enterAnimationDuration: "0ms",
+    const popup = this.dialog.open(AnswerWarComponent, {
+      enterAnimationDuration: "500ms",
       exitAnimationDuration: "500ms",
       width: "90%",
       data: {
-        templateName: '../../assets/pdfTemplates/WAR.pdf'
       }
     })
   }
