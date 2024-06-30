@@ -24,10 +24,11 @@
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
           <form [ngClass]="{'hidden':pdfPreview}" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" [id]="'week' + weekNumber" [name]="'week' + weekNumber" (change)="onFileChange($event)"  />
+            <input type="file" [id]="'week' + weekNumber" [name]="'week' + weekNumber"
+              (change)="onFileChange($event)" />
           </form>
           <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-          class="object-cover object-center w-full h-96 rounded-md" />
+            class="object-cover object-center w-full h-96 rounded-md" />
         </mat-tab>
       </mat-tab-group>
       <div class="flex justify-end items-center max-sm:text-xs pt-3">
@@ -104,9 +105,9 @@
                     (click)="setFilter('pending')">Pending</button>
                 </li>
                 <h1 class="font-primary">By Week:</h1>
-                <div>               
+                <div>
                   <button *ngFor="let weeks of tabWeekNumbers"
-                  class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2 mb-0.5"
+                    class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2 mb-0.5"
                     (click)="setFilterWeek(weeks)">Week {{weeks}}</button>
                 </div>
               </ul>

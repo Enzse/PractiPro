@@ -1,3 +1,14 @@
+::ng-deep .custom-menu {
+  background-color: #1e1b4b !important;
+  border-radius: 1rem
+}
+
+::ng-deep .custom-menu .mat-menu-content {
+  background-color: #1e1b4b !important;
+  border-radius: 1rem
+}
+
+
 .my-pagination ::ng-deep .ngx-pagination .current{
     padding: .1875rem .625rem; 
     background: #1e1b4b;
@@ -48,3 +59,4 @@ border-radius: 25px;
     cursor: default;
   }
 }
+

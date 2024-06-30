@@ -50,6 +50,9 @@ import { ResetPasswordFormComponent } from './components/reset-password/reset-pa
 import { ActivateAccountComponent } from './components/redirects/activate-account/activate-account/activate-account.component';
 import { JoinclassesComponent } from './components/page-student/joinclasses/joinclasses.component';
 import { studentclassGuard } from './guard/studentclass.guard';
+import { CoordLandingpageComponent } from './components/page-coordinator/coord-landingpage/coord-landingpage.component';
+import { CoordSidebarComponent } from './components/page-coordinator/coord-sidebar/coord-sidebar.component';
+import { CoordSidebarmainComponent } from './components/page-coordinator/coord-sidebarmain/coord-sidebarmain.component';
 
 
 export const routes: Routes = [
@@ -101,13 +104,24 @@ export const routes: Routes = [
         component: CoordNavbarComponent,
         canActivateChild: [coordGuard],
         children: [
-            { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Submissions', },
-            { path: 'coord-documentations', component: CoordDocumentationComponent, title: 'Documentations', },
-            { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records', },
-            { path: 'coord-seminars', component: CoordSeminarsComponent, title: 'Seminar Records', },
-            { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports', },
-            { path: 'coord-evaluations', component: CoordEvaluationsComponent, title: 'Performance Evaluations', },
-            { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports', },
+            {
+                path: '', component: CoordSidebarmainComponent,
+                children: [
+                    { path: 'coord-classes', component: CoordLandingpageComponent, title: 'Class Selection', },
+                ]
+            },
+            {
+                path: '', component: CoordSidebarComponent,
+                children: [
+                    { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Submissions', },
+                    { path: 'coord-documentations', component: CoordDocumentationComponent, title: 'Documentations', },
+                    { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records', },
+                    { path: 'coord-seminars', component: CoordSeminarsComponent, title: 'Seminar Records', },
+                    { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports', },
+                    { path: 'coord-evaluations', component: CoordEvaluationsComponent, title: 'Performance Evaluations', },
+                    { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports', },
+                ]
+            },
         ]
     },
     //Supervisor Pages

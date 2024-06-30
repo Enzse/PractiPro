@@ -1,5 +1,6 @@
 <div class="p-3 rounded-md shadow-xl">
-    <h1 class="mb-2 text-orange-500 font-bold ml-1">Performance Evaluations for '{{this.data.student.firstName}} {{this.data.student.lastName}}':</h1>
+    <h1 class="mb-2 text-orange-500 font-bold ml-1">Performance Evaluations for '{{this.data.student.firstName}}
+        {{this.data.student.lastName}}':</h1>
     <div *ngIf="isLoading" class="flex justify-center">
         <p class="font-secondary text-2xl">Loading...</p>
     </div>
@@ -39,21 +40,22 @@
                             {{ submission.file_name }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ submission.created_at | date: "medium"  }}
+                            {{ submission.created_at | date: "medium" }}
                         </td>
                         <td class="px-6 py-4">
                             <button (click)="viewFile(submission.id)"
-                                class="focus:outline-none inline-flex text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide mr-1 inline lucide-search">
-                                <circle cx="11" cy="11" r="8" />
-                                <path d="m21 21-4.3-4.3" />
-                              </svg>View</button>
+                                class="focus:outline-none inline-flex text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide mr-1 inline lucide-search">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>View</button>
                         </td>
-                        
+
                         <td class="px-6 py-4">
                             <button (click)="viewComments(submission.id, submission.file_name)"
-                            class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
+                                class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
                                 <svg class="w-5 h-5 text-gray-800 dark:text-white inline" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
                                     viewBox="0 0 24 24">
@@ -65,14 +67,16 @@
                             </button>
                         </td>
                         <td class="px-6 py-4">
-                            <select class="border-0 shadow-md text-center rounded-lg cursor-pointer" [(ngModel)]="submission.advisor_approval" [ngClass]="{
+                            <select class="border-0 shadow-md text-center rounded-lg cursor-pointer"
+                                [(ngModel)]="submission.advisor_approval" [ngClass]="{
                                       'text-green-500': submission.advisor_approval === 'Approved',
                                       'text-red-500': submission.advisor_approval === 'Unapproved',
                                       'text-gray-500': submission.advisor_approval === 'Pending'
                                     }" (change)="onStatusChange(submission)">
                                 <option value="Approved" class="text-green-500">Approved</option>
                                 <option value="Unapproved" class="text-red-500">Unapproved</option>
-                                <option *ngIf="submission.advisor_approval === 'Pending'" value="Pending" hidden class="text-gray-500">Pending</option>
+                                <option *ngIf="submission.advisor_approval === 'Pending'" value="Pending" hidden
+                                    class="text-gray-500">Pending</option>
                             </select>
                         </td>
                         <td class="px-6 py-4">
@@ -121,7 +125,7 @@
         </div>
         <div class="text-center">
             <h1 class="opacity-40 text-center text-lg font-primary">
-                This student has not submitted any reports yet.
+                This student is yet to be evaluated by their supervisor.
             </h1>
         </div>
     </ng-template>

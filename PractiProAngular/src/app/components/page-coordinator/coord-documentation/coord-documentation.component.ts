@@ -12,6 +12,11 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
+import { DtrpopupcomponentComponent } from '../../popups/popups-coordinator/dtrpopupcomponent/dtrpopupcomponent.component';
+import { SeminarspopupComponent } from '../../popups/popups-coordinator/seminarspopup/seminarspopup.component';
+import { WarpopupcomponentComponent } from '../../popups/popups-coordinator/warpopupcomponent/warpopupcomponent.component';
+import { CoordEvaluationspopupComponent } from '../../popups/popups-coordinator/coord-evaluationspopup/coord-evaluationspopup.component';
+import { FinalreportpopupComponent } from '../../popups/popups-coordinator/finalreportpopup/finalreportpopup.component';
 
 @Component({
   selector: 'app-coord-documentation',
@@ -21,7 +26,7 @@ import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/
   styleUrl: './coord-documentation.component.css'
 })
 export class CoordDocumentationComponent implements OnInit {
-  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {  }
+  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
 
   Coordinator: any;
   students: any;
@@ -58,10 +63,60 @@ export class CoordDocumentationComponent implements OnInit {
     });
   }
 
-  viewSubmissions(code: any) {
+  viewDocumentations(code: any) {
     const popup = this.dialog.open(DocumentationpopupComponent, {
-      enterAnimationDuration: "500ms",
-      exitAnimationDuration: "500ms",
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "350ms",
+      width: "80%",
+      data: {
+        usercode: code
+      }
+    })
+  }
+  viewDtrs(student: any) {
+    const popup = this.dialog.open(DtrpopupcomponentComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "350ms",
+      width: "80%",
+      data: {
+        student: student
+      }
+    })
+  }
+  viewSeminars(student: any) {
+    const popup = this.dialog.open(SeminarspopupComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "350ms",
+      width: "80%",
+      data: {
+        student: student
+      }
+    })
+  }
+  viewWars(code: any) {
+    const popup = this.dialog.open(WarpopupcomponentComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "350ms",
+      width: "80%",
+      data: {
+        usercode: code
+      }
+    })
+  }
+  viewEvaluations(student: any) {
+    const popup = this.dialog.open(CoordEvaluationspopupComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "350ms",
+      width: "80%",
+      data: {
+        student: student
+      }
+    })
+  }
+  viewFinalReports(code: any) {
+    const popup = this.dialog.open(FinalreportpopupComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "350ms",
       width: "80%",
       data: {
         usercode: code
@@ -69,10 +124,10 @@ export class CoordDocumentationComponent implements OnInit {
     })
   }
 
-  viewProfile(student:any) {
+  viewProfile(student: any) {
     const popup = this.dialog.open(ViewprofilepopupComponent, {
       enterAnimationDuration: "350ms",
-      exitAnimationDuration: "500ms",
+      exitAnimationDuration: "350ms",
       width: "auto",
       data: {
         student: student

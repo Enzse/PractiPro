@@ -2,12 +2,12 @@
   <div class="pt-5 xl:p-10">
     <div>
       <h1 class="text-orange-500 ml-5 font-bold font-primary text-left text-xl mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="w-6 h-6 text-orange-500 inline">
-                <path stroke-linecap="round" stroke-linejoin="round"
-              d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
-              </svg>
-        Documentations
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="w-6 h-6 text-orange-500 inline">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+        </svg>
+        Student Submissions
       </h1>
       <div class="border-b border-gray-300"></div>
       <br />
@@ -41,6 +41,9 @@
                     Training Hours
                   </th>
                   <th scope="col" class="px-6 py-3 text-center font-primary">
+                    Activity Status
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-center font-primary">
                     Submissions
                   </th>
                   <th scope="col" class="px-6 py-3 text-center font-primary">
@@ -58,31 +61,138 @@
                   </th>
                   <td class="px-6 py-4 text-center text-nowrap">
                     {{students.lastName}}, {{ students.firstName }}
-                  </td>                
+                  </td>
                   <td class="px-6 py-4 text-center">
                     <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
-                      {{ students.TotalHoursWorked ? students.TotalHoursWorked + ' hrs' : 'Not started' }}
-                      <svg class="w-5 h-5 inline text-gray-700 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd" d="M18.425 10.271C19.499 8.967 18.57 7 16.88 7H7.12c-1.69 0-2.618 1.967-1.544 3.271l4.881 5.927a2 2 0 0 0 3.088 0l4.88-5.927Z" clip-rule="evenodd"/>
+                      {{ students.TotalHoursWorked ? students.TotalHoursWorked + ' hrs' : 'No hours' }}
+                      <svg class="w-5 h-5 inline text-gray-700 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                        viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                          d="M18.425 10.271C19.499 8.967 18.57 7 16.88 7H7.12c-1.69 0-2.618 1.967-1.544 3.271l4.881 5.927a2 2 0 0 0 3.088 0l4.88-5.927Z"
+                          clip-rule="evenodd" />
                       </svg>
-                      
+
                     </button>
                     <mat-menu #menu="matMenu">
                       <ul class="px-5">
                         <li>
-                          <h1>On-Site Hours: {{ students.TotalHoursWorked ? students.TotalHoursWorked + ' hrs' : 'Not started' }}</h1>
+                          <h1>On-Site Hours:
+                            {{ students.TotalHoursWorked ? students.TotalHoursWorked + ' hrs' : 'No hours' }}</h1>
                         </li>
                         <div class="border-b border-gray-300 my-2"></div>
                         <li>
-                          <h1>Seminar Hours: {{ students.TotalSeminarHours != 0 ? students.TotalSeminarHours + ' hrs' : 'Not started' }}</h1>
+                          <h1>Seminar Hours:
+                            {{ students.TotalSeminarHours ? students.TotalSeminarHours + ' hrs' :
+                            'No hours' }}</h1>
                         </li>
 
                       </ul>
                     </mat-menu>
                   </td>
+                  <td class="px-6 py-4 text-center text-nowrap">
+                    <span class="flex items-center justify-center">
+                      <span [ngClass]="{
+                              'bg-green-500': students.clock_status === 'Clocked In',
+                              'bg-red-500': students.clock_status === 'Clocked Out'
+                            }" class="w-2 h-2 -mt-0.5 rounded-full mr-1"></span>
+                      <span [ngClass]="{
+                              'text-red-500': students.clock_status === 'Clocked Out',
+                              'text-green-500': students.clock_status === 'Clocked In'
+                            }">
+                        {{ students.clock_status }}
+                      </span>
+                    </span>
+                  </td>
                   <td class="px-6 py-4 text-center">
-                    <a (click)="viewSubmissions(students.id)"
-                      class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-900 focus:outline-none dark:focus:ring-blue-800">View</a>
+                    <button [matMenuTriggerFor]="submissionmenu" class="font-secondary font-bold">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide mr-1 inline lucide-folder-search">
+                        <circle cx="17" cy="17" r="3" />
+                        <path
+                          d="M10.7 20H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h3.9a2 2 0 0 1 1.69.9l.81 1.2a2 2 0 0 0 1.67.9H20a2 2 0 0 1 2 2v4.1" />
+                        <path d="m21 21-1.5-1.5" />
+                      </svg>View
+
+
+                    </button>
+                    <div>
+
+                    </div>
+                    <mat-menu #submissionmenu="matMenu" class="p-1 custom-menu">
+                      <ul class="space-y-1 text-white text-sm justify-items-center font-medium">
+                        <li class="flex justify-center">
+                          <button (click)="viewDocumentations(students.id)"
+                            class="bg-indigo-950 hover:bg-indigo-800 rounded-lg text-nowrap inline-flex py-2 px-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                              stroke="currentColor" class="w-6 h-6">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap font-primary"> Documentations</span>
+                          </button>
+                        </li>
+                        <li class="flex justify-center">
+                          <button (click)="viewDtrs(students.id)"
+                            class="bg-indigo-950 hover:bg-indigo-800 rounded-lg text-nowrap inline-flex py-2 px-5">
+                            <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                              <path stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"
+                                d="M10 3v4a1 1 0 0 1-1 1H5m14-4v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap font-primary">Daily Attendance</span>
+                          </button>
+                        </li>
+                        <li class="flex justify-center">
+                          <button (click)="viewSeminars(students)"
+                            class="bg-indigo-950 hover:bg-indigo-800 rounded-lg text-nowrap inline-flex py-2 px-5">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                              <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                            </svg>
+
+                            <span class="flex-1 ms-3 whitespace-nowrap font-primary">Seminar Records</span>
+                          </button>
+                        </li>
+                        <li class="flex justify-center">
+                          <button (click)="viewWars(students.id)"
+                            class="bg-indigo-950 hover:bg-indigo-800 rounded-lg text-nowrap inline-flex py-2 px-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                              stroke="currentColor" class="w-6 h-6 my-auto">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap font-primary">Acccomplishment <br />
+                              Reports</span>
+                          </button>
+                        </li>
+                        <li class="flex justify-center">
+                          <button (click)="viewEvaluations(students)"
+                            class="bg-indigo-950 hover:bg-indigo-800 rounded-lg text-nowrap inline-flex py-2 px-5">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                              stroke="currentColor" class="w-6 h-6 my-auto">
+                              <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+                            </svg>
+                            <span class="flex-1 ms-3 whitespace-nowrap font-primary">Performance<br>Evaluations</span>
+                          </button>
+                        </li>
+                        <li class="flex justify-center">
+                          <button (click)="viewFinalReports(students.id)"
+                            class="bg-indigo-950 hover:bg-indigo-800 rounded-lg text-nowrap inline-flex py-2 px-5">
+                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
+                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                              <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                                d="M15 4h3a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h3m0 3h6m-6 7 2 2 4-4m-5-9v4h4V3h-4Z" />
+                            </svg>
+
+                            <span class="flex-1 ms-3 whitespace-nowrap font-primary">Final Reports</span>
+                          </button>
+                        </li>
+                      </ul>
+                    </mat-menu>
                   </td>
                   <td class="px-6 py-4 text-center">
                     <button [matMenuTriggerFor]="actionmenu" (click)="$event.stopPropagation()">
@@ -102,8 +212,8 @@
                   </td>
                 </tr>
               </tbody>
-            </table>     
-            
+            </table>
+
             <div class="my-5" *ngIf="(studentlist | filter : searchtext)?.length === 0">
               <div class="flex justify-center">
                 <img class="opacity-30 h-44 w-44" src="../../../../assets/empty1.png">
