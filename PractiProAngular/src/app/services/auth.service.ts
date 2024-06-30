@@ -116,7 +116,9 @@ export class AuthService {
       return this.http.get<any>(`${this.apiurl}/companies`);
     }
   }
-
+  getClassesByCourseAndYear(course: string, year: number) {
+    return this.http.get<any>(`${this.apiurl}/classesbycourseandyear/${course}/${year}`);
+  }
   getClassesByCoordinator(Id: number) {
     return this.http.get<any>(`${this.apiurl}/classesbycoordinator/${Id}`);
   }
@@ -266,8 +268,8 @@ export class AuthService {
   assignClassCoordinator(inputdata: any) {
     return this.http.post(`${this.apiurl}/assignclasscoordinator`, inputdata);
   }
-  assignClassStudent(id: number, inputdata: any) {
-    return this.http.post(`${this.apiurl}/assignclassstudent/${id}`, inputdata);
+  assignClassToStudent(id: number, inputdata: any) {
+    return this.http.post(`${this.apiurl}/assignclasstostudent/${id}`, inputdata);
   }
 
   createHiringRequest(inputdata: any) {
@@ -330,18 +332,42 @@ export class AuthService {
   resetPasswordToken(inputdata: any) {
     return this.http.post(`${this.apiurl}/resetpasswordtoken`, inputdata);
   }
-  getResetPasswordToken(token:any) {
+  getResetPasswordToken(token: any) {
     return this.http.get<any>(`${this.apiurl}/getresettoken/${token}`);
   }
   resetPassword(inputdata: any) {
     return this.http.post(`${this.apiurl}/resetpassword`, inputdata);
   }
 
-  getAccountActivationToken(token:any) {
+  getAccountActivationToken(token: any) {
     return this.http.get<any>(`${this.apiurl}/getactivationtoken/${token}`);
   }
   activateAccount(inputdata: any) {
     return this.http.post(`${this.apiurl}/activateaccount`, inputdata);
   }
+
+
+  createClassJoinRequest(inputdata: any) {
+    return this.http.post(`${this.apiurl}/createclassjoinrequest`, inputdata);
+  }
+  getClassJoinRequests(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/getclassjoinrequests/${studentId}`);
+  }
+
+  createClassInvitation(inputdata: any) {
+    return this.http.post(`${this.apiurl}/createclassinvitation`, inputdata);
+  }
+  getClassInvitations(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/getclassinvitations/${studentId}`);
+  }
+  getClassInvitationCount(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/getclassinvitationcount/${studentId}`);
+  }
+  cancelClassJoinRequest(id: number) {
+    return this.http.delete(`${this.apiurl}/cancelclassjoinrequest/${id}`);
+  };
+  cancelClassInvitation(id: number) {
+    return this.http.delete(`${this.apiurl}/cancelclassinvitation/${id}`);
+  };
 
 }

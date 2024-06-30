@@ -48,6 +48,8 @@ import { studenthoursworkedGuard } from './guard/studenthoursworked.guard';
 import { CoordSeminarsComponent } from './components/page-coordinator/coord-seminars/coord-seminars.component';
 import { ResetPasswordFormComponent } from './components/reset-password/reset-password-form/reset-password-form.component';
 import { ActivateAccountComponent } from './components/redirects/activate-account/activate-account/activate-account.component';
+import { JoinclassesComponent } from './components/page-student/joinclasses/joinclasses.component';
+import { studentclassGuard } from './guard/studentclass.guard';
 
 
 export const routes: Routes = [
@@ -68,13 +70,14 @@ export const routes: Routes = [
         component: NavbarComponent,
         canActivateChild: [studentGuard],
         children: [
-            { path: 'student-dashboard', component: DashboardComponent, title: 'Dashboard', },
+            { path: 'student-dashboard', component: DashboardComponent, title: 'Dashboard', canActivate: [studentclassGuard] },
+            { path: 'student-join-classes', component: JoinclassesComponent, title: 'Join Classes', },
             { path: 'student-profile', component: ProfileComponent, title: 'Profile', },
-            { path: 'student-submission', component: SubmissionComponent, title: 'Submit a File', },
+            { path: 'student-submission', component: SubmissionComponent, title: 'Submit a File', canActivate: [studentclassGuard] },
             { path: 'student-documentation', component: DocumentationComponent, title: 'Documentation', canActivate: [studentrequirementsGuard] },
             { path: 'student-dtr', component: DtrComponent, title: 'Daily Time Records', canActivate: [studentrequirementsGuard] },
             { path: 'student-weekly-report', component: WeeklyAccomplishmentRepComponent, title: 'Weekly Accomplishment Report', canActivate: [studentrequirementsGuard] },
-            { path: 'student-exit-poll', component: ExitPollComponent, title: 'Exit Poll', canActivate: [studentrequirementsGuard, studenthoursworkedGuard] },
+            { path: 'student-exit-poll', component: ExitPollComponent, title: 'Final', canActivate: [studentrequirementsGuard, studenthoursworkedGuard] },
             { path: 'student-seminars', component: SubmissionSeminarsComponent, title: 'Seminars Attended', canActivate: [studentrequirementsGuard] },
             { path: 'feedback', component: FeedbackComponent, title: 'Feedback', },
         ]

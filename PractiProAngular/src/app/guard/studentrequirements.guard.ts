@@ -10,11 +10,9 @@ export const studentrequirementsGuard: CanActivateFn = (childRoute: ActivatedRou
   const service: AuthService = inject(AuthService);
 
   const userId: any = service.getCurrentUserId();
-  console.log(userId)
   return service.getStudentOjtInfo(userId).pipe(
     map((res: any) => {
       const student = res.payload[0];
-      console.log(student);
       if (student && student.registration_status === 1) {
         return true;
       } else {
@@ -22,7 +20,7 @@ export const studentrequirementsGuard: CanActivateFn = (childRoute: ActivatedRou
           title: 'You are not registered.',
           text: "Please clear your registration status first to access this page.",
           icon: 'warning',
-      })
+        })
         router.navigate(['student-dashboard']);
         return false;
       }

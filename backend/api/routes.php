@@ -76,6 +76,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+
+            case 'classesbycourseandyear':
+                if (isset($request[2])) {
+                    echo json_encode($get->get_classesByCourseAndYear($request[1], $request[2]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+
             case 'class-students':
                 if (isset($request[1])) {
                     echo json_encode($get->get_studentsFromClasses($request[1]));
@@ -296,6 +306,32 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'getclassjoinrequests':
+                if (isset($request[1])) {
+                    echo json_encode($get->getClassJoinRequests($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'getclassinvitations':
+                if (isset($request[1])) {
+                    echo json_encode($get->getClassInvitations($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+            case 'getclassinvitationcount':
+                if (isset($request[1])) {
+                    echo json_encode($get->getClassInvitationCount($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+
             default:
                 echo "This is forbidden";
                 http_response_code(403);
@@ -346,9 +382,11 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->assignClassCoordinator($data));
                 break;
-            case 'assignclassstudent':
+            case 'assignclasstostudent':
                 if (isset($request[1])) {
-                    echo json_encode($post->assignClassStudent($data, $request[1]));
+                    $delete->cancelClassInvitation($request[1]);
+                    $delete->cancelJoinRequest($request[1]);
+                    echo json_encode($post->assignClassToStudent($data, $request[1]));
                 } else {
                     echo "No requests Provided!";
                 }
@@ -470,6 +508,16 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode($post->activateAccount($data));
                 break;
 
+            case 'createclassjoinrequest':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->createClassJoinRequest($data));
+                break;
+
+            case 'createclassinvitation':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->createClassInvitation($data));
+                break;
+
             default:
                 // Return a 403 response for unsupported requests
                 echo "No Such Request";
@@ -576,6 +624,25 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+
+            case 'cancelclassjoinrequest':
+                if (isset($request[1])) {
+                    echo json_encode($delete->cancelJoinRequest($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'cancelclassinvitation':
+                if (isset($request[1])) {
+                    echo json_encode($delete->cancelClassInvitation($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
 
             default:
                 // Return a 403 response for unsupported requests

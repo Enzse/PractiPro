@@ -95,7 +95,7 @@ class Post extends GlobalMethods
                 $this->pdo->rollBack();
                 $code = 400;
                 return $this->sendPayload(null, "failed", $mail->ErrorInfo, $code);
-            }            
+            }
         } catch (PDOException $e) {
             $this->pdo->rollBack();
             return $this->handleException($e);
@@ -244,7 +244,7 @@ class Post extends GlobalMethods
 
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
-    public function assignClassStudent($data, $id)
+    public function assignClassToStudent($data, $id)
     {
         $sql = "UPDATE students SET block = ? WHERE id = ?";
         try {
@@ -260,7 +260,6 @@ class Post extends GlobalMethods
             $errmsg = $e->getMessage();
             $code = 400;
         }
-
         return $this->sendPayload(null, "failed", $errmsg, $code);
     }
 
@@ -956,6 +955,67 @@ class Post extends GlobalMethods
         }
     }
 
+
+
+    public function createClassJoinRequest($data)
+    {
+        // Check for existing join request
+        $sqlCheck = "SELECT COUNT(*) FROM class_join_requests WHERE student_id = ?";
+        $stmtCheck = $this->pdo->prepare($sqlCheck);
+        $stmtCheck->execute([$data->student_id]);
+        $existingRequest = $stmtCheck->fetchColumn();
+
+        if ($existingRequest > 0) {
+            return $this->sendPayload(null, "failed", "Join request already exists", 409);
+        }
+
+        // Insert new join request
+        $sql = "INSERT INTO class_join_requests (student_id, class) VALUES (?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([$data->student_id, $data->class]);
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully created join request", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, "failed", $e->getMessage(), 400);
+        }
+    }
+
+    public function createClassInvitation($data)
+    {
+        // Check for existing join request
+        $sqlCheck = "SELECT COUNT(*) FROM class_join_invitations WHERE student_id = ? AND class = ?";
+        $stmtCheck = $this->pdo->prepare($sqlCheck);
+        $stmtCheck->execute([$data->student_id, $data->class]);
+        $existingRequest = $stmtCheck->fetchColumn();
+
+        if ($existingRequest > 0) {
+            return $this->sendPayload(null, "failed", "Join invitation already exists", 409);
+        }
+
+        $sql = "INSERT INTO class_join_invitations(student_id, advisor_id, class)
+        VALUES (?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->student_id,
+                    $data->advisor_id,
+                    $data->class
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully created class invitation", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
 
 
 

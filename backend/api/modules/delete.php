@@ -105,11 +105,11 @@ class Delete extends GlobalMethods
     }
 
     public function removeStudentFromSupervisor($student_id, $supervisor_id = null)
-    {   
+    {
         $sql = "DELETE FROM rl_supervisor_students
                 WHERE student_id = :student_id";
 
-        if($supervisor_id){
+        if ($supervisor_id) {
             $sql .= " AND supervisor_id = :supervisor_id";
         }
 
@@ -117,7 +117,7 @@ class Delete extends GlobalMethods
             $this->pdo->beginTransaction();
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':student_id', $student_id, PDO::PARAM_STR);
-            if($supervisor_id){
+            if ($supervisor_id) {
                 $stmt->bindParam(':supervisor_id', $supervisor_id, PDO::PARAM_INT);
             }
             $stmt->execute();
@@ -135,7 +135,7 @@ class Delete extends GlobalMethods
         }
     }
 
-    
+
     public function unassignJob($student_id)
     {
         $sql = "DELETE FROM student_jobs
@@ -262,6 +262,52 @@ class Delete extends GlobalMethods
             } else {
                 $this->pdo->rollBack();
                 return $this->sendPayload(null, 'failed', "No record found", 404);
+            }
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
+
+    public function cancelJoinRequest($id)
+    {
+        $sql = "DELETE FROM class_join_requests
+                WHERE student_id = :id";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $this->pdo->commit();
+                return $this->sendPayload(null, 'success', "Successfully deleted request.", 200);
+            } else {
+                $this->pdo->rollBack();
+                return $this->sendPayload(null, 'failed', "No request found", 404);
+            }
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
+
+    public function cancelClassInvitation($id)
+    {
+        $sql = "DELETE FROM class_join_invitations
+                WHERE student_id = :id";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $this->pdo->commit();
+                return $this->sendPayload(null, 'success', "Successfully deleted invitation.", 200);
+            } else {
+                $this->pdo->rollBack();
+                return $this->sendPayload(null, 'failed', "No invitation found", 404);
             }
         } catch (PDOException $e) {
             $this->pdo->rollBack();

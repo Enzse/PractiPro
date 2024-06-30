@@ -1,5 +1,11 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+} from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { initFlowbite } from 'flowbite';
 import { AuthService } from '../../../services/auth.service';
@@ -11,36 +17,40 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [RouterLink, RouterLinkActive, CommonModule, MatTooltipModule],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.css',
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-
   studentId: any;
   student: any;
   registrationStatus: any;
+  class: any;
   private subscriptions = new Subscription();
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private service: AuthService,) {
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private service: AuthService
+  ) {
     this.studentId = this.service.getCurrentUserId();
   }
-  
+
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) initFlowbite();
 
-    
     this.subscriptions.add(
-    this.service.getStudentOjtInfo(this.studentId).subscribe(
-      (res: any) => {
-        this.student = res.payload[0];
-        this.registrationStatus = res.payload[0].registration_status;
-      },
-      (error: any) => {
-        console.error('Error fetching student requirements:', error);
-      }
-    ));
+      this.service.getStudentOjtInfo(this.studentId).subscribe(
+        (res: any) => {
+          this.student = res.payload[0];
+          this.registrationStatus = res.payload[0].registration_status;
+          this.class = res.payload[0].block;
+        },
+        (error: any) => {
+          console.error('Error fetching student requirements:', error);
+        }
+      )
+    );
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
-
 }

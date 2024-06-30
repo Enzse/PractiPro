@@ -1,0 +1,64 @@
+<div class="flex justify-center">
+    <ng-container *ngIf="invitations$ | async as invitations; else noInvitations">
+        <div class="w-[80vh] bg-white shadow-md p-6 text-center rounded-md">
+            <h2 class="text-center text-base font-primary">You are invited by:</h2>
+            <h1 class="text-center text-xl font-bold font-primary">{{invitations.advisorFirstName}}
+                {{invitations.advisorLastName}}</h1>
+
+            <h2 class="text-center mt-2 text-base font-primary">to join:</h2>
+            <h1 class="text-center text-4xl text-blue-900 font-bold font-primary">{{invitations.class}}</h1>
+
+            <hr class="h-px w-[90%] mx-auto my-4 bg-gray-300 border-0 dark:bg-gray-700" />
+
+            <div class="flex justify-center items-center font-primary space-x-4">
+                <button type="button" (click)="joinClass(invitations)"
+                    class="text-white py-2 px-5 bg-orange-500 hover:bg-orange-600 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide inline mr-0.5 lucide-replace-all">
+                        <path d="M14 4c0-1.1.9-2 2-2" />
+                        <path d="M20 2c1.1 0 2 .9 2 2" />
+                        <path d="M22 8c0 1.1-.9 2-2 2" />
+                        <path d="M16 10c-1.1 0-2-.9-2-2" />
+                        <path d="m3 7 3 3 3-3" />
+                        <path d="M6 10V5c0-1.7 1.3-3 3-3h1" />
+                        <rect width="8" height="8" x="2" y="14" rx="2" />
+                        <path d="M14 14c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2" />
+                        <path d="M20 14c1.1 0 2 .9 2 2v4c0 1.1-.9 2-2 2" />
+                    </svg>
+                    Join this Class
+                </button>
+
+                <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()" class="absolute top-3 right-3">
+                    <svg class="w-6 h-6 text-gray-500 hover:opacity-80 opacity-50 dark:text-white" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-width="4"
+                            d="M6 12h.01m6 0h.01m5.99 0h.01" />
+                    </svg>
+
+                </button>
+                <mat-menu #menu="matMenu" class="text-center px-5">
+                    <p class="text-sm text-nowrap my-auto">Think this is a mistake?</p>
+                    <div class="inline-flex text-nowrap">
+                        <p class="text-sm text-nowrap my-auto">You can click here to </p>
+                        <button (click)="cancelInvitation(invitations.student_id)"
+                            class="text-red-500 text-sm p-1">Cancel
+                            Invitation.</button>
+                    </div>
+                </mat-menu>
+            </div>
+        </div>
+
+
+    </ng-container>
+    <ng-template #noInvitations>
+        <div class="w-[80vh] bg-white shadow-md p-7 text-center rounded-md">
+            <div class="flex justify-center">
+                <img class="h-32 opacity-70" src="../../../../assets/empty2.png">
+            </div>
+            <h1 class="mt-4 font-secondary opacity-60 text-lg">You currently have no pending <b>Class Invitations</b>
+                from any Advisors.
+            </h1>
+        </div>
+    </ng-template>
+</div>

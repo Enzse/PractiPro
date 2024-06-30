@@ -54,7 +54,6 @@ export class AssignstudentpopupComponent {
 
   submitForm() {
     if (this.inputform.valid) {
-      console.log(this.inputform.value);
       // this.service.assignClassCoordinator(this.inputform.value).subscribe(() => {
       //   this.dialog.close();
       //   Swal.fire({
@@ -84,7 +83,6 @@ export class AssignstudentpopupComponent {
         }
       })
       popup.afterClosed().subscribe((res: any) => {
-        console.log(res);
         this.selection = res;
         console.log(`Current Selected: ${this.selection}`)
         this.loadData();
@@ -123,8 +121,7 @@ export class AssignstudentpopupComponent {
   proceedAssign() {
     if (this.inputform.valid) {
       this.selectedlist.forEach(item => {
-        this.service.assignClassStudent(item.id, this.inputform.value).subscribe((res: any) => {
-          console.log("Success");
+        this.service.assignClassToStudent(item.id, this.inputform.value).subscribe((res: any) => {
         })
       });
     }

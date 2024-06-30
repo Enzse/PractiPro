@@ -159,6 +159,12 @@ class Get extends GlobalMethods
         return $this->get_records('class_blocks', $condition);
     }
 
+    public function get_classesByCourseAndYear($course, $year)
+    {
+        $condition = "course = '$course' AND year_level = $year";
+        return $this->get_records('vw_class_profile', $condition);
+    }
+
     public function get_classes_ByCoordinator($coordinatorId)
     {
 
@@ -472,4 +478,29 @@ class Get extends GlobalMethods
         return $this->sendPayload(null, 'success', "Token Found!", 200);
     }
 
+    public function getClassJoinRequests($id)
+    {
+        $condition = "student_id = $id";
+
+        return $this->get_records('class_join_requests', $condition);
+    }
+
+    public function getClassInvitations($id)
+    {
+        $sql = "SELECT cji.*, c.first_name AS advisorFirstName, c.last_name AS advisorLastName
+        FROM class_join_invitations cji
+        JOIN coordinators c
+        ON cji.advisor_id = c.id
+        WHERE cji.student_id = :studentId";
+
+        return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
+    }
+
+
+    public function getClassInvitationCount($id)
+    {
+        $sql = "SELECT COUNT(*) AS invitationCount FROM class_join_invitations WHERE student_id = :studentId";
+
+        return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
+    }
 }

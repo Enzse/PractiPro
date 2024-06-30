@@ -3,7 +3,6 @@ import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
 import { Observable, Subscription, timer } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { NgxPaginationModule } from 'ngx-pagination';

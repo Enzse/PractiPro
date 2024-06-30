@@ -14,7 +14,20 @@
     <div class="border-b border-gray-300"></div>
     <div>
       <ul class="space-y-2 mt-4 font-medium">
-        <li>
+
+        <li *ngIf="!class">
+          <!-- Join a Class Button -->
+          <a routerLink="student-join-classes" routerLinkActive="active" class="button">
+            <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+              width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-width="1.5"
+                d="M4.5 17H4a1 1 0 0 1-1-1 3 3 0 0 1 3-3h1m0-3.05A2.5 2.5 0 1 1 9 5.5M19.5 17h.5a1 1 0 0 0 1-1 3 3 0 0 0-3-3h-1m0-3.05a2.5 2.5 0 1 0-2-4.45m.5 13.5h-7a1 1 0 0 1-1-1 3 3 0 0 1 3-3h3a3 3 0 0 1 3 3 1 1 0 0 1-1 1Zm-1-9.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z" />
+            </svg>
+
+            <span class="flex-1 ms-3 whitespace-nowrap font-primary">Join a Class</span>
+          </a>
+        </li>
+        <li *ngIf="class">
           <!-- Dashboard Button -->
           <a routerLink="student-dashboard" routerLinkActive="active" class="button">
             <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -36,93 +49,127 @@
             <span class="flex-1 ms-3 whitespace-nowrap font-primary">Profile</span>
           </a>
         </li>
-        <li>
-          <!-- Requirements Butt -->
-          <a routerLink="student-submission" routerLinkActive="active" class="button">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-              stroke="currentColor" class="w-6 h-6">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
-            </svg>
-            <span class="flex-1 ms-3 whitespace-nowrap font-primary">Requirements</span>
-          </a>
-        </li>
 
-        <ng-container *ngIf="registrationStatus !== 0; else registrationMessage">
-
-          
-          <li>
-            <!-- Daily Time Record Butt -->
-            <a routerLink="student-dtr" routerLinkActive="active" class="button"
-              [class.disabled]="registrationStatus === 0">
-              <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-              </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap font-primary">Daily Attendance</span>
-            </a>
-          </li>
-          
-          <li>
-            <!-- Documentation Butt -->
-            <a routerLink="student-documentation" routerLinkActive="active" class="button"
-              [class.disabled]="registrationStatus === 0">
-              <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z" />
-              </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap font-primary">Documentation</span>
-            </a>
-          </li>
-          
-          <li>
-            <!-- Feedback Butt -->
-            <a routerLink="student-seminars" routerLinkActive="active" class="button">
-              <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
-              </svg>
-
-              <span class="flex-1 ms-3 whitespace-nowrap font-primary">Seminars Attended</span>
-            </a>
-          </li>
+        <ng-container *ngIf="class; else noBlockMessage">
 
           <li>
-            <!-- Weekly Report Butt -->
-            <a routerLink="student-weekly-report" routerLinkActive="active" class="button"
-              [class.disabled]="registrationStatus === 0">
+            <!-- Requirements Butt -->
+            <a routerLink="student-submission" routerLinkActive="active" class="button">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="w-6 h-6">
                 <path stroke-linecap="round" stroke-linejoin="round"
-                  d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+                  d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
               </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap font-primary">Accomplishment <br>Report
-              </span>
+              <span class="flex-1 ms-3 whitespace-nowrap font-primary">Requirements</span>
             </a>
           </li>
-          <li>
-            <!-- Exit Poll -->
-            <a routerLink="student-exit-poll" routerLinkActive="active" class="button"
-              [class.disabled]="registrationStatus === 0 || student?.TotalHoursWorked <= 200"
-              matTooltip="This section is only available for students with 200+ total training hours.">
-              <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M10 3v4a1 1 0 0 1-1 1H5m4 6 2 2 4-4m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
-              </svg>
-              <span class="flex-1 ms-3 whitespace-nowrap font-primary">Final Report</span>
-            </a>
-          </li>          
+
+          <ng-container *ngIf="registrationStatus !== 0; else registrationMessage">
+
+
+            <li>
+              <!-- Daily Time Record Butt -->
+              <a routerLink="student-dtr" routerLinkActive="active" class="button"
+                [class.disabled]="registrationStatus === 0">
+                <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+                <span class="flex-1 ms-3 whitespace-nowrap font-primary">Daily Attendance</span>
+              </a>
+            </li>
+
+            <li>
+              <!-- Documentation Butt -->
+              <a routerLink="student-documentation" routerLinkActive="active" class="button"
+                [class.disabled]="registrationStatus === 0">
+                <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M18 5V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5M9 3v4a1 1 0 0 1-1 1H4m11.383.772 2.745 2.746m1.215-3.906a2.089 2.089 0 0 1 0 2.953l-6.65 6.646L9 17.95l.739-3.692 6.646-6.646a2.087 2.087 0 0 1 2.958 0Z" />
+                </svg>
+                <span class="flex-1 ms-3 whitespace-nowrap font-primary">Documentation</span>
+              </a>
+            </li>
+
+            <li>
+              <!-- Feedback Butt -->
+              <a routerLink="student-seminars" routerLinkActive="active" class="button">
+                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                </svg>
+
+                <span class="flex-1 ms-3 whitespace-nowrap font-primary">Seminars Attended</span>
+              </a>
+            </li>
+
+            <li>
+              <!-- Weekly Report Butt -->
+              <a routerLink="student-weekly-report" routerLinkActive="active" class="button"
+                [class.disabled]="registrationStatus === 0">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" class="w-6 h-6">
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+                </svg>
+                <span class="flex-1 ms-3 whitespace-nowrap font-primary">Accomplishment <br>Report
+                </span>
+              </a>
+            </li>
+            <li>
+              <!-- Exit Poll -->
+              <a routerLink="student-exit-poll" routerLinkActive="active" class="button"
+                [class.disabled]="registrationStatus === 0 || student?.TotalHoursWorked <= 200"
+                matTooltip="This section is only available for students with 200+ total training hours.">
+                <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="none" viewBox="0 0 24 24">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M10 3v4a1 1 0 0 1-1 1H5m4 6 2 2 4-4m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
+                </svg>
+                <span class="flex-1 ms-3 whitespace-nowrap font-primary">Final Report</span>
+              </a>
+            </li>
+          </ng-container>
         </ng-container>
 
         <ng-template #registrationMessage>
           <div class="border-b border-gray-300 pt-2"></div>
-          <p class="text-center text-white mt-4">Clear your <span class="text-orange-500">Registration Status</span>
+          <p class="text-center text-white mt-4">Clear your <span class="text-orange-500">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 inline mr-0.5 -mt-0.5 text-orange-500">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+              </svg>Registration Status</span>
             first to proceed!</p>
           <div class="border-b border-gray-300 pb-1"></div>
+        </ng-template>
+
+        <ng-template #noBlockMessage>
+          <div class="border-b border-gray-300 pt-2"></div>
+          <div class="px-1">
+            <p class="text-center text-white text-sm">You don't have a
+              <span class="text-orange-500">
+                <svg class="w-5 h-5 inline mr-0.5 -mt-0.5 text-orange-500 dark:text-white" aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                    d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z"
+                    clip-rule="evenodd" />
+                </svg>Class</span>
+              yet. Join a
+              <span class="text-orange-500">
+                <svg class="w-5 h-5 inline mr-0.5 -mt-0.5 text-orange-500 dark:text-white" aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                    d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z"
+                    clip-rule="evenodd" />
+                </svg>Class</span>
+              first to proceed!
+            </p>
+          </div>
+          <div class="border-b border-gray-300"></div>
         </ng-template>
 
       </ul>
