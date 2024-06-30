@@ -53,6 +53,8 @@ import { studentclassGuard } from './guard/studentclass.guard';
 import { CoordLandingpageComponent } from './components/page-coordinator/coord-landingpage/coord-landingpage.component';
 import { CoordSidebarComponent } from './components/page-coordinator/coord-sidebar/coord-sidebar.component';
 import { CoordSidebarmainComponent } from './components/page-coordinator/coord-sidebarmain/coord-sidebarmain.component';
+import { CoordInvitestudentsComponent } from './components/page-coordinator/coord-invitestudents/coord-invitestudents.component';
+import { CoordDashboardComponent } from './components/page-coordinator/coord-dashboard/coord-dashboard.component';
 
 
 export const routes: Routes = [
@@ -113,8 +115,10 @@ export const routes: Routes = [
             {
                 path: '', component: CoordSidebarComponent,
                 children: [
-                    { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Submissions', },
-                    { path: 'coord-documentations', component: CoordDocumentationComponent, title: 'Documentations', },
+                    { path: 'coord-dashboard', component: CoordDashboardComponent, title: 'Dashboard', },
+                    { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Registrations', },
+                    { path: 'coord-invitestudents', component: CoordInvitestudentsComponent, title: 'Invite Students', },
+                    { path: 'coord-submission', component: CoordDocumentationComponent, title: 'Submissions', },
                     { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records', },
                     { path: 'coord-seminars', component: CoordSeminarsComponent, title: 'Seminar Records', },
                     { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports', },

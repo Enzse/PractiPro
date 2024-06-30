@@ -24,7 +24,7 @@ export class CoordSidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.coordinatorId = this.service.getCurrentUserId();
-    console.log("ID: " + this.coordinatorId);
+    this.openClassesPopup();
   }
 
   ngOnDestroy(): void {

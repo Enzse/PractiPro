@@ -26,9 +26,7 @@ export class CoordClassesComponent {
   ngOnInit(): void {
     if (this.data.coordinatorId != null && this.data.coordinatorId != '') {
       this.service.getAdvisors(this.data.coordinatorId).subscribe(res => {
-        console.log(res);
         this.currentuser = res.payload[0]
-        console.log(this.currentuser);
       });
       this.loadData();
     }
@@ -40,7 +38,6 @@ export class CoordClassesComponent {
       (res: any) => {
         this.datalist = res?.payload;
         this.isLoading = false;
-        console.log(this.datalist);
       },
       (error: any) => {
         this.isLoading = false;
