@@ -347,6 +347,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+            case 'getclassinvitationcountforblock':
+                if (isset($request[1])) {
+                    echo json_encode($get->getClassInvitationCountForBlock($request[1], $request[2]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
             case 'getclassjoinrequestcount':
                 if (isset($request[1])) {
                     echo json_encode($get->getClassJoinRequestCount($request[1]));

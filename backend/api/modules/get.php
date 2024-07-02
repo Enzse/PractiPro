@@ -525,4 +525,10 @@ class Get extends GlobalMethods
 
         return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
     }
+    public function getClassInvitationCountForBlock($id, $block)
+    {
+        $sql = "SELECT COUNT(*) AS invitationCount FROM class_join_invitations WHERE student_id = :studentId AND class = :class";
+
+        return $this->get_records(null, null, null, $sql, ['studentId' => $id, 'class' => $block]);
+    }
 }

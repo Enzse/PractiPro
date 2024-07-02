@@ -369,6 +369,9 @@ export class AuthService {
   getClassInvitationCount(studentId: number) {
     return this.http.get<any>(`${this.apiurl}/getclassinvitationcount/${studentId}`);
   }
+  getClassInvitationCountForBlock(studentId: number, block: string) {
+    return this.http.get<any>(`${this.apiurl}/getclassinvitationcount/${studentId}/${block}`);
+  }
   getClassJoinRequestCount(block: number) {
     return this.http.get<any>(`${this.apiurl}/getclassjoinrequestcount/${block}`);
   }
