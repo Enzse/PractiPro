@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { ClassinvitationsComponent } from '../../popups/popups-student/classinvitations/classinvitations.component';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-joinclasses',
@@ -27,7 +28,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
   joinRequest: FormGroup;
   private subscriptions = new Subscription();
 
-  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService, private dialog: MatDialog) {
+  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();
 
     this.joinRequest = this.builder.group({
@@ -45,6 +46,9 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
         map((res: any) => res.payload[0])
       ).subscribe((student: any) => {
         this.student = student;
+        if (student.block) {
+          this.router.navigate(['student-dashboard']);
+        }
         this.loadClasses();
       }));
 

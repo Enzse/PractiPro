@@ -97,7 +97,7 @@ export class CoordinatorSubmissionComponent implements OnInit, OnDestroy {
       exitAnimationDuration: "500ms",
       width: "auto",
       data: {
-        student: student
+        student_id: student
       }
     })
   }

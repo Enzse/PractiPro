@@ -136,7 +136,7 @@ export class CoordDocumentationComponent implements OnInit, OnDestroy {
       exitAnimationDuration: "350ms",
       width: "auto",
       data: {
-        student: student
+        student_id: student
       }
     })
   }

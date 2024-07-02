@@ -490,6 +490,16 @@ class Get extends GlobalMethods
 
         return $this->get_records('class_join_requests', $condition);
     }
+    public function getClassJoinRequestsAdvisor($block)
+    {
+        $sql = "SELECT cjr.*, s.studentId, s.firstName AS studentFirstName, s.lastName AS studentLastName
+        FROM class_join_requests cjr
+        JOIN students s
+        ON cjr.student_id = s.id
+        WHERE cjr.class = :class";
+
+        return $this->get_records(null, null, null, $sql, ['class' => $block]);
+    }
 
     public function getClassInvitations($id)
     {
@@ -502,6 +512,12 @@ class Get extends GlobalMethods
         return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
     }
 
+    public function getClassJoinRequestCount($id)
+    {
+        $sql = "SELECT COUNT(*) AS requestCount FROM class_join_requests WHERE class = :class";
+
+        return $this->get_records(null, null, null, $sql, ['class' => $id]);
+    }
 
     public function getClassInvitationCount($id)
     {

@@ -322,6 +322,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'getclassjoinrequestsadvisor':
+                if (isset($request[1])) {
+                    echo json_encode($get->getClassJoinRequestsAdvisor($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+
             case 'getclassinvitations':
                 if (isset($request[1])) {
                     echo json_encode($get->getClassInvitations($request[1]));
@@ -333,6 +342,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'getclassinvitationcount':
                 if (isset($request[1])) {
                     echo json_encode($get->getClassInvitationCount($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+            case 'getclassjoinrequestcount':
+                if (isset($request[1])) {
+                    echo json_encode($get->getClassJoinRequestCount($request[1]));
                 } else {
                     echo "Invalid Endpoints";
                     http_response_code(400);
@@ -635,6 +652,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'cancelclassjoinrequest':
                 if (isset($request[1])) {
                     echo json_encode($delete->cancelJoinRequest($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'rejectclassjoinrequest':
+                if (isset($request[1])) {
+                    echo json_encode($delete->rejectClassJoinRequest($request[1]));
                 } else {
                     echo "ID not provided";
                     http_response_code(400);

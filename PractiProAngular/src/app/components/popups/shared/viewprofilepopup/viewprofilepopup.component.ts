@@ -22,10 +22,6 @@ export class ViewprofilepopupComponent implements OnInit, OnDestroy {
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewprofilepopupComponent>, private sanitizer: DomSanitizer, private dialog2: MatDialog) { }
 
-
-
-  //This dynamically displays the data according to changes.
-  editdata?: any;
   ngOnInit(): void {
     this.loadInfo();
   }
@@ -35,22 +31,22 @@ export class ViewprofilepopupComponent implements OnInit, OnDestroy {
   }
 
   loadInfo() {
-    this.service.getStudentOjtInfo(this.data.student.id).subscribe(
-      (res: any) => {
-        this.studentProfile = res.payload[0];
-        this.studentProfile.avatar = '';
-                
-        this.studentProfile.avatar = '';
-                
-        console.log(this.studentProfile);
-        
-        this.service.getAvatar(this.studentProfile.id).subscribe((avatarRes: any) => {
+    this.subscriptions.add(
+      this.service.getStudentOjtInfo(this.data.student_id).subscribe(
+        (res: any) => {
+          this.studentProfile = res.payload[0];
+          this.studentProfile.avatar = '';
+          this.service.getAvatar(this.studentProfile.id).subscribe((avatarRes: any) => {
             if (avatarRes.size > 0) {
-                const url = URL.createObjectURL(avatarRes);
-                this.studentProfile.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+              const url = URL.createObjectURL(avatarRes);
+              this.studentProfile.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
             }
-        });
-      }
-    );
+          });
+        }));
   }
+
+  closePopup() {
+    this.dialog.close();
+  }
+
 }

@@ -18,7 +18,8 @@
                 <h1 class="font-primary font-bold text-3xl">{{blockData.block_name}}</h1>
             </div>
 
-            <div class="font-primary justify-between shadow-md  bg-white mx-6 my-5 p-4 rounded-lg">
+            <div (click)="viewAllStudents(blockData.block_name)"
+                class="font-primary cursor-pointer justify-between shadow-md  bg-white mx-6 my-5 p-4 rounded-lg">
                 <div>
                     <h1>Students under {{blockData.block_name}}:</h1>
                     <h1 class="font-bold text-2xl text-blue-900">{{blockData.students_handled}} Total Students</h1>
@@ -26,12 +27,14 @@
             </div>
 
             <div class="font-primary flex justify-evenly space-x-5 mx-6 my-5 rounded-lg">
-                <div matTooltip="(Click here to see join requests for this class.)"
+                <div (click)="viewJoinRequests(blockData.block_name)"
+                    matTooltip="(Click here to see join requests for this class.)"
                     class="font-primary w-[90vh] cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
-                    <!-- <div class="flex justify-center">
-                        <img class="h-[15vh] opacity-65" src="../../../../../assets/empty4.png">
-                    </div> -->
-                    <p class="opacity-70">This class currently has no join requests.</p>
+                    <p *ngIf="requestCount > 0" class="font-primary text-green-500">This class has pending join
+                        requests:
+                        ({{requestCount}})</p>
+                    <p *ngIf="requestCount === 0" class="opacity-70">This class currently has no join requests.
+                        ({{requestCount}})</p>
                 </div>
                 <div matTooltip="(Click here to see sent invitations to students.)"
                     class="font-primary w-[90vh] cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">

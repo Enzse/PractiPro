@@ -356,6 +356,9 @@ export class AuthService {
   getClassJoinRequests(studentId: number) {
     return this.http.get<any>(`${this.apiurl}/getclassjoinrequests/${studentId}`);
   }
+  getClassJoinRequestsAdvisor(block: number) {
+    return this.http.get<any>(`${this.apiurl}/getclassjoinrequestsadvisor/${block}`);
+  }
 
   createClassInvitation(inputdata: any) {
     return this.http.post(`${this.apiurl}/createclassinvitation`, inputdata);
@@ -366,8 +369,14 @@ export class AuthService {
   getClassInvitationCount(studentId: number) {
     return this.http.get<any>(`${this.apiurl}/getclassinvitationcount/${studentId}`);
   }
+  getClassJoinRequestCount(block: number) {
+    return this.http.get<any>(`${this.apiurl}/getclassjoinrequestcount/${block}`);
+  }
   cancelClassJoinRequest(id: number) {
     return this.http.delete(`${this.apiurl}/cancelclassjoinrequest/${id}`);
+  };
+  rejectClassJoinRequest(id: number) {
+    return this.http.delete(`${this.apiurl}/rejectclassjoinrequest/${id}`);
   };
   cancelClassInvitation(id: number) {
     return this.http.delete(`${this.apiurl}/cancelclassinvitation/${id}`);
