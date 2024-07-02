@@ -55,6 +55,8 @@ import { CoordSidebarComponent } from './components/page-coordinator/coord-sideb
 import { CoordSidebarmainComponent } from './components/page-coordinator/coord-sidebarmain/coord-sidebarmain.component';
 import { CoordInvitestudentsComponent } from './components/page-coordinator/coord-invitestudents/coord-invitestudents.component';
 import { CoordDashboardComponent } from './components/page-coordinator/coord-dashboard/coord-dashboard.component';
+import { InvitestudentsByStudentidComponent } from './components/page-coordinator/coord-invitestudents/invitestudents-by-studentid/invitestudents-by-studentid.component';
+import { InvitestudentsByLinkComponent } from './components/page-coordinator/coord-invitestudents/invitestudents-by-link/invitestudents-by-link.component';
 
 
 export const routes: Routes = [
@@ -117,7 +119,13 @@ export const routes: Routes = [
                 children: [
                     { path: 'coord-dashboard', component: CoordDashboardComponent, title: 'Dashboard', },
                     { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Registrations', },
-                    { path: 'coord-invitestudents', component: CoordInvitestudentsComponent, title: 'Invite Students', },
+                    {
+                        path: 'coord-invitestudents', component: CoordInvitestudentsComponent, title: 'Invite Students', children:
+                            [
+                                { path: 'invite-by-studentid', component: InvitestudentsByStudentidComponent, },
+                                { path: 'invite-by-link', component: InvitestudentsByLinkComponent, },
+                            ]
+                    },
                     { path: 'coord-submission', component: CoordDocumentationComponent, title: 'Submissions', },
                     { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records', },
                     { path: 'coord-seminars', component: CoordSeminarsComponent, title: 'Seminar Records', },

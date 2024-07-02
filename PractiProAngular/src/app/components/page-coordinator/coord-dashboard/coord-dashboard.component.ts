@@ -22,6 +22,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   blockData: any;
   requestCount: any;
+  invitationsCount: any = 0;
   currentBlock: any;
 
   constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, @Inject(PLATFORM_ID) private platformId: Object, private service: AuthService, private blockService: BlockService) {
