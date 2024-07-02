@@ -15,9 +15,10 @@ import { JwtService } from '../../../services/jwt.service';
 export class CoordNavbarComponent {
 
   data: any;
-  constructor( @Inject(PLATFORM_ID) private platformId: Object, private jwt: JwtService) {
-    this.data = jwt.getUserName();    
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private jwt: JwtService) {
+    this.data = jwt.getUserName();
   }
+
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) initFlowbite();
   }

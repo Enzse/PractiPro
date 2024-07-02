@@ -1,1 +1,236 @@
-<p>coord-dashboard works!</p>
+<div class="p-2 sm:ml-56 font-secondary">
+    <div class="p-1 xl:p-10">
+        <div>
+            <h1 class="text-orange-500 font-bold text-center font-primary text-xl mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="w-6 h-6 -mt-0.5 text-orange-500 inline">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                        d="M11 9h6m-6 3h6m-6 3h6M6.996 9h.01m-.01 3h.01m-.01 3h.01M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+                </svg>
+                Dashboard
+            </h1>
+            <div class="border-b border-gray-300"></div>
+            <br />
+        </div>
+        <div *ngIf="blockData; else noBlockMessage"
+            class="text-center p-5 bg-slate-100 h-auto justify-center rounded-lg shadow-md border border-gray-200">
+            <div class=" inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
+                <h1 class="font-primary font-bold text-3xl">{{blockData.block_name}}</h1>
+            </div>
+
+            <div class="font-primary justify-between shadow-md  bg-white mx-6 my-5 p-4 rounded-lg">
+                <div>
+                    <h1>Students under {{blockData.block_name}}:</h1>
+                    <h1 class="font-bold text-2xl text-blue-900">{{blockData.students_handled}} Total Students</h1>
+                </div>
+            </div>
+
+            <div class="font-primary flex justify-evenly space-x-5 mx-6 my-5 rounded-lg">
+                <div matTooltip="(Click here to see join requests for this class.)"
+                    class="font-primary w-[90vh] cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
+                    <!-- <div class="flex justify-center">
+                        <img class="h-[15vh] opacity-65" src="../../../../../assets/empty4.png">
+                    </div> -->
+                    <p class="opacity-70">This class currently has no join requests.</p>
+                </div>
+                <div matTooltip="(Click here to see sent invitations to students.)"
+                    class="font-primary w-[90vh] cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
+                    <p class="opacity-70">You currently have no join invitations sent.</p>
+                </div>
+            </div>
+
+
+            <!-- <div class="border-b mb-4 mt-8 border-gray-300"></div> -->
+
+            <div class="my-4 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
+                <h1 class="font-primary font-bold text-3xl">Student OJT Status:</h1>
+            </div>
+
+            <div class="flex flex-wrap justify-evenly">
+                <div
+                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.registered_students}} <span
+                            class="text-5xl">/</span>
+                        {{blockData.students_handled}} </h1>
+                    <h2 matTooltip="Ratio of students that have a cleared registration status."
+                        class="font-secondary text-base mt-2">Students cleared in <br><b>Registration Status</b></h2>
+                </div>
+                <div
+                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.hired_students}} <span
+                            class="text-5xl">/</span>
+                        {{blockData.students_handled}} </h1>
+                    <h2 matTooltip="Ratio of students that are successfully hired and active in a company."
+                        class="font-secondary text-base mt-2">Students with <br><b>OJT Sites</b></h2>
+                </div>
+                <div
+                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.ojt_cleared_students}} <span
+                            class="text-5xl">/</span>
+                        {{blockData.students_handled}} </h1>
+                    <h2 matTooltip="Ratio of students that have met 200+ total hours worth of Daily Attendance records."
+                        class="font-secondary text-base mt-2">Students with 200+ total<br><b>On-site Training Hours</b>
+                    </h2>
+                </div>
+                <div
+                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.seminar_cleared_students}}
+                        <span class="text-5xl">/</span>
+                        {{blockData.students_handled}}
+                    </h1>
+                    <h2 matTooltip="Ratio of students that have met 50+ total hours worth of Seminar Records."
+                        class="font-secondary text-base mt-2">Students with 50+ total<br><b>Seminar Hours</b>
+                    </h2>
+                </div>
+                <div
+                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.evaluation_cleared_students}}
+                        <span class="text-5xl">/</span>
+                        {{blockData.students_handled}}
+                    </h1>
+                    <h2 matTooltip="Ratio of students that have been evaluated by their company supervisors."
+                        class="font-secondary text-base mt-2">Students cleared in<br><b>Performance Evaluation</b>
+                    </h2>
+                </div>
+                <div
+                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.evaluation_cleared_students}}
+                        <span class="text-5xl">/</span>
+                        {{blockData.students_handled}}
+                    </h1>
+                    <h2 matTooltip="Ratio of students that have a cleared Final Report."
+                        class="font-secondary text-base mt-2">Students cleared in<br><b>Final Reports</b>
+                    </h2>
+                </div>
+            </div>
+
+
+
+
+            <!-- IF blockData IS HIRED -->
+            <div *ngIf="blockData.company_id" class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
+
+
+                <div class="grid grid-cols-5 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
+
+                    <div class="col-span-3">
+                        <!-- First column content here -->
+                        <div *ngIf="blockData" class="w-full h-full bg-white shadow-md p-3">
+                            <div>
+                                <h1 class="font-primary font-bold text-lg">{{blockData.job_title || "Unassigned"}}
+                                </h1>
+                            </div>
+
+                            <p class="font-primary">Job Title</p>
+                            <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
+
+                            <div class="flex justify-start text-left">
+                                <ul role="list" class="">
+                                    <li class="mb-2">
+                                        <div class="flex items-center">
+                                            <div class="flex-1 min-w-0 ms-4">
+                                                <p
+                                                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                                    Job Description:
+                                                </p><span
+                                                    class="text-sm font-medium lg:text-base font-secondary text-gray-900">{{blockData.job_description}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-2">
+                                        <div class="flex items-center">
+                                            <div class="flex-1 min-w-0 ms-4">
+                                                <p
+                                                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                                    Start Date:
+                                                </p>
+                                                <span class="text-sm font-normal lg:text-base font-secondary">{{
+                                                    blockData.start_date | date: "longDate"}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-2">
+                                        <div class="flex items-center">
+                                            <div class="flex-1 min-w-0 ms-4">
+                                                <p
+                                                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                                    End Date:
+                                                </p>
+                                                <span class="text-sm font-normal lg:text-base font-secondary">{{
+                                                    blockData.end_date | date: "longDate"}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-2">
+                                        <div class="flex items-center">
+                                            <div class="flex-1 min-w-0 ms-4">
+                                                <p
+                                                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                                    Assigned by:
+                                                </p>
+                                                <span class="text-sm font-normal lg:text-base font-secondary">{{
+                                                    blockData.sfirstName}} {{ blockData.slastName}}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div *ngIf="!blockData" class="w-full bg-white shadow-md p-3">
+                            <div>
+                                <div class="flex justify-center">
+                                    <img class="h-48 opacity-50" src="../../../../../assets/empty1.png">
+                                </div>
+                                <h1 class="font-secondary text-lg text-gray-800 my-2">This blockData has yet to be
+                                    assigned a job.</h1>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-span-2 max-sm:mt-3 max-sm:mx-auto shadow-md w-full p-3 bg-white relative">
+                        <!-- Second column content here -->
+                        <div *ngIf="blockData.length">
+
+                            <h1 class="font-primary -mt-1 mb-2 font-bold text-lg">Schedules</h1>
+
+                            <table class="w-full">
+                                <tbody>
+                                    <tr *ngFor="let schedule of blockData">
+                                        <td class="px-4 py-1 text-left border font-secondary text-sm">{{
+                                            schedule.day_of_week }}
+                                        </td>
+                                        <td class="text-center border px-4 py-1 font-secondary text-sm">
+                                        </td>
+                                        <td class="text-center border px-4 py-1 font-secondary text-sm">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+        <ng-template #noBlockMessage>
+            <div class="m-10 flex flex-col items-center">
+                <div>
+                    <img class="opacity-40 h-36 w-36" src="../../../../assets/empty2.png">
+                </div>
+                <div>
+                    <h1 class="opacity-40 text-center text-4xl font-primary mt-5">
+                        Please select a Class...
+                    </h1>
+                </div>
+            </div>
+        </ng-template>
+
+    </div>
+</div>

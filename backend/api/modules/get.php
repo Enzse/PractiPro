@@ -159,6 +159,12 @@ class Get extends GlobalMethods
         return $this->get_records('class_blocks', $condition);
     }
 
+    public function getClassData($id = null)
+    {
+        $condition = ($id !== null) ? "block_name = '$id'" : null;
+        return $this->get_records('vw_class_profile', $condition);
+    }
+
     public function get_classesByCourseAndYear($course, $year)
     {
         $condition = "course = '$course' AND year_level = $year";
@@ -169,7 +175,7 @@ class Get extends GlobalMethods
     {
 
         $sql = "SELECT cb.*
-        FROM class_blocks cb
+        FROM vw_class_profile cb
         JOIN rl_class_coordinators rcc ON cb.block_name = rcc.block_name
         WHERE rcc.coordinator_id = :coordinatorId";
 

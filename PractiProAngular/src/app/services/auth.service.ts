@@ -109,6 +109,9 @@ export class AuthService {
       return this.http.get<any>(`${this.apiurl}/classes`);
     }
   }
+  getClassData(block: any = null) {
+    return this.http.get<any>(`${this.apiurl}/classdata/${block}`);
+  }
   getCompanies(id: any = null) {
     if (id) {
       return this.http.get<any>(`${this.apiurl}/companies/${id}`);

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -17,6 +17,7 @@ import { SeminarspopupComponent } from '../../popups/popups-coordinator/seminars
 import { WarpopupcomponentComponent } from '../../popups/popups-coordinator/warpopupcomponent/warpopupcomponent.component';
 import { CoordEvaluationspopupComponent } from '../../popups/popups-coordinator/coord-evaluationspopup/coord-evaluationspopup.component';
 import { FinalreportpopupComponent } from '../../popups/popups-coordinator/finalreportpopup/finalreportpopup.component';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-coord-documentation',
@@ -25,7 +26,7 @@ import { FinalreportpopupComponent } from '../../popups/popups-coordinator/final
   templateUrl: './coord-documentation.component.html',
   styleUrl: './coord-documentation.component.css'
 })
-export class CoordDocumentationComponent implements OnInit {
+export class CoordDocumentationComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
 
   Coordinator: any;
@@ -35,32 +36,37 @@ export class CoordDocumentationComponent implements OnInit {
   currentBlock: any;
   isLoading: boolean = false;
   p: number = 1; /* starting no. of the list */
+  private subscriptions = new Subscription();
+
 
   ngOnInit(): void {
-    this.blockService.selectedBlock$.subscribe(block => {
-      this.currentBlock = block;
-      if (this.currentBlock) {
-        this.loadHeldStudents();
-      } else {
-        console.log(`Submissions: no block selected`);
-      }
+    this.subscriptions.add(
+      this.blockService.selectedBlock$.subscribe(block => {
+        this.currentBlock = block;
+        if (this.currentBlock) {
+          this.loadHeldStudents();
+        } else {
+          console.log(`Submissions: no block selected`);
+        }
+        console.log(`Submissions: ${this.currentBlock}`);
+      }));
+  }
 
-      console.log(`Submissions: ${this.currentBlock}`);
-    });
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
   }
 
 
   loadHeldStudents() {
     this.isLoading = true;
-    this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
-      this.studentlist = res.payload;
-      this.studentlist = this.studentlist.filter((student: any) => student.registration_status === 1);
-      this.isLoading = false;
-      console.log(this.studentlist);
-    }, err => {
-      this.isLoading = false;
-      console.error(err);
-    });
+    this.subscriptions.add(
+      this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+        this.studentlist = res.payload;
+        this.studentlist = this.studentlist.filter((student: any) => student.registration_status === 1);
+        this.isLoading = false;
+      }, err => {
+        this.isLoading = false;
+      }));
   }
 
   viewDocumentations(code: any) {

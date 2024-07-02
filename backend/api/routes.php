@@ -68,6 +68,13 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo json_encode($get->get_classes());
                 }
                 break;
+            case 'classdata':
+                if (isset($request[1])) {
+                    echo json_encode($get->getClassData($request[1]));
+                } else {
+                    echo "Invalid Endpoints!";
+                }
+                break;
             case 'classesbycoordinator':
                 if (isset($request[1])) {
                     echo json_encode($get->get_classes_ByCoordinator($request[1]));

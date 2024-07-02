@@ -44,7 +44,6 @@ export class CoordSidebarComponent implements OnInit, OnDestroy {
       popup.afterClosed().subscribe(res => {
         this.selectedBlock = res;
         this.blockService.setSelectedBlock(res);
-        console.log(this.selectedBlock)
       }));
 
   }
