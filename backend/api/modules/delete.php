@@ -338,4 +338,20 @@ class Delete extends GlobalMethods
         }
     }
 
+
+    public function clearClassJoinLinks()
+    {
+        $sql = "DELETE FROM class_join_links WHERE join_token_expires_at < NOW()";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            $this->pdo->commit();
+            return $this->sendPayload(null, 'success', "Successfully cleaned links.", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
 }

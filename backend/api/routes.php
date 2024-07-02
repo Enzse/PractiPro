@@ -549,6 +549,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->createClassInvitation($data));
                 break;
+            case 'createclassjoinlink':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->createClassJoinLink($data));
+                break;
 
             default:
                 // Return a 403 response for unsupported requests
@@ -682,6 +686,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     echo "ID not provided";
                     http_response_code(400);
                 }
+                break;
+            case 'clearexpiredjoinlinks':
+                echo json_encode($delete->clearClassJoinLinks());
                 break;
 
 

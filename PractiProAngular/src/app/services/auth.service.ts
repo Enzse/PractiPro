@@ -385,4 +385,11 @@ export class AuthService {
     return this.http.delete(`${this.apiurl}/cancelclassinvitation/${id}`);
   };
 
+  createClassJoinLink(inputdata: any) {
+    return this.http.post(`${this.apiurl}/createclassjoinlink`, inputdata);
+  }
+  clearExpiredJoinLinks() {
+    return this.http.delete(`${this.apiurl}/clearexpiredjoinlinks`);
+  };
+
 }

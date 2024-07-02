@@ -51,7 +51,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
         this.service.getStudentsByStudentID(this.searchForm.value.studentId).subscribe((res: any) => {
           if (res.payload.length === 0) {
             Swal.fire({
-              title: "No student found for this student ID.",
+              title: "No registered student found for this student ID.",
               text: 'Try rechecking if you entered the correct ID or try another ID.',
             });
           } else {

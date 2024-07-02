@@ -57,6 +57,7 @@ import { CoordInvitestudentsComponent } from './components/page-coordinator/coor
 import { CoordDashboardComponent } from './components/page-coordinator/coord-dashboard/coord-dashboard.component';
 import { InvitestudentsByStudentidComponent } from './components/page-coordinator/coord-invitestudents/invitestudents-by-studentid/invitestudents-by-studentid.component';
 import { InvitestudentsByLinkComponent } from './components/page-coordinator/coord-invitestudents/invitestudents-by-link/invitestudents-by-link.component';
+import { JoinclassesByLinkComponent } from './components/page-student/joinclasses-by-link/joinclasses-by-link.component';
 
 
 export const routes: Routes = [
@@ -70,6 +71,7 @@ export const routes: Routes = [
     { path: 'registrationsupervisor', component: RegistrationsupervisorComponent, title: 'Registration' },
     { path: 'resetpassword', component: ResetPasswordFormComponent, title: 'Reset Password' },
     { path: 'activateaccount', component: ActivateAccountComponent, title: 'Activate Account' },
+    { path: 'joinclassbylink', component: JoinclassesByLinkComponent, title: 'Join Class by Link' },
 
     //Student Pages
     {
