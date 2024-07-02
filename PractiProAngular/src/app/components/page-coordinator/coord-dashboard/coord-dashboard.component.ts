@@ -139,7 +139,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [registrationperc, remainingPercentages],
-          backgroundColor: ["#FB8B23", "#FFBD2E"]
+          backgroundColor: ["#FFBD2E", "#1e3a8a"]
         },
       ],
     };
@@ -150,7 +150,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [ojtsitesperc, remainingperc],
-          backgroundColor: ["#FB8B23", "#FFBD2E"]
+          backgroundColor: ["#FFBD2E", "#1e3a8a"]
         },
       ],
     };
@@ -161,7 +161,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [hoursperc, remaining],
-          backgroundColor: ["#FB8B23", "#FFBD2E"]
+          backgroundColor: ["#FFBD2E", "#1e3a8a"]
         },
       ],
     };
@@ -172,7 +172,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [seminarhoursperc, remain],
-          backgroundColor: ["#FB8B23", "#FFBD2E"]
+          backgroundColor: ["#FFBD2E", "#1e3a8a"]
         },
       ],
     };
@@ -183,7 +183,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [perfeval, remainingP],
-          backgroundColor: ["#FB8B23", "#FFBD2E"]
+          backgroundColor: ["#FFBD2E", "#1e3a8a"]
         },
       ],
     };
