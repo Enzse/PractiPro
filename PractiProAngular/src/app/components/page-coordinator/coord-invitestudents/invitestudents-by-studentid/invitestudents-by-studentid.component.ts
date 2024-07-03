@@ -1,24 +1,27 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
-import { RouterOutlet } from '@angular/router';
-import { Subscription, map } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { BlockService } from '../../../../services/block.service';
+import { ViewprofilepopupComponent } from '../../../popups/shared/viewprofilepopup/viewprofilepopup.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-invitestudents-by-studentid',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule,],
+  imports: [ReactiveFormsModule, CommonModule, MatTooltipModule],
   templateUrl: './invitestudents-by-studentid.component.html',
   styleUrl: './invitestudents-by-studentid.component.css'
 })
 export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
   matchingStudent: any;
   user: any;
-  userID: any;
+  userID = this.service.getCurrentUserId();
+  invitations: any;
   existingInvitations: any = 0;
   currentBlock: any;
   searchForm = this.builder.group({
@@ -30,17 +33,20 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
     private blockService: BlockService,
     private service: AuthService,
     private builder: FormBuilder,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private dialog: MatDialog
   ) {
-    this.userID = this.service.getCurrentUserId();
   }
 
   ngOnInit(): void {
     this.subscriptions.add(
       this.blockService.selectedBlock$.subscribe(block => {
         this.currentBlock = block;
-      }));
+        this.loadInvitations();
+      })
+    );
   }
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -64,10 +70,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
                   this.matchingStudent.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
                 }
               }));
-            this.subscriptions.add(
-              this.service.getClassInvitationCountForBlock(this.matchingStudent.id, this.currentBlock).subscribe((res: any) => {
-                this.existingInvitations = res.payload[0].invitationCount;
-              }));
+            this.checkExistingInvitationForStudent();
           }
         }, error => {
           if (error.status === 403) {
@@ -91,6 +94,75 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
     }
   }
 
+  checkExistingInvitationForStudent() {
+    this.subscriptions.add(
+      this.service.checkExistingClassInvitationForBlock(this.matchingStudent.id, this.currentBlock).subscribe((res: any) => {
+        this.existingInvitations = res.payload[0].invitationCount;
+      }));
+  }
+
+  loadInvitations(): void {
+    if (this.currentBlock) {
+      this.subscriptions.add(
+        this.service.getClassInvitationsForBlock(this.currentBlock).subscribe(
+          (res: any) => {
+            this.invitations = res.payload;
+          },
+          error => {
+            console.error('Error fetching invitations:', error);
+          }
+        )
+      );
+    }
+  }
+
+  cancelInvitation(id: any) {
+    Swal.fire({
+      title: "Are you sure you want to cancel this invitation?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#233876",
+      confirmButtonText: "Confirm"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.subscriptions.add(
+          this.service.cancelClassInvitationByID(id).subscribe((res: any) => {
+            this.loadInvitations();
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              backdrop: false,
+              title: `Successfully cancelled invitation.`,
+              icon: "success",
+              timer: 2000,
+              timerProgressBar: true,
+              showConfirmButton: false,
+            });
+            this.checkExistingInvitationForStudent();
+          }, error => {
+            Swal.fire({
+              title: "Delete failed",
+              text: "There seemed to be a database error. Please try again later.",
+              icon: "error"
+            });
+          }));
+      }
+    });
+  }
+
+
+  viewProfile(student_id: any) {
+    const popup = this.dialog.open(ViewprofilepopupComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "200ms",
+      width: "auto",
+      data: {
+        student_id: student_id
+      }
+    })
+  }
+
   sendClassInvite(student_id: any) {
     const invitationForm = this.builder.group({
       student_id: [student_id],
@@ -99,7 +171,11 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
     })
     this.subscriptions.add(
       this.service.createClassInvitation(invitationForm.value).subscribe((res: any) => {
+        this.loadInvitations();
         this.matchingStudent = null;
+        this.searchForm.patchValue({
+          studentId: ''
+        })
         Swal.fire({
           title: "Invitation sent!",
           icon: 'success'
@@ -120,6 +196,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         this.subscriptions.add(
           this.service.cancelClassInvitation(student_id).subscribe((res: any) => {
+            this.loadInvitations();
             this.matchingStudent = null;
             Swal.fire({
               toast: true,

@@ -58,6 +58,7 @@ import { CoordDashboardComponent } from './components/page-coordinator/coord-das
 import { InvitestudentsByStudentidComponent } from './components/page-coordinator/coord-invitestudents/invitestudents-by-studentid/invitestudents-by-studentid.component';
 import { InvitestudentsByLinkComponent } from './components/page-coordinator/coord-invitestudents/invitestudents-by-link/invitestudents-by-link.component';
 import { JoinclassesByLinkComponent } from './components/page-student/joinclasses-by-link/joinclasses-by-link.component';
+import { classjoinlinkGuard } from './guard/classjoinlink.guard';
 
 
 export const routes: Routes = [
@@ -71,7 +72,7 @@ export const routes: Routes = [
     { path: 'registrationsupervisor', component: RegistrationsupervisorComponent, title: 'Registration' },
     { path: 'resetpassword', component: ResetPasswordFormComponent, title: 'Reset Password' },
     { path: 'activateaccount', component: ActivateAccountComponent, title: 'Activate Account' },
-    { path: 'joinclassbylink', component: JoinclassesByLinkComponent, title: 'Join Class by Link' },
+    { path: 'joinclassbylink', component: JoinclassesByLinkComponent, title: 'Join Class by Link', canActivate: [classjoinlinkGuard] },
 
     //Student Pages
     {

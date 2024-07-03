@@ -1,1 +1,68 @@
-<p>joinclasses-by-link works!</p>
+<div class="relative">
+    <!-- background -->
+    <div class="w-full right-0 absolute top-0 inset-0 bg-contain bg-center bg-no-repeat blur-md"
+        style="background-image: url('../../../assets/logo.png')"></div>
+    <div class="relative z-10">
+        <div>
+
+            <div class="flex relative -top-8 justify-center mx-auto h-screen items-center">
+                <div *ngIf="status === 'valid'"
+                    class="px-12 py-5 flex flex-col justify-center max-w-md max-sm:w-fit max-sm:mx-2 bg-white rounded-lg shadow-lg max-sm:mt-4 font-secondary border border-gray-300 max-sm:px-7">
+                    <div class="space-y-2">
+                        <div class="flex justify-center font-primary font-semibold text-2xl text-center">
+                            <h1>Your have successfully joined {{tokenData.class}}</h1>
+                        </div>
+                        <div class="flex justify-center px-4 text-center text-wrap text-sm text-gray-500">
+                            <p>Your are now able to proceed to submitting your requirements. Good luck!</p>
+                        </div>
+                    </div>
+                    <div class="flex mt-5 justify-center">
+                        <a routerLink="/student-dashboard" routerLinkActive="active"
+                            class="text-white bg-blue-950 hover:bg-blue-800 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Go to Dashboard
+                        </a>
+                    </div>
+                </div>
+
+
+                <div *ngIf="status === 'invalid'"
+                    class="px-12 py-5 flex flex-col justify-center max-w-md max-sm:w-fit max-sm:mx-2 bg-white rounded-lg shadow-lg max-sm:mt-4 font-secondary border border-gray-300 max-sm:px-7">
+                    <div class="space-y-2">
+                        <div class="flex justify-center font-primary font-semibold text-2xl text-center">
+                            <h1>Invalid Token</h1>
+                        </div>
+                        <div class="flex justify-center px-4 text-center text-wrap text-sm text-gray-500">
+                            <p>The token you have entered is invalid. Please enter with a legitimate token.</p>
+                        </div>
+                    </div>
+                    <div class="flex mt-5 justify-center">
+                        <a routerLink="/login" routerLinkActive="active"
+                            class="text-white bg-blue-950 hover:bg-blue-800 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Back to Login
+                        </a>
+                    </div>
+                </div>
+
+                <div *ngIf="status === 'conflict'"
+                    class="px-12 py-5 flex flex-col justify-center max-w-md max-sm:w-fit max-sm:mx-2 bg-white rounded-lg shadow-lg max-sm:mt-4 font-secondary border border-gray-300 max-sm:px-7">
+                    <div class="space-y-2">
+                        <div class="flex justify-center font-primary font-semibold text-2xl text-center">
+                            <h1>You already belong to a block!</h1>
+                        </div>
+                        <div class="flex justify-center px-4 text-center text-wrap text-sm text-gray-500">
+                            <p>It seems that you already belong in a block. <br>You can go to the dashboard via the
+                                button
+                                below.</p>
+                        </div>
+                    </div>
+                    <div class="flex mt-5 justify-center">
+                        <a routerLink="/student-dashboard" routerLinkActive="active"
+                            class="text-white bg-blue-950 hover:bg-blue-800 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Go to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ViewJoinRequestsComponent } from '../../popups/popups-coordinator/view-join-requests/view-join-requests.component';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 import { ViewAllStudentsComponent } from '../../popups/popups-coordinator/view-all-students/view-all-students.component';
+import { ViewSentInvitesComponent } from '../../popups/popups-coordinator/view-sent-invites/view-sent-invites.component';
 
 @Component({
   selector: 'app-coord-dashboard',
@@ -22,7 +23,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   blockData: any;
   requestCount: any;
-  invitationsCount: any = 0;
+  invitationCount: any = 0;
   currentBlock: any;
 
   constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, @Inject(PLATFORM_ID) private platformId: Object, private service: AuthService, private blockService: BlockService) {
@@ -60,6 +61,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
         this.blockData = res.payload[0];
         if (this.blockData) {
           this.getRequestsCount(this.blockData.block_name);
+          this.getInvitationCount(this.blockData.block_name);
         }
       }))
   }
@@ -72,6 +74,17 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
         this.requestCount = count;
       }));
   }
+  getInvitationCount(block: any) {
+    this.subscriptions.add(
+      this.service.getClassInvitationForBlockCount(block).pipe(
+        map((res: any) => res.payload[0].invitationCount)
+      ).subscribe((count: any) => {
+        console.log(count);
+        this.invitationCount = count;
+        console.log(this.invitationCount);
+      }));
+  }
+
 
   viewAllStudents(block: any) {
     const popup = this.dialog.open(ViewAllStudentsComponent, {
@@ -86,6 +99,17 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
   viewJoinRequests(block: any) {
     const popup = this.dialog.open(ViewJoinRequestsComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
+      data: {
+        block: block
+      }
+    })
+  }
+
+  viewSentInvites(block: any) {
+    const popup = this.dialog.open(ViewSentInvitesComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "500ms",
       width: "80%",

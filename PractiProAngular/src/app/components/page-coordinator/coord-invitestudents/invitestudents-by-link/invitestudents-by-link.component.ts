@@ -23,7 +23,6 @@ export class InvitestudentsByLinkComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.service.clearExpiredJoinLinks();
     this.subscriptions.add(
       this.blockService.selectedBlock$.subscribe(block => {
         const currentBlock = block;

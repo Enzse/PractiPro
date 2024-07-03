@@ -313,6 +313,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'getclassjointoken':
+                if (isset($request[1])) {
+                    echo json_encode($get->getClassJoinToken($request[1]));
+                } else {
+                    echo "No Token Provided!";
+                    http_response_code(400);
+                }
+                break;
+
             case 'getclassjoinrequests':
                 if (isset($request[1])) {
                     echo json_encode($get->getClassJoinRequests($request[1]));
@@ -347,9 +356,25 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
-            case 'getclassinvitationcountforblock':
+            case 'getclassinvitationsforblock':
                 if (isset($request[1])) {
-                    echo json_encode($get->getClassInvitationCountForBlock($request[1], $request[2]));
+                    echo json_encode($get->getClassInvitationsForBlock($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+            case 'getclassinvitationsforblockcount':
+                if (isset($request[1])) {
+                    echo json_encode($get->getClassInvitationForBlockCount($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+            case 'checkexistinginvitationforblock':
+                if (isset($request[1])) {
+                    echo json_encode($get->checkExistingInvitationForBlock($request[1], $request[2]));
                 } else {
                     echo "Invalid Endpoints";
                     http_response_code(400);
@@ -551,6 +576,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
             case 'createclassjoinlink':
                 // Return JSON-encoded data for adding users
+                $delete->clearClassJoinLinks();
                 echo json_encode($post->createClassJoinLink($data));
                 break;
 
@@ -682,6 +708,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'cancelclassinvitation':
                 if (isset($request[1])) {
                     echo json_encode($delete->cancelClassInvitation($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'cancelclassinvitationbyid':
+                if (isset($request[1])) {
+                    echo json_encode($delete->cancelClassInvitationByID($request[1]));
                 } else {
                     echo "ID not provided";
                     http_response_code(400);

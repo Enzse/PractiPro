@@ -511,6 +511,16 @@ class Get extends GlobalMethods
 
         return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
     }
+    public function getClassInvitationsForBlock($id)
+    {
+        $sql = "SELECT cji.*, s.firstName AS studentFirstName, s.lastName AS studentLastName, s.studentId
+        FROM class_join_invitations cji
+        JOIN students s
+        ON cji.student_id = s.id
+        WHERE cji.class = :class";
+
+        return $this->get_records(null, null, null, $sql, ['class' => $id]);
+    }
 
     public function getClassJoinRequestCount($id)
     {
@@ -525,10 +535,38 @@ class Get extends GlobalMethods
 
         return $this->get_records(null, null, null, $sql, ['studentId' => $id]);
     }
-    public function getClassInvitationCountForBlock($id, $block)
+    public function getClassInvitationForBlockCount($id)
+    {
+        $sql = "SELECT COUNT(*) AS invitationCount FROM class_join_invitations WHERE class= :class";
+
+        return $this->get_records(null, null, null, $sql, ['class' => $id]);
+    }
+    public function checkExistingInvitationForBlock($id, $block)
     {
         $sql = "SELECT COUNT(*) AS invitationCount FROM class_join_invitations WHERE student_id = :studentId AND class = :class";
 
         return $this->get_records(null, null, null, $sql, ['studentId' => $id, 'class' => $block]);
     }
+
+
+    public function getClassJoinToken($token)
+    {
+
+        $sql = "SELECT * FROM class_join_links WHERE join_token_hash = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$token]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        //Check if a matching user was found
+        if (!$result) {
+            return $this->sendPayload(null, 'failed', "Token Not Found", 404);
+        }
+        //Check if the token has expired
+        if (strtotime($result['join_token_expires_at']) <= time()) {
+            return $this->sendPayload(null, 'failed', "Token Expired", 401);
+        }
+
+        return $this->sendPayload($result, 'success', "Token Found!", 200);
+    }
+
 }

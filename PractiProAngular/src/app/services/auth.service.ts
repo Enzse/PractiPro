@@ -349,7 +349,6 @@ export class AuthService {
     return this.http.post(`${this.apiurl}/activateaccount`, inputdata);
   }
 
-
   createClassJoinRequest(inputdata: any) {
     return this.http.post(`${this.apiurl}/createclassjoinrequest`, inputdata);
   }
@@ -369,8 +368,14 @@ export class AuthService {
   getClassInvitationCount(studentId: number) {
     return this.http.get<any>(`${this.apiurl}/getclassinvitationcount/${studentId}`);
   }
-  getClassInvitationCountForBlock(studentId: number, block: string) {
-    return this.http.get<any>(`${this.apiurl}/getclassinvitationcount/${studentId}/${block}`);
+  getClassInvitationForBlockCount(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/getclassinvitationsforblockcount/${studentId}`);
+  }
+  getClassInvitationsForBlock(block: any) {
+    return this.http.get<any>(`${this.apiurl}/getclassinvitationsforblock/${block}`);
+  }
+  checkExistingClassInvitationForBlock(studentId: number, block: string) {
+    return this.http.get<any>(`${this.apiurl}/checkexistinginvitationforblock/${studentId}/${block}`);
   }
   getClassJoinRequestCount(block: number) {
     return this.http.get<any>(`${this.apiurl}/getclassjoinrequestcount/${block}`);
@@ -384,6 +389,9 @@ export class AuthService {
   cancelClassInvitation(id: number) {
     return this.http.delete(`${this.apiurl}/cancelclassinvitation/${id}`);
   };
+  cancelClassInvitationByID(id: number) {
+    return this.http.delete(`${this.apiurl}/cancelclassinvitationbyid/${id}`);
+  };
 
   createClassJoinLink(inputdata: any) {
     return this.http.post(`${this.apiurl}/createclassjoinlink`, inputdata);
@@ -391,5 +399,9 @@ export class AuthService {
   clearExpiredJoinLinks() {
     return this.http.delete(`${this.apiurl}/clearexpiredjoinlinks`);
   };
+
+  getClassJoinToken(token: any) {
+    return this.http.get<any>(`${this.apiurl}/getclassjointoken/${token}`);
+  }
 
 }

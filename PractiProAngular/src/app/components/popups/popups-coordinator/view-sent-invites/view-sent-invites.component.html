@@ -7,7 +7,7 @@
                 d="M12 6a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Zm-1.5 8a4 4 0 0 0-4 4 2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-3Zm6.82-3.096a5.51 5.51 0 0 0-2.797-6.293 3.5 3.5 0 1 1 2.796 6.292ZM19.5 18h.5a2 2 0 0 0 2-2 4 4 0 0 0-4-4h-1.1a5.503 5.503 0 0 1-.471.762A5.998 5.998 0 0 1 19.5 18ZM4 7.5a3.5 3.5 0 0 1 5.477-2.889 5.5 5.5 0 0 0-2.796 6.293A3.501 3.501 0 0 1 4 7.5ZM7.1 12H6a4 4 0 0 0-4 4 2 2 0 0 0 2 2h.5a5.998 5.998 0 0 1 3.071-5.238A5.505 5.505 0 0 1 7.1 12Z"
                 clip-rule="evenodd" />
         </svg>
-        Pending Join Requests:</h1>
+        Your Sent Invites:</h1>
 
     <div *ngIf="isLoading" class="flex justify-center">
         <p class="font-secondary text-2xl">Loading...</p>
@@ -25,17 +25,17 @@
                             Student
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Date Requested
+                            Date Sent
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Action
+                            Cancel
                         </th>
 
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of datalist"
-                        class=" hover:bg-blue-100 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        class="hover:bg-blue-100 bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
                         <td class="px-6 py-4">
                             {{ data.studentId }}
@@ -57,27 +57,16 @@
                             {{ data.created_at | date: "medium" }}
                         </td>
                         <td class="px-6 py-4">
-                            <div class="flex justify-center space-x-2">
-                                <button (click)="approveRequest(data)"
-                                    class="bg-green-500 text-white rounded-full p-2.5 px-3 hover:shadow-xl hover:bg-green-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="white " stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide inline -mt-1 lucide-check">
-                                        <path d="M20 6 9 17l-5-5" />
-                                    </svg>
-                                    <span class="mx-1">Accept</span>
-                                </button>
-                                <button (click)="rejectRequest(data.id)"
-                                    class="bg-red-500 text-white rounded-full p-2 hover:shadow-xl hover:bg-red-600">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                        fill="none" stroke="white " stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" class="lucide inline -mt-1 lucide-x">
-                                        <path d="M18 6 6 18" />
-                                        <path d="m6 6 12 12" />
-                                    </svg>
-                                    <span class="mx-1">Reject</span>
-                                </button>
-                            </div>
+                            <button
+                                class="text-white items-center bg-red-500 opacity-50 hover:opacity-100 hover:shadow-md rounded-full p-1.5"
+                                (click)="cancelInvitation(data.id); $event.stopPropagation()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide text-white lucide-x">
+                                    <path d="M18 6 6 18" />
+                                    <path d="m6 6 12 12" />
+                                </svg>
+                            </button>
 
                         </td>
 
@@ -92,15 +81,20 @@
                 <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
             </div>
             <div class="text-center">
-                <h1 class="opacity-40 text-center text-xl font-primary">
-                    There are currently no students requesting to join this class.
+                <h1 class="opacity-40 text-center text-xl mb-5 font-primary">
+                    You currently haven't sent invitations to any students for this class.
                 </h1>
-                <h1 class="opacity-40 text-center text-sm mt-2 font-primary">
-                    You can add students to this class by accepting a <strong>Join Request</strong> from them or by
-                    sending them
-                    an
-                    <strong>Invite</strong>.
-                </h1>
+                <button (click)="goToInvites()"
+                    class="bg-blue-900 mb-3 font-primary text-white px-3 py-1 rounded-lg hover:bg-blue-800"
+                    type="button">
+                    <span class="max-sm:hidden">Go to Invite Students </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide -mt-0.5 inline lucide-arrow-right">
+                        <path d="M5 12h14" />
+                        <path d="m12 5 7 7-7 7" />
+                    </svg>
+                </button>
             </div>
         </ng-template>
     </div>
