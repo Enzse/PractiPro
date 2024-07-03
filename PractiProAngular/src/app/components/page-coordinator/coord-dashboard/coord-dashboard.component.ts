@@ -142,7 +142,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [registrationperc, remainingPercentages],
-          backgroundColor: ["#FFBD2E", "#1e3a8a"]
+          backgroundColor: ["#fc5c1c", "#1e3a8a"]
         },
       ],
     };
@@ -153,7 +153,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [ojtsitesperc, remainingperc],
-          backgroundColor: ["#FFBD2E", "#1e3a8a"]
+          backgroundColor: ["#fc5c1c", "#1e3a8a"]
         },
       ],
     };
@@ -164,7 +164,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [hoursperc, remaining],
-          backgroundColor: ["#FFBD2E", "#1e3a8a"]
+          backgroundColor: ["#fc5c1c", "#1e3a8a"]
         },
       ],
     };
@@ -175,7 +175,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [seminarhoursperc, remain],
-          backgroundColor: ["#FFBD2E", "#1e3a8a"]
+          backgroundColor: ["#fc5c1c", "#1e3a8a"]
         },
       ],
     };
@@ -186,7 +186,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       datasets: [
         {
           data: [perfeval, remainingP],
-          backgroundColor: ["#FFBD2E", "#1e3a8a"]
+          backgroundColor: ["#fc5c1c", "#1e3a8a"]
         },
       ],
     };
@@ -215,8 +215,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       }));
   }
 
-
-  viewAllStudents(block: any) {
+  viewAllStudents(block: any,) {
     const popup = this.dialog.open(ViewAllStudentsComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "500ms",
@@ -226,6 +225,22 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  viewStudentsWithCondition(block: any, condition: string) {
+    const popup = this.dialog.open(ViewAllStudentsComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
+      data: {
+        block: block,
+        condition: condition
+      }
+    })
+  }
+
+
+
+
 
   viewJoinRequests(block: any) {
     const popup = this.dialog.open(ViewJoinRequestsComponent, {

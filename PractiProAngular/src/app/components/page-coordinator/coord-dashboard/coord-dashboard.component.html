@@ -89,8 +89,8 @@
             </div>
 
             <div class="flex flex-wrap justify-evenly">
-                <div
-                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                <div (click)="viewStudentsWithCondition(blockData.block_name, 'registered')"
+                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
                     <p-chart class="" type="doughnut" [data]="data" [options]="options" />
                     <h2 matTooltip="Ratio of students that have a cleared registration status."
                         class="font-secondary text-base mt-2">Students cleared in <br>
@@ -102,8 +102,8 @@
                         <b>Registration Status</b>
                     </h2>
                 </div>
-                <div
-                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                <div (click)="viewStudentsWithCondition(blockData.block_name, 'ojtsite')"
+                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
                     <p-chart class="" type="doughnut" [data]="ojtsite" [options]="options" />
                     <h2 matTooltip="Ratio of students that are successfully hired and active in a company."
                         class="font-secondary text-base mt-2">Students with <br>
@@ -118,8 +118,8 @@
                         <b>OJT Sites</b>
                     </h2>
                 </div>
-                <div
-                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                <div (click)="viewStudentsWithCondition(blockData.block_name, 'onsitehours')"
+                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
                     <p-chart class="" type="doughnut" [data]="traininghours" [options]="options" />
                     <h2 matTooltip="Ratio of students that have met 200+ total hours worth of Daily Attendance records."
                         class="font-secondary text-base mt-2">Students with 200+ total<br>
@@ -132,8 +132,8 @@
                         <b>On-site Training Hours</b>
                     </h2>
                 </div>
-                <div
-                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                <div (click)="viewStudentsWithCondition(blockData.block_name, 'seminarhours')"
+                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
                     <p-chart class="" type="doughnut" [data]="seminarhours" [options]="options" />
                     <h2 matTooltip="Ratio of students that have met 50+ total hours worth of Seminar Records."
                         class="font-secondary text-base mt-2">Students with 50+ total<br>
@@ -146,8 +146,8 @@
                         <b>Seminar Hours</b>
                     </h2>
                 </div>
-                <div
-                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                <div (click)="viewStudentsWithCondition(blockData.block_name, 'evaluation')"
+                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
                     <p-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
                     <h2 matTooltip="Ratio of students that have been evaluated by their company supervisors."
                         class="font-secondary text-base mt-2">Students cleared in<br>
@@ -159,8 +159,8 @@
                         <b>Performance Evaluation</b>
                     </h2>
                 </div>
-                <div
-                    class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                <div (click)="viewStudentsWithCondition(blockData.block_name, 'exitpoll')"
+                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
                     <p-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
                     <h2 matTooltip="Ratio of students that have a cleared Final Report."
                         class="font-secondary text-base mt-2">Students cleared in<br>

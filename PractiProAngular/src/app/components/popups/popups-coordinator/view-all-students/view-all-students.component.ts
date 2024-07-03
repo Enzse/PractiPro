@@ -24,6 +24,7 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
   studentList: any;
   searchtext: any;
   private subscriptions = new Subscription();
+  conditionDisplay: any;
 
   constructor(private router: Router, private builder: FormBuilder, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewAllStudentsComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
 
@@ -43,6 +44,37 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
         this.studentList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
+
+        if (this.data.condition) {
+          // this.studentList.filter((student: any) => student.)
+          switch (this.data.condition) {
+            case 'registered':
+              this.studentList = this.studentList.filter((student: any) => student.registration_status === 1);
+              this.conditionDisplay = 'Cleared Registration Status'
+              break;
+            case 'ojtsite':
+              this.studentList = this.studentList.filter((student: any) => student.company_id !== null);
+              this.conditionDisplay = 'Has OJT Site'
+              break;
+            case 'onsitehours':
+              this.studentList = this.studentList.filter((student: any) => student.TotalHoursWorked >= 200);
+              this.conditionDisplay = '200+ On-site Hours'
+              break;
+            case 'seminarhours':
+              this.studentList = this.studentList.filter((student: any) => student.TotalSeminarHours >= 50);
+              this.conditionDisplay = '50+ Seminar Hours'
+              break;
+            case 'evaluation':
+              this.studentList = this.studentList.filter((student: any) => student.evaluation_status === 'Completed!');
+              this.conditionDisplay = 'Cleared Performance Evaluation'
+              break;
+            case 'exitpoll':
+              this.studentList = this.studentList.filter((student: any) => student.exitpoll_status === 'Completed!');
+              this.conditionDisplay = 'Cleared Exit Poll'
+              break;
+          }
+        }
+
         this.studentList.forEach((student: any) => {
           this.subscriptions.add(
             this.service.getAvatar(student.id).subscribe((res: any) => {
