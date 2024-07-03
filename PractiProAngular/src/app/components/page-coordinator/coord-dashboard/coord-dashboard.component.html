@@ -83,6 +83,7 @@
 
             <!-- <div class="border-b mb-4 mt-8 border-gray-300"></div> -->
 
+            <!-- apply the pie chart to other divs -->
             <div class="my-4 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
                 <h1 class="font-primary font-bold text-3xl">Student OJT Status:</h1>
             </div>
@@ -90,9 +91,7 @@
             <div class="flex flex-wrap justify-evenly">
                 <div
                     class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.registered_students}} <span
-                            class="text-5xl">/</span>
-                        {{blockData.students_handled}} </h1>
+                    <p-chart class="" type="doughnut" [data]="data" [options]="options" />
                     <h2 matTooltip="Ratio of students that have a cleared registration status."
                         class="font-secondary text-base mt-2">Students cleared in <br>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -105,9 +104,7 @@
                 </div>
                 <div
                     class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.hired_students}} <span
-                            class="text-5xl">/</span>
-                        {{blockData.students_handled}} </h1>
+                    <p-chart class="" type="doughnut" [data]="ojtsite" [options]="options" />
                     <h2 matTooltip="Ratio of students that are successfully hired and active in a company."
                         class="font-secondary text-base mt-2">Students with <br>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -123,9 +120,7 @@
                 </div>
                 <div
                     class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.ojt_cleared_students}} <span
-                            class="text-5xl">/</span>
-                        {{blockData.students_handled}} </h1>
+                    <p-chart class="" type="doughnut" [data]="traininghours" [options]="options" />
                     <h2 matTooltip="Ratio of students that have met 200+ total hours worth of Daily Attendance records."
                         class="font-secondary text-base mt-2">Students with 200+ total<br>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -139,10 +134,7 @@
                 </div>
                 <div
                     class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.seminar_cleared_students}}
-                        <span class="text-5xl">/</span>
-                        {{blockData.students_handled}}
-                    </h1>
+                    <p-chart class="" type="doughnut" [data]="seminarhours" [options]="options" />
                     <h2 matTooltip="Ratio of students that have met 50+ total hours worth of Seminar Records."
                         class="font-secondary text-base mt-2">Students with 50+ total<br>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -156,10 +148,7 @@
                 </div>
                 <div
                     class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.evaluation_cleared_students}}
-                        <span class="text-5xl">/</span>
-                        {{blockData.students_handled}}
-                    </h1>
+                    <p-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
                     <h2 matTooltip="Ratio of students that have been evaluated by their company supervisors."
                         class="font-secondary text-base mt-2">Students cleared in<br>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -172,10 +161,7 @@
                 </div>
                 <div
                     class="w-[45vh] flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <h1 class="font-primary font-bold text-blue-800 text-6xl">{{blockData.evaluation_cleared_students}}
-                        <span class="text-5xl">/</span>
-                        {{blockData.students_handled}}
-                    </h1>
+                    <p-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
                     <h2 matTooltip="Ratio of students that have a cleared Final Report."
                         class="font-secondary text-base mt-2">Students cleared in<br>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
