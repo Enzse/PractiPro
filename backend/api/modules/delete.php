@@ -338,4 +338,43 @@ class Delete extends GlobalMethods
         }
     }
 
+    public function cancelClassInvitationByID($id)
+    {
+        $sql = "DELETE FROM class_join_invitations
+                WHERE id = :id";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $this->pdo->commit();
+                return $this->sendPayload(null, 'success', "Successfully deleted invitation.", 200);
+            } else {
+                $this->pdo->rollBack();
+                return $this->sendPayload(null, 'failed', "No invitation found", 404);
+            }
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
+
+
+    public function clearClassJoinLinks()
+    {
+        $sql = "DELETE FROM class_join_links WHERE join_token_expires_at < NOW()";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            $this->pdo->commit();
+            return $this->sendPayload(null, 'success', "Successfully cleaned links.", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
 }

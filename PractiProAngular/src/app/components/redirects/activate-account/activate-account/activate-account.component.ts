@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
-  Validators,
-  AbstractControl,
 } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import {
@@ -15,8 +13,7 @@ import {
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { passwordStrengthValidator } from '../../../../validators/password-strength.validator';
-import { passwordMatchValidator } from '../../../../validators/password-match.validator';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-activate-account',
@@ -31,12 +28,10 @@ import { passwordMatchValidator } from '../../../../validators/password-match.va
   templateUrl: './activate-account.component.html',
   styleUrl: './activate-account.component.css',
 })
-export class ActivateAccountComponent {
-  activationForm = this.builder.group({
-    token: this.builder.control(''),
-  });
+export class ActivateAccountComponent implements OnInit, OnDestroy {
   token: string;
   status: any;
+  subscriptions = new Subscription();
 
   constructor(
     private builder: FormBuilder,
@@ -47,29 +42,35 @@ export class ActivateAccountComponent {
     this.token = this.route.snapshot.queryParams['token'];
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
   ngOnInit(): void {
-    this.service.getAccountActivationToken(this.token).subscribe(
-      (res: any) => {        
-        this.activationForm.patchValue({
-          token: this.token,
-        });
-        this.service.activateAccount(this.activationForm.value).subscribe((res: any) => {
-            this.status = 'valid';
-            Swal.fire({
-              title: 'Account Activated',
-              icon: 'success',
-            })
-          });
-      },
-      (error) => {
-        if (error.status === 404) {
-          this.status = 'invalid';
-          alert(
-            'No such token is found. You are now being redirected to the login page.'
-          );
-          this.router.navigate(['/login']);
+    this.subscriptions.add(
+      this.service.getAccountActivationToken(this.token).subscribe(
+        (res: any) => {
+          const activationForm = this.builder.group({
+            token: this.token,
+          })
+          this.subscriptions.add(
+            this.service.activateAccount(activationForm.value).subscribe((res: any) => {
+              this.status = 'valid';
+              Swal.fire({
+                title: 'Account Activated',
+                icon: 'success',
+              })
+            }));
+        },
+        (error) => {
+          if (error.status === 404) {
+            this.status = 'invalid';
+            alert(
+              'No such token is found. You are now being redirected to the login page.'
+            );
+            this.router.navigate(['/login']);
+          }
         }
-      }
-    );
+      ));
   }
 }

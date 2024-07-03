@@ -1017,7 +1017,101 @@ class Post extends GlobalMethods
         }
     }
 
+    public function createClassJoinLink($data)
+    {
+        $sql = "SELECT * FROM class_join_links WHERE class = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([$data->class]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($result) {
+            $token = $result['join_token_hash'];
+            $link = "http://localhost:4200/joinclassbylink?token=$token"; // Change this to the actual link
+            return $this->sendPayload($link, "success", "Existing link found.", 200);
+        }
 
+        $token = bin2hex(random_bytes(16));
+        $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
+
+        $sql = "INSERT INTO class_join_links(class, join_token_hash, join_token_expires_at)
+        VALUES (?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->class,
+                    $token,
+                    $expiry
+                ]
+            );
+
+            $link = "http://localhost:4200/joinclassbylink?token=$token"; // Change this to the actual link
+
+            $this->pdo->commit();
+            return $this->sendPayload($link, "success", "Successfully created class join link", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+
+    // public function resetPasswordToken($data)
+    // {
+    //     $sql = "SELECT email FROM user WHERE email = ?";
+    //     $stmt = $this->pdo->prepare($sql);
+    //     $stmt->execute([$data->email]);
+    //     $email = $stmt->fetch(PDO::FETCH_ASSOC);
+    //     if (!$email) {
+    //         return $this->sendPayload(null, "failed", "Email not found.", 404);
+    //     }
+
+    //     $token = bin2hex(random_bytes(16));
+    //     $token_hash = hash("sha256", $token);
+    //     $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
+    //     $sql = "UPDATE user SET reset_token_hash = ?, reset_token_expires_at = ?
+    //             WHERE email = ?";
+    //     $stmt = $this->pdo->prepare($sql);
+    //     try {
+    //         $this->pdo->beginTransaction();
+    //         $stmt->execute([
+    //             $token_hash,
+    //             $expiry,
+    //             $data->email
+    //         ]);
+    //         $this->pdo->commit();
+
+
+    //         require __DIR__ . "../../src/Mailer.php";
+    //         $mail = initializeMailer();
+
+    //         $mail->setFrom("GCPractiPro@gcpractipro.online", "GCPractiProAdmin");
+    //         $mail->addAddress($data->email);
+    //         $mail->Subject = "Password Reset";
+    //         $mail->Body = <<<END
+    //         Click <a href="http://localhost:4200/resetpassword?token=$token">here</a> to reset your password.
+
+    //         END;
+
+    //         try {
+    //             $mail->send();
+    //             return $this->sendPayload(null, "success", "Successfully generated reset token.", 200);
+    //         } catch (Exception $e) {
+    //             $this->pdo->rollBack();
+    //             $code = 400;
+    //             return $this->sendPayload(null, "failed", $mail->ErrorInfo, $code);
+    //         }
+
+
+    //     } catch (PDOException $e) {
+    //         $this->pdo->rollBack();
+    //         $errmsg = $e->getMessage();
+    //         $code = 400;
+    //         return $this->sendPayload(null, "failed", $errmsg, $code);
+    //     }
+    // }
 
 }
 

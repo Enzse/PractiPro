@@ -8,22 +8,23 @@ import { ViewprofilepopupComponent } from '../../shared/viewprofilepopup/viewpro
 import Swal from 'sweetalert2';
 import { FormBuilder } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-view-join-requests',
+  selector: 'app-view-sent-invites',
   standalone: true,
-  imports: [CommonModule, MatTooltipModule],
-  templateUrl: './view-join-requests.component.html',
-  styleUrl: './view-join-requests.component.css'
+  imports: [CommonModule],
+  templateUrl: './view-sent-invites.component.html',
+  styleUrl: './view-sent-invites.component.css'
 })
-export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
+export class ViewSentInvitesComponent {
   datalist: any;
   currentuser: any;
   isLoading: boolean = true;
   private subscriptions = new Subscription();
 
-  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService, private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ViewJoinRequestsComponent>) { }
+  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService, private dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ViewSentInvitesComponent>) { }
 
 
   ngOnDestroy(): void {
@@ -36,7 +37,7 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
   loadData() {
     this.isLoading = true;
     this.subscriptions.add(
-      this.service.getClassJoinRequestsAdvisor(this.data.block).subscribe(
+      this.service.getClassInvitationsForBlock(this.data.block).subscribe(
         (res: any) => {
           this.datalist = res.payload;
           this.isLoading = false;
@@ -64,31 +65,14 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
     })
   }
 
-  approveRequest(request: any) {
-    const invitationData = this.builder.group({
-      block_name: [request.class]
-    })
-    this.subscriptions.add(
-      this.service.assignClassToStudent(request.student_id, invitationData.value).subscribe((res: any) => {
-        this.datalist = this.datalist.filter((requests: any) => requests.id !== request.id);
-        this.changeDetection.notifyChange(true);
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          backdrop: false,
-          title: `Successfully accepted ${request.studentFirstName} ${request.studentLastName} to ${request.class}.`,
-          icon: "success",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
-      })
-    )
+  goToInvites() {
+    this.dialogRef.close();
+    this.router.navigate(['coord-invitestudents/invite-by-studentid'])
   }
 
-  rejectRequest(requestId: number) {
+  cancelInvitation(id: any) {
     Swal.fire({
-      title: "Are you sure you want to reject this join request?",
+      title: "Are you sure you want to cancel this invitation?",
       icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#d33",
@@ -97,14 +81,13 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.rejectClassJoinRequest(requestId).subscribe((res: any) => {
-            this.datalist = this.datalist.filter((request: any) => request.id !== requestId);
-            this.changeDetection.notifyChange(true);
+          this.service.cancelClassInvitationByID(id).subscribe((res: any) => {
+            this.loadData();
             Swal.fire({
               toast: true,
               position: "top-end",
               backdrop: false,
-              title: `Successfully removed request.`,
+              title: `Successfully cancelled invitation.`,
               icon: "success",
               timer: 2000,
               timerProgressBar: true,
@@ -123,4 +106,3 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
 
 
 }
-

@@ -1,7 +1,7 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { JwtService } from '../../services/jwt.service';
 import Swal from 'sweetalert2';
@@ -19,7 +19,9 @@ import { ForgotpasswordComponent } from '../popups/popups-registration/forgotpas
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private jwtservice: JwtService, private dialog: MatDialog) {
+  returnUrl: any
+  constructor(private route: ActivatedRoute, private builder: FormBuilder, private service: AuthService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private jwtservice: JwtService, private dialog: MatDialog) {
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
     sessionStorage.clear();
   }
 
@@ -39,23 +41,28 @@ export class LoginComponent {
     this.service.proceedLogin(this.loginform.value).subscribe((res: any) => {
       if (res.token) {
         sessionStorage.setItem('token', res.token);
-        console.clear();
-        switch (this.jwtservice.getUserRole()) {
-          case 'admin':
-          case 'superadmin':
-            this.router.navigate(['admin-users']);
-            break;
-          case 'student':
-            this.router.navigate(['student-dashboard']);
-            break;
-          case 'advisor':
-            this.router.navigate(['coord-submission']);
-            break;
-          case 'supervisor':
-            this.router.navigate(['supervisor-dashboard']);
-            break;
-          default:
-            alert("User's role is unhandled.")
+
+        if (this.returnUrl) {
+          this.router.navigateByUrl(this.returnUrl);
+        }
+        else {
+          switch (this.jwtservice.getUserRole()) {
+            case 'admin':
+            case 'superadmin':
+              this.router.navigate(['admin-users']);
+              break;
+            case 'student':
+              this.router.navigate(['student-dashboard']);
+              break;
+            case 'advisor':
+              this.router.navigate(['coord-dashboard']);
+              break;
+            case 'supervisor':
+              this.router.navigate(['supervisor-dashboard']);
+              break;
+            default:
+              alert("User's role is unhandled.")
+          }
         }
       } else {
         Swal.fire({
