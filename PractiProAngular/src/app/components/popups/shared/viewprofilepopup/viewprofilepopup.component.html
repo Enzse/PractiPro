@@ -14,7 +14,7 @@
             <div class="flex flex-col px-6 py-4">
 
                 <!-- first col -->
-                <div class="flex justify-center mx-auto mb-6 w-[30%]">
+                <div class="flex justify-center mx-auto mb-6 w-[30%] max-sm:w-[60%]">
                     <div class="">
                         <div class="avatar-container">
                             <img *ngIf="studentProfile.avatar; else placeholder" [src]="studentProfile.avatar"
@@ -26,41 +26,41 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-2 grid-flow-col justify-center">
+                <div class="grid grid-cols-2 grid-flow-col max-sm:grid-flow-row max-sm:grid-cols-1 justify-center">
                     <!-- second col -->
 
                     <div class="flow-root">
-                        <h5 class="mb-2 text-lg mt-2 font-bold text-gray-900 font-primary text-center">
+                        <h5 class="mb-2 text-lg max-sm:text-base mt-2 font-bold text-gray-900 font-primary text-center">
                             Student Information
                         </h5>
                         <ul role="list" class="flex flex-col flex-1">
                             <li class="mb-2">
-                                <div class="grid grid-flow-col grid-cols-3 items-center">
-                                    <div class="col-span-2 min-w-0 ms-4">
+                                <div class="grid grid-flow-col grid-cols-3  max-sm:items-start items-center">
+                                    <div class="flex-1 col-span-2 min-w-0 ms-4">
                                         <p class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white"
                                             id="name">
                                             Full Name:
                                         </p>
                                         <br />
-                                        <span class="text-lg font-semibold font-secondary">{{
+                                        <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
                                             studentProfile.firstName
                                             }} {{ studentProfile.lastName }}</span>
                                     </div>
-                                    <div class="flex-1 col-start-3 min-w-0 ms-4">
+                                    <div class="flex-1 min-w-0 max-sm:ms-0 ms-4">
                                         <p
                                             class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
                                             Year Level:
                                         </p>
                                         <br />
                                         <span [ngClass]="{'text-red-500': !studentProfile.year}"
-                                            class="text-lg font-semibold font-secondary">
+                                            class="text-lg max-sm:text-base font-semibold font-secondary">
                                             {{ studentProfile.year || "Not set" }}
                                         </span>
                                     </div>
                                 </div>
                             </li>
                             <li class="mb-2">
-                                <div class="grid-flow-col grid grid-cols-3 items-center">
+                                <div class="grid-flow-col grid grid-cols-3 max-sm:items-start items-center">
                                     <div class="flex-1 col-span-2 min-w-0 ms-4">
                                         <p
                                             class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
@@ -68,25 +68,25 @@
                                         </p>
                                         <br />
                                         <span [ngClass]="{'text-red-500': !studentProfile.studentId}"
-                                            class="text-lg font-semibold font-secondary">
+                                            class="text-lg max-sm:text-base font-semibold font-secondary">
                                             {{ studentProfile.studentId || "Not set" }}
                                         </span>
                                     </div>
-                                    <div class="flex-1 min-w-0 ms-4">
+                                    <div class="flex-1 min-w-0 max-sm:ms-0 ms-4">
                                         <p
                                             class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
                                             Program:
                                         </p>
                                         <br />
                                         <span [ngClass]="{'text-red-500': !studentProfile.program}"
-                                            class="text-lg font-semibold font-secondary">
+                                            class="text-lg max-sm:text-base font-semibold font-secondary">
                                             {{ studentProfile.program || "Not set" }}
                                         </span>
                                     </div>
                                 </div>
                             </li>
                             <li class="mb-2">
-                                <div class="grid-flow-col grid grid-cols-3 items-center">
+                                <div class="grid-flow-col grid grid-cols-3 max-sm:items-start items-center">
                                     <div class="flex-1 col-span-2 min-w-0 ms-4">
                                         <p
                                             class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
@@ -94,18 +94,18 @@
                                         </p>
                                         <br />
                                         <span [ngClass]="{'text-red-500': !studentProfile.email}"
-                                            class="text-lg font-semibold font-secondary">{{
+                                            class="text-lg max-sm:text-base font-semibold font-secondary">{{
                                             studentProfile.email ||
                                             "Not set" }}</span>
                                     </div>
-                                    <div class="flex-1 min-w-0 ms-4">
+                                    <div class="flex-1 min-w-0 max-sm:ms-0 ms-4">
                                         <p
                                             class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
                                             Block:
                                         </p>
                                         <br />
                                         <span [ngClass]="{'text-red-500': !studentProfile.block}"
-                                            class="text-lg font-semibold font-secondary">{{
+                                            class="text-lg max-sm:text-base font-semibold font-secondary">{{
                                             studentProfile.block ||
                                             "No Block" }}</span>
                                     </div>
@@ -116,7 +116,7 @@
 
                     <!-- third col -->
                     <div class="flow-root">
-                        <h5 class="mb-2 text-lg mt-2 font-bold text-gray-900 font-primary text-center">
+                        <h5 class="mb-2 text-lg max-sm:text-base mt-2 font-bold text-gray-900 font-primary text-center">
                             OJT Information
                         </h5>
                         <div *ngIf="!studentProfile.company_id">
@@ -138,7 +138,7 @@
                                             Currently working at:
                                         </p>
                                         <br />
-                                        <span class="text-lg font-semibold font-secondary">{{
+                                        <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
                                             studentProfile.company_name }}</span>
                                     </div>
                                 </div>
@@ -151,30 +151,30 @@
                                             Job Title:
                                         </p>
                                         <br />
-                                        <span class="text-lg font-semibold font-secondary">{{
+                                        <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
                                             studentProfile.job_title || "Unassigned"}}</span>
                                     </div>
                                 </div>
                             </li>
                             <li class="mb-2">
-                                <div class="grid grid-cols-2 gap-20 items-center">
+                                <div class="grid grid-cols-2 gap-20 max-sm:gap-5 max-sm:items-start items-center">
                                     <div class="flex-1  min-w-0 ms-4">
                                         <p
-                                            class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
+                                            class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
                                             Total Hours Worked:
                                         </p>
                                         <br />
                                         <span
-                                            class="text-lg font-semibold font-secondary">{{studentProfile.TotalHoursWorked
+                                            class="text-lg max-sm:text-base font-semibold font-secondary">{{studentProfile.TotalHoursWorked
                                             ? (studentProfile.TotalHoursWorked + " hrs") : "Not Started" }}</span>
                                     </div>
                                     <div class="flex-1 min-w-0 ms-4">
                                         <p
-                                            class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
+                                            class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
                                             Date Hired:
                                         </p>
                                         <br />
-                                        <span class="text-lg font-semibold font-secondary">{{
+                                        <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
                                             studentProfile.hire_date | date : "longDate" }}</span>
                                     </div>
                                 </div>
