@@ -85,6 +85,10 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       this.service.getClassData(block).subscribe((res: any) => {
         this.blockData = res.payload[0];
         this.processChartData(res.payload);
+        this.processOjtData(res.payload);
+        this.processtraininghours(res.payload);
+        this.processSeminarHours(res.payload);
+        this.processPerfEval(res.payload);
         if (this.blockData) {
           this.getRequestsCount(this.blockData.block_name);
           this.getInvitationCount(this.blockData.block_name);
@@ -93,108 +97,119 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   }
 
   processChartData(payload: any[]) {
-    // Calculate the percentage of ojt_cleared_students
-    const registrationperc = payload.map(block => {
+    // Initialize variables to store totals
+    let totalClearedStudents = 0;
+    let totalNotClearedStudents = 0;
 
-      const clearedStudents = block.registered_students || 0// Handle cases where ojt_cleared_students might be null or undefined
-      const totalStudents = block.students_handled || 1// Ensure no division by zero, handle undefined or null values
-
-      // Calculate percentage based on actual numbers
-      return (clearedStudents / totalStudents) * 100;
+    // Iterate through the payload to accumulate totals
+    payload.forEach(block => {
+      totalClearedStudents += block.registered_students || 0;
+      totalNotClearedStudents += (block.students_handled || 0) - (block.registered_students || 0);
     });
 
-    const ojtsitesperc = payload.map(block => {
-
-      const clearedStudents = block.hired_students || 0
-      const totalStudents = block.students_handled || 1
-
-      return (clearedStudents / totalStudents) * 100;
-    });
-
-    const hoursperc = payload.map(block => {
-
-      const clearedStudents = block.ojt_cleared_students || 0
-      const totalStudents = block.students_handled || 1
-
-      return (clearedStudents / totalStudents) * 100;
-    });
-    const seminarhoursperc = payload.map(block => {
-
-      const clearedStudents = block.seminar_cleared_students || 0
-      const totalStudents = block.students_handled || 1
-
-      return (clearedStudents / totalStudents) * 100;
-    });
-
-    const perfeval = payload.map(block => {
-
-      const clearedStudents = block.evaluation_cleared_students || 0
-      const totalStudents = block.students_handled || 1
-
-      return (clearedStudents / totalStudents) * 100;
-    });
-
-    // Calculate the remaining percentage
-    const remainingPercentages = registrationperc.map(percent => 100 - percent);
-
+    // Prepare data for the chart
     this.data = {
       labels: ["Cleared", "Not Cleared"],
       datasets: [
         {
-          data: [registrationperc, remainingPercentages],
+          data: [totalClearedStudents, totalNotClearedStudents],
           backgroundColor: ["#FFBD2E", "#1e3a8a"]
-        },
-      ],
+        }
+      ]
     };
+  }
 
-    const remainingperc = ojtsitesperc.map(percent => 100 - percent);
+  processOjtData(payload: any[]) {
+    // Initialize variables to store totals
+    let totalClearedStudents = 0;
+    let totalNotClearedStudents = 0;
+
+    // Iterate through the payload to accumulate totals
+    payload.forEach(block => {
+      totalClearedStudents += block.hired_students || 0;
+      totalNotClearedStudents += (block.students_handled || 0) - (block.hired_students || 0);
+    });
+
+    // Prepare data for the chart
     this.ojtsite = {
       labels: ["Cleared", "Not Cleared"],
       datasets: [
         {
-          data: [ojtsitesperc, remainingperc],
+          data: [totalClearedStudents, totalNotClearedStudents],
           backgroundColor: ["#FFBD2E", "#1e3a8a"]
-        },
-      ],
+        }
+      ]
     };
+  }
 
-    const remaining = hoursperc.map(percent => 100 - percent);
+  processtraininghours(payload: any[]) {
+    // Initialize variables to store totals
+    let totalClearedStudents = 0;
+    let totalNotClearedStudents = 0;
+
+    // Iterate through the payload to accumulate totals
+    payload.forEach(block => {
+      totalClearedStudents += block.ojt_cleared_students || 0;
+      totalNotClearedStudents += (block.students_handled || 0) - (block.ojt_cleared_students || 0);
+    });
+
+    // Prepare data for the chart
     this.traininghours = {
       labels: ["Cleared", "Not Cleared"],
       datasets: [
         {
-          data: [hoursperc, remaining],
+          data: [totalClearedStudents, totalNotClearedStudents],
           backgroundColor: ["#FFBD2E", "#1e3a8a"]
-        },
-      ],
+        }
+      ]
     };
+  }
 
-    const remain = seminarhoursperc.map(percent => 100 - percent);
+  processSeminarHours(payload: any[]) {
+    // Initialize variables to store totals
+    let totalClearedStudents = 0;
+    let totalNotClearedStudents = 0;
+
+    // Iterate through the payload to accumulate totals
+    payload.forEach(block => {
+      totalClearedStudents += block.seminar_cleared_students || 0;
+      totalNotClearedStudents += (block.students_handled || 0) - (block.seminar_cleared_students || 0);
+    });
+
+    // Prepare data for the chart
     this.seminarhours = {
       labels: ["Cleared", "Not Cleared"],
       datasets: [
         {
-          data: [seminarhoursperc, remain],
+          data: [totalClearedStudents, totalNotClearedStudents],
           backgroundColor: ["#FFBD2E", "#1e3a8a"]
-        },
-      ],
+        }
+      ]
     };
+  }
 
-    const remainingP = perfeval.map(percent => 100 - percent);
+  processPerfEval(payload: any[]) {
+    // Initialize variables to store totals
+    let totalClearedStudents = 0;
+    let totalNotClearedStudents = 0;
+
+    // Iterate through the payload to accumulate totals
+    payload.forEach(block => {
+      totalClearedStudents += block.evaluation_cleared_students || 0;
+      totalNotClearedStudents += (block.students_handled || 0) - (block.evaluation_cleared_students || 0);
+    });
+
+    // Prepare data for the chart
     this.perfeval = {
       labels: ["Cleared", "Not Cleared"],
       datasets: [
         {
-          data: [perfeval, remainingP],
+          data: [totalClearedStudents, totalNotClearedStudents],
           backgroundColor: ["#FFBD2E", "#1e3a8a"]
-        },
-      ],
+        }
+      ]
     };
-
-
   }
-
-
 
   getRequestsCount(block: any) {
     this.subscriptions.add(
