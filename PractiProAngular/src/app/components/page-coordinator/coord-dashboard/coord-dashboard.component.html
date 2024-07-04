@@ -91,7 +91,10 @@
             <div class="flex flex-wrap justify-evenly">
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'registered')"
                     class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="" type="doughnut" [data]="data" [options]="options" />
+                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="registered" [options]="options" />
+                    <h2 class="font-primary font-bold text-orange-500">
+                        {{blockData.registered_students}}/{{blockData.students_handled}} Cleared
+                    </h2>
                     <h2 matTooltip="Ratio of students that have a cleared registration status."
                         class="font-secondary text-base mt-2">Students cleared in <br>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -104,7 +107,10 @@
                 </div>
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'ojtsite')"
                     class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="" type="doughnut" [data]="ojtsite" [options]="options" />
+                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="ojtsite" [options]="options" />
+                    <h2 class="font-primary font-bold text-orange-500">
+                        {{blockData.hired_students}}/{{blockData.students_handled}} Cleared
+                    </h2>
                     <h2 matTooltip="Ratio of students that are successfully hired and active in a company."
                         class="font-secondary text-base mt-2">Students with <br>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -120,7 +126,10 @@
                 </div>
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'onsitehours')"
                     class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="" type="doughnut" [data]="traininghours" [options]="options" />
+                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="traininghours" [options]="options" />
+                    <h2 class="font-primary font-bold text-orange-500">
+                        {{blockData.ojt_cleared_students}}/{{blockData.students_handled}} Cleared
+                    </h2>
                     <h2 matTooltip="Ratio of students that have met 200+ total hours worth of Daily Attendance records."
                         class="font-secondary text-base mt-2">Students with 200+ total<br>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -134,7 +143,10 @@
                 </div>
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'seminarhours')"
                     class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="" type="doughnut" [data]="seminarhours" [options]="options" />
+                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="seminarhours" [options]="options" />
+                    <h2 class="font-primary font-bold text-orange-500">
+                        {{blockData.seminar_cleared_students}}/{{blockData.students_handled}} Cleared
+                    </h2>
                     <h2 matTooltip="Ratio of students that have met 50+ total hours worth of Seminar Records."
                         class="font-secondary text-base mt-2">Students with 50+ total<br>
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
@@ -148,7 +160,10 @@
                 </div>
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'evaluation')"
                     class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
+                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="perfeval" [options]="options" />
+                    <h2 class="font-primary font-bold text-orange-500">
+                        {{blockData.evaluation_cleared_students}}/{{blockData.students_handled}} Cleared
+                    </h2>
                     <h2 matTooltip="Ratio of students that have been evaluated by their company supervisors."
                         class="font-secondary text-base mt-2">Students cleared in<br>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -161,7 +176,10 @@
                 </div>
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'exitpoll')"
                     class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
+                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="perfeval" [options]="options" />
+                    <h2 class="font-primary font-bold text-orange-500">
+                        {{blockData.exitpoll_cleared_students}}/{{blockData.students_handled}} Cleared
+                    </h2>
                     <h2 matTooltip="Ratio of students that have a cleared Final Report."
                         class="font-secondary text-base mt-2">Students cleared in<br>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

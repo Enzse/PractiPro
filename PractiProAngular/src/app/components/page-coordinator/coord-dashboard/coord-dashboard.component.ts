@@ -29,7 +29,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   currentBlock: any;
 
   /* percentage data */
-  data: any;
+  registered: any;
   ojtsite: any;
   traininghours: any;
   seminarhours: any;
@@ -137,56 +137,59 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
     // Calculate the remaining percentage
     const remainingPercentages = registrationperc.map(percent => 100 - percent);
 
-    this.data = {
-      labels: ["Cleared", "Not Cleared"],
+    const labels = ["Cleared", "Not Cleared"]
+    const backgroundColor = ["#fc5c1c", "#1e3a8a"]
+
+    this.registered = {
+      labels: labels,
       datasets: [
         {
           data: [registrationperc, remainingPercentages],
-          backgroundColor: ["#fc5c1c", "#1e3a8a"]
+          backgroundColor: backgroundColor
         },
       ],
     };
 
     const remainingperc = ojtsitesperc.map(percent => 100 - percent);
     this.ojtsite = {
-      labels: ["Cleared", "Not Cleared"],
+      labels: labels,
       datasets: [
         {
           data: [ojtsitesperc, remainingperc],
-          backgroundColor: ["#fc5c1c", "#1e3a8a"]
+          backgroundColor: backgroundColor
         },
       ],
     };
 
     const remaining = hoursperc.map(percent => 100 - percent);
     this.traininghours = {
-      labels: ["Cleared", "Not Cleared"],
+      labels: labels,
       datasets: [
         {
           data: [hoursperc, remaining],
-          backgroundColor: ["#fc5c1c", "#1e3a8a"]
+          backgroundColor: backgroundColor
         },
       ],
     };
 
     const remain = seminarhoursperc.map(percent => 100 - percent);
     this.seminarhours = {
-      labels: ["Cleared", "Not Cleared"],
+      labels: labels,
       datasets: [
         {
           data: [seminarhoursperc, remain],
-          backgroundColor: ["#fc5c1c", "#1e3a8a"]
+          backgroundColor: backgroundColor
         },
       ],
     };
 
     const remainingP = perfeval.map(percent => 100 - percent);
     this.perfeval = {
-      labels: ["Cleared", "Not Cleared"],
+      labels: labels,
       datasets: [
         {
           data: [perfeval, remainingP],
-          backgroundColor: ["#fc5c1c", "#1e3a8a"]
+          backgroundColor: backgroundColor
         },
       ],
     };
