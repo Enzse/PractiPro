@@ -1058,60 +1058,54 @@ class Post extends GlobalMethods
     }
 
 
-    // public function resetPasswordToken($data)
-    // {
-    //     $sql = "SELECT email FROM user WHERE email = ?";
-    //     $stmt = $this->pdo->prepare($sql);
-    //     $stmt->execute([$data->email]);
-    //     $email = $stmt->fetch(PDO::FETCH_ASSOC);
-    //     if (!$email) {
-    //         return $this->sendPayload(null, "failed", "Email not found.", 404);
-    //     }
+    public function createWarRecord($data)
+    {
+        $sql = "INSERT INTO student_war_records(student_id, week)
+        VALUES (?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->student_id,
+                    $data->week
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully created record", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
 
-    //     $token = bin2hex(random_bytes(16));
-    //     $token_hash = hash("sha256", $token);
-    //     $expiry = date("Y-m-d H:i:s", time() + 60 * 30);
-    //     $sql = "UPDATE user SET reset_token_hash = ?, reset_token_expires_at = ?
-    //             WHERE email = ?";
-    //     $stmt = $this->pdo->prepare($sql);
-    //     try {
-    //         $this->pdo->beginTransaction();
-    //         $stmt->execute([
-    //             $token_hash,
-    //             $expiry,
-    //             $data->email
-    //         ]);
-    //         $this->pdo->commit();
-
-
-    //         require __DIR__ . "../../src/Mailer.php";
-    //         $mail = initializeMailer();
-
-    //         $mail->setFrom("GCPractiPro@gcpractipro.online", "GCPractiProAdmin");
-    //         $mail->addAddress($data->email);
-    //         $mail->Subject = "Password Reset";
-    //         $mail->Body = <<<END
-    //         Click <a href="http://localhost:4200/resetpassword?token=$token">here</a> to reset your password.
-
-    //         END;
-
-    //         try {
-    //             $mail->send();
-    //             return $this->sendPayload(null, "success", "Successfully generated reset token.", 200);
-    //         } catch (Exception $e) {
-    //             $this->pdo->rollBack();
-    //             $code = 400;
-    //             return $this->sendPayload(null, "failed", $mail->ErrorInfo, $code);
-    //         }
-
-
-    //     } catch (PDOException $e) {
-    //         $this->pdo->rollBack();
-    //         $errmsg = $e->getMessage();
-    //         $code = 400;
-    //         return $this->sendPayload(null, "failed", $errmsg, $code);
-    //     }
-    // }
+    public function saveWarActivities($data)
+    {
+        $sql = "INSERT INTO student_war_activities(war_id, date, description, startTime, endTime)
+        VALUES (?, ?, ?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->war_id,
+                    $data->date,
+                    $data->description,
+                    $data->startTime,
+                    $data->endTime
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully created record", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
 
 }
 

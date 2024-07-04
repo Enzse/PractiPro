@@ -20,3 +20,10 @@
     background-image: url("../../../../../assets/defaultpfp.png");
   }
 }
+
+@media only screen and (max-width: 600px) {
+  .image-container {
+    height: 110px;
+    width: 110px;
+  }
+}

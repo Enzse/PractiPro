@@ -17,7 +17,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 export class AnswerWarComponent {
   userId: any;
   datalist: any[] = [];
-  file:any;
+  file: any;
   pdfPreview?: SafeResourceUrl;
 
   // row variable
@@ -49,7 +49,7 @@ export class AnswerWarComponent {
     const files = event.target.files as FileList;
     if (files.length > 0) {
       this.file = files[0];
-      this.previewPDF(); 
+      this.previewPDF();
     }
   }
 

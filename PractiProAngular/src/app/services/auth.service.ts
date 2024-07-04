@@ -404,4 +404,27 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/getclassjointoken/${token}`);
   }
 
+
+
+  createWarRecord(inputdata: any) {
+    return this.http.post(`${this.apiurl}/createwarrecord`, inputdata);
+  }
+
+  getWarRecords(studentId: number, week: any) {
+    if (!week) {
+      return this.http.get<any>(`${this.apiurl}/getwarrecords/${studentId}`);
+    }
+    return this.http.get<any>(`${this.apiurl}/getwarrecords/${studentId}/${week}`);
+  }
+
+
+  getWarActivities(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/getwaractivities/${studentId}`);
+  }
+  clearWarActivities(warId: number) {
+    return this.http.delete(`${this.apiurl}/clearwaractivities/${warId}`);
+  };
+  saveWarActivities(inputdata: any) {
+    return this.http.post(`${this.apiurl}/savewaractivities`, inputdata);
+  }
 }

@@ -569,4 +569,18 @@ class Get extends GlobalMethods
         return $this->sendPayload($result, 'success', "Token Found!", 200);
     }
 
+
+    public function getWarRecords($id, $week = null)
+    {
+        $condition = $week ? "student_id = $id AND week = $week" : "student_id = $id";
+
+        return $this->get_records('student_war_records', $condition);
+    }
+
+    public function getWarActivities($id)
+    {
+        $condition = "war_id = $id";
+
+        return $this->get_records('student_war_activities', $condition);
+    }
 }

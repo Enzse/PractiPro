@@ -388,6 +388,24 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+            case 'getwarrecords':
+                if (isset($request[2])) {
+                    echo json_encode($get->getWarRecords($request[1], $request[2]));
+                } else if (isset($request[1])) {
+                    echo json_encode($get->getWarRecords($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+            case 'getwaractivities':
+                if (isset($request[1])) {
+                    echo json_encode($get->getWarActivities($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
 
             default:
                 echo "This is forbidden";
@@ -580,6 +598,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode($post->createClassJoinLink($data));
                 break;
 
+            case 'createwarrecord':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->createWarRecord($data));
+                break;
+            case 'savewaractivities':
+                echo json_encode($post->saveWarActivities($data));
+                break;
+
             default:
                 // Return a 403 response for unsupported requests
                 echo "No Such Request";
@@ -724,6 +750,17 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'clearexpiredjoinlinks':
                 echo json_encode($delete->clearClassJoinLinks());
                 break;
+
+            case 'clearwaractivities':
+                if (isset($request[1])) {
+                    echo json_encode($delete->clearWarActivities($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
+
 
 
             default:
