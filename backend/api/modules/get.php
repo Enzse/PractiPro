@@ -307,7 +307,6 @@ class Get extends GlobalMethods
     }
 
 
-    // FOR DOWNLOADS!!!!!!!!!
     public function getSubmissionMaxWeeks($table, $id)
     {
         // Fetch the maximum week number from the database.
@@ -572,7 +571,7 @@ class Get extends GlobalMethods
 
     public function getWarRecords($id, $week = null)
     {
-        $condition = $week ? "student_id = $id AND week = $week" : "student_id = $id";
+        $condition = $week ? "user_id = $id AND week = $week" : "user_id = $id";
 
         return $this->get_records('student_war_records', $condition);
     }
@@ -583,4 +582,12 @@ class Get extends GlobalMethods
 
         return $this->get_records('student_war_activities', $condition);
     }
+
+    public function checkIfWeekHasWarRecord($user_id, $week)
+    {
+        $condition = "user_id = $user_id AND week = $week";
+
+        return $this->get_records('student_war_records', $condition);
+    }
+
 }

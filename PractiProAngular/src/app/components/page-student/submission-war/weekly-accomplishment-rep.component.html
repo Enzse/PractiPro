@@ -23,7 +23,7 @@
 
 
     <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
-      <mat-tab-group (selectedTabChange)="onTabChange($event)">
+      <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChange($event)">
         <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
           <div class="pb-2.5 w-full">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg border border-gray-300">
@@ -64,7 +64,7 @@
 
                     <td class="p-2.5">
                       <div class="flex justify-center">
-                        <button
+                        <button (click)="deleteRow(activity.id)"
                           class="text-white items-center bg-gray-500 hover:bg-red-500 opacity-50 hover:opacity-100 hover:shadow-md rounded-full p-1.5">
                           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -120,7 +120,8 @@
 
             Save Changes
           </button>
-          <button type="button" class="text-white p-2 px-3 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+          <button (click)="submitWarRecord()" type="button"
+            class="text-white p-2 px-3 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
               class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
@@ -128,7 +129,7 @@
               <path d="M12 3v14" />
               <path d="M5 21h14" />
             </svg>
-            Submit File
+            Submit Report
           </button>
         </div>
       </div>

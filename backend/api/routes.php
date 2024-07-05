@@ -407,6 +407,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'checkifweekhaswarrecord':
+                if (isset($request[2])) {
+                    echo json_encode($get->checkIfWeekHasWarRecord($request[1], $request[2]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+
             default:
                 echo "This is forbidden";
                 http_response_code(403);
@@ -602,6 +611,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->createWarRecord($data));
                 break;
+            case 'submitwarrecord':
+                // Return JSON-encoded data for adding users
+                echo json_encode($post->submitWarRecord($data));
+                break;
             case 'savewaractivities':
                 echo json_encode($post->saveWarActivities($data));
                 break;
@@ -759,6 +772,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+            case 'deletewaractivity':
+                if (isset($request[1])) {
+                    echo json_encode($delete->deleteWarActivity($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+
 
 
 

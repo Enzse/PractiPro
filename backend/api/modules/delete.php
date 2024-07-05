@@ -396,4 +396,22 @@ class Delete extends GlobalMethods
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
+    public function deleteWarActivity($id)
+    {
+        $sql = "DELETE FROM student_war_activities
+                WHERE id = :id";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $this->pdo->commit();
+            return $this->sendPayload(null, 'success', "Successfully deleted activity.", 200);
+
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
 }

@@ -1060,7 +1060,7 @@ class Post extends GlobalMethods
 
     public function createWarRecord($data)
     {
-        $sql = "INSERT INTO student_war_records(student_id, week)
+        $sql = "INSERT INTO student_war_records(user_id, week)
         VALUES (?, ?)";
         try {
             $this->pdo->beginTransaction();
@@ -1104,6 +1104,26 @@ class Post extends GlobalMethods
             $errmsg = $e->getMessage();
             $code = 400;
             return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
+    public function submitWarRecord($data)
+    {
+        $this->pdo->beginTransaction();
+        try {
+            $sql = "UPDATE student_war_records 
+                    SET isSubmitted = ?, dateSubmitted = NOW()
+                    WHERE id = ?";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                $data->isSubmitted,
+                $data->id
+            ]);
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully submitted record", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->handleException($e);
         }
     }
 

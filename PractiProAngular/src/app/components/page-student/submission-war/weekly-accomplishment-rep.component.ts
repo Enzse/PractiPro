@@ -10,7 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterPipe } from '../../../pipes/filter.pipe';
-import { Subscription } from 'rxjs';
+import { Subscription, concatAll, concatMap } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 
@@ -28,11 +28,14 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   origlist: any;
   searchtext: any;
   tabWeekNumbers: number[] = [1];
-  selectedTabLabel: number = 1;
+  selectedTabWeek: number = 1;
   selectedRecord: any;
   selectedRecordActivities: any[] = [];
+  initialRecordActivities: any[] = [];
   private subscriptions = new Subscription();
   p: number = 1;
+  selectedIndex: number = 0;
+  disableTabChangeEvent: boolean = false;
 
 
   constructor(private service: AuthService, private dialog: MatDialog) {
@@ -46,11 +49,12 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadWarRecord();
     this.loadMaxWeeks();
+
   }
 
   loadWarRecord() {
     this.subscriptions.add(
-      this.service.getWarRecords(this.userId, this.selectedTabLabel).subscribe((res: any) => {
+      this.service.getWarRecords(this.userId, this.selectedTabWeek).subscribe((res: any) => {
         this.selectedRecord = res.payload[0]
         this.loadWarActivities();
       })
@@ -62,6 +66,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.service.getWarActivities(this.selectedRecord.id).subscribe((res: any) => {
           this.selectedRecordActivities = res.payload
+          this.initialRecordActivities = JSON.parse(JSON.stringify(res.payload));
           if (this.selectedRecordActivities.length === 0) {
             this.addRow()
           }
@@ -71,24 +76,102 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   }
 
   onTabChange(event: MatTabChangeEvent) {
-    this.selectedRecordActivities = [];
-    this.selectedTabLabel = parseInt(event.tab.textLabel.replace('Week ', ''), 10);
-    this.loadWarRecord();
-    this.addRow()
+    if (this.disableTabChangeEvent) {
+      return;
+    }
+    const currentIndex = this.tabWeekNumbers.indexOf(this.selectedTabWeek);
+    const newIndex = event.index;
+    const newTabWeek = parseInt(event.tab.textLabel.replace('Week ', ''), 10);
+
+    if (this.hasUnsavedChanges()) {
+      this.selectTabIndex(currentIndex);
+      Swal.fire({
+        title: 'Unsaved Changes',
+        text: 'You have unsaved changes. Do you want to leave without saving?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, leave',
+        cancelButtonText: 'No, stay'
+      }).then((result) => {
+        this.disableTabChangeEvent = false;
+        if (result.isConfirmed) {
+          this.performTabChange(newIndex, newTabWeek);
+        } else {
+          this.selectTabIndex(currentIndex);
+        }
+      });
+    } else {
+      this.performTabChange(newIndex, newTabWeek);
+    }
   }
+
+  selectTabIndex(index: number) {
+    this.disableTabChangeEvent = true;
+    this.selectedIndex = index;
+    setTimeout(() => {
+      this.disableTabChangeEvent = false;
+    }, 1);
+  }
+
+  performTabChange(newIndex: number, newTabWeek: number) {
+    this.disableTabChangeEvent = true;
+    this.selectedIndex = newIndex;
+    this.selectedRecordActivities = [];
+    this.selectedTabWeek = newTabWeek;
+    this.loadWarRecord();
+    this.addRow();
+    setTimeout(() => {
+      this.disableTabChangeEvent = false;
+    }, 1);
+  }
+
 
   addRow() {
     const newActivity = {
       description: '',
       date: '',
       startTime: '09:00',
-      endTime: '18:00',
-      war_id: this.selectedRecord?.id
+      endTime: '17:00',
     };
     this.selectedRecordActivities.push(newActivity);
   }
 
   saveChanges() {
+    this.subscriptions.add(
+      this.service.checkIfWeekHasWarRecord(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+        if (res.payload.length === 0) {
+          if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description === '') {
+            Swal.fire({
+              title: `You haven't entered anything.`,
+              text: `Please fill up a row with details first.`,
+              icon: `question`
+            })
+            return
+          }
+          const newRecord = {
+            student_id: this.userId,
+            week: this.selectedTabWeek
+          }
+          this.subscriptions.add(
+            this.service.createWarRecord(newRecord).subscribe((res: any) => {
+              this.subscriptions.add(
+                this.service.getWarRecords(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+                  this.selectedRecord = res.payload[0]
+                  this.saveIteration();
+                })
+              )
+            }))
+        } else {
+          this.saveIteration();
+        }
+      }))
+  }
+
+  saveIteration() {
+    this.selectedRecordActivities = this.selectedRecordActivities.map(activity => ({
+      ...activity,
+      war_id: this.selectedRecord?.id
+    }));
     this.service.clearWarActivities(this.selectedRecord.id).subscribe(res => {
       this.selectedRecordActivities.forEach(activity => {
         this.service.saveWarActivities(activity).subscribe((res: any) => {
@@ -99,22 +182,51 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
         title: 'Changes Saved Successfully!',
         icon: 'success'
       })
+      this.initialRecordActivities = JSON.parse(JSON.stringify(this.selectedRecordActivities));
     })
   }
 
-  loadSubmittedRecords() {
-    this.subscriptions.add(
-      this.service.getSubmissionsByStudent('war', this.userId).subscribe(res => {
-        this.datalist = res.payload.sort((a: any, b: any) => {
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        });
-        this.origlist = this.datalist;
-      }));
+  hasUnsavedChanges(): boolean {
+    return JSON.stringify(this.selectedRecordActivities) !== JSON.stringify(this.initialRecordActivities);
+  }
+
+  submitWarRecord() {
+    if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description === '') {
+      Swal.fire({
+        title: `You haven't entered anything.`,
+        text: `Please fill up a row with details first.`,
+        icon: `question`
+      })
+      return
+    }
+    Swal.fire({
+      title: 'Are you sure you want to submit this report?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const recordSubmitted = {
+          isSubmitted: 1,
+          id: this.selectedRecord.id
+        }
+        this.subscriptions.add(
+          this.service.submitWarRecord(recordSubmitted).subscribe((res: any) => {
+            Swal.fire({
+              title: `Successfully submitted report!`,
+              text: `This report can now be evaluated by your supervisor.`,
+              icon: `success`
+            })
+          })
+        )
+      }
+    });
   }
 
   loadMaxWeeks() {
     this.subscriptions.add(
-      this.service.getSubmissionMaxWeeks('war', this.userId).subscribe(
+      this.service.getSubmissionMaxWeeks('student_war_records', this.userId).subscribe(
         res => {
           this.tabWeekNumbers = res;
         },
@@ -124,70 +236,37 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       ));
   }
 
-  setFilter(filter: string) {
-    this.datalist = this.origlist;
-    switch (filter) {
-      case 'all':
-        this.datalist = this.origlist;
-        break;
-      case 'a-approved':
-        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
-        break;
-      case 'a-unapproved':
-        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Unapproved');
-        break;
-      case 'a-pending':
-        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
-        break;
-      case 's-approved':
-        this.datalist = this.datalist.filter((user: any) => user.supervisor_approval === 'Approved');
-        break;
-      case 's-unapproved':
-        this.datalist = this.datalist.filter((user: any) => user.supervisor_approval === 'Unapproved');
-        break;
-      case 's-pending':
-        this.datalist = this.datalist.filter((user: any) => user.supervisor_approval === 'Pending');
-        break;
-    }
-  }
 
-  setFilterWeek(week: any) {
-    this.datalist = this.origlist;
-    this.datalist = this.datalist.filter((user: any) => user.week === week);
-
-  }
-
-  //SUBMISSION LOGIC
   addNewTab() {
     const nextWeekNumber = this.tabWeekNumbers[this.tabWeekNumbers.length - 1] + 1;
     this.tabWeekNumbers.push(nextWeekNumber);
   }
 
-  deleteSubmission(submissionId: number) {
+  deleteRow(activityId: number) {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
+      title: "Are you sure you want to delete this row?",
+      icon: "question",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.subscriptions.add(
-          this.service.deleteSubmission(submissionId, 'war').subscribe((res: any) => {
-            Swal.fire({
-              title: "Your submission has been deleted",
-              icon: "success"
-            });
-            this.loadSubmittedRecords();
-          }, error => {
-            Swal.fire({
-              title: "Delete failed",
-              text: "You may not have permission to delete this file.",
-              icon: "error"
-            });
-          }));
+        this.selectedRecordActivities = this.selectedRecordActivities.filter((activity: any) => activity.id !== activityId);
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          title: `Row successfully deleted.`,
+          text: `Please don't forget to save your changes.`,
+          icon: "success",
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          showCloseButton: true,
+        });
+        if (this.selectedRecordActivities.length === 0) {
+          this.addRow();
+        }
       }
     });
   }
@@ -203,10 +282,44 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
         table: 'comments_war'
       }
     })
-    this.subscriptions.add(
-      popup.afterClosed().subscribe(res => {
-        this.loadSubmittedRecords()
-      }));
+    // this.subscriptions.add(
+    //   popup.afterClosed().subscribe(res => {
+
+    //   }));
   }
 
 }
+
+
+// setFilter(filter: string) {
+//   this.datalist = this.origlist;
+//   switch (filter) {
+//     case 'all':
+//       this.datalist = this.origlist;
+//       break;
+//     case 'a-approved':
+//       this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
+//       break;
+//     case 'a-unapproved':
+//       this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Unapproved');
+//       break;
+//     case 'a-pending':
+//       this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
+//       break;
+//     case 's-approved':
+//       this.datalist = this.datalist.filter((user: any) => user.supervisor_approval === 'Approved');
+//       break;
+//     case 's-unapproved':
+//       this.datalist = this.datalist.filter((user: any) => user.supervisor_approval === 'Unapproved');
+//       break;
+//     case 's-pending':
+//       this.datalist = this.datalist.filter((user: any) => user.supervisor_approval === 'Pending');
+//       break;
+//   }
+// }
+
+// setFilterWeek(week: any) {
+//   this.datalist = this.origlist;
+//   this.datalist = this.datalist.filter((user: any) => user.week === week);
+
+// }

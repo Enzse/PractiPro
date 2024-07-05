@@ -409,7 +409,9 @@ export class AuthService {
   createWarRecord(inputdata: any) {
     return this.http.post(`${this.apiurl}/createwarrecord`, inputdata);
   }
-
+  submitWarRecord(inputdata: any) {
+    return this.http.post(`${this.apiurl}/submitwarrecord`, inputdata);
+  }
   getWarRecords(studentId: number, week: any) {
     if (!week) {
       return this.http.get<any>(`${this.apiurl}/getwarrecords/${studentId}`);
@@ -417,12 +419,18 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/getwarrecords/${studentId}/${week}`);
   }
 
+  checkIfWeekHasWarRecord(studentId: number, week: number) {
+    return this.http.get<any>(`${this.apiurl}/checkifweekhaswarrecord/${studentId}/${week}`);
+  }
 
   getWarActivities(studentId: number) {
     return this.http.get<any>(`${this.apiurl}/getwaractivities/${studentId}`);
   }
   clearWarActivities(warId: number) {
     return this.http.delete(`${this.apiurl}/clearwaractivities/${warId}`);
+  };
+  deleteWarActivity(id: number) {
+    return this.http.delete(`${this.apiurl}/deletewaractivity/${id}`);
   };
   saveWarActivities(inputdata: any) {
     return this.http.post(`${this.apiurl}/savewaractivities`, inputdata);
