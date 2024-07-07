@@ -1,15 +1,13 @@
-import { Component, OnDestroy } from '@angular/core';
-import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentationpopupComponent } from '../../popups/popups-coordinator/documentationpopup/documentationpopup.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { BlockService } from '../../../services/block.service';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatMenuModule, } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
 import { DtrpopupcomponentComponent } from '../../popups/popups-coordinator/dtrpopupcomponent/dtrpopupcomponent.component';
@@ -22,13 +20,12 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-coord-documentation',
   standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+  imports: [CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
   templateUrl: './coord-documentation.component.html',
   styleUrl: './coord-documentation.component.css'
 })
 export class CoordDocumentationComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
-
   Coordinator: any;
   students: any;
   studentlist: any;
@@ -51,7 +48,6 @@ export class CoordDocumentationComponent implements OnInit, OnDestroy {
         console.log(`Submissions: ${this.currentBlock}`);
       }));
   }
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
@@ -68,6 +64,7 @@ export class CoordDocumentationComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }));
   }
+
 
   viewDocumentations(code: any) {
     const popup = this.dialog.open(DocumentationpopupComponent, {
@@ -99,13 +96,13 @@ export class CoordDocumentationComponent implements OnInit, OnDestroy {
       }
     })
   }
-  viewWars(code: any) {
+  viewWars(student: any) {
     const popup = this.dialog.open(WarpopupcomponentComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "350ms",
       width: "80%",
       data: {
-        usercode: code
+        studentId: student
       }
     })
   }

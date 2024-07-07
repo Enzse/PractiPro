@@ -1,11 +1,83 @@
-<div class="p-3 rounded-md shadow-xl">
-    <h1 class="mb-2 text-orange-500 font-bold ml-1">Weekly Accomplishment Reports Submitted:</h1>
+<div class="p-3 rounded-md shadow-xl max-h-[90vh] overflow-auto">
+    <h1 class="mb-2 text-orange-500 font-bold text-center">Weekly Accomplishment Reports Submitted:</h1>
 
     <div *ngIf="isLoading" class="flex justify-center">
         <p class="font-secondary text-2xl">Loading...</p>
     </div>
     <ng-container *ngIf="!isLoading">
-        <ng-container *ngIf="studentSubmissions.length > 0 else noDataMessage">
+
+        <ng-container *ngIf="recordsList.length > 0 else noDataMessage">
+            <div *ngFor="let record of recordsList" class="relative mb-1.5">
+                <div *ngIf="record.supervisor_approval === 'Pending'"
+                    class="bg-red-500 -mt-0.5 -mr-1 absolute top-0 right-0 rounded-full p-1.5">
+                </div>
+                <app-war-accordion headerText="Week {{record.week}}" addText1="{{record.dateSubmitted}}">
+                    <ng-container accordion-icon>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="w-7 h-7 -mt-0.5 inline text-orange-500">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
+                        </svg>
+                    </ng-container>
+                    <ng-container accordion-text1>
+                        <p class="text-gray-700 text-sm font-primary px-5"><span class="font-semibold">Submitted on:
+                            </span>{{record.dateSubmitted |
+                            date: "medium"}}
+                        </p>
+                    </ng-container>
+
+                    <div class="relative overflow-x-auto shadow-md sm:rounded-lg border border-gray-300">
+                        <div *ngFor="let activity of getActivitiesForRecord(record.id)"
+                            class="relative px-10 max-sm:px-3 py-3 gap-5 border-b border-gray-300 font-secondary text-gray-900 grid grid-cols-5 bg-white">
+                            <div class="col-span-3 max-sm:col-span-5">
+                                <p
+                                    class="p-2.5 max-sm:text-sm text-xl h-full break-words text-gray-900 rounded-lg border border-gray-300">
+                                    {{activity.description}}
+                                </p>
+                            </div>
+                            <div class="col-span-2 max-sm:col-span-5 my-auto text-center">
+                                <p class="text-base"><b>{{activity.date | date : "longDate"}}</b></p>
+                                <p class="text-lg">Time of Work: <b>{{activity.startTime | time:
+                                        activity.startTime}}</b> -
+                                    <b>{{activity.endTime | time: activity.endTime}}</b>
+                                </p>
+                                <p class="font-primary text-blue-900 font-bold text-4xl max-sm:text-xl">
+                                    {{activity.TotalHours ?
+                                    activity.TotalHours + ' Total Hours' : 0}}</p>
+                            </div>
+
+                        </div>
+                        <div class="flex justify-center p-3 gap-3">
+                            <button (click)="viewComments(record.id, 'Week ' + record.week)"
+                                class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
+                                <svg class="w-5 h-5 text-gray-800 dark:text-white inline" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
+                                    viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd"
+                                        d="M3.559 4.544c.355-.35.834-.544 1.33-.544H19.11c.496 0 .975.194 1.33.544.356.35.559.829.559 1.331v9.25c0 .502-.203.981-.559 1.331-.355.35-.834.544-1.33.544H15.5l-2.7 3.6a1 1 0 0 1-1.6 0L8.5 17H4.889c-.496 0-.975-.194-1.33-.544A1.868 1.868 0 0 1 3 15.125v-9.25c0-.502.203-.981.559-1.331ZM7.556 7.5a1 1 0 1 0 0 2h8a1 1 0 0 0 0-2h-8Zm0 3.5a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2H7.556Z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                                <span class="ml-1 max-sm:hidden">Comments</span>
+                            </button>
+                            <select (click)="$event.stopPropagation()"
+                                class="border-0 shadow-md text-center rounded-lg cursor-pointer"
+                                [(ngModel)]="record.supervisor_approval" [ngClass]="{
+                                'text-green-500': record.supervisor_approval === 'Approved',
+                                'text-red-500': record.supervisor_approval === 'Unapproved',
+                                'text-gray-500': record.supervisor_approval === 'Pending'
+                              }" (change)="onStatusChange(record)">
+                                <option value="Approved" class="text-green-500">Approved</option>
+                                <option value="Unapproved" class="text-red-500">Unapproved</option>
+                                <option *ngIf="record.supervisor_approval === 'Pending'" value="Pending" hidden
+                                    class="text-gray-500">Pending</option>
+                            </select>
+                        </div>
+                    </div>
+                </app-war-accordion>
+            </div>
+        </ng-container>
+
+        <!-- <ng-container *ngIf="recordsList.length > 0 else noDataMessage">
             <table mat-table
                 class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -13,9 +85,6 @@
 
                         <th scope="col" class="px-6 py-3">
                             Week:
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            File Name:
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Date Submitted:
@@ -29,23 +98,17 @@
                         <th scope="col" class="px-6 py-3">
                             Approval:
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            Download:
-                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let submission of studentSubmissions"
+                    <tr *ngFor="let submission of recordsList"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
                         <td class="px-6 py-4">
                             Week {{ submission.week }}
                         </td>
                         <td class="px-6 py-4">
-                            {{ submission.file_name }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ submission.created_at | date: "medium" }}
+                            {{ submission.dateSubmitted | date: "medium" }}
                         </td>
                         <td class="px-6 py-4">
                             <button (click)="viewFile(submission.id)"
@@ -67,31 +130,21 @@
                         </td>
                         <td class="px-6 py-4">
                             <select class="border-0 shadow-md text-center rounded-lg cursor-pointer"
-                            [(ngModel)]="submission.supervisor_approval" [ngClass]="{
+                                [(ngModel)]="submission.supervisor_approval" [ngClass]="{
                             'text-green-500': submission.supervisor_approval === 'Approved',
                             'text-red-500': submission.supervisor_approval === 'Unapproved',
                             'text-gray-500': submission.supervisor_approval === 'Pending'
                           }" (change)="onStatusChange(submission)">
-                            <option value="Approved" class="text-green-500">Approved</option>
-                            <option value="Unapproved" class="text-red-500">Unapproved</option>
-                            <option *ngIf="submission.supervisor_approval === 'Pending'" value="Pending" hidden class="text-gray-500">Pending</option>
-                        </select>
-                        </td>
-                        <td class="px-6 py-4">
-                            <button (click)="downloadFile(submission.id, submission.file_name)"
-                                class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide lucide-download">
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                    <polyline points="7 10 12 15 17 10" />
-                                    <line x1="12" x2="12" y1="15" y2="3" />
-                                </svg></button>
+                                <option value="Approved" class="text-green-500">Approved</option>
+                                <option value="Unapproved" class="text-red-500">Unapproved</option>
+                                <option *ngIf="submission.supervisor_approval === 'Pending'" value="Pending" hidden
+                                    class="text-gray-500">Pending</option>
+                            </select>
                         </td>
                     </tr>
                 </tbody>
             </table>
-        </ng-container>
+        </ng-container> -->
     </ng-container>
     <ng-template #noDataMessage>
         <div class="flex justify-center">

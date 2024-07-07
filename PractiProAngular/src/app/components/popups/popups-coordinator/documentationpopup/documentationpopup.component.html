@@ -74,16 +74,16 @@
                         <th scope="col" class="px-6 py-3">
                             Approval:
                         </th>
-                        <th scope="col" class="px-6 py-3">
+                        <!-- <th scope="col" class="px-6 py-3">
                             Actions:
-                        </th>
+                        </th> -->
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let submission of studentSubmissions | paginate: { itemsPerPage: 5, currentPage: p  } | filter:searchtext"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 font-primary font-bold">
                             Week {{ submission.week }}
                         </td>
                         <td class="px-6 py-4">
@@ -94,12 +94,13 @@
                         </td>
                         <td class="px-6 py-4">
                             <button (click)="viewFile(submission.id)"
-                                class="focus:outline-none inline-flex text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide mr-1 inline lucide-search">
-                                <circle cx="11" cy="11" r="8" />
-                                <path d="m21 21-4.3-4.3" />
-                              </svg>View</button>
+                                class="focus:outline-none inline-flex text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><svg
+                                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide mr-1 inline lucide-search">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <path d="m21 21-4.3-4.3" />
+                                </svg>View</button>
                         </td>
 
                         <td class="px-6 py-4">
@@ -124,10 +125,11 @@
                                 }" (change)="onStatusChange(submission)">
                                 <option value="Approved" class="text-green-500">Approved</option>
                                 <option value="Unapproved" class="text-red-500">Unapproved</option>
-                                <option *ngIf="submission.advisor_approval === 'Pending'" value="Pending" hidden class="text-gray-500">Pending</option>
+                                <option *ngIf="submission.advisor_approval === 'Pending'" value="Pending" hidden
+                                    class="text-gray-500">Pending</option>
                             </select>
                         </td>
-                        <td class="px-6 py-4">
+                        <!-- <td class="px-6 py-4">
                             <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
                                 <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                                     xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
@@ -163,13 +165,12 @@
                                     </button>
                                 </li>
                             </mat-menu>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
 
             <div class="w-full mt-3 flex justify-center">
-                <!-- pagination control -->
                 <pagination-controls [responsive]="true" class="my-pagination"
                     (pageChange)="p = $event"></pagination-controls>
             </div>

@@ -70,11 +70,25 @@
                   </td>
                   <td class="px-6 py-4 text-center">
                     <a (click)="viewSubmissions(student)"
-                      class="text-white bg-blue-900 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-900 focus:outline-none dark:focus:ring-blue-800">View</a>
+                      class="text-white bg-blue-900 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-900 focus:outline-none dark:focus:ring-blue-800">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide -mt-1 mr-0.5 inline lucide-search">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.3-4.3" />
+                      </svg>
+                      View</a>
                   </td>
                   <td class="px-6 py-4 text-center">
                     <a (click)="viewRequirementsStatus(student.id)"
-                      class="text-white bg-blue-900 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-900 focus:outline-none dark:focus:ring-blue-800">View</a>
+                      class="text-white bg-blue-900 cursor-pointer hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-bold rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-900 focus:outline-none dark:focus:ring-blue-800"><svg
+                        xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide -mt-1 mr-0.5 inline lucide-search">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="m21 21-4.3-4.3" />
+                      </svg>
+                      View</a>
                   </td>
                   <td class="px-6 py-4 text-center">
                     <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">

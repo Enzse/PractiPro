@@ -89,7 +89,7 @@
             </div>
 
             <div class="flex flex-wrap justify-evenly">
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'registered')"
+                <div routerLink="/coord-registrations"
                     class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
                     <p-chart class="w-44 mx-auto" type="doughnut" [data]="registered" [options]="options" />
                     <h2 class="font-primary font-bold text-orange-500">

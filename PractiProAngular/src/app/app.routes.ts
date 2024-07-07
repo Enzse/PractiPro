@@ -121,7 +121,7 @@ export const routes: Routes = [
                 path: '', component: CoordSidebarComponent,
                 children: [
                     { path: 'coord-dashboard', component: CoordDashboardComponent, title: 'Dashboard', },
-                    { path: 'coord-submissions', component: CoordinatorSubmissionComponent, title: 'Registrations', },
+                    { path: 'coord-registrations', component: CoordinatorSubmissionComponent, title: 'Registrations', },
                     {
                         path: 'coord-invitestudents', component: CoordInvitestudentsComponent, title: 'Invite Students', children:
                             [
@@ -129,7 +129,7 @@ export const routes: Routes = [
                                 { path: 'invite-by-link', component: InvitestudentsByLinkComponent, },
                             ]
                     },
-                    { path: 'coord-submission', component: CoordDocumentationComponent, title: 'Submissions', },
+                    { path: 'coord-submissions', component: CoordDocumentationComponent, title: 'Submissions', },
                     { path: 'coord-dtr', component: CoordDtrComponent, title: 'Daily Time Records', },
                     { path: 'coord-seminars', component: CoordSeminarsComponent, title: 'Seminar Records', },
                     { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports', },

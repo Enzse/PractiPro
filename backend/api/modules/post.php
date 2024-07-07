@@ -1112,7 +1112,7 @@ class Post extends GlobalMethods
         $this->pdo->beginTransaction();
         try {
             $sql = "UPDATE student_war_records 
-                    SET isSubmitted = ?, dateSubmitted = NOW()
+                    SET isSubmitted = ?, dateSubmitted = NOW(), supervisor_approval = 'Pending', advisor_approval = 'Pending'
                     WHERE id = ?";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([

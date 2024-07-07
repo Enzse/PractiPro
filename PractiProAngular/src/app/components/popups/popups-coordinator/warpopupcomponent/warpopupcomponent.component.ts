@@ -1,152 +1,78 @@
 
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { FormBuilder, FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatButtonModule } from '@angular/material/button';
-import { saveAs } from 'file-saver';
-import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
+import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { MatMenuModule } from '@angular/material/menu';
-import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription } from 'rxjs';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { WarAccordionComponent } from '../../../widgets/accordion/war-accordion/war-accordion.component';
+import { TimePipe } from '../../../../pipes/time.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
+
+
 
 @Component({
   selector: 'app-warpopupcomponent',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
+  imports: [WarAccordionComponent, CommonModule, TimePipe, FormsModule, NgxPaginationModule, MatTooltipModule],
   templateUrl: './warpopupcomponent.component.html',
   styleUrl: './warpopupcomponent.component.css'
 })
 export class WarpopupcomponentComponent implements OnInit, OnDestroy {
-  constructor(private builder: FormBuilder, private service: AuthService,
+  constructor(private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<WarpopupcomponentComponent>, private dialog2: MatDialog) { }
-  searchtext: any;
+
   studentSubmissions: any[] = [];
-  origlist: any;
   isLoading: boolean = true;
+  recordsList: any[] = [];
   private subscriptions = new Subscription();
-  p: number = 1;
 
   ngOnInit(): void {
-    this.loadData();
+    this.loadRecords();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  loadData() {
+  loadRecords() {
     this.subscriptions.add(
-      this.service.getSubmissionsByStudent('war', this.data.usercode).subscribe(
-        (res) => {
-          this.studentSubmissions = res.payload.sort((a: any, b: any) => {
-            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+      this.service.getWarRecords(this.data.studentId, null).subscribe((res: any) => {
+        this.recordsList = res.payload.filter((record: any) => record.isSubmitted === 1 && record.supervisor_approval === 'Approved')
+        this.recordsList = this.recordsList.sort((a: any, b: any) => {
+          return b.week - a.week
+        })
+        this.isLoading = false;
+        this.loadWarActivities();
+      })
+    )
+  }
+
+  recordActivities: any[] = [];
+  loadWarActivities() {
+    this.subscriptions.add(
+      this.recordsList.forEach(records => {
+        this.service.getWarActivities(records.id).subscribe((res: any) => {
+          res.payload.forEach((activity: any) => {
+            this.recordActivities.push(activity)
           });
-          this.origlist = this.studentSubmissions;
-          this.isLoading = false;
-          console.log(this.studentSubmissions);
-        },
-        (error: any) => {
-          console.error('Error fetching student submissions:', error);
-        }
-      ));
+        })
+      })
+    )
   }
 
-  setFilter(filter: string) {
-    this.studentSubmissions = this.origlist;
-    switch (filter) {
-      case 'all':
-        this.studentSubmissions = this.origlist;
-        break;
-      case 'a-approved':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Approved');
-        break;
-      case 'a-unapproved':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Unapproved');
-        break;
-      case 'a-pending':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Pending');
-        break;
-      case 's-approved':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.supervisor_approval === 'Approved');
-        break;
-      case 's-unapproved':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.supervisor_approval === 'Unapproved');
-        break;
-      case 's-pending':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.supervisor_approval === 'Pending');
-        break;
-    }
-  }
-
-  viewFile(submissionId: number) {
-    this.subscriptions.add(
-      this.service.getSubmissionFile('war', submissionId).subscribe(
-        (data: any) => {
-          const popup = this.dialog2.open(PdfviewerComponent, {
-            enterAnimationDuration: "0ms",
-            exitAnimationDuration: "500ms",
-            width: "90%",
-            data: {
-              selectedPDF: data
-            }
-          })
-        },
-        (error: any) => {
-          console.error('Error viewing submission:', error);
-        }
-      ));
-  }
-
-  downloadFile(submissionId: number, submissionName: string) {
-    this.subscriptions.add(
-      this.service.getSubmissionFile('war', submissionId).subscribe(
-        (data: any) => {
-          saveAs(data, submissionName);
-        },
-        (error: any) => {
-          console.error('Error downloading submission:', error);
-        }
-      ));
-  }
-
-  deleteSubmission(submissionId: number) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.subscriptions.add(
-          this.service.deleteSubmission(submissionId, 'war').subscribe((res: any) => {
-            Swal.fire({
-              title: "The submission has been deleted",
-              icon: "success"
-            });
-            this.loadData();
-          }, error => {
-            Swal.fire({
-              title: "Delete failed",
-              text: "You may not have permission to delete this file.",
-              icon: "error"
-            });
-          }));
-      }
-    });
+  getActivitiesForRecord(recordId: number): any[] {
+    return this.recordActivities.filter(activity => activity.war_id === recordId);
   }
 
 
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-      this.service.updateAdvisorApproval('war', record.id, updateData).subscribe(
+      this.service.updateAdvisorApproval('student_war_records', record.id, updateData).subscribe(
         res => {
           Swal.fire({
             toast: true,
@@ -185,10 +111,9 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
         table: 'comments_war'
       }
     })
-    this.subscriptions.add(
-      popup.afterClosed().subscribe(res => {
-        this.loadData()
-      }));
+    // popup.afterClosed().subscribe(res => {
+    //   this.loadRecords()
+    // });
   }
 
 }

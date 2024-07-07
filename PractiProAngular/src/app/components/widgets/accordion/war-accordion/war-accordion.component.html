@@ -1,0 +1,57 @@
+<div class="bg-white shadow-lg">
+    <h2 id="accordion-open-heading-1">
+        <button type="button" (click)="toggleAccordion()"
+            class="flex items-center justify-between w-full p-5 font-medium rtl:text-right text-gray-500 border border-b-0 border-gray-200  dark:border-gray-700 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 gap-3"
+            aria-expanded="true">
+
+            <div class="flex justify-center gap-4">
+                <h1 class=" text-orange-500 font-bold font-primary text-center text-xl">
+                    <ng-content select="[accordion-icon]"></ng-content>
+                    {{headerText}}
+                </h1>
+                <h2 class="my-auto">
+                    <ng-content select="[accordion-text1]"></ng-content>
+                </h2>
+            </div>
+            <!-- <h2 class="my-auto">
+                <ng-content select="[accordion-text2]"></ng-content>
+            </h2> -->
+
+
+            <div class="flex justify-center gap-x-10">
+                <!-- <div class="my-auto">
+                    <ng-content select="[accordion-text2]"></ng-content>
+                </div>
+                <div class="my-auto">
+                    <ng-content select="[accordion-text3]"></ng-content>
+                </div> -->
+
+                <div *ngIf="!isAccordionOpen" class="my-auto">
+                    <svg data-accordion-icon class="w-3 h-3 text-orange-500 rotate-180 shrink-0"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5 5 1 1 5" />
+                    </svg>
+                </div>
+
+                <div *ngIf="isAccordionOpen" class="my-auto">
+                    <svg data-accordion-icon class="w-3 h-3 text-orange-500 shrink-0" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5 5 1 1 5" />
+                    </svg>
+                </div>
+            </div>
+
+
+        </button>
+    </h2>
+    <div>
+        <ng-container *ngIf="isAccordionOpen">
+            <div class="p-5 mb-4 border border-b-0 border-gray-200 dark:border-gray-700 dark:bg-gray-900">
+                <ng-content></ng-content>
+            </div>
+
+        </ng-container>
+    </div>
+</div>

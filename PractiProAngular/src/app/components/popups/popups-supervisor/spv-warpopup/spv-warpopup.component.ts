@@ -3,17 +3,19 @@ import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { saveAs } from 'file-saver';
-import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Subscription } from 'rxjs';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { WarAccordionComponent } from '../../../widgets/accordion/war-accordion/war-accordion.component';
+import { TimePipe } from '../../../../pipes/time.pipe';
 
 
 @Component({
   selector: 'app-spv-warpopup',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [WarAccordionComponent, CommonModule, TimePipe, FormsModule, NgxPaginationModule],
   templateUrl: './spv-warpopup.component.html',
   styleUrl: './spv-warpopup.component.css'
 })
@@ -23,116 +25,77 @@ export class SpvWarpopupComponent implements OnInit, OnDestroy {
 
   studentSubmissions: any[] = [];
   isLoading: boolean = true;
+  recordsList: any[] = [];
+  private subscriptions = new Subscription();
 
   ngOnInit(): void {
-    this.loadData();
+    this.loadRecords();
   }
 
   ngOnDestroy(): void {
-
+    this.subscriptions.unsubscribe();
   }
 
-  loadData() {
-    this.service.getSubmissionsByStudent('war', this.data.student.id).subscribe(
-      (res) => {
-        this.studentSubmissions = res.payload.sort((a: any, b: any) => {
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        });
-        this.isLoading = false;
-        console.log(this.studentSubmissions);
-      },
-      (error: any) => {
-        console.error('Error fetching student submissions:', error);
-      }
-    );
-  }
-
-  viewFile(submissionId: number) {
-    this.service.getSubmissionFile('war', submissionId).subscribe(
-      (data: any) => {
-        const popup = this.dialog2.open(PdfviewerComponent, {
-          enterAnimationDuration: "0ms",
-          exitAnimationDuration: "500ms",
-          width: "90%",
-          data: {
-            selectedPDF: data
-          }
+  loadRecords() {
+    this.subscriptions.add(
+      this.service.getWarRecords(this.data.student.id, null).subscribe((res: any) => {
+        this.recordsList = res.payload.filter((record: any) => record.isSubmitted === 1)
+        this.recordsList = this.recordsList.sort((a: any, b: any) => {
+          return b.week - a.week
         })
-      },
-      (error: any) => {
-        console.error('Error viewing submission:', error);
-      }
-    );
+        this.isLoading = false;
+        this.loadWarActivities();
+      })
+    )
   }
 
-  downloadFile(submissionId: number, submissionName: string) {
-    this.service.getSubmissionFile('war', submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, submissionName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    );
+  recordActivities: any[] = [];
+  loadWarActivities() {
+    this.subscriptions.add(
+      this.recordsList.forEach(records => {
+        this.service.getWarActivities(records.id).subscribe((res: any) => {
+          res.payload.forEach((activity: any) => {
+            this.recordActivities.push(activity)
+          });
+        })
+      })
+    )
   }
+
+  getActivitiesForRecord(recordId: number): any[] {
+    return this.recordActivities.filter(activity => activity.war_id === recordId);
+  }
+
 
   onStatusChange(record: any) {
     const updateData = { supervisor_approval: record.supervisor_approval };
-    this.service.updateSupervisorApproval('war', record.id, updateData).subscribe(
-      res => {
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          backdrop: false,
-          title: `Submission successfully set to '${record.supervisor_approval}'.`,
-          icon: "success",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
-      },
-      error => {
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          backdrop: false,
-          title: `Error occured. You might no have permission to edit this record.`,
-          icon: "error",
-          timer: 2000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-        });
-      }
-    );
-  }
-
-
-
-  toggleApproval(id: number, currentValue: number) {
-    let newValue: number;
-
-    if (currentValue === 0) {
-      newValue = 1;
-    } else if (currentValue === 1) {
-      newValue = -1;
-    } else {
-      newValue = 0;
-    }
-    const requestData = {
-      submissionId: id,
-      newRemark: newValue
-    };
-    this.service.toggleSubmissionRemark('war', requestData).subscribe(
-      (response) => {
-        console.log('Submission remark toggled successfully:', response);
-
-        const submissionIndex = this.studentSubmissions.findIndex(submission => submission.id === id);
-        if (submissionIndex !== -1) {
-          this.studentSubmissions[submissionIndex].remarks = newValue;
+    this.subscriptions.add(
+      this.service.updateSupervisorApproval('student_war_records', record.id, updateData).subscribe(
+        res => {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Submission successfully set to '${record.supervisor_approval}'.`,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        },
+        error => {
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            backdrop: false,
+            title: `Error occured. You might no have permission to edit this record.`,
+            icon: "error",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
         }
-      },
-      (error) => console.error('Error toggling Submission remark:', error)
-    );
+      ));
   }
 
   viewComments(submissionId: number, fileName: string) {
@@ -146,9 +109,9 @@ export class SpvWarpopupComponent implements OnInit, OnDestroy {
         table: 'comments_war'
       }
     })
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    });
+    // popup.afterClosed().subscribe(res => {
+    //   this.loadRecords()
+    // });
   }
 
 }

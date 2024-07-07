@@ -2,7 +2,6 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Observable, Subscription, map } from 'rxjs';
-import { initFlowbite } from 'flowbite';
 import { BlockService } from '../../../services/block.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,12 +10,13 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
 import { ViewAllStudentsComponent } from '../../popups/popups-coordinator/view-all-students/view-all-students.component';
 import { ChartModule } from 'primeng/chart';
 import { ViewSentInvitesComponent } from '../../popups/popups-coordinator/view-sent-invites/view-sent-invites.component';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-coord-dashboard',
   standalone: true,
-  imports: [CommonModule, MatTooltipModule, ChartModule],
+  imports: [RouterLink, CommonModule, MatTooltipModule, ChartModule],
   templateUrl: './coord-dashboard.component.html',
   styleUrl: './coord-dashboard.component.css'
 })
