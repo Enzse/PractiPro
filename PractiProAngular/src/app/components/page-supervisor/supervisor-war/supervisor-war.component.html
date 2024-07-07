@@ -18,81 +18,87 @@
         </div>
 
         <div *ngIf="(traineesList$ | async) as traineesList">
-            <div *ngIf="traineesList.length > 0; else noStudents" class="flex flex-wrap w-full mt-10 justify-evenly space-x-3">
+            <div *ngIf="traineesList.length > 0; else noStudents"
+                class="flex flex-wrap w-full mt-10 justify-evenly space-x-3">
                 <!-- Trainee Containers -->
                 <div *ngFor="let data of traineesList | filter : searchtext"
                     class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewWars(data)">
+
                     <div
-                        class="w-auto p-3 shadow-md justify-around bg-slate-50 hover:bg-slate-100 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
-                        <div class="avatar-container mx-auto">
-                            <img *ngIf="data.avatar; else placeholder" [src]="data.avatar" class="image-container"
-                                alt="Avatar" />
-                            <ng-template #placeholder>
-                                <div class="image-container avatar-placeholder"></div>
-                            </ng-template>
+                        class="w-auto p-3 pb-5 shadow-md justify-around bg-slate-50 hover:bg-slate-100 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
+                        <!-- upper part -->
+                        <div class="px-4 py-3 grid-flow-col grid grid-cols-3">
+                            <div class="avatar-container mx-auto">
+                                <img *ngIf="data.avatar; else placeholder" [src]="data.avatar" class="image-container"
+                                    alt="Avatar" />
+                                <ng-template #placeholder>
+                                    <div class="image-container avatar-placeholder"></div>
+                                </ng-template>
+                            </div>
+                            <!-- name and status -->
+                            <div class="col-span-2 grid-flow-row grid-cols-3">
+                                <h5 class=" text-md font-bold text-gray-900 font-primary ms-3">
+                                    {{ data.firstName }}
+                                    {{ data.lastName }}
+                                </h5>
+                                <p
+                                    class="text-base text-center lg:text-lg font-primary text-gray-900 truncate dark:text-white mr-2">
+                                    Activity Status:
+                                </p>
+                                <span class="flex justify-center items-center">
+                                    <span [ngClass]="{
+                                            'bg-green-500': data.clock_status === 'Clocked In',
+                                            'bg-red-500': data.clock_status === 'Clocked Out',
+                                            'bg-black': data.clock_status === 'Offline',
+                                            'bg-gray-500': data.clock_status === 'Idle'
+                                        }" class="w-2 h-2 -mt-0.5 rounded-full mr-1"></span>
+                                    <span [ngClass]="{
+                                            'text-red-500': data.clock_status === 'Clocked Out',
+                                            'text-green-500': data.clock_status === 'Clocked In'
+                                        }">
+                                        {{ data.clock_status }}
+                                    </span>
+                                </span>
+                            </div>
                         </div>
 
-                        <div class="flow-root mt-3">
-                            <h5 class="mb-2 text-2xl mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center">
-                                {{ data.firstName }}
-                                {{ data.lastName }}
-                            </h5>
-                            <ul role="list" class="flex flex-col flex-1 px-10 py-3">
+                        <hr />
+
+                        <div class="flow-root">
+
+                            <ul role="list" class="flex flex-col flex-1 px-4 py-2">
                                 <li class="mb-2">
                                     <div class="flex items-center">
-                                        <div class="flex-1 min-w-0 ms-4">
-                                            <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                                                Hours Worked:
+                                        <div class="flex-1 flex flex-col -space-y-1 text-center ms-3 min-w-0">
+                                            <p
+                                                class="inline me-1 text-base lg:text-lg font-primary text-gray-900 truncate dark:text-white">
+                                                Job Title
                                             </p>
-                                            <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">
-                                                {{ data.TotalHoursWorked || 0 }}hrs
-                                            </span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="mb-2">
-                                    <div class="flex items-center">
-                                        <div class="flex-1 min-w-0 ms-4">
-                                            <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                                                Job Title:
-                                            </p>
-                                            <span class="text-sm font-normal lg:text-base font-secondary">
+                                            <span class="text-lg font-semibold font-secondary">
                                                 {{ data.job_title || "(Not Assigned)" }}
                                             </span>
                                         </div>
                                     </div>
                                 </li>
                                 <li class="mb-2">
-                                    <div class="flex items-center">
-                                        <div class="flex-1 min-w-0 ms-4 flex items-center">
-                                            <p class="text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white mr-2">
-                                                Activity Status:
-                                            </p>
-                                            <span class="flex items-center">
-                                                <span [ngClass]="{
-                                                        'bg-green-500': data.clock_status === 'Clocked In',
-                                                        'bg-red-500': data.clock_status === 'Clocked Out',
-                                                        'bg-black': data.clock_status === 'Offline',
-                                                        'bg-gray-500': data.clock_status === 'Idle'
-                                                    }" class="w-2 h-2 -mt-0.5 rounded-full mr-1"></span>
-                                                <span [ngClass]="{
-                                                        'text-red-500': data.clock_status === 'Clocked Out',
-                                                        'text-green-500': data.clock_status === 'Clocked In'
-                                                    }">
-                                                    {{ data.clock_status }}
-                                                </span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="mb-2">
-                                    <div class="flex items-center">
+                                    <div class="grid grid-flow-col gap-5 grid-cols-2 items-center">
                                         <div class="flex-1 min-w-0 ms-4">
-                                            <p class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                            <p
+                                                class="inline me-1 text-xs font-primary text-gray-900 truncate dark:text-white">
                                                 Date hired:
                                             </p>
-                                            <span class="text-sm font-normal lg:text-base font-secondary">
+                                            <br />
+                                            <span class="text-base font-medium font-secondary">
                                                 {{ data.hire_date | date : "longDate" }}
+                                            </span>
+                                        </div>
+                                        <div class="flex-1 min-w-0 ms-4">
+                                            <p class="inline me-1 font-primary text-gray-900 truncate dark:text-white">
+                                                Hours Worked:
+                                            </p>
+                                            <br />
+                                            <span class="text-base font-medium font-secondary text-gray-900">
+                                                {{ data.TotalHoursWorked || 0 }}hrs
                                             </span>
                                         </div>
                                     </div>
