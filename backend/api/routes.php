@@ -611,9 +611,9 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 // Return JSON-encoded data for adding users
                 echo json_encode($post->createWarRecord($data));
                 break;
-            case 'submitwarrecord':
+            case 'warrecordsubmission':
                 // Return JSON-encoded data for adding users
-                echo json_encode($post->submitWarRecord($data));
+                echo json_encode($post->warRecordSubmission($data));
                 break;
             case 'savewaractivities':
                 echo json_encode($post->saveWarActivities($data));

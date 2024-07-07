@@ -10,14 +10,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { FilterPipe } from '../../../pipes/filter.pipe';
-import { Subscription, concatAll, concatMap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { TimePipe } from '../../../pipes/time.pipe';
 
 
 @Component({
   selector: 'app-weekly-accomplishment-rep',
   standalone: true,
-  imports: [FilterPipe, CommonModule, FormsModule, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, NgxPaginationModule],
+  imports: [FilterPipe, CommonModule, FormsModule, TimePipe, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, NgxPaginationModule],
   templateUrl: './weekly-accomplishment-rep.component.html',
   styleUrl: './weekly-accomplishment-rep.component.css'
 })
@@ -49,7 +50,6 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadWarRecord();
     this.loadMaxWeeks();
-
   }
 
   loadWarRecord() {
@@ -67,12 +67,130 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
         this.service.getWarActivities(this.selectedRecord.id).subscribe((res: any) => {
           this.selectedRecordActivities = res.payload
           this.initialRecordActivities = JSON.parse(JSON.stringify(res.payload));
+          this.checkForUnsaved = true;
           if (this.selectedRecordActivities.length === 0) {
             this.addRow()
           }
         })
       )
     }
+  }
+  saveChanges() {
+    this.subscriptions.add(
+      this.service.checkIfWeekHasWarRecord(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+        if (res.payload.length === 0) {
+          if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description === '') {
+            Swal.fire({
+              title: `You haven't entered anything.`,
+              text: `Please fill up a row with details first.`,
+              icon: `question`
+            })
+            return
+          }
+          const newRecord = {
+            student_id: this.userId,
+            week: this.selectedTabWeek
+          }
+          this.subscriptions.add(
+            this.service.createWarRecord(newRecord).subscribe((res: any) => {
+              this.subscriptions.add(
+                this.service.getWarRecords(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+                  this.selectedRecord = res.payload[0]
+                  this.saveIteration();
+                  Swal.fire({
+                    title: 'Changes Saved Successfully!',
+                    icon: 'success',
+                    confirmButtonColor: '#233876',
+                  })
+                })
+              )
+            }))
+        } else {
+          Swal.fire({
+            title: 'Changes Saved Successfully!',
+            icon: 'success',
+            confirmButtonColor: '#233876',
+          })
+          this.saveIteration();
+        }
+      }))
+  }
+  saveIteration() {
+    this.selectedRecordActivities = this.selectedRecordActivities.map(activity => ({
+      ...activity,
+      war_id: this.selectedRecord?.id
+    }));
+    this.service.clearWarActivities(this.selectedRecord.id).subscribe(res => {
+      this.selectedRecordActivities.forEach(activity => {
+        this.service.saveWarActivities(activity).subscribe((res: any) => {
+        }
+        )
+      })
+      this.initialRecordActivities = JSON.parse(JSON.stringify(this.selectedRecordActivities));
+    })
+  }
+  submitWarRecord() {
+
+    // Validation: Check if all selectedRecordActivities are valid
+    const allValid = this.selectedRecordActivities.every(activity => {
+      return activity.description.trim() !== '' &&
+        activity.date !== '0000-00-00' &&
+        activity.startTime.trim() !== '' &&
+        activity.endTime.trim() !== '';
+    });
+
+    if (!allValid) {
+      Swal.fire({
+        title: 'Invalid Activities',
+        text: 'Please ensure all activities have a description, date, start time, and end time.',
+        icon: 'warning',
+      });
+      return;
+    }
+
+    // Check if at least one valid activity exists
+    if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description.trim() === '') {
+      Swal.fire({
+        title: `You haven't entered anything.`,
+        text: `Please fill up a row with details first.`,
+        icon: `question`,
+      });
+      return;
+    }
+    this.saveIteration();
+
+    // Confirmation dialog
+    Swal.fire({
+      title: 'Are you sure you want to submit this report?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#233876',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const recordSubmitted = {
+          isSubmitted: 1,
+          id: this.selectedRecord.id
+        };
+        this.subscriptions.add(
+          this.service.toggleWarRecordSubmission(recordSubmitted).subscribe((res: any) => {
+            this.loadWarRecord();
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              title: `Successfully submitted record`,
+              text: `This record can now be evaluated by your supervisor`,
+              icon: "success",
+              timer: 3000,
+              timerProgressBar: true,
+              showConfirmButton: false,
+              showCloseButton: true,
+            });
+          })
+        );
+      }
+    });
   }
 
   onTabChange(event: MatTabChangeEvent) {
@@ -90,6 +208,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
         text: 'You have unsaved changes. Do you want to leave without saving?',
         icon: 'warning',
         showCancelButton: true,
+        confirmButtonColor: '#233876',
         confirmButtonText: 'Yes, leave',
         cancelButtonText: 'No, stay'
       }).then((result) => {
@@ -113,13 +232,16 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
     }, 1);
   }
 
+  checkForUnsaved = true;
   performTabChange(newIndex: number, newTabWeek: number) {
     this.disableTabChangeEvent = true;
     this.selectedIndex = newIndex;
+    this.checkForUnsaved = false;
     this.selectedRecordActivities = [];
     this.selectedTabWeek = newTabWeek;
     this.loadWarRecord();
     this.addRow();
+    this.initialRecordActivities = JSON.parse(JSON.stringify(this.selectedRecordActivities));
     setTimeout(() => {
       this.disableTabChangeEvent = false;
     }, 1);
@@ -136,92 +258,32 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
     this.selectedRecordActivities.push(newActivity);
   }
 
-  saveChanges() {
-    this.subscriptions.add(
-      this.service.checkIfWeekHasWarRecord(this.userId, this.selectedTabWeek).subscribe((res: any) => {
-        if (res.payload.length === 0) {
-          if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description === '') {
-            Swal.fire({
-              title: `You haven't entered anything.`,
-              text: `Please fill up a row with details first.`,
-              icon: `question`
-            })
-            return
-          }
-          const newRecord = {
-            student_id: this.userId,
-            week: this.selectedTabWeek
-          }
-          this.subscriptions.add(
-            this.service.createWarRecord(newRecord).subscribe((res: any) => {
-              this.subscriptions.add(
-                this.service.getWarRecords(this.userId, this.selectedTabWeek).subscribe((res: any) => {
-                  this.selectedRecord = res.payload[0]
-                  this.saveIteration();
-                })
-              )
-            }))
-        } else {
-          this.saveIteration();
-        }
-      }))
-  }
 
-  saveIteration() {
-    this.selectedRecordActivities = this.selectedRecordActivities.map(activity => ({
-      ...activity,
-      war_id: this.selectedRecord?.id
-    }));
-    this.service.clearWarActivities(this.selectedRecord.id).subscribe(res => {
-      this.selectedRecordActivities.forEach(activity => {
-        this.service.saveWarActivities(activity).subscribe((res: any) => {
-        }
-        )
-      })
-      Swal.fire({
-        title: 'Changes Saved Successfully!',
-        icon: 'success'
-      })
-      this.initialRecordActivities = JSON.parse(JSON.stringify(this.selectedRecordActivities));
-    })
-  }
 
   hasUnsavedChanges(): boolean {
     return JSON.stringify(this.selectedRecordActivities) !== JSON.stringify(this.initialRecordActivities);
   }
 
-  submitWarRecord() {
-    if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description === '') {
-      Swal.fire({
-        title: `You haven't entered anything.`,
-        text: `Please fill up a row with details first.`,
-        icon: `question`
-      })
-      return
+  unsubmitWarRecord() {
+    const recordSubmitted = {
+      isSubmitted: 0,
+      id: this.selectedRecord.id
     }
-    Swal.fire({
-      title: 'Are you sure you want to submit this report?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Confirm',
-      cancelButtonText: 'Cancel'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const recordSubmitted = {
-          isSubmitted: 1,
-          id: this.selectedRecord.id
-        }
-        this.subscriptions.add(
-          this.service.submitWarRecord(recordSubmitted).subscribe((res: any) => {
-            Swal.fire({
-              title: `Successfully submitted report!`,
-              text: `This report can now be evaluated by your supervisor.`,
-              icon: `success`
-            })
-          })
-        )
-      }
-    });
+    this.subscriptions.add(
+      this.service.toggleWarRecordSubmission(recordSubmitted).subscribe((res: any) => {
+        this.loadWarRecord();
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          title: `Successfully unsubmitted record`,
+          icon: "success",
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+          showCloseButton: true,
+        });
+      })
+    )
   }
 
   loadMaxWeeks() {

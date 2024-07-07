@@ -1107,7 +1107,7 @@ class Post extends GlobalMethods
         }
     }
 
-    public function submitWarRecord($data)
+    public function warRecordSubmission($data)
     {
         $this->pdo->beginTransaction();
         try {

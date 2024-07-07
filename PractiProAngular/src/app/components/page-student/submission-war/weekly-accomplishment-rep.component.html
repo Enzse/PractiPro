@@ -25,7 +25,9 @@
     <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
       <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChange($event)">
         <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
-          <div class="pb-2.5 w-full">
+
+
+          <div *ngIf="!selectedRecord || selectedRecord?.isSubmitted === 0" class="pb-2.5 w-full">
             <div class="relative overflow-x-auto shadow-md sm:rounded-lg border border-gray-300">
               <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead
@@ -81,12 +83,36 @@
               </table>
             </div>
           </div>
+
+          <div *ngIf="selectedRecord?.isSubmitted === 1" class="pb-2.5 w-full">
+            <div class="relative overflow-x-auto shadow-md sm:rounded-lg border border-gray-300">
+              <div *ngFor="let activity of selectedRecordActivities"
+                class="px-10 py-3 gap-5 border-b font-secondary text-gray-900 grid grid-cols-5 bg-white">
+                <div class="col-span-3 max-sm:col-span-5">
+                  <p class="p-2.5 text-xl h-full break-words text-gray-900 rounded-lg border border-gray-300">
+                    {{activity.description}}
+                  </p>
+                </div>
+                <div class="col-span-2 max-sm:col-span-5 my-auto text-center">
+                  <p class="text-base"><b>{{activity.date | date : "longDate"}}</b></p>
+                  <p class="text-lg">Time of Work: <b>{{activity.startTime | time: activity.startTime}}</b> -
+                    <b>{{activity.endTime | time: activity.endTime}}</b>
+                  </p>
+                  <p class="font-primary text-blue-900 font-bold text-4xl ">{{activity.TotalHours ?
+                    activity.TotalHours + ' Total Hours' : 0}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </mat-tab>
       </mat-tab-group>
+
+
       <div class="flex justify-between text-nowrap max-sm:flex-col">
         <div class="flex justify-center max-sm:text-xs pt-3">
           <button type="button" (click)="addNewTab()"
-            class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 font-medium rounded-md  mr-5">
+            class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 font-medium rounded-md max-sm:mb-1">
             <svg class="w-5 h-5 -mt-1 text-gray-800 dark:text-white inline" aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -96,7 +122,11 @@
             Add New Week
           </button>
         </div>
-        <div class="flex justify-center gap-1 flex-wrap items-center max-sm:text-xs pt-3">
+
+
+
+        <div *ngIf="!selectedRecord || selectedRecord?.isSubmitted === 0"
+          class="flex justify-center gap-1 flex-wrap items-center max-sm:text-xs pt-3">
           <button type="button" (click)="addRow()"
             class="text-white p-2 px-3 bg-orange-500 hover:bg-orange-600 font-medium rounded-md ">
             <svg class="w-5 h-5 -mt-0.5 text-gray-800 dark:text-white inline" aria-hidden="true"
@@ -108,7 +138,11 @@
             Add New Row
           </button>
           <button type="button" (click)="saveChanges()"
-            class="text-white p-2 px-3 bg-blue-500 hover:bg-blue-600 font-medium rounded-md ">
+            class="text-white relative p-2 px-3 bg-blue-500 hover:bg-blue-600 font-medium rounded-md ">
+            <div *ngIf="hasUnsavedChanges() && checkForUnsaved"
+              class="absolute -mt-4 top-0 right-0 font-secondary text-blue-500 text-xs">
+              You have unsaved changes!
+            </div>
             <svg class="w-5 h-5 -mt-0.5 text-white dark:text-white inline" aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
@@ -116,8 +150,6 @@
               <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
                 d="M8 4h8v4H8V4Zm7 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
             </svg>
-
-
             Save Changes
           </button>
           <button (click)="submitWarRecord()" type="button"
@@ -132,12 +164,57 @@
             Submit Report
           </button>
         </div>
+
+        <div class="flex justify-center gap-x-5 gap-y-1 flex-wrap items-center max-sm:text-xs pt-3"
+          *ngIf="selectedRecord?.isSubmitted === 1">
+
+          <div class="font-primary flex justify-center text-center text-sm flex-col">
+            <div>
+              <p class="rounded-lg" [ngClass]="{
+                'text-red-500': selectedRecord.supervisor_approval === 'Unapproved',
+                'text-green-500': selectedRecord.supervisor_approval === 'Approved'
+              }"><span class='font-semibold'>Supervisor Approval: </span>{{selectedRecord.supervisor_approval}}</p>
+            </div>
+            <div>
+              <p class="rounded-lg" [ngClass]="{
+                'text-red-500': selectedRecord.advisor_approval === 'Unapproved',
+                'text-green-500': selectedRecord.advisor_approval === 'Approved'
+              }"><span class='font-semibold'>Advisor Approval: </span>{{selectedRecord.advisor_approval}}</p>
+            </div>
+
+          </div>
+
+
+          <button type="button" (click)="unsubmitWarRecord()"
+            class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md max-sm:mb-1">
+            <svg class="w-5 h-5 -mt-0.5 text-white dark:text-white inline" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+            </svg>
+
+            Edit Report
+          </button>
+        </div>
       </div>
     </div>
 
 
+  </div>
 
-    <!-- <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
+  <ng-template #noDataMessage>
+    <div class="flex justify-center">
+      <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
+    </div>
+    <div class="text-center">
+      <h1 class="opacity-40 text-center text-lg font-primary">
+        You have not submitted any reports yet.
+      </h1>
+    </div>
+  </ng-template>
+</div>
+
+<!-- <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
       <mat-tab-group (selectedTabChange)="onTabChange($event)">
         <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
           <form [ngClass]="{'hidden':pdfPreview}" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
@@ -186,7 +263,7 @@
       </div>
     </div> -->
 
-    <!-- <div class="mt-20">
+<!-- <div class="mt-20">
       <div class="border-b border-gray-300"></div>
       <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4 font-primary">
         Your Submitted Reports:
@@ -195,7 +272,7 @@
       <br />
     </div> -->
 
-    <!-- <div class="flex items-center mb-3">
+<!-- <div class="flex items-center mb-3">
       <div class="form-outline flex-grow">
         <input
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -261,7 +338,7 @@
       </div>
     </div> -->
 
-    <!-- <div *ngIf="datalist.length > 0; else noDataMessage"
+<!-- <div *ngIf="datalist.length > 0; else noDataMessage"
       class="relative overflow-x-auto shadow-md border border-gray-300 sm:rounded-lg">
       <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -353,16 +430,3 @@
       </div>
 
     </div> -->
-  </div>
-
-  <ng-template #noDataMessage>
-    <div class="flex justify-center">
-      <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
-    </div>
-    <div class="text-center">
-      <h1 class="opacity-40 text-center text-lg font-primary">
-        You have not submitted any reports yet.
-      </h1>
-    </div>
-  </ng-template>
-</div>

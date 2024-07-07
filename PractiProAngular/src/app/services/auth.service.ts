@@ -409,8 +409,8 @@ export class AuthService {
   createWarRecord(inputdata: any) {
     return this.http.post(`${this.apiurl}/createwarrecord`, inputdata);
   }
-  submitWarRecord(inputdata: any) {
-    return this.http.post(`${this.apiurl}/submitwarrecord`, inputdata);
+  toggleWarRecordSubmission(inputdata: any) {
+    return this.http.post(`${this.apiurl}/warrecordsubmission`, inputdata);
   }
   getWarRecords(studentId: number, week: any) {
     if (!week) {
