@@ -590,4 +590,11 @@ class Get extends GlobalMethods
         return $this->get_records('student_war_records', $condition);
     }
 
+    public function getFinalReport($user_id)
+    {
+        $condition = "user_id = $user_id";
+
+        return $this->get_records('student_final_reports', $condition);
+    }
+
 }

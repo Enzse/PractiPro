@@ -1,4 +1,3 @@
-<!-- <app-navbar></app-navbar> -->
 <div class="p-2 sm:ml-60">
   <div class="pt-5 xl:p-10">
     <div>
@@ -8,73 +7,684 @@
           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             d="M10 3v4a1 1 0 0 1-1 1H5m4 6 2 2 4-4m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
         </svg>
-        Final Reports
+        Final Report
       </h1>
       <div class="border-b border-gray-300"></div>
       <br />
     </div>
 
     <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
-      Upload a clear document of your <b>Final Report (Exit Poll)</b> here. All
-      documents should be in <b>Portable Document Format(.pdf).</b>
+      This is where you submit your <b>Final Report</b>. This will be the final step towards finishing your
+      practicum process.
     </p>
     <br />
 
-    <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
-      <mat-tab-group #tabGroup>
-        <mat-tab label="Final Report">
-          <form [ngClass]="{'hidden':pdfPreview}" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="FinalReport" name="FinalReport" (change)="onFileChange($event)" />
-          </form>
-          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-          class="object-cover object-center w-full h-96 rounded-md" />
-        </mat-tab>
-      </mat-tab-group>
-      <div class="flex justify-between items-center pt-3">
-        <button type="button" (click)="viewFile()"
-          class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="inline -mt-0.5 lucide lucide-file-search">
-            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-            <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
-            <path d="m9 18-1.5-1.5" />
-            <circle cx="5" cy="14" r="3" />
-          </svg>
-          View Worksheet <b>(Answerable)</b>
-        </button>
-        <button type="button" (click)="submitFiles()"
-          class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-            <path d="m18 9-6-6-6 6" />
-            <path d="M12 3v14" />
-            <path d="M5 21h14" />
-          </svg>
-          Submit File
-        </button>
-
+    <div *ngIf="!this.existingReport"
+      class="bg-slate-50 rounded-lg w-full p-4 font-secondary text-center shadow-md border border-gray-200">
+      <div>
+        <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-lg mb-3">
+          Please answer the following questions:
+        </h1>
+        <div class="border-b border-gray-300"></div>
+        <br />
       </div>
+      <form [formGroup]="exitPollForm">
+
+        <!-- Question 1 -->
+
+        <div>
+          <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+            1. Relate your OJT Experience with the following OJT Standards/Criteria
+            by checking the Yes or No boxes below:
+          </p>
+
+          <div class="relative shadow-md overflow-auto sm:rounded-lg border border-gray-300">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-center">
+                    CRITERIA
+                  </th>
+                  <th scope="col" class="px-6 py-3">Yes</th>
+                  <th scope="col" class="px-6 py-3">No</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="bg-white w-full border-b">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                    1. My scope of work is directly related to the academic program
+                    I am pursuing.
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="yes1" name="p1q1" value="yes" formControlName="p1q1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="no1" name="p1q1" value="no" formControlName="p1q1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+                <tr class="bg-white w-full border-b">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                    2. I was given an orientation on the company organization and
+                    operations
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="yes2" name="p1q2" value="yes" formControlName="p1q2"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="no2" name="p1q2" value="no" formControlName="p1q2"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+                <tr class="bg-white w-full border-b">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                    3. I was given a job description on my specific duties and
+                    reporting relationships
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="yes3" name="p1q3" value="yes" formControlName="p1q3"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="no3" name="p1q3" value="no" formControlName="p1q3"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+                <tr class="bg-white w-full border-b">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                    4. My office/work hours were clear and convenient for me.
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="yes4" name="p1q4" value="yes" formControlName="p1q4"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="no4" name="p1q4" value="no" formControlName="p1q4"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+                <tr class="bg-white w-full border-b">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                    5. I felt safe and secure in my work location and environment
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="yes5" name="p1q5" value="yes" formControlName="p1q5"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="no5" name="p1q5" value="no" formControlName="p1q5"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+                <tr class="bg-white w-full border-b">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                    6. I had no difficulty going to and from work.
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="yes6" name="p1q6" value="yes" formControlName="p1q6"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="no6" name="p1q6" value="no" formControlName="p1q6"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+                <tr class="bg-white w-full border-b">
+                  <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                    7. The company provided me with allowance, stipend, or subsidy.<br><br>
+                    Indicate if
+                    <input type="radio" id="meal" name="p1q7x1" value="meal" formControlName="p1q7x1"
+                      class="border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 ml-1" />
+                    meal or
+                    <input type="radio" id="cash" name="p1q7x1" value="cash" formControlName="p1q7x1"
+                      class="border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500 ml-1" />
+                    cash. If cash, how much?
+                    <input type="text" id="cashAmount" name="p1q7x2" formControlName="p1q7x2"
+                      class="bg-transparent border-0 border-b border-gray-800 outline-none outline w-24 h-5" />
+
+                    /day.
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="yes7" name="p1q7" value="yes" formControlName="p1q7"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" id="no7" name="p1q7" value="no" formControlName="p1q7"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div>
+          <p class="mb-2 mt-5 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+            2. List down your training objectives and indicate the extent you have
+            achieved them.
+          </p>
+
+          <div class="relative overflow-auto shadow-md sm:rounded-lg border border-gray-300">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                  <th scope="col" class="px-6 py-3 w-[70%] text-center">
+                    Training Objectives
+                  </th>
+                  <th scope="col" class="px-6 py-3">0%</th>
+                  <th scope="col" class="px-6 py-3">25%</th>
+                  <th scope="col" class="px-6 py-3">50%</th>
+                  <th scope="col" class="px-6 py-3">75%</th>
+                  <th scope="col" class="px-6 py-3">100%</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="bg-white w-full border-b">
+                  <th scope="row"
+                    class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                    <span class="me-3">1.</span>
+                    <input type="text" name="p2q1" formControlName="p2q1"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Enter objective" required />
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="0" name="p2q1x1" formControlName="p2q1x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="25" name="p2q1x1" formControlName="p2q1x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="50" name="p2q1x1" formControlName="p2q1x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="75" name="p2q1x1" formControlName="p2q1x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="100" name="p2q1x1" formControlName="p2q1x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+
+                <tr class="bg-white w-full border-b">
+                  <th scope="row"
+                    class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                    <span class="me-3">2.</span>
+                    <input type="text" name="p2q2" formControlName="p2q2"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Enter objective" required />
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="0" name="p2q2x1" formControlName="p2q2x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="25" name="p2q2x1" formControlName="p2q2x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="50" name="p2q2x1" formControlName="p2q2x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="75" name="p2q2x1" formControlName="p2q2x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="100" name="p2q2x1" formControlName="p2q2x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+
+                <tr class="bg-white w-full border-b">
+                  <th scope="row"
+                    class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                    <span class="me-3">3.</span>
+                    <input type="text" name="p2q3" formControlName="p2q3"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Enter objective" required />
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="0" name="p2q3x1" formControlName="p2q3x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="25" name="p2q3x1" formControlName="p2q3x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="50" name="p2q3x1" formControlName="p2q3x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="75" name="p2q3x1" formControlName="p2q3x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="100" name="p2q3x1" formControlName="p2q3x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+
+                <tr class="bg-white w-full border-b">
+                  <th scope="row"
+                    class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                    <span class="me-3">4.</span>
+                    <input type="text" name="p2q4" formControlName="p2q4"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Enter objective" required />
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="0" name="p2q4x1" formControlName="p2q4x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="25" name="p2q4x1" formControlName="p2q4x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="50" name="p2q4x1" formControlName="p2q4x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="75" name="p2q4x1" formControlName="p2q4x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="100" name="p2q4x1" formControlName="p2q4x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+
+                <tr class="bg-white w-full border-b">
+                  <th scope="row"
+                    class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                    <span class="me-3">5.</span>
+                    <input type="text" name="p2q5" formControlName="p2q5"
+                      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Enter objective" required />
+                  </th>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="0" name="p2q5x1" formControlName="p2q5x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="25" name="p2q5x1" formControlName="p2q5x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="50" name="p2q5x1" formControlName="p2q5x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="75" name="p2q5x1" formControlName="p2q5x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                  <td class="px-6 py-4">
+                    <input type="radio" value="100" name="p2q5x1" formControlName="p2q5x1"
+                      class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div>
+          <p class="mb-2 mt-5 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+            3. What is your overall rating of your training experience?
+          </p>
+
+          <div
+            class="flex overflow-auto justify-evenly gap-10 mb-4 p-5 rounded-lg border border-gray-300 bg-white shadow-md">
+            <div class="flex items-center">
+              <input id="excellent" type="radio" value="Excellent" name="p3q1" formControlName="p3q1"
+                class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+              <label for="excellent" class="block ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Excellent
+              </label>
+            </div>
+
+            <div class="flex items-center">
+              <input id="very-good" type="radio" value="Very Good" name="p3q1" formControlName="p3q1"
+                class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+              <label for="very-good" class="block ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Very Good
+              </label>
+            </div>
+
+            <div class="flex items-center">
+              <input id="good" type="radio" value="Good" name="p3q1" formControlName="p3q1"
+                class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+              <label for="good" class="block ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Good
+              </label>
+            </div>
+
+            <div class="flex items-center">
+              <input id="fair" type="radio" value="Fair" name="p3q1" formControlName="p3q1"
+                class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+              <label for="fair" class="block ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Fair
+              </label>
+            </div>
+
+            <div class="flex items-center">
+              <input id="poor" type="radio" value="Poor" name="p3q1" formControlName="p3q1"
+                class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+              <label for="poor" class="block ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                Poor
+              </label>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- question 4 -->
+        <div>
+          <p class="mb-2 mt-5 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+            4. In your own opinion, what can be done to improve the OJT program so
+            as to improve further the training of succeeding student trainees?
+          </p>
+
+          <div>
+            <textarea id="message" rows="4" name="p4q1" formControlName="p4q1"
+              class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Write here ... "></textarea>
+          </div>
+        </div>
+
+        <div class="w-full mt-7 flex justify-center">
+          <button type="submit" (click)="submitReport()"
+            class=" text-white py-2 px-10 text-lg bg-blue-900 hover:bg-blue-800 font-medium rounded-md">
+            Submit Final Report
+          </button>
+        </div>
+      </form>
+
+      <footer class="mb-6 mt-7 text-center text-xs w-full font-primary text-gray-800 dark:text-gray-400">
+        THIS WORKSHEET TEMPLATE IS USED FROM THE PRACTICUM MANUAL FOR ITE
+        STUDENTS, © 2023, AUTHORED BY ERLINDA S. CASELA-ABARINTOS, BERNANDINO P.
+        MALANG, AND ARNOLD P. VERGARA. ALL RIGHTS RESERVED. THIS MATERIAL IS BEING
+        USED FOR ACADEMIC PURPOSES AS PART OF OUR COURSEWORK AT GORDON COLLEGE
+        OLONGAPO.
+      </footer>
     </div>
 
-    <div class="mt-20">
+
+    <div *ngIf="this.existingReport">
+
+      <div class="bg-slate-50 rounded-lg w-full p-5 mb-10 shadow-md font-secondary text-center border border-gray-200">
+        <div>
+          <h1 class="text-blue-900 font-bold font-primary text-center text-2xl mb-5">
+            You have already submitted a report.
+          </h1>
+          <div class="border-b border-gray-300"></div>
+          <div class="flex justify-evenly pt-5 px-5">
+            <div class="text-xl font-primary">
+              <span class="font-semibold">Advisor Approval: </span>
+              <span [ngClass]="{
+                'text-green-500': this.existingReport.advisor_approval === 'Approved',
+                'text-red-500': this.existingReport.advisor_approval === 'Unapproved',
+                'text-gray-500': this.existingReport.advisor_approval === 'Pending',
+                }">
+                {{this.existingReport.advisor_approval}}</span>
+            </div>
+
+            <div class="text-xl font-primary">
+              <span class="font-semibold">Date Submitted: </span>
+              {{this.existingReport.created_at |date : "medium"}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-slate-50 rounded-lg w-full capitalize p-4 font-secondary text-center shadow-md border
+        border-gray-200">
+        <div>
+          <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-lg mb-3">
+            Your Submitted Report:
+          </h1>
+          <div class="border-b border-gray-300"></div>
+          <br />
+        </div>
+        <form [formGroup]="exitPollForm">
+
+          <!-- Question 1 -->
+          <div>
+            <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+              1. Relate your OJT Experience with the following OJT Standards/Criteria:
+            </p>
+
+            <div class="relative shadow-md overflow-auto sm:rounded-lg border border-gray-300">
+              <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                <thead
+                  class="text-xs text-gray-700 uppercase text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" class="px-6 py-3 text-center">CRITERIA</th>
+                    <th scope="col" class="px-6 py-3">Answer</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                      1. My scope of work is directly related to the academic program I am pursuing.
+                    </th>
+                    <td [ngClass]="{'text-green-500':existingReport.p1q1 === 'yes',
+                'text-red-500':existingReport.p1q1 === 'no'}" class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p1q1 }}</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                      2. I was given an orientation on the company organization and operations.
+                    </th>
+                    <td [ngClass]="{'text-green-500':existingReport.p1q2 === 'yes',
+                  'text-red-500':existingReport.p1q2 === 'no'}" class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p1q2 }}</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                      3. I was given a job description on my specific duties and reporting relationships.
+                    </th>
+                    <td [ngClass]="{'text-green-500':existingReport.p1q3 === 'yes',
+                  'text-red-500':existingReport.p1q3 === 'no'}" class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p1q3 }}</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                      4. My office/work hours were clear and convenient for me.
+                    </th>
+                    <td [ngClass]="{'text-green-500':existingReport.p1q4 === 'yes',
+                  'text-red-500':existingReport.p1q4 === 'no'}" class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p1q4 }}</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                      5. I felt safe and secure in my work location and environment.
+                    </th>
+                    <td [ngClass]="{'text-green-500':existingReport.p1q5 === 'yes',
+                  'text-red-500':existingReport.p1q5 === 'no'}" class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p1q5 }}</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                      6. I had no difficulty going to and from work.
+                    </th>
+                    <td [ngClass]="{'text-green-500':existingReport.p1q6 === 'yes',
+                  'text-red-500':existingReport.p1q6 === 'no'}" class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p1q6 }}</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                      7. The company provided me with allowance, stipend, or subsidy.<br>
+                      <span class="ms-5">Indicate if meal or cash. If cash, how much?</span>
+                    </th>
+                    <td class="px-6 py-4 text-center font-primary text-base">
+                      <span [ngClass]="{'text-green-500':existingReport.p1q7 === 'yes',
+                    'text-red-500':existingReport.p1q7 === 'no'}">{{ existingReport.p1q7 }}</span>
+                      <span> - {{ existingReport.p1q7x1 }}</span>
+                      <span> - {{ existingReport.p1q7x2 }}</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div>
+            <p class="mb-2 mt-5 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+              2. List down your training objectives and indicate the extent you have achieved them.
+            </p>
+
+            <div class="relative overflow-auto shadow-md sm:rounded-lg border border-gray-300">
+              <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                <thead
+                  class="text-xs text-center text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <tr>
+                    <th scope="col" class="px-6 py-3 w-[70%] text-center">Training Objectives</th>
+                    <th scope="col" class="px-6 py-3">Achievement</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                      <span class="me-3">1.</span>
+                      <span>{{ existingReport.p2q1 }}</span>
+                    </th>
+                    <td class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p2q1x1 }}%</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                      <span class="me-3">2.</span>
+                      <span>{{ existingReport.p2q2 }}</span>
+                    </th>
+                    <td class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p2q2x1 }}%</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                      <span class="me-3">3.</span>
+                      <span>{{ existingReport.p2q3 }}</span>
+                    </th>
+                    <td class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p2q3x1 }}%</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                      <span class="me-3">4.</span>
+                      <span>{{ existingReport.p2q4 }}</span>
+                    </th>
+                    <td class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p2q4x1 }}%</span>
+                    </td>
+                  </tr>
+                  <tr class="bg-white w-full border-b">
+                    <th scope="row"
+                      class="px-6 w-full py-4 font-medium flex items-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                      <span class="me-3">5.</span>
+                      <span>{{ existingReport.p2q5 }}</span>
+                    </th>
+                    <td class="px-6 py-4 text-center font-primary text-base">
+                      <span>{{ existingReport.p2q5x1 }}%</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="mt-5 bg-white">
+            <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+              3. Please rate your overall experience:
+            </p>
+            <div
+              class="relative overflow-auto shadow-md sm:rounded-lg border text-center font-primary text-base border-gray-300 p-4">
+              <span [ngClass]="{
+              'text-green-500': existingReport.p3q1 === 'Excellent',
+              'text-lime-500': existingReport.p3q1 === 'Very Good',
+              'text-yellow-500': existingReport.p3q1 === 'Good',
+              'text-orange-500': existingReport.p3q1 === 'Fair',
+              'text-red-500': existingReport.p3q1 === 'Poor',
+          }">{{ existingReport.p3q1 }}</span>
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div class="mt-5 bg-white normal-case">
+            <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+              4. Please provide any additional comments or suggestions:
+            </p>
+            <div class="relative overflow-auto shadow-md sm:rounded-lg border text-base text-left border-gray-300 p-6">
+              <span>{{ existingReport.p4q1 }}</span>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noDataMessage>
+    <div class="flex justify-center">
+      <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
+    </div>
+    <div class="text-center">
+      <h1 class="opacity-40 text-center text-lg font-primary">
+        You have not submitted any reports yet.
+      </h1>
+    </div>
+  </ng-template>
+</div>
+
+
+
+<!--<div class="mt-20">
       <div class="border-b border-gray-300"></div>
       <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4 font-primary">
         Your Submitted Final Reports:
       </h1>
-
+  
       <br />
     </div>
-    <div *ngIf="datalist.length > 0; else noDataMessage"
+     <div *ngIf="datalist.length > 0; else noDataMessage"
       class="relative overflow-x-auto shadow-md border border-gray-300 sm:rounded-lg">
-      <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
+      <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-800 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
             <th scope="col" class="px-6 py-3 font-secondary">File name</th>
             <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
             <th scope="col" class="px-6 py-3 font-secondary">Approval
-              <svg class="w-5 h-5 inline -mt-0.5 text-gray-500 dark:text-white" aria-hidden="true"
+              <svg class="w-5 h-5 inline -mt-0.5 text-gray-800 dark:text-white" aria-hidden="true"
                 matTooltip="This submission is to be approved by your ADVISOR." xmlns="http://www.w3.org/2000/svg"
                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -141,30 +751,16 @@
                         clip-rule="evenodd" />
                     </svg>
                   </button>
-
+  
                 </li>
               </mat-menu>
             </td>
           </tr>
         </tbody>
       </table>
-
+  
       <div class="w-full mt-3 flex justify-center">
-        <!-- pagination control -->
         <pagination-controls [responsive]="true" class="my-pagination" (pageChange)="p = $event"></pagination-controls>
       </div>
-
-    </div>
-  </div>
-
-  <ng-template #noDataMessage>
-    <div class="flex justify-center">
-      <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
-    </div>
-    <div class="text-center">
-      <h1 class="opacity-40 text-center text-lg font-primary">
-        You have not submitted any reports yet.
-      </h1>
-    </div>
-  </ng-template>
-</div>
+  
+    </div> -->

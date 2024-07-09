@@ -1127,6 +1127,49 @@ class Post extends GlobalMethods
         }
     }
 
+    public function createFinalReport($data)
+    {
+        $sql = "INSERT INTO student_final_reports (user_id, p1q1, p1q2, p1q3, p1q4, p1q5, p1q6, p1q7, p1q7x1, p1q7x2, p2q1, p2q1x1, p2q2, p2q2x1, p2q3, p2q3x1, p2q4, p2q4x1, p2q5, p2q5x1, p3q1, p4q1)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->user_id,
+                    $data->p1q1,
+                    $data->p1q2,
+                    $data->p1q3,
+                    $data->p1q4,
+                    $data->p1q5,
+                    $data->p1q6,
+                    $data->p1q7,
+                    $data->p1q7x1,
+                    $data->p1q7x2,
+                    $data->p2q1,
+                    $data->p2q1x1,
+                    $data->p2q2,
+                    $data->p2q2x1,
+                    $data->p2q3,
+                    $data->p2q3x1,
+                    $data->p2q4,
+                    $data->p2q4x1,
+                    $data->p2q5,
+                    $data->p2q5x1,
+                    $data->p3q1,
+                    $data->p4q1
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully created record", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
 }
 
 

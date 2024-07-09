@@ -87,7 +87,7 @@ export const routes: Routes = [
             { path: 'student-documentation', component: DocumentationComponent, title: 'Documentation', canActivate: [studentrequirementsGuard] },
             { path: 'student-dtr', component: DtrComponent, title: 'Daily Time Records', canActivate: [studentrequirementsGuard] },
             { path: 'student-weekly-report', component: WeeklyAccomplishmentRepComponent, title: 'Weekly Accomplishment Report', canActivate: [studentrequirementsGuard] },
-            { path: 'student-exit-poll', component: ExitPollComponent, title: 'Final', canActivate: [studentrequirementsGuard, studenthoursworkedGuard] },
+            { path: 'student-exit-poll', component: ExitPollComponent, title: 'Final Report', canActivate: [studentrequirementsGuard, studenthoursworkedGuard] },
             { path: 'student-seminars', component: SubmissionSeminarsComponent, title: 'Seminars Attended', canActivate: [studentrequirementsGuard] },
             { path: 'feedback', component: FeedbackComponent, title: 'Feedback', },
         ]

@@ -435,4 +435,12 @@ export class AuthService {
   saveWarActivities(inputdata: any) {
     return this.http.post(`${this.apiurl}/savewaractivities`, inputdata);
   }
+
+
+  createFinalReport(inputdata: any) {
+    return this.http.post(`${this.apiurl}/createfinalreport`, inputdata);
+  }
+  getFinalReport(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/getfinalreport/${studentId}`);
+  }
 }

@@ -4,167 +4,113 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import saveAs from 'file-saver';
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
-import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
-import { AnswerFinalreportComponent } from '../../popups/popups-student/answer-finalreport/answer-finalreport.component';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 @Component({
   selector: 'app-exit-poll',
   standalone: true,
-  imports: [NavbarComponent, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
+  imports: [NavbarComponent, MatTabsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
   templateUrl: './exit-poll.component.html',
   styleUrl: './exit-poll.component.css'
 })
 export class ExitPollComponent implements OnInit, OnDestroy {
   userId: any;
-  datalist: any[] = [];
+  existingReport: any;
   p: number = 1;
-  file:any;
-  pdfPreview?: SafeResourceUrl;
   private subscriptions = new Subscription();
+  exitPollForm: any;
 
-  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer:DomSanitizer) {
+  constructor(private service: AuthService, private builder: FormBuilder, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();
+    this.exitPollForm = this.builder.group({
+      user_id: this.userId,
+      p1q1: ['', Validators.required],
+      p1q2: ['', Validators.required],
+      p1q3: ['', Validators.required],
+      p1q4: ['', Validators.required],
+      p1q5: ['', Validators.required],
+      p1q6: ['', Validators.required],
+      p1q7: ['', Validators.required],
+      p1q7x1: [''],
+      p1q7x2: [''],
+
+      p2q1: ['', Validators.required],
+      p2q1x1: ['', Validators.required],
+      p2q2: ['', Validators.required],
+      p2q2x1: ['', Validators.required],
+      p2q3: ['', Validators.required],
+      p2q3x1: ['', Validators.required],
+      p2q4: ['', Validators.required],
+      p2q4x1: ['', Validators.required],
+      p2q5: ['', Validators.required],
+      p2q5x1: ['', Validators.required],
+
+      p3q1: ['', Validators.required],
+
+      p4q1: ['', Validators.required],
+    })
   }
 
   ngOnInit(): void {
-    this.loadData();
+    this.getReport();
   }
+
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  loadData() {
+  getReport() {
     this.subscriptions.add(
-    this.service.getSubmissionsByStudent('finalreports', this.userId).subscribe(res => {
-      if (res) {
-        this.datalist = res.payload.sort((a: any, b: any) => {
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        });
-      }
-    }));
+      this.service.getFinalReport(this.userId).subscribe((res: any) => {
+        this.existingReport = res.payload[0];
+        console.log(this.existingReport);
+      })
+    )
   }
 
-  onFileChange(event: any) {
-    const files = event.target.files as FileList;
-    if (files.length > 0) {
-      this.file = files[0];
-      this.previewPDF(); 
+  submitReport() {
+    if (!this.exitPollForm.valid) {
+      Swal.fire({
+        title: "It seems you might've missed some questions.",
+        text: "Please answer all the questions first before submitting the report.",
+        confirmButtonColor: '#233876',
+        icon: 'warning'
+      })
+      return;
     }
-  }
-
-  previewPDF() {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const fileURL = e.target?.result as string;
-      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-    };
-    reader.readAsDataURL(this.file);
-  }
-
-
-  submitFiles() {
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-
-    fileInputs.forEach((fileInput: any) => {
-      const file = fileInput.files[0];
-      console.log(file);
-      if (file) {
-        this.subscriptions.add(
-        this.service.uploadSubmission('finalreports', this.userId, file).subscribe(
-          response => {
-            console.log('File uploaded successfully:', response);
-            Swal.fire({
-              title: "Uploaded Successfully!",
-              text: "Please wait for your coordinator's approval.",
-              icon: "success"
-            });
-            this.loadData();
-            this.pdfPreview = undefined;
-            fileInput.value = '';
-          },
-          error => {
-            console.error('Error uploading file:', error);
-          }
-        ));
-      }
-      else if (file == null) {
-        Swal.fire({
-          title: "No File to Upload",
-          text: "Please select a file to upload first.",
-          icon: "error"
-        });
-      }
-    });
-  }
-
-  viewTemplate() {
-    const pdfPath = '../../assets/pdfTemplates/ExitPoll.pdf';
-    window.open(pdfPath, '_blank');
-  }
-
-  viewFile() {
-    const popup = this.dialog.open(AnswerFinalreportComponent, {
-      enterAnimationDuration: "500ms",
-      exitAnimationDuration: "500ms",
-      width: "90%",
-      data: {
-      }
-    })
-  }
-
-
-
-  downloadFile(submissionId: number, fileName: string) {
-    this.subscriptions.add(
-    this.service.getSubmissionFile('finalreports', submissionId).subscribe(
-      (data: any) => {
-        saveAs(data, fileName);
-      },
-      (error: any) => {
-        console.error('Error downloading submission:', error);
-      }
-    ));
-  }
-
-  deleteSubmission(submissionId: number) {
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
+      title: 'Are you sure you want to submit this report?',
+      text: "You will not be able to edit the report once you have submitted it. Please make sure you've answered it carefully.",
+      icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#233876',
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-        this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
-          Swal.fire({
-            title: "Your submission has been deleted",
-            icon: "success"
-          });
-          this.loadData();
-        }, error => {
+          this.service.createFinalReport(this.exitPollForm.value).subscribe((res: any) => {
             Swal.fire({
-              title: "Delete failed",
-              text: "You may not have permission to delete this file.",
-              icon: "error"
+              title: `Successfully submitted record`,
+              text: `Please wait for your advisor's feedback.`,
+              icon: "success",
+              timer: 3000,
+              timerProgressBar: true,
+              confirmButtonColor: '#233876',
             });
-        }));
+          })
+        );
       }
     });
   }
-
 
   viewComments(submissionId: number, fileName: string) {
     const popup = this.dialog.open(CommentspopupComponent, {
@@ -177,10 +123,10 @@ export class ExitPollComponent implements OnInit, OnDestroy {
         table: 'comments_finalreports'
       }
     })
-    this.subscriptions.add(
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    }));
+    // this.subscriptions.add(
+    //   popup.afterClosed().subscribe(res => {
+    //     this.loadData()
+    //   }));
   }
 
 }
