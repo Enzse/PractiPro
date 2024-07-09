@@ -4,8 +4,6 @@ import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { saveAs } from 'file-saver';
-import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { Subscription } from 'rxjs';
@@ -25,10 +23,10 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
   constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<FinalreportpopupComponent>, private dialog2: MatDialog) { }
 
-  studentSubmissions: any[] = [];
+  submittedReport: any;
   isLoading: boolean = true;
   private subscriptions = new Subscription();
-  p: number = 1; /* starting no. of the list */
+  p: number = 1;
 
 
   ngOnInit(): void {
@@ -41,24 +39,17 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getSubmissionsByStudent('finalreports', this.data.usercode).subscribe(
-        (res: any) => {
-          this.studentSubmissions = res.payload.sort((a: any, b: any) => {
-            return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-          });
-          this.isLoading = false;
-          console.log(this.studentSubmissions);
-        },
-        (error: any) => {
-          console.error('Error fetching student submissions:', error);
-        }
-      ));
+      this.service.getFinalReport(this.data.student.id).subscribe((res: any) => {
+        this.submittedReport = res.payload[0];
+        this.isLoading = false;
+        console.log(this.submittedReport);
+      }));
   }
 
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-      this.service.updateAdvisorApproval('finalreports', record.id, updateData).subscribe(
+      this.service.updateAdvisorApproval('student_final_reports', record.id, updateData).subscribe(
         res => {
           this.changeDetection.notifyChange(true);
           Swal.fire({
@@ -83,37 +74,6 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
             timerProgressBar: true,
             showConfirmButton: false,
           });
-        }
-      ));
-  }
-
-  viewFile(submissionId: number) {
-    this.subscriptions.add(
-      this.service.getSubmissionFile('finalreports', submissionId).subscribe(
-        (data: any) => {
-          const popup = this.dialog2.open(PdfviewerComponent, {
-            enterAnimationDuration: "0ms",
-            exitAnimationDuration: "500ms",
-            width: "90%",
-            data: {
-              selectedPDF: data
-            }
-          })
-        },
-        (error: any) => {
-          console.error('Error viewing submission:', error);
-        }
-      ));
-  }
-
-  downloadFile(submissionId: number, submissionName: string) {
-    this.subscriptions.add(
-      this.service.getSubmissionFile('finalreports', submissionId).subscribe(
-        (data: any) => {
-          saveAs(data, submissionName);
-        },
-        (error: any) => {
-          console.error('Error downloading submission:', error);
         }
       ));
   }

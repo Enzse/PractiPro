@@ -116,13 +116,13 @@ export class CoordDocumentationComponent implements OnInit, OnDestroy {
       }
     })
   }
-  viewFinalReports(code: any) {
+  viewFinalReports(student: any) {
     const popup = this.dialog.open(FinalreportpopupComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "350ms",
       width: "80%",
       data: {
-        usercode: code
+        student: student
       }
     })
   }
