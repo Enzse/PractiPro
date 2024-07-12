@@ -1,121 +1,133 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
-import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-spv-evaluationpopup',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './spv-evaluationpopup.component.html',
   styleUrl: './spv-evaluationpopup.component.css'
 })
-export class SpvEvaluationpopupComponent {
+export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
   userId: any;
   datalist: any[] = [];
-  file:any;
-  pdfPreview?: SafeResourceUrl;
+  existingEvaluation: any;
+  evaluationForm: any;
+  private subscriptions = new Subscription();
+
   constructor(
+    private builder: FormBuilder,
     private service: AuthService,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogref: MatDialogRef<SpvEvaluationpopupComponent>,
-    private sanitizer: DomSanitizer) {
+    private dialogref: MatDialogRef<SpvEvaluationpopupComponent>) {
     this.userId = this.service.getCurrentUserId();
-  }
 
-  ngOnInit(): void {
-    this.loadData();
-  }
+    this.evaluationForm = this.builder.group({
+      supervisor_id: this.userId,
+      student_id: this.data.student.id,
+      p1q1: ['', Validators.required],
+      p1q2: ['', Validators.required],
+      p1q3: ['', Validators.required],
+      p1q4: ['', Validators.required],
+      p1q5: ['', Validators.required],
 
-  loadData() {
-    this.service.getStudentEvaluation(this.data.student.id).subscribe(res => {
-      this.datalist = res.payload.sort((a: any, b: any) => {
-        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-      });;
-    });
-  }
+      p2q1: ['', Validators.required],
+      p2q2: ['', Validators.required],
+      p2q3: ['', Validators.required],
+      p2q4: ['', Validators.required],
+      p2q5: ['', Validators.required],
+      p2q6: ['', Validators.required],
+      p2q7: ['', Validators.required],
+      p2q8: ['', Validators.required],
 
-  onFileChange(event: any) {
-    const files = event.target.files as FileList;
-    if (files.length > 0) {
-      this.file = files[0];
-      this.previewPDF(); 
-    }
-  }
+      p3q1: ['', Validators.required],
+      p3q2: ['', Validators.required],
+      p3q3: ['', Validators.required],
+      p3q4: ['', Validators.required],
+      p3q5: ['', Validators.required],
+      p3q6: ['', Validators.required],
+      p3q7: ['', Validators.required],
+      p3q8: ['', Validators.required],
+      p3q9: ['', Validators.required],
+      p3q10: ['', Validators.required],
+      p3q11: ['', Validators.required],
+      p3q12: ['', Validators.required],
+      p3q13: ['', Validators.required],
 
-  previewPDF() {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const fileURL = e.target?.result as string;
-      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-    };
-    reader.readAsDataURL(this.file);
-  }
+      p4q1: ['', Validators.required],
 
-  submitFiles() {
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-    fileInputs.forEach((fileInput: any) => {
-      const file = fileInput.files[0];
-      if (file) {
-        this.service.uploadEvaluation(this.userId, this.data.student.id, file).subscribe(
-          response => {
-            Swal.fire({
-              title: "Uploaded Successfully!",
-              text: "You can view your uploaded evaluations for this student in the table below",
-              icon: "success"
-            });
-            this.loadData();
-            this.pdfPreview = '';
-            fileInput.value = '';
-          },
-          error => {
-            console.error('Error uploading file:', error);
-          }
-        );
-      }
-      else if (file == null) {
-        Swal.fire({
-          title: "No File to Upload",
-          text: "Please select a file to upload first.",
-          icon: "error"
-        });
-      }
-    });
-  }
-  viewTemplate() {
-    const popup = this.dialog.open(PdfviewerComponent, {
-      enterAnimationDuration: "0ms",
-      exitAnimationDuration: "500ms",
-      width: "90%",
-      data: {
-        templateName: '../../assets/pdfTemplates/Evaluation.pdf'
-      }
+      p5q1: ['', Validators.required],
+      p5q2: ['', Validators.required],
+      p5q3: ['', Validators.required],
+      p5q4: ['', Validators.required],
+      p5q5: ['', Validators.required],
+      p5q6x1: ['', Validators.required],
+      p5q6: ['', Validators.required],
+
     })
   }
 
-
-  viewFile(submissionId: number) {
-    this.service.getSubmissionFile('supervisor_student_evaluations', submissionId).subscribe(
-      (data: any) => {
-        const popup = this.dialog.open(PdfviewerComponent, {
-          enterAnimationDuration: "0ms",
-          exitAnimationDuration: "500ms",
-          width: "90%",
-          data: {
-            selectedPDF: data
-          }
-        })
-      },
-      (error: any) => {
-        console.error('Error viewing submission:', error);
-      }
-    );
+  ngOnInit(): void {
+    this.loadEvaluation();
   }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  loadEvaluation() {
+    this.subscriptions.add(
+      this.service.getEvaluationForStudent(this.data.student.id).subscribe((res: any) => {
+        this.existingEvaluation = res.payload[0];
+        console.log(this.existingEvaluation);
+        this.evaluationForm.patchValue(this.existingEvaluation);
+      })
+    )
+  }
+
+  submitEvaluation() {
+    if (!this.evaluationForm.valid) {
+      Swal.fire({
+        title: "It seems you might've missed some questions.",
+        text: "Please answer all the questions first before submitting the evaluation.",
+        confirmButtonColor: '#233876',
+        icon: 'warning'
+      })
+      return;
+    }
+    Swal.fire({
+      title: 'Are you sure you want to submit this evaluation?',
+      text: "You will not be able to edit the evaluation once you have submitted it. Please make sure you've answered it carefully.",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      cancelButtonText: 'Cancel',
+      confirmButtonColor: '#233876',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.subscriptions.add(
+          this.service.createStudentEvaluation(this.evaluationForm.value).subscribe((res: any) => {
+            Swal.fire({
+              title: `Successfully submitted evaluation for ${this.data.student.firstName} ${this.data.student.lastName}`,
+              icon: "success",
+              timer: 3000,
+              timerProgressBar: true,
+              confirmButtonColor: '#233876',
+            });
+          })
+        );
+      }
+    });
+  }
+
+
 
   deleteSubmission(submissionId: number) {
     Swal.fire({
@@ -133,7 +145,7 @@ export class SpvEvaluationpopupComponent {
             title: "Your submission has been deleted",
             icon: "success"
           });
-          this.loadData();
+          // this.loadData();
         }, error => {
           Swal.fire({
             title: "Delete failed",
@@ -157,8 +169,8 @@ export class SpvEvaluationpopupComponent {
         table: 'comments_finalreports'
       }
     })
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    });
+    // popup.afterClosed().subscribe(res => {
+    //   this.loadData()
+    // });
   }
 }

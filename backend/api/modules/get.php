@@ -597,4 +597,11 @@ class Get extends GlobalMethods
         return $this->get_records('student_final_reports', $condition);
     }
 
+    public function getEvaluationForStudent($user_id)
+    {
+        $condition = "student_id = $user_id";
+
+        return $this->get_records('student_supervisor_evaluation', $condition);
+    }
+
 }

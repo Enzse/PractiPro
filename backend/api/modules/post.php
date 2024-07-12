@@ -1170,6 +1170,70 @@ class Post extends GlobalMethods
         }
     }
 
+    public function createStudentEvaluation($data)
+    {
+        $sql = "INSERT INTO student_supervisor_evaluation 
+        (supervisor_id, student_id, 
+        p1q1, p1q2, p1q3, p1q4, p1q5, 
+        p2q1, p2q2, p2q3, p2q4, p2q5,  p2q6, p2q7, p2q8, 
+        p3q1, p3q2, p3q3, p3q4, p3q5, p3q6, p3q7, p3q8, p3q9, p3q10, p3q11, p3q12, p3q13, 
+        p4q1,
+        p5q1, p5q2, p5q3, p5q4, p5q5, p5q6x1, p5q6
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?, ?)";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->supervisor_id,
+                    $data->student_id,
+                    $data->p1q1,
+                    $data->p1q2,
+                    $data->p1q3,
+                    $data->p1q4,
+                    $data->p1q5,
+                    $data->p2q1,
+                    $data->p2q2,
+                    $data->p2q3,
+                    $data->p2q4,
+                    $data->p2q5,
+                    $data->p2q6,
+                    $data->p2q7,
+                    $data->p2q8,
+                    $data->p3q1,
+                    $data->p3q2,
+                    $data->p3q3,
+                    $data->p3q4,
+                    $data->p3q5,
+                    $data->p3q6,
+                    $data->p3q7,
+                    $data->p3q8,
+                    $data->p3q9,
+                    $data->p3q10,
+                    $data->p3q11,
+                    $data->p3q12,
+                    $data->p3q13,
+                    $data->p4q1,
+                    $data->p5q1,
+                    $data->p5q2,
+                    $data->p5q3,
+                    $data->p5q4,
+                    $data->p5q5,
+                    $data->p5q6x1,
+                    $data->p5q6,
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully created record", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
 }
 
 

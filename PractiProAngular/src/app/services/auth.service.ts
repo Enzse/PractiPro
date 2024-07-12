@@ -443,4 +443,12 @@ export class AuthService {
   getFinalReport(studentId: number) {
     return this.http.get<any>(`${this.apiurl}/getfinalreport/${studentId}`);
   }
+
+
+  createStudentEvaluation(inputdata: any) {
+    return this.http.post(`${this.apiurl}/createstudentevaluation`, inputdata);
+  }
+  getEvaluationForStudent(studentId: number) {
+    return this.http.get<any>(`${this.apiurl}/getstudentevaluation/${studentId}`);
+  }
 }

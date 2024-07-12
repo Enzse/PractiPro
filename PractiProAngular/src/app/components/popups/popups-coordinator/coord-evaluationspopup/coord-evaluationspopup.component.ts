@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -15,17 +15,63 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 @Component({
   selector: 'app-coord-evaluationspopup',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule],
+  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule, ReactiveFormsModule],
   templateUrl: './coord-evaluationspopup.component.html',
   styleUrl: './coord-evaluationspopup.component.css'
 })
 export class CoordEvaluationspopupComponent {
-  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CoordEvaluationspopupComponent>, private dialog2: MatDialog) { }
-
-  datalist: any[] = [];
   isLoading: boolean = true;
   private subscriptions = new Subscription();
+  evaluationForm: any;
+  existingForm: any;
+  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService,
+    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CoordEvaluationspopupComponent>, private dialog2: MatDialog) {
+
+    this.evaluationForm = this.builder.group({
+      supervisor_id: [''],
+      student_id: [''],
+      p1q1: ['', Validators.required],
+      p1q2: ['', Validators.required],
+      p1q3: ['', Validators.required],
+      p1q4: ['', Validators.required],
+      p1q5: ['', Validators.required],
+
+      p2q1: ['', Validators.required],
+      p2q2: ['', Validators.required],
+      p2q3: ['', Validators.required],
+      p2q4: ['', Validators.required],
+      p2q5: ['', Validators.required],
+      p2q6: ['', Validators.required],
+      p2q7: ['', Validators.required],
+      p2q8: ['', Validators.required],
+
+      p3q1: ['', Validators.required],
+      p3q2: ['', Validators.required],
+      p3q3: ['', Validators.required],
+      p3q4: ['', Validators.required],
+      p3q5: ['', Validators.required],
+      p3q6: ['', Validators.required],
+      p3q7: ['', Validators.required],
+      p3q8: ['', Validators.required],
+      p3q9: ['', Validators.required],
+      p3q10: ['', Validators.required],
+      p3q11: ['', Validators.required],
+      p3q12: ['', Validators.required],
+      p3q13: ['', Validators.required],
+
+      p4q1: ['', Validators.required],
+
+      p5q1: ['', Validators.required],
+      p5q2: ['', Validators.required],
+      p5q3: ['', Validators.required],
+      p5q4: ['', Validators.required],
+      p5q5: ['', Validators.required],
+      p5q6x1: ['', Validators.required],
+      p5q6: ['', Validators.required],
+
+    })
+  }
+
 
 
   ngOnInit(): void {
@@ -38,23 +84,18 @@ export class CoordEvaluationspopupComponent {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getStudentEvaluation(this.data.student.id).subscribe(res => {
-        this.datalist = res.payload.sort((a: any, b: any) => {
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        });
+      this.service.getEvaluationForStudent(this.data.student.id).subscribe(res => {
+        this.existingForm = res.payload[0]
+        this.evaluationForm.patchValue(this.existingForm)
         this.isLoading = false;
-        console.log(this.datalist);
-      },
-        (error: any) => {
-          console.error('Error fetching student submissions:', error);
-        }
+      }
       ));
   }
 
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-      this.service.updateAdvisorApproval('supervisor_student_evaluations', record.id, updateData).subscribe(
+      this.service.updateAdvisorApproval('student_supervisor_evaluation', record.id, updateData).subscribe(
         res => {
           this.changeDetection.notifyChange(true);
           Swal.fire({
@@ -81,66 +122,6 @@ export class CoordEvaluationspopupComponent {
           });
         }
       ));
-  }
-
-  viewFile(submissionId: number) {
-    this.subscriptions.add(
-      this.service.getSubmissionFile('supervisor_student_evaluations', submissionId).subscribe(
-        (data: any) => {
-          const popup = this.dialog2.open(PdfviewerComponent, {
-            enterAnimationDuration: "0ms",
-            exitAnimationDuration: "500ms",
-            width: "90%",
-            data: {
-              selectedPDF: data
-            }
-          })
-        },
-        (error: any) => {
-          console.error('Error viewing submission:', error);
-        }
-      ));
-  }
-
-  downloadFile(submissionId: number, submissionName: string) {
-    this.subscriptions.add(
-      this.service.getSubmissionFile('supervisor_student_evaluations', submissionId).subscribe(
-        (data: any) => {
-          saveAs(data, submissionName);
-        },
-        (error: any) => {
-          console.error('Error downloading submission:', error);
-        }
-      ));
-  }
-
-  deleteSubmission(submissionId: number) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.subscriptions.add(
-          this.service.deleteSubmission(submissionId, 'supervisor_student_evaluations').subscribe((res: any) => {
-            Swal.fire({
-              title: "The submission has been deleted",
-              icon: "success"
-            });
-            this.loadData();
-          }, error => {
-            Swal.fire({
-              title: "Delete failed",
-              text: "You may not have permission to delete this file.",
-              icon: "error"
-            });
-          }));
-      }
-    });
   }
 
 

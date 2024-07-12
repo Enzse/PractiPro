@@ -1,122 +1,1109 @@
-<div class="p-3 rounded-md shadow-xl">
-    <h1 class="mb-2 text-orange-500 font-bold ml-1">Performance Evaluations for '{{this.data.student.firstName}}
-        {{this.data.student.lastName}}':</h1>
+<div class="p-3 rounded-md shadow-xl max-h-[90vh]">
+    <div>
+        <h1 class="text-orange-500 font-bold font-primary text-lg text-center mb-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6 -mt-1 text-orange inline dark:text-white">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+            </svg>
+            Student Evaluation for '{{this.data.student.firstName}} {{this.data.student.lastName}}'
+        </h1>
+        <div class="border-b border-gray-300"></div>
+        <br />
+    </div>
     <div *ngIf="isLoading" class="flex justify-center">
         <p class="font-secondary text-2xl">Loading...</p>
     </div>
     <ng-container *ngIf="!isLoading">
-        <ng-container *ngIf="datalist.length > 0 else noDataMessage">
-            <table mat-table
-                class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
+        <ng-container *ngIf="existingForm else noDataMessage">
 
-                        <th scope="col" class="px-6 py-3">
-                            File Name:
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Date Submitted:
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            View File:
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Comments:
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Approval:
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Actions:
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let submission of datalist"
-                        class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+            <div
+                class="bg-slate-50 rounded-lg w-full p-5 mb-10 shadow-md font-secondary text-center border border-gray-200">
+                <div>
+                    <!-- <div class="border-b border-gray-300"></div> -->
+                    <div class="flex justify-center max-sm:flex-col gap-8 max-sm:gap-4">
+                        <div class="text-xl my-auto max-sm:text-base font-primary">
+                            <span class="font-semibold">Date Submitted: </span>
+                            {{this.existingForm.created_at |date : "medium"}}
+                        </div>
 
-
-                        <td class="px-6 py-4">
-                            {{ submission.file_name }}
-                        </td>
-                        <td class="px-6 py-4">
-                            {{ submission.created_at | date: "medium" }}
-                        </td>
-                        <td class="px-6 py-4">
-                            <button (click)="viewFile(submission.id)"
-                                class="focus:outline-none inline-flex text-white bg-blue-900 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"><svg
-                                    xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="lucide mr-1 inline lucide-search">
-                                    <circle cx="11" cy="11" r="8" />
-                                    <path d="m21 21-4.3-4.3" />
-                                </svg>View</button>
-                        </td>
-
-                        <td class="px-6 py-4">
-                            <button (click)="viewComments(submission.id, submission.file_name)"
-                                class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
-                                <svg class="w-5 h-5 text-gray-800 dark:text-white inline" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                                    viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd"
-                                        d="M3.559 4.544c.355-.35.834-.544 1.33-.544H19.11c.496 0 .975.194 1.33.544.356.35.559.829.559 1.331v9.25c0 .502-.203.981-.559 1.331-.355.35-.834.544-1.33.544H15.5l-2.7 3.6a1 1 0 0 1-1.6 0L8.5 17H4.889c-.496 0-.975-.194-1.33-.544A1.868 1.868 0 0 1 3 15.125v-9.25c0-.502.203-.981.559-1.331ZM7.556 7.5a1 1 0 1 0 0 2h8a1 1 0 0 0 0-2h-8Zm0 3.5a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2H7.556Z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="ml-1">{{submission.comments}}</span>
-                            </button>
-                        </td>
-                        <td class="px-6 py-4">
+                        <div class="text-xl max-sm:text-base my-auto font-primary">
                             <select class="border-0 shadow-md text-center rounded-lg cursor-pointer"
-                                [(ngModel)]="submission.advisor_approval" [ngClass]="{
-                                      'text-green-500': submission.advisor_approval === 'Approved',
-                                      'text-red-500': submission.advisor_approval === 'Unapproved',
-                                      'text-gray-500': submission.advisor_approval === 'Pending'
-                                    }" (change)="onStatusChange(submission)">
+                                [(ngModel)]="existingForm.advisor_approval" [ngClass]="{
+                              'text-green-500': existingForm.advisor_approval === 'Approved',
+                              'text-red-500': existingForm.advisor_approval === 'Unapproved',
+                              'text-gray-500': existingForm.advisor_approval === 'Pending'
+                            }" (change)="onStatusChange(existingForm)">
                                 <option value="Approved" class="text-green-500">Approved</option>
                                 <option value="Unapproved" class="text-red-500">Unapproved</option>
-                                <option *ngIf="submission.advisor_approval === 'Pending'" value="Pending" hidden
+                                <option *ngIf="existingForm.advisor_approval === 'Pending'" hidden value="Pending"
                                     class="text-gray-500">Pending</option>
                             </select>
-                        </td>
-                        <td class="px-6 py-4">
-                            <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
-                                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                    viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="4"
-                                        d="M12 6h.01M12 12h.01M12 18h.01" />
-                                </svg>
-                            </button>
-                            <mat-menu #menu="matMenu">
-                                <li class="space-x-3 px-3">
-                                    <button (click)="downloadFile(submission.id, submission.file_name)"
-                                        class="text-white inline-flex items-center bg-green-500 hover:bg-green-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-download">
-                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                            <polyline points="7 10 12 15 17 10" />
-                                            <line x1="12" x2="12" y1="15" y2="3" />
-                                        </svg></button>
-                                    <button
-                                        class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"
-                                        (click)="deleteSubmission(submission.id)"><svg
-                                            class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                                            viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd"
-                                                d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                                clip-rule="evenodd" />
-                                        </svg>
-                                    </button>
-                                </li>
-                            </mat-menu>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 rounded-lg w-full p-4 font-secondary text-center shadow-md border border-gray-200">
+                <form [formGroup]="evaluationForm">
+
+                    <!-- Question 1 -->
+                    <div class="space-y-8">
+                        <div>
+                            <p class="mb-2 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                                1. Knowledge:
+                            </p>
+
+                            <div class="relative shadow-md overflow-auto sm:rounded-lg border border-gray-300">
+                                <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-center">
+                                                CRITERIA
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">1</th>
+                                            <th scope="col" class="px-6 py-3">2</th>
+                                            <th scope="col" class="px-6 py-3">3</th>
+                                            <th scope="col" class="px-6 py-3">4</th>
+                                            <th scope="col" class="px-6 py-3">5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                1. Identifies problems, gathers data related to the problem, analyzes
+                                                the data gathered and
+                                                selects
+                                                appropriate actions.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q1-1" name="p1q1" value="1"
+                                                    formControlName="p1q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q1-2" name="p1q1" value="2"
+                                                    formControlName="p1q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q1-3" name="p1q1" value="3"
+                                                    formControlName="p1q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q1-4" name="p1q1" value="4"
+                                                    formControlName="p1q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q1-5" name="p1q1" value="5"
+                                                    formControlName="p1q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                2. Sets priorities in the workplace based on the identified needs.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q2-1" name="p1q2" value="1"
+                                                    formControlName="p1q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q2-2" name="p1q2" value="2"
+                                                    formControlName="p1q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q2-3" name="p1q2" value="3"
+                                                    formControlName="p1q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q2-4" name="p1q2" value="4"
+                                                    formControlName="p1q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q2-5" name="p1q2" value="5"
+                                                    formControlName="p1q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                3. Formulates plans based on priority needs and problems in the
+                                                workplace.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q3-1" name="p1q3" value="1"
+                                                    formControlName="p1q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q3-2" name="p1q3" value="2"
+                                                    formControlName="p1q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q3-3" name="p1q3" value="3"
+                                                    formControlName="p1q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q3-4" name="p1q3" value="4"
+                                                    formControlName="p1q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q3-5" name="p1q3" value="5"
+                                                    formControlName="p1q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                4. Promotes safety measures in all aspects of the job assigned to
+                                                him/her.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q4-1" name="p1q4" value="1"
+                                                    formControlName="p1q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q4-2" name="p1q4" value="2"
+                                                    formControlName="p1q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q4-3" name="p1q4" value="3"
+                                                    formControlName="p1q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q4-4" name="p1q4" value="4"
+                                                    formControlName="p1q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q4-5" name="p1q4" value="5"
+                                                    formControlName="p1q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                5. Applies appropriate IT/CS principles on the tasks on hand.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q5-1" name="p1q5" value="1"
+                                                    formControlName="p1q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q5-2" name="p1q5" value="2"
+                                                    formControlName="p1q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q5-3" name="p1q5" value="3"
+                                                    formControlName="p1q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q5-4" name="p1q5" value="4"
+                                                    formControlName="p1q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p1q5-5" name="p1q5" value="5"
+                                                    formControlName="p1q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Question 2 -->
+                        <div>
+                            <p class="mb-2 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                                2. Skills:
+                            </p>
+
+                            <div class="relative overflow-auto shadow-md sm:rounded-lg border border-gray-300">
+                                <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-center">
+                                                CRITERIA
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">1</th>
+                                            <th scope="col" class="px-6 py-3">2</th>
+                                            <th scope="col" class="px-6 py-3">3</th>
+                                            <th scope="col" class="px-6 py-3">4</th>
+                                            <th scope="col" class="px-6 py-3">5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <div>
+
+                                        </div>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                1. Analyzes the tasks assigned to him/her.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q1-1" name="p2q1" value="1"
+                                                    formControlName="p2q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q1-2" name="p2q1" value="2"
+                                                    formControlName="p2q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q1-3" name="p2q1" value="3"
+                                                    formControlName="p2q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q1-4" name="p2q1" value="4"
+                                                    formControlName="p2q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q1-5" name="p2q1" value="5"
+                                                    formControlName="p2q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                2. Works with thoroughness and accuracy, orderliness and neatness.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q2-1" name="p2q2" value="1"
+                                                    formControlName="p2q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q2-2" name="p2q2" value="2"
+                                                    formControlName="p2q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q2-3" name="p2q2" value="3"
+                                                    formControlName="p2q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q2-4" name="p2q2" value="4"
+                                                    formControlName="p2q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q2-5" name="p2q2" value="5"
+                                                    formControlName="p2q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                3. Sets systematic objectives in their order of priority.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q3-1" name="p2q3" value="1"
+                                                    formControlName="p2q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q3-2" name="p2q3" value="2"
+                                                    formControlName="p2q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q3-3" name="p2q3" value="3"
+                                                    formControlName="p2q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q3-4" name="p2q3" value="4"
+                                                    formControlName="p2q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q3-5" name="p2q3" value="5"
+                                                    formControlName="p2q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                4. Has the initiative and ingenuity in finding ways and means to
+                                                accomplish objectives.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q4-1" name="p2q4" value="1"
+                                                    formControlName="p2q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q4-2" name="p2q4" value="2"
+                                                    formControlName="p2q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q4-3" name="p2q4" value="3"
+                                                    formControlName="p2q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q4-4" name="p2q4" value="4"
+                                                    formControlName="p2q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q4-5" name="p2q4" value="5"
+                                                    formControlName="p2q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                5. Relates IT/CS principles correctly to the assigned task.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q5-1" name="p2q5" value="1"
+                                                    formControlName="p2q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q5-2" name="p2q5" value="2"
+                                                    formControlName="p2q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q5-3" name="p2q5" value="3"
+                                                    formControlName="p2q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q5-4" name="p2q5" value="4"
+                                                    formControlName="p2q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q5-5" name="p2q5" value="5"
+                                                    formControlName="p2q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                6. Prepares and administers necessary and appropriate evaluation for the
+                                                accomplished work.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q6-1" name="p2q6" value="1"
+                                                    formControlName="p2q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q6-2" name="p2q6" value="2"
+                                                    formControlName="p2q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q6-3" name="p2q6" value="3"
+                                                    formControlName="p2q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q6-4" name="p2q6" value="4"
+                                                    formControlName="p2q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q6-5" name="p2q6" value="5"
+                                                    formControlName="p2q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                7. Maintains accurate and updates documentation of the work done.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q7-1" name="p2q7" value="1"
+                                                    formControlName="p2q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q7-2" name="p2q7" value="2"
+                                                    formControlName="p2q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q7-3" name="p2q7" value="3"
+                                                    formControlName="p2q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q7-4" name="p2q7" value="4"
+                                                    formControlName="p2q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q7-5" name="p2q7" value="5"
+                                                    formControlName="p2q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                8. Provides safety measures for the preventation of accidents.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q8-1" name="p2q8" value="1"
+                                                    formControlName="p2q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q8-2" name="p2q8" value="2"
+                                                    formControlName="p2q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q8-3" name="p2q8" value="3"
+                                                    formControlName="p2q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q8-4" name="p2q8" value="4"
+                                                    formControlName="p2q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p2q8-5" name="p2q8" value="5"
+                                                    formControlName="p2q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+
+                        <!-- Question 3 -->
+                        <div>
+                            <p class="mb-2 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                                3. Attitude:
+                            </p>
+
+                            <div class="relative overflow-auto shadow-md sm:rounded-lg border border-gray-300">
+                                <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                                    <thead
+                                        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-center">
+                                                CRITERIA
+                                            </th>
+                                            <th scope="col" class="px-6 py-3">1</th>
+                                            <th scope="col" class="px-6 py-3">2</th>
+                                            <th scope="col" class="px-6 py-3">3</th>
+                                            <th scope="col" class="px-6 py-3">4</th>
+                                            <th scope="col" class="px-6 py-3">5</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <div>
+
+                                        </div>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                1. Reports in the workplace on time regularly.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q1-1" name="p3q1" value="1"
+                                                    formControlName="p3q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q1-2" name="p3q1" value="2"
+                                                    formControlName="p3q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q1-3" name="p3q1" value="3"
+                                                    formControlName="p3q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q1-4" name="p3q1" value="4"
+                                                    formControlName="p3q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q1-5" name="p3q1" value="5"
+                                                    formControlName="p3q1"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                2. Never leaves the area without permission from his/her superior.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q2-1" name="p3q2" value="1"
+                                                    formControlName="p3q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q2-2" name="p3q2" value="2"
+                                                    formControlName="p3q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q2-3" name="p3q2" value="3"
+                                                    formControlName="p3q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q2-4" name="p3q2" value="4"
+                                                    formControlName="p3q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q2-5" name="p3q2" value="5"
+                                                    formControlName="p3q2"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                3. Practices good grooming.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q3-1" name="p3q3" value="1"
+                                                    formControlName="p3q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q3-2" name="p3q3" value="2"
+                                                    formControlName="p3q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q3-3" name="p3q3" value="3"
+                                                    formControlName="p3q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q3-4" name="p3q3" value="4"
+                                                    formControlName="p3q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q3-5" name="p3q3" value="5"
+                                                    formControlName="p3q3"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                4. Carries self with dignity and respect, projects a positive
+                                                self-image.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q4-1" name="p3q4" value="1"
+                                                    formControlName="p3q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q4-2" name="p3q4" value="2"
+                                                    formControlName="p3q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q4-3" name="p3q4" value="3"
+                                                    formControlName="p3q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q4-4" name="p3q4" value="4"
+                                                    formControlName="p3q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q4-5" name="p3q4" value="5"
+                                                    formControlName="p3q4"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                5. Observes personal and professional decorum.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q5-1" name="p3q5" value="1"
+                                                    formControlName="p3q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q5-2" name="p3q5" value="2"
+                                                    formControlName="p3q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q5-3" name="p3q5" value="3"
+                                                    formControlName="p3q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q5-4" name="p3q5" value="4"
+                                                    formControlName="p3q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q5-5" name="p3q5" value="5"
+                                                    formControlName="p3q5"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                6. Establishes friendliness but not familiarity.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q6-1" name="p3q6" value="1"
+                                                    formControlName="p3q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q6-2" name="p3q6" value="2"
+                                                    formControlName="p3q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q6-3" name="p3q6" value="3"
+                                                    formControlName="p3q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q6-4" name="p3q6" value="4"
+                                                    formControlName="p3q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q6-5" name="p3q6" value="5"
+                                                    formControlName="p3q6"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                7. Gives due respect to the superiors; always tactful in dealing with
+                                                them.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q7-1" name="p3q7" value="1"
+                                                    formControlName="p3q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q7-2" name="p3q7" value="2"
+                                                    formControlName="p3q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q7-3" name="p3q7" value="3"
+                                                    formControlName="p3q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q7-4" name="p3q7" value="4"
+                                                    formControlName="p3q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q7-5" name="p3q7" value="5"
+                                                    formControlName="p3q7"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                8. Behaves in accordance with the set policies and standards of the
+                                                university and company.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q8-1" name="p3q8" value="1"
+                                                    formControlName="p3q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q8-2" name="p3q8" value="2"
+                                                    formControlName="p3q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q8-3" name="p3q8" value="3"
+                                                    formControlName="p3q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q8-4" name="p3q8" value="4"
+                                                    formControlName="p3q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q8-5" name="p3q8" value="5"
+                                                    formControlName="p3q8"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                9. Works collaboratively and cooperates with other members of the
+                                                company as necessary.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q9-1" name="p3q9" value="1"
+                                                    formControlName="p3q9"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q9-2" name="p3q9" value="2"
+                                                    formControlName="p3q9"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q9-3" name="p3q9" value="3"
+                                                    formControlName="p3q9"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q9-4" name="p3q9" value="4"
+                                                    formControlName="p3q9"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q9-5" name="p3q9" value="5"
+                                                    formControlName="p3q9"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                10. Works harmoniously with others towards overall efficiency of the
+                                                organization.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q10-1" name="p3q10" value="1"
+                                                    formControlName="p3q10"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q10-2" name="p3q10" value="2"
+                                                    formControlName="p3q10"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q10-3" name="p3q10" value="3"
+                                                    formControlName="p3q10"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q10-4" name="p3q10" value="4"
+                                                    formControlName="p3q10"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q10-5" name="p3q10" value="5"
+                                                    formControlName="p3q10"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                11. Accepts constructive criticisms and suggestions given by superior
+                                                and co-worker.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q11-1" name="p3q11" value="1"
+                                                    formControlName="p3q11"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q11-2" name="p3q11" value="2"
+                                                    formControlName="p3q11"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q11-3" name="p3q11" value="3"
+                                                    formControlName="p3q11"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q11-4" name="p3q11" value="4"
+                                                    formControlName="p3q11"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q11-5" name="p3q11" value="5"
+                                                    formControlName="p3q11"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                12. Helps in keeping the immediate environment clean and orderly.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q12-1" name="p3q12" value="1"
+                                                    formControlName="p3q12"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q12-2" name="p3q12" value="2"
+                                                    formControlName="p3q12"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q12-3" name="p3q12" value="3"
+                                                    formControlName="p3q12"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q12-4" name="p3q12" value="4"
+                                                    formControlName="p3q12"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q12-5" name="p3q12" value="5"
+                                                    formControlName="p3q12"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white w-full border-b">
+                                            <th scope="row"
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                13. Submits requirements on time.
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q13-1" name="p3q13" value="1"
+                                                    formControlName="p3q13"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q13-2" name="p3q13" value="2"
+                                                    formControlName="p3q13"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q13-3" name="p3q13" value="3"
+                                                    formControlName="p3q13"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q13-4" name="p3q13" value="4"
+                                                    formControlName="p3q13"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <input type="radio" id="p3q13-5" name="p3q13" value="5"
+                                                    formControlName="p3q13"
+                                                    class="w-4 h-4 disabled text-blue-600 bg-gray-100 border-gray-300 focus:ring-0" />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <!-- Question 4 -->
+                        <div>
+                            <p class="mb-2 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                                4. Overall Performance:
+                            </p>
+
+                            <div
+                                class="flex max-sm:flex-col overflow-auto font-primary text-3xl font-semibold justify-evenly gap-10 mb-4 p-5 rounded-lg border border-gray-300 bg-white shadow-md">
+                                <div class="flex items-center">
+                                    <input id="excellent" type="radio" value="Excellent" name="p4q1"
+                                        formControlName="p4q1"
+                                        class="w-4 h-4 disabled border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+                                    <label for="excellent" class="block ms-2 text-sm font-medium text-green-500">
+                                        Excellent
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input id="very-good" type="radio" value="Very Good" name="p4q1"
+                                        formControlName="p4q1"
+                                        class="w-4 h-4 disabled border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+                                    <label for="very-good" class="block ms-2 text-sm font-medium text-lime-500">
+                                        Very Good
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input id="good" type="radio" value="Good" name="p4q1" formControlName="p4q1"
+                                        class="w-4 h-4 disabled border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+                                    <label for="good" class="block ms-2 text-sm font-medium text-yellow-500">
+                                        Good
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input id="fair" type="radio" value="Fair" name="p4q1" formControlName="p4q1"
+                                        class="w-4 h-4 disabled border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+                                    <label for="fair" class="block ms-2 text-sm font-medium text-orange-500">
+                                        Fair
+                                    </label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <input id="poor" type="radio" value="Poor" name="p4q1" formControlName="p4q1"
+                                        class="w-4 h-4 disabled border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+                                    <label for="poor" class="block ms-2 text-sm font-medium text-red-500">
+                                        Poor
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- question 5 -->
+                        <div>
+                            <p class="mb-8 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                                5. Comments / Suggestions to Improve Trainee's Performance
+                            </p>
+
+                            <div class="space-y-6">
+                                <div>
+                                    <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                        1. The student's major strong points are:
+                                    </p>
+                                    <textarea readonly id="message" rows="4" name="p5q1" formControlName="p5q1"
+                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Write here ... "></textarea>
+                                </div>
+
+                                <div>
+                                    <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                        2. These might be utilized more effectively by:
+                                    </p>
+                                    <textarea readonly id="message" rows="4" name="p5q2" formControlName="p5q2"
+                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Write here ... "></textarea>
+                                </div>
+
+                                <div>
+                                    <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                        3. The student's major weak points are:
+                                    </p>
+                                    <textarea readonly id="message" rows="4" name="p5q3" formControlName="p5q3"
+                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Write here ... "></textarea>
+                                </div>
+
+                                <div>
+                                    <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                        4. These might be corrected by:
+                                    </p>
+                                    <textarea readonly id="message" rows="4" name="p5q4" formControlName="p5q4"
+                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Write here ... "></textarea>
+                                </div>
+
+                                <div>
+                                    <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                        5. Other comments / suggestions:
+                                    </p>
+                                    <textarea readonly id="message" rows="4" name="p5q5" formControlName="p5q5"
+                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Write here ... "></textarea>
+                                </div>
+
+                                <div>
+
+
+                                    <div class="inline-flex gap-3 mb-3">
+                                        <p class="font-primary font-medium text-left text-gray-900">
+                                            6. Would you recommend this student for further employment in your own
+                                            firm?:
+                                        </p>
+                                        <div class="flex items-center">
+                                            <input id="good" type="radio" value="yes" name="p5q6x1"
+                                                formControlName="p5q6x1"
+                                                class="w-4 h-4 disabled border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+                                            <label for="good" class="block ms-2 font-primary text-sm font-medium">
+                                                Yes
+                                            </label>
+                                        </div>
+
+                                        <div class="flex items-center">
+                                            <input id="fair" type="radio" value="no" name="p5q6x1"
+                                                formControlName="p5q6x1"
+                                                class="w-4 h-4 disabled border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+                                            <label for="fair" class="block ms-2 font-primary text-sm font-medium">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+                                    <textarea readonly id="message" rows="4" name="p5q6" formControlName="p5q6"
+                                        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Explain why here ... "></textarea>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
         </ng-container>
     </ng-container>
     <ng-template #noDataMessage>

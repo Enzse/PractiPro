@@ -21,7 +21,12 @@
                 class="bg-slate-50 rounded-lg w-full p-5 mb-10 shadow-md font-secondary text-center border border-gray-200">
                 <div>
                     <!-- <div class="border-b border-gray-300"></div> -->
-                    <div class="flex justify-evenly max-sm:flex-col gap-y-4">
+                    <div class="flex justify-center max-sm:flex-col gap-8 max-sm:gap-4">
+                        <div class="text-xl my-auto max-sm:text-base font-primary">
+                            <span class="font-semibold">Date Submitted: </span>
+                            {{this.submittedReport.created_at |date : "medium"}}
+                        </div>
+
                         <div class="text-xl max-sm:text-base my-auto font-primary">
                             <select class="border-0 shadow-md text-center rounded-lg cursor-pointer"
                                 [(ngModel)]="submittedReport.advisor_approval" [ngClass]="{
@@ -36,10 +41,7 @@
                             </select>
                         </div>
 
-                        <div class="text-xl my-auto max-sm:text-base font-primary">
-                            <span class="font-semibold">Date Submitted: </span>
-                            {{this.submittedReport.created_at |date : "medium"}}
-                        </div>
+
                     </div>
                 </div>
             </div>

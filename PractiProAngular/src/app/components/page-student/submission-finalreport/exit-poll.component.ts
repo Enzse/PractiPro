@@ -60,14 +60,14 @@ export class ExitPollComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getReport();
+    this.loadReport();
   }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
-  getReport() {
+  loadReport() {
     this.subscriptions.add(
       this.service.getFinalReport(this.userId).subscribe((res: any) => {
         this.existingReport = res.payload[0];
