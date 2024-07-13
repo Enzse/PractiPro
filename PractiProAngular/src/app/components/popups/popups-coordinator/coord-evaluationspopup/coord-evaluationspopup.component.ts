@@ -144,7 +144,12 @@ export class CoordEvaluationspopupComponent {
 
 
   scrollToTop(): void {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const scrollContainer = document.querySelector('.scroll-container');
+    if (scrollContainer) {
+      (scrollContainer as HTMLElement).scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      console.error('Scroll container not found');
+    }
   }
 
 }
