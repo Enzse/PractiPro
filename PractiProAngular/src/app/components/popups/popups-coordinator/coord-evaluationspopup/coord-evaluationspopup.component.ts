@@ -124,7 +124,6 @@ export class CoordEvaluationspopupComponent {
       ));
   }
 
-
   viewComments(submissionId: number, fileName: string) {
     const popup = this.dialog2.open(CommentspopupComponent, {
       enterAnimationDuration: "350ms",
@@ -140,6 +139,12 @@ export class CoordEvaluationspopupComponent {
       popup.afterClosed().subscribe(res => {
         this.loadData()
       }));
+  }
+
+
+
+  scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
 }

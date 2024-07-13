@@ -1,4 +1,4 @@
-<div class="p-3 rounded-md shadow-xl max-h-[90vh]">
+<div #scrollContainer class="scroll-container p-3 rounded-md shadow-xl max-h-[90vh]">
     <div>
         <h1 class="text-orange-500 font-bold font-primary text-lg text-center mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -1102,7 +1102,35 @@
 
                     </div>
                 </form>
+                <div class="w-full mt-7 flex justify-center">
+                    <button type="submit" (click)="scrollToTop()"
+                        class=" text-white py-2 px-10 text-lg bg-blue-900 hover:bg-blue-800 font-medium rounded-md">
+                        Back to Top
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide inline -mt-0.5 lucide-arrow-up">
+                            <path d="m5 12 7-7 7 7" />
+                            <path d="M12 19V5" />
+                        </svg>
+                    </button>
 
+
+                    <!-- IF DI KAYA, PALITAN NALANG YUNG BUTTON NG ISA PANG APPROVAL DROPDOWN-->
+
+                    <!-- <div class="text-xl max-sm:text-base my-auto font-primary">
+                        <select class="border-0 shadow-md text-center rounded-lg cursor-pointer"
+                            [(ngModel)]="existingForm.advisor_approval" [ngClass]="{
+                          'text-green-500': existingForm.advisor_approval === 'Approved',
+                          'text-red-500': existingForm.advisor_approval === 'Unapproved',
+                          'text-gray-500': existingForm.advisor_approval === 'Pending'
+                        }" (change)="onStatusChange(existingForm)">
+                            <option value="Approved" class="text-green-500">Approved</option>
+                            <option value="Unapproved" class="text-red-500">Unapproved</option>
+                            <option *ngIf="existingForm.advisor_approval === 'Pending'" hidden value="Pending"
+                                class="text-gray-500">Pending</option>
+                        </select>
+                    </div> -->
+                </div>
             </div>
         </ng-container>
     </ng-container>
