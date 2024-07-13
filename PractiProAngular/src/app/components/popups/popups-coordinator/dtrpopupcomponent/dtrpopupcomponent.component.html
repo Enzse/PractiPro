@@ -1,4 +1,4 @@
-<div class="p-3 rounded-md shadow-xl max-h-screen">
+<div class="p-3 rounded-md max-h-[95vh]">
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Daily Attendances Submitted:</h1>
 
 
@@ -18,8 +18,7 @@
                         class="bg-blue-900 border border-blue-900 font-primary rounded-e-md text-white px-3 py-2  hover:bg-blue-800 "
                         type="button">
                         <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                            viewBox="0 0 24 24">
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
                             <path
                                 d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
                         </svg>
@@ -49,7 +48,7 @@
             </div>
         </div>
     </div>
-    
+
     <div *ngIf="datalist.length > 0" class=" flow-root bg-slate-50 px-5 pt-5 justify-center text-center overflow-auto shadow-md
         shadow-slate-200 border border-gray-200 sm:rounded-lg">
 
@@ -68,10 +67,12 @@
             <tbody>
                 <tr *ngFor="let record of datalist | paginate: { itemsPerPage: itemsPerPage, currentPage: p  } |filter:searchtext"
                     class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
-                    <td class="table-data border-2 border-slate-600">{{ record.weekNumber}}</td>
+                    <th class="table-data border-2 border-slate-600">Week {{ record.weekNumber}}</th>
                     <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
-                    <td class="table-data border-2 border-slate-600">{{ record.startTime ? (record.startTime | time:record.startTime) : "Not set" }}</td>
-                    <td class="table-data border-2 border-slate-600">{{ record.endTime ? (record.endTime | time:record.endTime) : "Not set" }}</td>
+                    <td class="table-data border-2 border-slate-600">{{ record.startTime ? (record.startTime |
+                        time:record.startTime) : "Not set" }}</td>
+                    <td class="table-data border-2 border-slate-600">{{ record.endTime ? (record.endTime |
+                        time:record.endTime) : "Not set" }}</td>
                     <td class="table-data border-2 border-slate-600">{{record.totalHours || "Not Set"}}</td>
                     <td class="table-data border-2 border-slate-600">
                         <p class="rounded-lg text-base px-4 py-2" [ngClass]="{

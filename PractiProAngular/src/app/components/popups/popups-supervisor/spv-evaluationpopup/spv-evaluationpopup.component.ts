@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -26,7 +26,8 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
     private service: AuthService,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogref: MatDialogRef<SpvEvaluationpopupComponent>) {
+    private dialogref: MatDialogRef<SpvEvaluationpopupComponent>,
+    private el: ElementRef) {
     this.userId = this.service.getCurrentUserId();
 
     this.evaluationForm = this.builder.group({
@@ -92,10 +93,19 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
     )
   }
 
+  scrollToFirstInvalidControl() {
+    const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector('form .ng-invalid');
+    if (firstInvalidControl) {
+      firstInvalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstInvalidControl.focus();
+    }
+  }
+
   submitEvaluation() {
     if (!this.evaluationForm.valid) {
+      this.scrollToFirstInvalidControl();
       Swal.fire({
-        title: "It seems you might've missed some questions.",
+        title: "It seems you have missed some questions.",
         text: "Please answer all the questions first before submitting the evaluation.",
         confirmButtonColor: '#233876',
         icon: 'warning'
@@ -172,5 +182,15 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
     // popup.afterClosed().subscribe(res => {
     //   this.loadData()
     // });
+  }
+
+
+  scrollToTop(): void {
+    const scrollContainer = document.querySelector('.scroll-container');
+    if (scrollContainer) {
+      (scrollContainer as HTMLElement).scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      console.error('Scroll container not found');
+    }
   }
 }

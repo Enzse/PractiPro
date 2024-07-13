@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
@@ -28,7 +28,7 @@ export class ExitPollComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   exitPollForm: any;
 
-  constructor(private service: AuthService, private builder: FormBuilder, private dialog: MatDialog) {
+  constructor(private service: AuthService, private el: ElementRef, private builder: FormBuilder, private dialog: MatDialog) {
     this.userId = this.service.getCurrentUserId();
     this.exitPollForm = this.builder.group({
       user_id: this.userId,
@@ -57,10 +57,18 @@ export class ExitPollComponent implements OnInit, OnDestroy {
 
       p4q1: ['', Validators.required],
     })
+
   }
 
   ngOnInit(): void {
     this.loadReport();
+    this.subscriptions.add(
+      this.exitPollForm.get('p1q7')?.valueChanges.subscribe((value: any) => {
+        if (value === 'no') {
+          this.exitPollForm.get('p1q7x1')?.reset();
+          this.exitPollForm.get('p1q7x2')?.reset();
+        }
+      }));
   }
 
   ngOnDestroy(): void {
@@ -76,8 +84,17 @@ export class ExitPollComponent implements OnInit, OnDestroy {
     )
   }
 
+  scrollToFirstInvalidControl() {
+    const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector('form .ng-invalid');
+    if (firstInvalidControl) {
+      firstInvalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstInvalidControl.focus();
+    }
+  }
+
   submitReport() {
     if (!this.exitPollForm.valid) {
+      this.scrollToFirstInvalidControl();
       Swal.fire({
         title: "It seems you might've missed some questions.",
         text: "Please answer all the questions first before submitting the report.",

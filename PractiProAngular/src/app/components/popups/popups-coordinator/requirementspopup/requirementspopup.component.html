@@ -1,4 +1,4 @@
-<div class="p-3 max-w-screen max-h-screen bg-white shadow-lg rounded-lg">
+<div class="p-3 max-h-[90vh] bg-white rounded-lg">
     <div *ngIf="isLoading" class="flex justify-center">
         <p class="font-secondary text-2xl">Loading...</p>
     </div>
@@ -101,7 +101,7 @@
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Requirement:
+                            Requirement ID:
                         </th>
                         <th scope="col" class="px-6 py-3">
                             File Name:
@@ -126,9 +126,9 @@
                 <tbody>
                     <tr *ngFor="let submission of studentSubmissions | paginate: { itemsPerPage: 5, currentPage: p  } | filter: searchtext"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td class="px-6 py-4">
-                            {{ submission.submission_name }}
-                        </td>
+                        <th class="px-6 py-4 text-nowrap">
+                            {{ submission.submission_name }} {{submission.id}}
+                        </th>
                         <td class="px-6 py-4">
                             {{ submission.file_name }}
                         </td>
@@ -184,18 +184,18 @@
 
                             </button>
                             <mat-menu #menu="matMenu">
-                                <li class="space-x-3 px-3">
+                                <li class="flex justify-center space-x-3 px-3">
                                     <button (click)="downloadFile(submission.id, submission.file_name)"
                                         class="text-white inline-flex items-center bg-green-500 hover:bg-green-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
-                                            class="lucide lucide-download">
+                                            class="lucide me-1 lucide-download">
                                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                             <polyline points="7 10 12 15 17 10" />
                                             <line x1="12" x2="12" y1="15" y2="3" />
-                                        </svg></button>
-                                    <button
+                                        </svg>Download</button>
+                                    <!-- <button
                                         class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"
                                         (click)="deleteSubmission(submission.id)"><svg
                                             class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
@@ -205,7 +205,7 @@
                                                 d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
                                                 clip-rule="evenodd" />
                                         </svg>
-                                    </button>
+                                    </button> -->
                                 </li>
                             </mat-menu>
                         </td>

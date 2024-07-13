@@ -291,6 +291,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       this.service.getSubmissionMaxWeeks('student_war_records', this.userId).subscribe(
         res => {
           this.tabWeekNumbers = res;
+          // this.selectTabIndex(this.tabWeekNumbers.length);
         },
         error => {
           console.error('Error fetching week numbers:', error);

@@ -1,39 +1,112 @@
-<div class="bg-slate-50 rounded-lg sm:w-[600px] p-5 shadow-md border border-gray-200">
-    <form [formGroup]="seminarRecordForm" (ngSubmit)="submitFiles()">
-        <div class="grid gap-4 mb-6 grid-cols-1 sm:grid-cols-8">
-            <div class="sm:col-span-4">
-                <label for="event_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Name</label>
-                <input type="text" id="event_name"
-                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="(Event Name)" formControlName="event_name" />
+<div class="max-h-screen overflow-auto p-5">
+    <div>
+        <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg text-center mb-2 ms-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-6 h-6 inline me-1 text-orange-500">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                    d="M15 9h3m-3 3h3m-3 3h3m-6 1c-.306-.613-.933-1-1.618-1H7.618c-.685 0-1.312.387-1.618 1M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm7 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+            </svg>Add Seminar/Webinar Record
+        </h1>
+        <div class="border-b border-gray-300"></div>
+    </div>
+
+    <div>
+        <div class="rounded-lg w-full p-5">
+            <div class="mb-4">
+                <form [formGroup]="seminarRecordForm" (ngSubmit)="submitRecord()">
+                    <div class="grid gap-4 mb-6 grid-cols-1 sm:grid-cols-8">
+                        <div class="sm:col-span-2">
+                            <label for="event_name"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
+                                Name</label>
+                            <input type="text" id="event_name"
+                                class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="(Event Name)" formControlName="event_name" />
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label for="start_date"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
+                                Date</label>
+                            <input type="date" id="start_date"
+                                class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="(YYYY-MM-DD)" formControlName="event_date" />
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label for="event_type"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event
+                                Type</label>
+                            <select id="event_type" formControlName="event_type"
+                                class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="" disabled selected hidden>Select Category:</option>
+                                <option value="Seminar">Seminar</option>
+                                <option value="Webinar">Webinar</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label for="duration"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration
+                                (hours)</label>
+                            <input type="number" id="duration"
+                                class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="(8.00)" formControlName="duration" />
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="sm:col-span-4">
-                <label for="start_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Date</label>
-                <input type="date" id="start_date"
-                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="(YYYY-MM-DD)" formControlName="event_date" />
-            </div>
-            <div class="sm:col-span-4">
-                <label for="event_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Event Type</label>
-                <select id="event_type" formControlName="event_type"
-                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="" disabled selected hidden>Select Category:</option>
-                    <option value="Seminar">Seminar</option>
-                    <option value="Webinar">Webinar</option>
-                </select>
-            </div>
-            <div class="sm:col-span-4">
-                <label for="duration" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Duration (hours)</label>
-                <input type="number" id="duration"
-                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="(8.00)" formControlName="duration" />
+
+
+            <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg text-center mb-2 ms-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-award inline me-1 text-orange-500">
+                    <path
+                        d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526" />
+                    <circle cx="12" cy="8" r="6" />
+                </svg>Certification
+                <svg class="w-4 h-4 inline -mt-0.5 text-gray-500 dark:text-white" aria-hidden="true"
+                    matTooltip="We are aware that some seminars do not grant certifications. As such this is not considered as a requirement for each record."
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+            </h1>
+            <div class="mb-3 border-b border-gray-300"></div>
+            <p class="text-gray-800 text-sm text-center font-secondary">
+                All certifications should be in <b>Portable Document Format(.pdf).</b>
+            </p>
+            <div class="bg-slate-50 border mt-2 shadow-sm rounded-lg border-gray-200">
+                <form [ngClass]="{'hidden':pdfPreview}" class=" rounded-lg w-full flex justify-center py-24">
+                    <input type="file" id="FinalReport" name="FinalReport" (change)="onFileChange($event)" />
+                </form>
+                <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+                    class="object-cover object-center w-full h-96 rounded-md" />
+                <div class="flex justify-center items-center max-sm:text-xs pt-3">
+                </div>
             </div>
         </div>
 
+        <div class="flex justify-center">
+            <button type="submit" (click)="submitRecord()"
+                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-16 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add
+                Record</button>
+        </div>
+    </div>
+
+
+
+    <!-- 
         <div class="mb-3 border-b border-gray-300"></div>
         <div class="flex justify-center">
             <button type="submit"
-                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-16 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add Record</button>
-        </div>
-    </form>
+                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-16 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Add
+                Record</button>
+        </div> -->
+
+    <!-- <p class="text-gray-800 text-base text-center font-secondary">
+        All certifications should be in <b>Portable Document Format(.pdf).</b>
+    </p>
+    <br /> -->
+
+
+
 </div>

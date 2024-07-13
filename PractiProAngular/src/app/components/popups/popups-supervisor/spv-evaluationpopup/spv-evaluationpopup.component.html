@@ -1,4 +1,4 @@
-<div class="p-5 max-sm:px-0 mx-sm:pt-5 rounded-md shadow-xl max-h-[90vh]">
+<div class="p-5 scroll-container overflow-auto max-sm:px-0 mx-sm:pt-5 rounded-md shadow-xl max-h-[90vh]">
   <div>
     <h1 class="text-orange-500 font-bold font-primary text-lg text-center mb-2">
       <svg class="w-6 h-6 -mt-1 text-orange inline dark:text-white" aria-hidden="true"
@@ -6,7 +6,7 @@
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
           d="M10 3v4a1 1 0 0 1-1 1H5m4 6 2 2 4-4m4-8v16a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7.914a1 1 0 0 1 .293-.707l3.914-3.914A1 1 0 0 1 9.914 3H18a1 1 0 0 1 1 1Z" />
       </svg>
-      Final Report of '{{this.data.student.firstName}} {{this.data.student.lastName}}'
+      Performance Evaluation for '{{this.data.student.firstName}} {{this.data.student.lastName}}'
     </h1>
     <div class="border-b border-gray-300"></div>
     <br />
@@ -14,15 +14,24 @@
 
 
   <div *ngIf="!this.existingEvaluation">
-    <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
-      Please evaluate the student according to company standards/job specifications and your individual standard of
+    <!-- <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
+      Please evaluate the <b>student's performance</b> according to company standards/job specifications and your
+      individual standard
+      of
       performance.
     </p>
-    <br />
+    <br /> -->
 
     <div class="bg-slate-50 rounded-lg w-full p-4 font-secondary text-center shadow-md border border-gray-200">
       <div>
-        <h1 class="mb-3 font-primary text-gray-800 font-bold text-2xl">Rating Scale: </h1>
+        <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-lg mb-3">
+          Please answer the following questions:
+        </h1>
+        <div class="border-b border-gray-300"></div>
+        <br />
+      </div>
+      <div>
+        <h1 class="mb-3 font-primary text-gray-800 font-bold text-xl">Rating Scale: </h1>
         <div class="flex max-sm:flex-col flex-inline mb-3 font-primary font-semibold justify-evenly gap-1">
           <p class="text-red-500">
             <span class="text-gray-800">1 -</span> Poor
@@ -890,14 +899,14 @@
               <div>
 
 
-                <div class="inline-flex gap-3 mb-3">
-                  <p class="font-primary font-medium text-left text-gray-900">
-                    6. Would you recommend this student for further employment in your own firm?:
-                  </p>
+                <p class="font-primary font-medium text-left text-gray-900">
+                  6. Would you recommend this student for further employment in your own firm?:
+                </p>
+                <div class="inline-flex gap-3 mb-3 mt-2">
                   <div class="flex items-center">
                     <input id="good" type="radio" value="yes" name="p5q6x1" formControlName="p5q6x1"
                       class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
-                    <label for="good" class="block ms-2 font-primary text-sm font-medium">
+                    <label for="good" class="block ms-2 font-primary text-base font-bold">
                       Yes
                     </label>
                   </div>
@@ -905,7 +914,7 @@
                   <div class="flex items-center">
                     <input id="fair" type="radio" value="no" name="p5q6x1" formControlName="p5q6x1"
                       class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
-                    <label for="fair" class="block ms-2 font-primary text-sm font-medium">
+                    <label for="fair" class="block ms-2 font-primary text-base font-bold">
                       No
                     </label>
                   </div>
@@ -937,43 +946,18 @@
 
   <div *ngIf="this.existingEvaluation">
 
-    <!-- <div class="bg-slate-50 rounded-lg w-full p-5 mb-10 shadow-md font-secondary text-center border border-gray-200">
-      <div>
-        <h1 class="text-blue-900 font-bold font-primary text-center text-2xl max-sm:text-lg mb-5">
-          You have already submitted an evaluation for this student.
-        </h1>
-        <div class="border-b border-gray-300"></div>
-        <div class="flex justify-evenly max-sm:flex-col max-sm:gap-2 pt-5 px-5">
-          <div class="text-xl max-sm:text-base font-primary">
-            <span class="font-semibold">Advisor Approval: </span>
-            <span [ngClass]="{
-              'text-green-500': this.existingEvaluation.advisor_approval === 'Approved',
-              'text-red-500': this.existingEvaluation.advisor_approval === 'Unapproved',
-              'text-gray-500': this.existingEvaluation.advisor_approval === 'Pending',
-              }">
-              {{this.existingEvaluation.advisor_approval}}</span>
-          </div>
-
-          <div class="text-xl max-sm:text-base font-primary">
-            <span class="font-semibold">Date Submitted: </span>
-            {{this.existingEvaluation.created_at |date : "medium"}}
-          </div>
-        </div>
-      </div>
-    </div> -->
 
     <div class="bg-slate-50 rounded-lg w-full p-4 font-secondary text-center shadow-md border border-gray-200">
-      <div class="py-5">
+      <div class="p-5 py-7 bg-white rounded-lg shadow-md mb-5">
         <h1 class="text-blue-900 font-bold font-primary text-center text-2xl max-sm:text-lg mb-1">
           You have already submitted an evaluation for this student.
         </h1>
-        <div class="text-lg max-sm:text-base font-primary mb-5">
+        <div class="text-lg max-sm:text-base font-primary">
           <span class="font-semibold">Date Submitted: </span>
           {{this.existingEvaluation.created_at |date : "medium"}}
         </div>
-        <div class="border-b border-gray-300"></div>
-
       </div>
+
       <form [formGroup]="evaluationForm">
 
         <!-- Question 1 -->
@@ -1778,7 +1762,7 @@
                   1. The student's major strong points are:
                 </p>
                 <textarea readonly id="message" rows="4" name="p5q1" formControlName="p5q1"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
                   placeholder="Write here ... "></textarea>
               </div>
 
@@ -1787,7 +1771,7 @@
                   2. These might be utilized more effectively by:
                 </p>
                 <textarea readonly id="message" rows="4" name="p5q2" formControlName="p5q2"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   placeholder="Write here ... "></textarea>
               </div>
 
@@ -1796,7 +1780,7 @@
                   3. The student's major weak points are:
                 </p>
                 <textarea readonly id="message" rows="4" name="p5q3" formControlName="p5q3"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
                   placeholder="Write here ... "></textarea>
               </div>
 
@@ -1805,7 +1789,7 @@
                   4. These might be corrected by:
                 </p>
                 <textarea readonly id="message" rows="4" name="p5q4" formControlName="p5q4"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
                   placeholder="Write here ... "></textarea>
               </div>
 
@@ -1814,7 +1798,7 @@
                   5. Other comments / suggestions:
                 </p>
                 <textarea readonly id="message" rows="4" name="p5q5" formControlName="p5q5"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white "
                   placeholder="Write here ... "></textarea>
               </div>
 
@@ -1844,7 +1828,7 @@
 
 
                 <textarea readonly id="message" rows="4" name="p5q6" formControlName="p5q6"
-                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  "
                   placeholder="Explain why here ... "></textarea>
               </div>
 
@@ -1854,7 +1838,18 @@
 
         </div>
       </form>
-
+      <div class="w-full mt-7 flex justify-center">
+        <button type="submit" (click)="scrollToTop()"
+          class=" text-white py-2 px-10 text-lg bg-blue-900 hover:bg-blue-800 font-medium rounded-md">
+          Back to Top
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide inline -mt-0.5 lucide-arrow-up">
+            <path d="m5 12 7-7 7 7" />
+            <path d="M12 19V5" />
+          </svg>
+        </button>
+      </div>
     </div>
 
   </div>

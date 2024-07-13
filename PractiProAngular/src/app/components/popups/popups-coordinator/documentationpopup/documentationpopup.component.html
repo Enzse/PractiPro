@@ -1,4 +1,4 @@
-<div class="p-3 rounded-md shadow-xl">
+<div class="p-3 rounded-md max-h-[90vh] shadow-xl">
     <h1 class="mb-2 text-orange-500 font-bold ml-1">Documentations Submitted:</h1>
     <div *ngIf="isLoading" class="flex justify-center">
         <p class="font-secondary text-2xl">Loading...</p>
@@ -83,7 +83,7 @@
                     <tr *ngFor="let submission of studentSubmissions | paginate: { itemsPerPage: 5, currentPage: p  } | filter:searchtext"
                         class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
-                        <td class="px-6 py-4 font-primary font-bold">
+                        <td class="px-6 py-4 font-primary font-bold text-nowrap">
                             Week {{ submission.week }}
                         </td>
                         <td class="px-6 py-4">

@@ -567,8 +567,9 @@ class Post extends GlobalMethods
                     $data->duration
                 ]
             );
+            $record_id = $this->pdo->lastInsertId();
             $this->pdo->commit();
-            return $this->sendPayload(null, "success", "Successfully uploaded record", 200);
+            return $this->sendPayload(["record_id" => $record_id], "success", "Successfully uploaded record", 200);
         } catch (PDOException $e) {
             $this->pdo->rollBack();
             $errmsg = $e->getMessage();
