@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { Subscription } from 'rxjs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
 
 @Component({
   selector: 'app-submission',
@@ -126,7 +127,10 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       }));
   }
 
-
+  viewFile(fileName: string) {
+    const pdfPath = `../../assets/pdfTemplates/${fileName}`;
+    window.open(pdfPath, '_blank');
+  }
 
   setFilter(filter: string) {
     this.p = 1;

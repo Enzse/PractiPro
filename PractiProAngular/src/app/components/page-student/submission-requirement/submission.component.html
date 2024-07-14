@@ -25,19 +25,58 @@
 
         <mat-tab label="Resume">
           <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="resumeFile" name="resumeFile" accept="application/pdf" (change)="onFileChange($event)" />
+            <input type="file" id="resumeFile" name="resumeFile" accept="application/pdf"
+              (change)="onFileChange($event)" />
           </form>
-            <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-              class="object-cover object-center w-full h-96 rounded-md" />
+          <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
+            class="object-cover object-center w-full h-96 rounded-md" />
+          <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
+            <button type="button" (click)="submitFiles()"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
+                <path d="m18 9-6-6-6 6" />
+                <path d="M12 3v14" />
+                <path d="M5 21h14" />
+              </svg>
+              Submit File
+            </button>
+          </div>
         </mat-tab>
 
         <mat-tab label="Application Letter">
           <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
             <input type="file" id="applicationLetterFile" name="applicationLetterFile" accept="application/pdf"
-              (change)="onFileChange($event)" />              
+              (change)="onFileChange($event)" />
           </form>
           <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-              class="object-cover object-center w-full h-96 rounded-md" />
+            class="object-cover object-center w-full h-96 rounded-md" />
+          <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs gap-3 pt-3">
+            <button type="button" (click)="viewFile('Application_Letter.docx')"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 lucide lucide-file-search">
+                <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
+                <path d="m9 18-1.5-1.5" />
+                <circle cx="5" cy="14" r="3" />
+              </svg>
+              View Template
+            </button>
+            <button type="button" (click)="submitFiles()"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
+                <path d="m18 9-6-6-6 6" />
+                <path d="M12 3v14" />
+                <path d="M5 21h14" />
+              </svg>
+              Submit File
+            </button>
+          </div>
         </mat-tab>
 
         <mat-tab label="Acceptance Letter">
@@ -45,7 +84,32 @@
             <input type="file" id="acceptanceLetterFile" name="acceptanceLetterFile" (change)="onFileChange($event)" />
           </form>
           <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-              class="object-cover object-center w-full h-96 rounded-md" />
+            class="object-cover object-center w-full h-96 rounded-md" />
+          <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs gap-3 pt-3">
+            <button type="button" (click)="viewFile('Acceptance_Letter.docx')"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 lucide lucide-file-search">
+                <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
+                <path d="m9 18-1.5-1.5" />
+                <circle cx="5" cy="14" r="3" />
+              </svg>
+              View Template
+            </button>
+            <button type="button" (click)="submitFiles()"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
+                <path d="m18 9-6-6-6 6" />
+                <path d="M12 3v14" />
+                <path d="M5 21h14" />
+              </svg>
+              Submit File
+            </button>
+          </div>
         </mat-tab>
 
         <mat-tab label="Endorsement Letter">
@@ -54,15 +118,54 @@
               (change)="onFileChange($event)" />
           </form>
           <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-              class="object-cover object-center w-full h-96 rounded-md" />
+            class="object-cover object-center w-full h-96 rounded-md" />
+          <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
+            <button type="button" (click)="submitFiles()"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
+                <path d="m18 9-6-6-6 6" />
+                <path d="M12 3v14" />
+                <path d="M5 21h14" />
+              </svg>
+              Submit File
+            </button>
+          </div>
         </mat-tab>
 
         <mat-tab label="Parent's/Guardian's Waiver">
           <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="pgWaiverFile" name="pgWaiverFile" accept="application/pdf" (change)="onFileChange($event)" />
+            <input type="file" id="pgWaiverFile" name="pgWaiverFile" accept="application/pdf"
+              (change)="onFileChange($event)" />
           </form>
           <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-              class="object-cover object-center w-full h-96 rounded-md" />
+            class="object-cover object-center w-full h-96 rounded-md" />
+          <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs gap-3 pt-3">
+            <button type="button" (click)="viewFile('Parents_Waiver.docx')"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 lucide lucide-file-search">
+                <path d="M14 2v4a2 2 0 0 0 2 2h4" />
+                <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
+                <path d="m9 18-1.5-1.5" />
+                <circle cx="5" cy="14" r="3" />
+              </svg>
+              View Template
+            </button>
+            <button type="button" (click)="submitFiles()"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
+                <path d="m18 9-6-6-6 6" />
+                <path d="M12 3v14" />
+                <path d="M5 21h14" />
+              </svg>
+              Submit File
+            </button>
+          </div>
         </mat-tab>
 
         <mat-tab label="Vaccination Card">
@@ -71,7 +174,20 @@
               (change)="onFileChange($event)" />
           </form>
           <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-              class="object-cover object-center w-full h-96 rounded-md" />
+            class="object-cover object-center w-full h-96 rounded-md" />
+          <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
+            <button type="button" (click)="submitFiles()"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
+                <path d="m18 9-6-6-6 6" />
+                <path d="M12 3v14" />
+                <path d="M5 21h14" />
+              </svg>
+              Submit File
+            </button>
+          </div>
         </mat-tab>
 
         <mat-tab label="Barangay Clearance">
@@ -80,32 +196,45 @@
               (change)="onFileChange($event)" />
           </form>
           <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-              class="object-cover object-center w-full h-96 rounded-md" />
+            class="object-cover object-center w-full h-96 rounded-md" />
+          <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
+            <button type="button" (click)="submitFiles()"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
+                <path d="m18 9-6-6-6 6" />
+                <path d="M12 3v14" />
+                <path d="M5 21h14" />
+              </svg>
+              Submit File
+            </button>
+          </div>
         </mat-tab>
 
         <mat-tab label="Medical Certificate">
           <form [ngClass]="{'hidden': pdfPreview }" class="rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-            <input type="file" id="medCertFile" name="medCertFile" accept="application/pdf" (change)="onFileChange($event)" />
+            <input type="file" id="medCertFile" name="medCertFile" accept="application/pdf"
+              (change)="onFileChange($event)" />
           </form>
           <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-              class="object-cover object-center w-full h-96 rounded-md" />
+            class="object-cover object-center w-full h-96 rounded-md" />
+          <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
+            <button type="button" (click)="submitFiles()"
+              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
+                <path d="m18 9-6-6-6 6" />
+                <path d="M12 3v14" />
+                <path d="M5 21h14" />
+              </svg>
+              Submit File
+            </button>
+          </div>
         </mat-tab>
 
       </mat-tab-group>
-
-      <div class="flex justify-end items-center max-sm:text-xs pt-3">
-        <button type="button" (click)="submitFiles()"
-          class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-            <path d="m18 9-6-6-6 6" />
-            <path d="M12 3v14" />
-            <path d="M5 21h14" />
-          </svg>
-          Submit File
-        </button>
-      </div>
     </div>
 
 
