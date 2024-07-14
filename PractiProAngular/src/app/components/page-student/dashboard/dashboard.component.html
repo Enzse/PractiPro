@@ -8,6 +8,25 @@
       <br />
     </div>
 
+    <div *ngIf="isCompleted === true"
+      class="bg-slate-50 rounded-lg w-full p-5 mb-10 shadow-md font-secondary text-center border border-gray-200">
+      <div>
+        <h1 class="text-blue-900 font-bold font-primary text-center text-3xl mb-5">
+          Congratulations, <span class="text-orange-500">{{student.firstName}}</span>!
+        </h1>
+        <div class="border-b border-gray-300"></div>
+        <div class="flex-col max-sm:gap-2 pt-5 pb-3 px-5">
+          <h2 class="text-gray-900 font-bold font-primary text-center text-xl">
+            You have successfully completed the Practicum Process.
+          </h2>
+          <h3 class="text-gray-900 font-primary text-center text-base">
+            Best wishes for your future career
+            endeavors!
+          </h3>
+        </div>
+      </div>
+    </div>
+
     <!-- REGISTRATION STATUS -->
     <div *ngIf="registrationStatus === 0"
       class="overflow-x-hidden text-center bg-slate-50 h-auto items-center justify-center rounded-lg shadow-md border border-gray-200">
@@ -183,7 +202,7 @@
     <div *ngIf="registrationStatus === 1"
       class="overflow-x-hidden text-center bg-slate-100 h-auto items-center justify-center rounded-lg shadow-md border border-gray-200">
       <div class="mb-auto mt-3 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
-        <h1 class="font-primary font-bold text-lg">PRACTICUM PROGRESS</h1>
+        <h1 class="font-primary font-bold text-lg">PRACTICUM STATUS</h1>
       </div>
 
       <div class="flex flex-col md:flex-row justify-evenly">
@@ -192,7 +211,8 @@
         <div class="flex flex-col justify-center p-10 m-5 shadow-md hover:shadow-xl rounded-xl bg-white">
           <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalHoursWorked || '0.00'}}<span
               class="text-sm">hrs</span></h1>
-          <h2 class="font-primary text-sm">Total Training Hours Accumulated</h2>
+          <h2 matTooltip="You must meet a total of 200+ hours to be completed in Training Hours."
+            class="font-primary text-sm">Total Training Hours Accumulated</h2>
         </div>
 
 
@@ -200,7 +220,8 @@
         <div class="flex flex-col justify-center p-10 m-5 shadow-md hover:shadow-xl  rounded-xl bg-white">
           <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalSeminarHours || '0.00'}}<span
               class="text-sm">hrs</span></h1>
-          <h2 class="font-primary text-sm">Total Seminar Hours Accumulated</h2>
+          <h2 matTooltip="You must meet a total of 50+ hours to be completed in Seminar Hours."
+            class="font-primary text-sm">Total Seminar Hours Accumulated</h2>
         </div>
       </div>
 

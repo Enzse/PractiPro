@@ -7,11 +7,12 @@ import { ViewhiringrequestsComponent } from '../../popups/popups-student/viewhir
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { TimePipe } from '../../../pipes/time.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NavbarComponent, NavbarComponent, RouterLink, RouterLinkActive, CommonModule, TimePipe],
+  imports: [NavbarComponent, NavbarComponent, RouterLink, RouterLinkActive, CommonModule, TimePipe, MatTooltipModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -23,6 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   student: any;
   studentjob: any;
   hiringRequests: any[] = [];
+  isCompleted: boolean = false;
   private subscriptions = new Subscription();
   userId: any = this.service.getCurrentUserId();
   schedules = [
@@ -47,10 +49,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   loadSchedules() {
     this.subscriptions.add(
-    this.service.getStudentSchedules(this.userId).subscribe((res: any) => {
-      this.schedules = res.payload
-      console.log(this.schedules)
-    }));
+      this.service.getStudentSchedules(this.userId).subscribe((res: any) => {
+        this.schedules = res.payload
+      }));
   }
 
   loadData() {
@@ -61,6 +62,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
           (res: any) => {
             this.registrationStatus = res.payload[0].registration_status;
             this.student = res.payload[0];
+
+            if (this.student.TotalHoursWorked >= 200 &&
+              this.student.TotalSeminarHours >= 50 &&
+              this.student.evaluation_status === 'Completed!' &&
+              this.student.exitpoll_status === 'Completed!') {
+              this.isCompleted = true;
+            }
+
             if (!this.registrationStatus)
               this.subscriptions.add(
                 this.service.getStudentRequirements(this.userId).subscribe(
@@ -79,12 +88,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
                   }
                 ));
             if (this.registrationStatus && this.student.company_id)
-            console.log(this.userId);
-              this.subscriptions.add(
-                this.service.getStudentJob(this.userId).subscribe((res: any) => {
-                  this.studentjob = res.payload[0];
-                }
-                ));
+              console.log(this.userId);
+            this.subscriptions.add(
+              this.service.getStudentJob(this.userId).subscribe((res: any) => {
+                this.studentjob = res.payload[0];
+              }
+              ));
           },
           (error: any) => {
             console.error('Error fetching data.', error);
@@ -94,7 +103,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
 
-  
+
 
 
   viewHiringRequests(id: number) {
