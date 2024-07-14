@@ -13,78 +13,139 @@
             <br />
         </div>
         <div *ngIf="blockData; else noBlockMessage"
-            class="text-center p-5 bg-slate-100 h-auto justify-center rounded-lg shadow-md border border-gray-200">
+            class="text-center py-5 px-10 max-sm:p-5 bg-slate-100 h-auto justify-center rounded-lg shadow-md border border-gray-200">
             <div class=" inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
                 <h1 class="font-primary font-bold text-3xl">{{blockData.block_name}}</h1>
             </div>
 
-            <div (click)="viewAllStudents(blockData.block_name)"
-                class="font-primary cursor-pointer justify-between shadow-md hover:shadow-xl bg-white mx-6 my-5 py-5 px-4 rounded-lg">
-                <div>
-                    <h1>Students under {{blockData.block_name}}:</h1>
-                    <h1 class="font-bold text-2xl text-blue-900">{{blockData.students_handled}} Total Students</h1>
+
+            <div class="grid grid-cols-12 max-sm:grid-cols-1 space-x-1 max-sm:space-y-1 my-5">
+                <div (click)="viewAllStudents(blockData.block_name)"
+                    class="col-span-7 max-sm:col-span-1 font-primary cursor-pointer shadow-md hover:shadow-xl bg-white px-10 py-5 rounded-lg flex flex-col justify-center">
+                    <div>
+                        <h1 class="font-bold text-4xl text-blue-900">{{blockData.students_handled}} Total Students</h1>
+                        <h1 class="text-sm">Click here to view all students</h1>
+                    </div>
                 </div>
+                <div class="col-span-5 max-sm:col-span-1 space-y-1 text-sm">
+                    <div (click)="viewJoinRequests(blockData.block_name)"
+                        matTooltip="(Click here to see join requests for this class.)"
+                        class="font-primary w-full px-4 cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
+
+                        <p *ngIf="requestCount > 0" class="font-primary text-green-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide inline -mt-0.5 lucide-inbox">
+                                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+                                <path
+                                    d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                            </svg>
+                            This class has pending join requests:
+                            ({{requestCount}})
+                        </p>
+                        <p *ngIf="requestCount === 0" class="opacity-70">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide inline -mt-0.5 lucide-inbox">
+                                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+                                <path
+                                    d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                            </svg>
+                            This class currently has no join requests.
+                        </p>
+                    </div>
+
+                    <div (click)="viewSentInvites(blockData.block_name)"
+                        matTooltip="(Click here to see sent invitations to students.)"
+                        class="font-primary w-full px-4 cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
+                        <p *ngIf="invitationCount > 0" class="opacity-70">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide inline -mt-1 lucide-inbox">
+                                <path
+                                    d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
+                                <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
+                            </svg>
+                            You currently have {{invitationCount}} pending invitations.
+                        </p>
+                        <p *ngIf="invitationCount === 0" class="opacity-70">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="lucide inline -mt-1 lucide-inbox">
+                                <path
+                                    d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
+                                <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
+                            </svg>
+                            You currently have no invitations sent.
+                        </p>
+                    </div>
+                </div>
+
+                <div *ngIf="pendingSubmissionsTotal" class="col-span-12 max-sm:col-span-1 mt-5">
+                    <div class="bg-white rounded-lg grid grid-cols-12 shadow-md">
+                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_req_count === 0}"
+                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_req_count')"
+                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                                {{pendingSubmissionsTotal.pending_req_count ?
+                                pendingSubmissionsTotal.pending_req_count
+                                : 0}}</h1>
+                            <p class="text-xs">Pending Requirements</p>
+                        </div>
+                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_doc_count === 0}"
+                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_doc_count')"
+                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                                {{pendingSubmissionsTotal.pending_doc_count ?
+                                pendingSubmissionsTotal.pending_doc_count
+                                : 0}}</h1>
+                            <p class="text-xs">Pending Documentations</p>
+                        </div>
+                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_sem_count === 0}"
+                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_sem_count')"
+                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                                {{pendingSubmissionsTotal.pending_sem_count ?
+                                pendingSubmissionsTotal.pending_sem_count
+                                : 0}}</h1>
+                            <p class="text-xs">Pending Seminar Records</p>
+                        </div>
+                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_war_count_advisor === 0}"
+                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_war_count_advisor')"
+                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                                {{pendingSubmissionsTotal.pending_war_count_advisor ?
+                                pendingSubmissionsTotal.pending_war_count_advisor
+                                : 0}}</h1>
+                            <p class="text-xs">Pending Accomplishment Reports</p>
+                        </div>
+                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_sse_count === 0}"
+                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_sse_count')"
+                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                                {{pendingSubmissionsTotal.pending_sse_count ?
+                                pendingSubmissionsTotal.pending_sse_count
+                                : 0}}</h1>
+                            <p class="text-xs">Pending Student Evaluation</p>
+                        </div>
+                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_frp_count === 0}"
+                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_frp_count')"
+                            class="p-5 border border-gray-200 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto">
+                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                                {{pendingSubmissionsTotal.pending_frp_count ?
+                                pendingSubmissionsTotal.pending_frp_count
+                                : 0}}</h1>
+                            <p class="text-xs">Pending Final Reports</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="font-primary flex justify-evenly space-x-5 mx-6 my-5 rounded-lg">
-                <div (click)="viewJoinRequests(blockData.block_name)"
-                    matTooltip="(Click here to see join requests for this class.)"
-                    class="font-primary w-[90vh] cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
-
-                    <p *ngIf="requestCount > 0" class="font-primary text-green-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-0.5 lucide-inbox">
-                            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
-                            <path
-                                d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
-                        </svg>
-                        This class has pending join requests:
-                        ({{requestCount}})
-                    </p>
-                    <p *ngIf="requestCount === 0" class="opacity-70">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-0.5 lucide-inbox">
-                            <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
-                            <path
-                                d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
-                        </svg>
-                        This class currently has no join requests.
-                        ({{requestCount}})
-                    </p>
-                </div>
-                <div (click)="viewSentInvites(blockData.block_name)"
-                    matTooltip="(Click here to see sent invitations to students.)"
-                    class="font-primary w-[90vh] cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
-                    <p *ngIf="invitationCount > 0" class="opacity-70">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-1 lucide-inbox">
-                            <path
-                                d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
-                            <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
-                        </svg>
-                        You currently have {{invitationCount}} pending invitations.
-                    </p>
-                    <p *ngIf="invitationCount === 0" class="opacity-70">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-1 lucide-inbox">
-                            <path
-                                d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
-                            <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
-                        </svg>
-                        You currently have no invitations sent.
-                    </p>
-                </div>
-            </div>
-
-
-            <!-- <div class="border-b mb-4 mt-8 border-gray-300"></div> -->
+            <div class="border-b my-8 border-gray-300"></div>
 
             <!-- apply the pie chart to other divs -->
-            <div class="my-4 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
+            <div class="mb-4 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
                 <h1 class="font-primary font-bold text-3xl">Student OJT Status:</h1>
             </div>
 

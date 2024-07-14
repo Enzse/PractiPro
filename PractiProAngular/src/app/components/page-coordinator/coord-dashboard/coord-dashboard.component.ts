@@ -11,6 +11,7 @@ import { ViewAllStudentsComponent } from '../../popups/popups-coordinator/view-a
 import { ChartModule } from 'primeng/chart';
 import { ViewSentInvitesComponent } from '../../popups/popups-coordinator/view-sent-invites/view-sent-invites.component';
 import { RouterLink } from '@angular/router';
+import { ViewStudentsPendingsubmissionsComponent } from '../../popups/popups-coordinator/view-students-pendingsubmissions/view-students-pendingsubmissions.component';
 
 
 @Component({
@@ -27,6 +28,8 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   requestCount: any;
   invitationCount: any = 0;
   currentBlock: any;
+  pendingSubmissions: any;
+  pendingSubmissionsTotal: any;
 
   /* percentage data */
   registered: any;
@@ -54,8 +57,8 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
         map((res: any) => res)
       ).subscribe((res: any) => {
         this.currentBlock = res;
-        console.log(this.currentBlock);
         this.loadClass(this.currentBlock);
+        this.loadPendingSubmissionsTotal(this.currentBlock);
       })
     )
 
@@ -74,9 +77,27 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       this.changeDetection.changeDetected$.subscribe(changeDetected => {
         if (changeDetected) {
           this.loadClass(this.currentBlock);
+          this.loadPendingSubmissionsTotal(this.currentBlock);
         }
       }
       )
+    )
+  }
+
+  loadPendingSubmissions(block: any) {
+    this.subscriptions.add(
+      this.service.getPendingSubmissions(block).subscribe((res: any) => {
+        this.pendingSubmissions = res.payload;
+      })
+    )
+  }
+
+  loadPendingSubmissionsTotal(block: any) {
+    this.subscriptions.add(
+      this.service.getPendingSubmissionsTotal(block).subscribe((res: any) => {
+        console.log(res);
+        this.pendingSubmissionsTotal = res.payload[0];
+      })
     )
   }
 
@@ -212,9 +233,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       this.service.getClassInvitationForBlockCount(block).pipe(
         map((res: any) => res.payload[0].invitationCount)
       ).subscribe((count: any) => {
-        console.log(count);
         this.invitationCount = count;
-        console.log(this.invitationCount);
       }));
   }
 
@@ -231,6 +250,18 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
   viewStudentsWithCondition(block: any, condition: string) {
     const popup = this.dialog.open(ViewAllStudentsComponent, {
+      enterAnimationDuration: "350ms",
+      exitAnimationDuration: "500ms",
+      width: "80%",
+      data: {
+        block: block,
+        condition: condition
+      }
+    })
+  }
+
+  viewStudentsWithPendingSubmissions(block: any, condition: string) {
+    const popup = this.dialog.open(ViewStudentsPendingsubmissionsComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "500ms",
       width: "80%",

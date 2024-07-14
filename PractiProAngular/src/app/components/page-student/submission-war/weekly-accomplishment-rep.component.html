@@ -186,7 +186,7 @@
 
 
           <button type="button" (click)="unsubmitWarRecord()"
-            [ngClass]="{'disabled' : selectedRecord.supervisor_approval !== 'Pending'}"
+            [ngClass]="{'disabled' : selectedRecord.supervisor_approval === 'Approved'}"
             class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md max-sm:mb-1">
             <svg class="w-5 h-5 -mt-0.5 text-white dark:text-white inline" aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

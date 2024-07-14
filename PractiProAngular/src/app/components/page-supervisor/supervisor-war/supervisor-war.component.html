@@ -18,12 +18,15 @@
         </div>
 
         <div *ngIf="(traineesList$ | async) as traineesList">
+
             <div *ngIf="traineesList.length > 0; else noStudents"
                 class="flex flex-wrap w-full mt-10 justify-evenly space-x-3">
                 <!-- Trainee Containers -->
                 <div *ngFor="let data of traineesList | filter : searchtext"
                     class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewWars(data)">
-
+                    <div *ngIf="data.pending_war_count > 0"
+                        class="bg-red-500 rounded-full p-1.5  -mt-1 -mr-1 top-0 right-0 absolute">
+                    </div>
                     <div
                         class="w-auto p-3 pb-5 shadow-md justify-around bg-slate-50 hover:bg-slate-100 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
                         <!-- upper part -->

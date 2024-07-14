@@ -78,7 +78,7 @@
                         <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
                             'text-red-500': record.status === 'Unapproved',
                             'text-green-500': record.status === 'Approved'
-                          }">{{record.status}}</p>
+                          }">{{record.status ? record.status : "Not Clocked-out"}}</p>
                     </td>
                 </tr>
             </tbody>

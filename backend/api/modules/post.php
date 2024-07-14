@@ -408,7 +408,7 @@ class Post extends GlobalMethods
     }
     public function dtrClockOut($user_id)
     {
-        $sql = "UPDATE student_dailytimerecords SET endTime = CURTIME() WHERE student_id = ? AND date = CURDATE() AND endTime IS NULL";
+        $sql = "UPDATE student_dailytimerecords SET endTime = CURTIME(), status = 'Pending' WHERE student_id = ? AND date = CURDATE() AND endTime IS NULL";
         try {
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute(
@@ -1113,11 +1113,13 @@ class Post extends GlobalMethods
         $this->pdo->beginTransaction();
         try {
             $sql = "UPDATE student_war_records 
-                    SET isSubmitted = ?, dateSubmitted = NOW(), supervisor_approval = 'Pending', advisor_approval = 'Pending'
+                    SET isSubmitted = ?, dateSubmitted = NOW(), supervisor_approval = ?, advisor_approval = ?
                     WHERE id = ?";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
                 $data->isSubmitted,
+                $data->status,
+                $data->status,
                 $data->id
             ]);
             $this->pdo->commit();

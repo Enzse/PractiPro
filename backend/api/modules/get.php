@@ -604,4 +604,59 @@ class Get extends GlobalMethods
         return $this->get_records('student_supervisor_evaluation', $condition);
     }
 
+    public function getPendingSubmissions($block)
+    {
+        $condition = "block = '$block'";
+
+        return $this->get_records('vw_student_pending_submissions', $condition);
+    }
+
+    public function getPendingSubmissionsTotal($block)
+    {
+        $condition = "block_name = '$block'";
+
+        return $this->get_records('vw_block_pending_submissions', $condition);
+    }
+
+    public function getStudentsWithPendingSubmissions($block, $submissionType, )
+    {
+        $validSubmissionTypes = ['pending_req_count', 'pending_doc_count', 'pending_sem_count', 'pending_war_count_advisor', 'pending_war_count_supervisor', 'pending_frp_count', 'pending_sse_count'];
+        if (!in_array($submissionType, $validSubmissionTypes)) {
+            throw new InvalidArgumentException('Invalid submission type.');
+        }
+
+        $sql = "SELECT 
+        ojt.id,
+        ojt.studentId,
+        ojt.firstName,
+        ojt.lastName,
+        ojt.TotalHoursWorked,
+        ojt.TotalSeminarHours,
+        pending.$submissionType AS pendingSubmissions
+    FROM 
+        vw_student_ojt_status ojt
+    JOIN 
+        vw_student_pending_submissions pending ON ojt.id = pending.student_id
+    WHERE 
+        pending.$submissionType > 0
+        AND ojt.block = :block ;";
+
+
+
+        return $this->get_records(null, null, null, $sql, ['block' => $block]);
+    }
+
+    public function checkIfStudentHasPendingSubmission($student_id, $submissionType = null)
+    {
+        $columns = '*';
+        $condition = "student_id = $student_id";
+        if ($submissionType != null) {
+            $columns = $submissionType;
+            $condition = "student_id = $student_id AND $submissionType > 0";
+        }
+        // $condition = $submissionType ? "student_id = $student_id AND $submissionType > 0" : "student_id = $student_id";
+
+        return $this->get_records('vw_student_pending_submissions', $condition, $columns);
+    }
+
 }

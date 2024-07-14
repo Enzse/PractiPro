@@ -21,11 +21,16 @@
                     class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
                     <td class="table-data border-2 border-slate-600">{{ record.weekNumber}}</td>
                     <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
-                    <td class="table-data border-2 border-slate-600">{{ record.startTime ? (record.startTime | time:record.startTime) : "Not set" }}</td>
-                    <td class="table-data border-2 border-slate-600">{{ record.endTime ? (record.endTime | time:record.endTime) : "Not set" }}</td>
+                    <td class="table-data border-2 border-slate-600">{{ record.startTime ? (record.startTime |
+                        time:record.startTime) : "Not set" }}</td>
+                    <td class="table-data border-2 border-slate-600">{{ record.endTime ? (record.endTime |
+                        time:record.endTime) : "Not set" }}</td>
                     <td class="table-data border-2 border-slate-600">{{record.totalHours || "Not set"}}</td>
                     <td class="table-data border-2 border-slate-600">
-                        <select class="border-0 shadow-md text-center rounded-lg cursor-pointer"
+                        <div *ngIf="!record.status" class="py-2 my-1 text-center">
+                            <p>Not Clocked-out</p>
+                        </div>
+                        <select *ngIf="record.status" class="border-0 shadow-md text-center rounded-lg cursor-pointer"
                             [(ngModel)]="record.status" [ngClass]="{
                             'text-green-500': record.status === 'Approved',
                             'text-red-500': record.status === 'Unapproved',
@@ -33,7 +38,8 @@
                           }" (change)="onStatusChange(record)">
                             <option value="Approved" class="text-green-500">Approved</option>
                             <option value="Unapproved" class="text-red-500">Unapproved</option>
-                            <option *ngIf="record.status === 'Pending'" value="Pending" hidden class="text-gray-500">Pending</option>
+                            <option *ngIf="record.status === 'Pending'" value="Pending" hidden class="text-gray-500">
+                                Pending</option>
                         </select>
                     </td>
                 </tr>

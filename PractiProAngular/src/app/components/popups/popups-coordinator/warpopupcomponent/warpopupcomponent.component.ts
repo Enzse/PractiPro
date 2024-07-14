@@ -11,6 +11,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { WarAccordionComponent } from '../../../widgets/accordion/war-accordion/war-accordion.component';
 import { TimePipe } from '../../../../pipes/time.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 
 
@@ -22,7 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrl: './warpopupcomponent.component.css'
 })
 export class WarpopupcomponentComponent implements OnInit, OnDestroy {
-  constructor(private service: AuthService,
+  constructor(private service: AuthService, private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<WarpopupcomponentComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
@@ -40,7 +41,7 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
 
   loadRecords() {
     this.subscriptions.add(
-      this.service.getWarRecords(this.data.studentId, null).subscribe((res: any) => {
+      this.service.getWarRecords(this.data.student.id, null).subscribe((res: any) => {
         this.recordsList = res.payload.filter((record: any) => record.isSubmitted === 1 && record.supervisor_approval === 'Approved')
         this.recordsList = this.recordsList.sort((a: any, b: any) => {
           return b.week - a.week
@@ -74,6 +75,7 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.service.updateAdvisorApproval('student_war_records', record.id, updateData).subscribe(
         res => {
+          this.changeDetection.notifyChange(true);
           Swal.fire({
             toast: true,
             position: "top-end",

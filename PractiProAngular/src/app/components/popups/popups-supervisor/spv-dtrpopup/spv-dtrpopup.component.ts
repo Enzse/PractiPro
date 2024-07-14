@@ -69,7 +69,7 @@ export class SpvDtrpopupComponent implements OnInit, OnDestroy {
     const updateData = { status: record.status };
     this.subscriptions.add(
       this.service.updateDTRStatus(record.id, updateData).subscribe(
-        res => {          
+        res => {
           this.changeDetection.notifyChange(true);
           Swal.fire({
             toast: true,

@@ -66,13 +66,13 @@ export class CoordDocumentationComponent implements OnInit, OnDestroy {
   }
 
 
-  viewDocumentations(code: any) {
+  viewDocumentations(student: any) {
     const popup = this.dialog.open(DocumentationpopupComponent, {
       enterAnimationDuration: "350ms",
       exitAnimationDuration: "350ms",
       width: "80%",
       data: {
-        usercode: code
+        student: student
       }
     })
   }
@@ -102,7 +102,7 @@ export class CoordDocumentationComponent implements OnInit, OnDestroy {
       exitAnimationDuration: "350ms",
       width: "80%",
       data: {
-        studentId: student
+        student: student
       }
     })
   }

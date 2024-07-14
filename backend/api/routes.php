@@ -433,6 +433,43 @@ switch ($_SERVER['REQUEST_METHOD']) {
                     http_response_code(400);
                 }
                 break;
+            case 'getpendingsubmissions':
+                if (isset($request[1])) {
+                    echo json_encode($get->getPendingSubmissions($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'getstudentswithpendingsubmissions':
+                if (isset($request[2])) {
+                    echo json_encode($get->getStudentsWithPendingSubmissions($request[1], $request[2]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'getpendingsubmissionstotal':
+                if (isset($request[1])) {
+                    echo json_encode($get->getPendingSubmissionsTotal($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+
+            case 'checkifstudenthaspendingsubmission':
+                if (isset($request[2])) {
+                    echo json_encode($get->checkIfStudentHasPendingSubmission($request[1], $request[2]));
+                } else if (isset($request[1])) {
+                    echo json_encode($get->checkIfStudentHasPendingSubmission($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
 
             default:
                 echo "This is forbidden";

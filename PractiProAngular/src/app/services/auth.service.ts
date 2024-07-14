@@ -451,4 +451,23 @@ export class AuthService {
   getEvaluationForStudent(studentId: number) {
     return this.http.get<any>(`${this.apiurl}/getstudentevaluation/${studentId}`);
   }
+  getPendingSubmissions(block: string) {
+    return this.http.get<any>(`${this.apiurl}/getpendingsubmissions/${block}`);
+  }
+
+  getPendingSubmissionsTotal(block: string) {
+    return this.http.get<any>(`${this.apiurl}/getpendingsubmissionstotal/${block}`);
+  }
+
+  getStudentsWithPendingSubmissions(submissionType: string, block: string) {
+    return this.http.get<any>(`${this.apiurl}/getstudentswithpendingsubmissions/${submissionType}/${block}`);
+  }
+
+  checkIfStudentHasPendingSubmission(student_id: number, submissionType: any = null) {
+    if (!submissionType) {
+      return this.http.get<any>(`${this.apiurl}/checkifstudenthaspendingsubmission/${student_id}`);
+    }
+    return this.http.get<any>(`${this.apiurl}/checkifstudenthaspendingsubmission/${student_id}/${submissionType}`);
+  }
+
 }

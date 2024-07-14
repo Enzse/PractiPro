@@ -50,9 +50,10 @@ export class SeminarspopupComponent {
   loadData() {
     this.subscriptions.add(
       this.service.getSeminarRecords(this.data.student.id).subscribe((res: any) => {
-        console.log(res);
-        this.datalist = res.payload
-        this.origlist = this.datalist
+        this.datalist = res.payload.sort((a: any, b: any) => {
+          return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
+        })
+        this.origlist = this.datalist;
       })
     );
   }

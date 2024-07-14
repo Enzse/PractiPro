@@ -50,6 +50,9 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadWarRecord();
     this.loadMaxWeeks();
+    if (this.selectedRecordActivities.length === 0) {
+      this.addRow()
+    }
   }
 
   loadWarRecord() {
@@ -171,7 +174,8 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         const recordSubmitted = {
           isSubmitted: 1,
-          id: this.selectedRecord.id
+          id: this.selectedRecord.id,
+          status: 'Pending'
         };
         this.subscriptions.add(
           this.service.toggleWarRecordSubmission(recordSubmitted).subscribe((res: any) => {
@@ -267,7 +271,8 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   unsubmitWarRecord() {
     const recordSubmitted = {
       isSubmitted: 0,
-      id: this.selectedRecord.id
+      id: this.selectedRecord.id,
+      status: null
     }
     this.subscriptions.add(
       this.service.toggleWarRecordSubmission(recordSubmitted).subscribe((res: any) => {

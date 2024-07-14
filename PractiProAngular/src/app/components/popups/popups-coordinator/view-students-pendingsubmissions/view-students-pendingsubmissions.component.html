@@ -2,7 +2,7 @@
 
     <!-- TITLE: -->
     <h1 class="mb-2 text-orange-500 font-bold ml-1 font-primary text-base">
-        Students under {{this.data.block}}: {{this.conditionDisplay}}
+        Students with Pending Submissions:
     </h1>
 
 
@@ -31,12 +31,14 @@
                     <th scope="col" class="px-6 py-3 font-primary">Student ID:</th>
                     <th scope="col" class="px-6 py-3 font-primary">Full Name:</th>
                     <th scope="col" class="px-6 py-3 font-primary">Training Hours</th>
+                    <th scope="col" class="px-6 py-3 font-primary">Pending
+                        Submissions</th>
                 </tr>
             </thead>
 
             <!-- COLUMN DATA: -->
             <tbody>
-                <tr *ngFor="let student of studentList | filter : searchtext" (click)="viewProfile(student.id)"
+                <tr *ngFor="let student of studentList | filter : searchtext" (click)="viewSubmissions(student)"
                     class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-slate-100">
                     <td class="px-6 py-4 max-sm:px-5"><img *ngIf="student.avatar; else placeholder"
                             [src]="student.avatar" class="mx-auto w-20 h-20 rounded-full image-container">
@@ -75,6 +77,9 @@
                             </ul>
                         </mat-menu>
                     </td>
+                    <th class="px-6 py-4 font-primary text-xl">{{
+                        student.pendingSubmissions }}
+                    </th>
 
                 </tr>
             </tbody>

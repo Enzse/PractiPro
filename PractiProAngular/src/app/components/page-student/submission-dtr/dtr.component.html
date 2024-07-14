@@ -135,14 +135,16 @@
               class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
               <td class="table-data border-2 border-slate-600">{{ record.weekNumber}}</td>
               <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
-              <td class="table-data border-2 border-slate-600">{{ record.startTime ? (record.startTime | time:record.startTime) : "Not set" }}</td>
-              <td class="table-data border-2 border-slate-600">{{ record.endTime ? (record.endTime | time:record.endTime) : "Not set" }}</td>
+              <td class="table-data border-2 border-slate-600">{{ record.startTime ? (record.startTime |
+                time:record.startTime) : "Not set" }}</td>
+              <td class="table-data border-2 border-slate-600">{{ record.endTime ? (record.endTime |
+                time:record.endTime) : "Not set" }}</td>
               <td class="table-data border-2 border-slate-600">{{record.totalHours || "Not set"}}</td>
               <td class="table-data border-2 border-slate-600">
                 <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
                     'text-red-500': record.status === 'Unapproved',
                     'text-green-500': record.status === 'Approved'
-                  }">{{record.status}}</p>
+                  }">{{record.status ? record.status : "Not Clocked-out"}}</p>
               </td>
             </tr>
           </tbody>

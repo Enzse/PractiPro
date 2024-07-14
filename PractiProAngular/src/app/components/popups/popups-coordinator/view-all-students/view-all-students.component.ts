@@ -3,7 +3,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from '../../../../pipes/filter.pipe';
-import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
@@ -39,6 +39,7 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
   }
 
   loadData() {
+
     this.subscriptions.add(
       this.service.getAllStudentsFromClass(this.data.block).subscribe((res: any) => {
         this.studentList = res.payload.map((user: any) => {
@@ -86,12 +87,6 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
         });
       }))
   }
-
-  inviteStudents() {
-    this.router.navigate(['advisor-invitestudents']);
-    this.dialog.close();
-  }
-
 
   option1Action(id: number, firstName: string, lastName: string) {
     Swal.fire({

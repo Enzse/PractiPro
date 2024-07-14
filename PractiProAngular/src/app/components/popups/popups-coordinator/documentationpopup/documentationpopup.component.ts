@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription } from 'rxjs';
 import { FilterPipe } from '../../../../pipes/filter.pipe';
+import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
   selector: 'app-documentationpopup',
@@ -22,7 +23,7 @@ import { FilterPipe } from '../../../../pipes/filter.pipe';
   styleUrl: './documentationpopup.component.css'
 })
 export class DocumentationpopupComponent implements OnInit, OnDestroy {
-  constructor(private builder: FormBuilder, private service: AuthService,
+  constructor(private builder: FormBuilder, private service: AuthService, private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DocumentationpopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
@@ -42,7 +43,7 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getSubmissionsByStudent('documentations', this.data.usercode).subscribe(
+      this.service.getSubmissionsByStudent('documentations', this.data.student.id).subscribe(
         (res: any) => {
           this.studentSubmissions = res.payload.sort((a: any, b: any) => {
             return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
@@ -157,6 +158,7 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.service.updateAdvisorApproval('documentations', record.id, updateData).subscribe(
         res => {
+          this.changeDetection.notifyChange(true);
           Swal.fire({
             toast: true,
             position: "top-end",
