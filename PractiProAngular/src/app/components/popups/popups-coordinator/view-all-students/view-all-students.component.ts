@@ -73,6 +73,10 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
               this.studentList = this.studentList.filter((student: any) => student.exitpoll_status === 'Completed!');
               this.conditionDisplay = 'Cleared Exit Poll'
               break;
+            case 'completed':
+              this.studentList = this.studentList.filter((student: any) => student.exitpoll_status === 'Completed!' && student.evaluation_status === 'Completed!' && student.TotalHoursWorked >= 200 && student.TotalSeminarHours >= 50);
+              this.conditionDisplay = 'Practicum Completed'
+              break;
           }
         }
 

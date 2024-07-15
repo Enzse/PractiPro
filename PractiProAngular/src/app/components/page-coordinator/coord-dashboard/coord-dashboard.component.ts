@@ -12,12 +12,12 @@ import { ChartModule } from 'primeng/chart';
 import { ViewSentInvitesComponent } from '../../popups/popups-coordinator/view-sent-invites/view-sent-invites.component';
 import { RouterLink } from '@angular/router';
 import { ViewStudentsPendingsubmissionsComponent } from '../../popups/popups-coordinator/view-students-pendingsubmissions/view-students-pendingsubmissions.component';
-import { CarouselComponent } from '../../widgets/carousel/carousel.component';
+
 
 @Component({
   selector: 'app-coord-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule, MatTooltipModule, ChartModule, CarouselComponent],
+  imports: [RouterLink, CommonModule, MatTooltipModule, ChartModule],
   templateUrl: './coord-dashboard.component.html',
   styleUrl: './coord-dashboard.component.css'
 })
@@ -38,14 +38,39 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   seminarhours: any;
   perfeval: any;
   finalreports: any;
+  completed: any;
 
   options: any;
-
+  options2: any;
 
   constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, @Inject(PLATFORM_ID) private platformId: Object, private service: AuthService, private blockService: BlockService) {
     this.userId = this.service.getCurrentUserId();
 
+    this.options = {
+      plugins: {
+        legend: {
+          labels: {
+            usePointStyle: true,
+            color: "#333"
+          }
+        }
+      }
 
+    };
+    this.options2 = {
+      plugins: {
+        legend: {
+          // position: 'left',
+          labels: {
+            usePointStyle: true,
+            color: "#333",
+
+
+          }
+        }
+      }
+
+    };
   }
 
   ngOnDestroy(): void {
@@ -61,17 +86,6 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
         this.loadPendingSubmissionsTotal(this.currentBlock);
       })
     )
-
-    this.options = {
-      plugins: {
-        legend: {
-          labels: {
-            usePointStyle: true,
-            color: "#333"
-          }
-        }
-      }
-    };
 
     this.subscriptions.add(
       this.changeDetection.changeDetected$.subscribe(changeDetected => {
@@ -155,6 +169,22 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       return (clearedStudents / totalStudents) * 100;
     });
 
+    const frpeval = payload.map(block => {
+
+      const clearedStudents = block.exitpoll_cleared_students || 0
+      const totalStudents = block.students_handled || 1
+
+      return (clearedStudents / totalStudents) * 100;
+    });
+
+    const compeval = payload.map(block => {
+
+      const clearedStudents = block.practicum_completed_students || 0
+      const totalStudents = block.students_handled || 1
+
+      return (clearedStudents / totalStudents) * 100;
+    });
+
     // Calculate the remaining percentage
     const remainingPercentages = registrationperc.map(percent => 100 - percent);
 
@@ -215,6 +245,27 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
       ],
     };
 
+    const remainingfrp = frpeval.map(percent => 100 - percent);
+    this.finalreports = {
+      labels: labels,
+      datasets: [
+        {
+          data: [frpeval, remainingfrp],
+          backgroundColor: backgroundColor
+        },
+      ],
+    };
+
+    const remainingcom = compeval.map(percent => 100 - percent);
+    this.completed = {
+      labels: labels,
+      datasets: [
+        {
+          data: [compeval, remainingcom],
+          backgroundColor: backgroundColor
+        },
+      ],
+    };
 
   }
 
