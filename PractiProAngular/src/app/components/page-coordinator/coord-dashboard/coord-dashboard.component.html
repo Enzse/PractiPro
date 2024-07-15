@@ -149,224 +149,118 @@
                 <h1 class="font-primary font-bold text-3xl">Student OJT Status:</h1>
             </div>
 
-            <div class="flex flex-wrap justify-evenly">
-                <div routerLink="/coord-registrations"
-                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="registered" [options]="options" />
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.registered_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have a cleared registration status."
-                        class="font-secondary text-base mt-2">Students cleared in <br>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 -mt-0.5 mr-1 inline">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
-                        </svg>
-                        <b>Registration Status</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'ojtsite')"
-                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="ojtsite" [options]="options" />
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.hired_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that are successfully hired and active in a company."
-                        class="font-secondary text-base mt-2">Students with <br>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-0.5 mr-1 lucide-briefcase-business">
-                            <path d="M12 12h.01" />
-                            <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-                            <path d="M22 13a18.15 18.15 0 0 1-20 0" />
-                            <rect width="20" height="14" x="2" y="6" rx="2" />
-                        </svg>
-                        <b>OJT Sites</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'onsitehours')"
-                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="traininghours" [options]="options" />
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.ojt_cleared_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have met 200+ total hours worth of Daily Attendance records."
-                        class="font-secondary text-base mt-2">Students with 200+ total<br>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-0.5 mr-1 lucide-clock">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>
-                        <b>On-site Training Hours</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'seminarhours')"
-                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="seminarhours" [options]="options" />
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.seminar_cleared_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have met 50+ total hours worth of Seminar Records."
-                        class="font-secondary text-base mt-2">Students with 50+ total<br>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-0.5 mr-1 lucide-clock">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>
-                        <b>Seminar Hours</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'evaluation')"
-                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="perfeval" [options]="options" />
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.evaluation_cleared_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have been evaluated by their company supervisors."
-                        class="font-secondary text-base mt-2">Students cleared in<br>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 inline -mt-0.5 mr-1">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
-                        </svg>
-                        <b>Performance Evaluation</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'exitpoll')"
-                    class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
-                    <p-chart class="w-44 mx-auto" type="doughnut" [data]="perfeval" [options]="options" />
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.exitpoll_cleared_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have a cleared Final Report."
-                        class="font-secondary text-base mt-2">Students cleared in<br>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 inline -mt-0.5 mr-1">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
-                        </svg>
-                        <b>Final Reports</b>
-                    </h2>
-                </div>
-            </div>
-
-
-
-
-            <!-- IF blockData IS HIRED -->
-            <div *ngIf="blockData.company_id" class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
-
-
-                <div class="grid grid-cols-5 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
-
-                    <div class="col-span-3">
-                        <!-- First column content here -->
-                        <div *ngIf="blockData" class="w-full h-full bg-white shadow-md p-3">
-                            <div>
-                                <h1 class="font-primary font-bold text-lg">{{blockData.job_title || "Unassigned"}}
-                                </h1>
-                            </div>
-
-                            <p class="font-primary">Job Title</p>
-                            <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
-
-                            <div class="flex justify-start text-left">
-                                <ul role="list" class="">
-                                    <li class="mb-2">
-                                        <div class="flex items-center">
-                                            <div class="flex-1 min-w-0 ms-4">
-                                                <p
-                                                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                                                    Job Description:
-                                                </p><span
-                                                    class="text-sm font-medium lg:text-base font-secondary text-gray-900">{{blockData.job_description}}</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-2">
-                                        <div class="flex items-center">
-                                            <div class="flex-1 min-w-0 ms-4">
-                                                <p
-                                                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                                                    Start Date:
-                                                </p>
-                                                <span class="text-sm font-normal lg:text-base font-secondary">{{
-                                                    blockData.start_date | date: "longDate"}}</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-2">
-                                        <div class="flex items-center">
-                                            <div class="flex-1 min-w-0 ms-4">
-                                                <p
-                                                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                                                    End Date:
-                                                </p>
-                                                <span class="text-sm font-normal lg:text-base font-secondary">{{
-                                                    blockData.end_date | date: "longDate"}}</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="mb-2">
-                                        <div class="flex items-center">
-                                            <div class="flex-1 min-w-0 ms-4">
-                                                <p
-                                                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                                                    Assigned by:
-                                                </p>
-                                                <span class="text-sm font-normal lg:text-base font-secondary">{{
-                                                    blockData.sfirstName}} {{ blockData.slastName}}</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+            <app-carousel>
+                <ng-container slide-1>
+                    <div class="flex flex-wrap justify-evenly">
+                        <div routerLink="/coord-registrations"
+                            class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                            <p-chart class="w-44 mx-auto" type="doughnut" [data]="registered" [options]="options" />
+                            <h2 class="font-primary font-bold text-orange-500">
+                                {{blockData.registered_students}}/{{blockData.students_handled}} Cleared
+                            </h2>
+                            <h2 matTooltip="Ratio of students that have a cleared registration status."
+                                class="font-secondary text-base mt-2">Students cleared in <br>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 -mt-0.5 mr-1 inline">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+                                </svg>
+                                <b>Registration Status</b>
+                            </h2>
                         </div>
-                        <div *ngIf="!blockData" class="w-full bg-white shadow-md p-3">
-                            <div>
-                                <div class="flex justify-center">
-                                    <img class="h-48 opacity-50" src="../../../../../assets/empty1.png">
-                                </div>
-                                <h1 class="font-secondary text-lg text-gray-800 my-2">This blockData has yet to be
-                                    assigned a job.</h1>
-                            </div>
+                        <div (click)="viewStudentsWithCondition(blockData.block_name, 'ojtsite')"
+                            class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                            <p-chart class="w-44 mx-auto" type="doughnut" [data]="ojtsite" [options]="options" />
+                            <h2 class="font-primary font-bold text-orange-500">
+                                {{blockData.hired_students}}/{{blockData.students_handled}} Cleared
+                            </h2>
+                            <h2 matTooltip="Ratio of students that are successfully hired and active in a company."
+                                class="font-secondary text-base mt-2">Students with <br>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="lucide inline -mt-0.5 mr-1 lucide-briefcase-business">
+                                    <path d="M12 12h.01" />
+                                    <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                                    <path d="M22 13a18.15 18.15 0 0 1-20 0" />
+                                    <rect width="20" height="14" x="2" y="6" rx="2" />
+                                </svg>
+                                <b>OJT Sites</b>
+                            </h2>
                         </div>
-
-                    </div>
-
-                    <div class="col-span-2 max-sm:mt-3 max-sm:mx-auto shadow-md w-full p-3 bg-white relative">
-                        <!-- Second column content here -->
-                        <div *ngIf="blockData.length">
-
-                            <h1 class="font-primary -mt-1 mb-2 font-bold text-lg">Schedules</h1>
-
-                            <table class="w-full">
-                                <tbody>
-                                    <tr *ngFor="let schedule of blockData">
-                                        <td class="px-4 py-1 text-left border font-secondary text-sm">{{
-                                            schedule.day_of_week }}
-                                        </td>
-                                        <td class="text-center border px-4 py-1 font-secondary text-sm">
-                                        </td>
-                                        <td class="text-center border px-4 py-1 font-secondary text-sm">
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div (click)="viewStudentsWithCondition(blockData.block_name, 'onsitehours')"
+                            class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                            <p-chart class="w-44 mx-auto" type="doughnut" [data]="traininghours" [options]="options" />
+                            <h2 class="font-primary font-bold text-orange-500">
+                                {{blockData.ojt_cleared_students}}/{{blockData.students_handled}} Cleared
+                            </h2>
+                            <h2 matTooltip="Ratio of students that have met 200+ total hours worth of Daily Attendance records."
+                                class="font-secondary text-base mt-2">Students with 200+ total<br>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide inline -mt-0.5 mr-1 lucide-clock">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                                <b>On-site Training Hours</b>
+                            </h2>
+                        </div>
+                        <div (click)="viewStudentsWithCondition(blockData.block_name, 'seminarhours')"
+                            class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                            <p-chart class="w-44 mx-auto" type="doughnut" [data]="seminarhours" [options]="options" />
+                            <h2 class="font-primary font-bold text-orange-500">
+                                {{blockData.seminar_cleared_students}}/{{blockData.students_handled}} Cleared
+                            </h2>
+                            <h2 matTooltip="Ratio of students that have met 50+ total hours worth of Seminar Records."
+                                class="font-secondary text-base mt-2">Students with 50+ total<br>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round" class="lucide inline -mt-0.5 mr-1 lucide-clock">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                                <b>Seminar Hours</b>
+                            </h2>
+                        </div>
+                        <div (click)="viewStudentsWithCondition(blockData.block_name, 'evaluation')"
+                            class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                            <p-chart class="w-44 mx-auto" type="doughnut" [data]="perfeval" [options]="options" />
+                            <h2 class="font-primary font-bold text-orange-500">
+                                {{blockData.evaluation_cleared_students}}/{{blockData.students_handled}} Cleared
+                            </h2>
+                            <h2 matTooltip="Ratio of students that have been evaluated by their company supervisors."
+                                class="font-secondary text-base mt-2">Students cleared in<br>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline -mt-0.5 mr-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+                                </svg>
+                                <b>Performance Evaluation</b>
+                            </h2>
+                        </div>
+                        <div (click)="viewStudentsWithCondition(blockData.block_name, 'exitpoll')"
+                            class="w-[45vh] cursor-pointer flex flex-col justify-center px-7 py-6 m-3 shadow-md hover:shadow-xl rounded-xl bg-white">
+                            <p-chart class="w-44 mx-auto" type="doughnut" [data]="perfeval" [options]="options" />
+                            <h2 class="font-primary font-bold text-orange-500">
+                                {{blockData.exitpoll_cleared_students}}/{{blockData.students_handled}} Cleared
+                            </h2>
+                            <h2 matTooltip="Ratio of students that have a cleared Final Report."
+                                class="font-secondary text-base mt-2">Students cleared in<br>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline -mt-0.5 mr-1">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+                                </svg>
+                                <b>Final Reports</b>
+                            </h2>
                         </div>
                     </div>
-
-
-                </div>
-
-
-
-            </div>
+                </ng-container>
+            </app-carousel>
 
         </div>
+
+
 
         <ng-template #noBlockMessage>
             <div class="m-10 flex flex-col items-center">

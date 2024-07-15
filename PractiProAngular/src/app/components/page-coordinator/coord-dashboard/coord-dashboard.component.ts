@@ -12,12 +12,12 @@ import { ChartModule } from 'primeng/chart';
 import { ViewSentInvitesComponent } from '../../popups/popups-coordinator/view-sent-invites/view-sent-invites.component';
 import { RouterLink } from '@angular/router';
 import { ViewStudentsPendingsubmissionsComponent } from '../../popups/popups-coordinator/view-students-pendingsubmissions/view-students-pendingsubmissions.component';
-
+import { CarouselComponent } from '../../widgets/carousel/carousel.component';
 
 @Component({
   selector: 'app-coord-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule, MatTooltipModule, ChartModule],
+  imports: [RouterLink, CommonModule, MatTooltipModule, ChartModule, CarouselComponent],
   templateUrl: './coord-dashboard.component.html',
   styleUrl: './coord-dashboard.component.css'
 })
