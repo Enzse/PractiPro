@@ -50,7 +50,7 @@
             <div *ngFor="let data of traineesList | filter : searchtext"
                 class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewTrainee(data)">
 
-                <button (click)="removeStudentFromSelection(data.id); $event.stopPropagation()"
+                <button (click)="removeStudentFromSelection(data.id, data.firstName); $event.stopPropagation()"
                     class="absolute bottom-0 right-0 m-2 opacity-30 hover:opacity-100 rounded-full ">
                     <svg class="inline w-4 h-4 -mt-0.5 opacity-50 text-gray-800 dark:text-white" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">

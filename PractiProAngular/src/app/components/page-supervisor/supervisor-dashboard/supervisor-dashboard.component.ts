@@ -9,6 +9,7 @@ import { ViewtraineepopupComponent } from '../../popups/popups-supervisor/viewtr
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-supervisor-dashboard',
@@ -103,9 +104,19 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  removeStudentFromSelection(id: number) {
+  removeStudentFromSelection(id: number, firstName: string) {
     this.service.removeStudentFromSupervisor(id, this.userId).subscribe((res: any) => {
       this.loadData();
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        title: `Removed ${firstName} from your supervision.`,
+        icon: "success",
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+        showCloseButton: true,
+      });
     })
   }
 }

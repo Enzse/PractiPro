@@ -22,6 +22,7 @@ import { Subscription } from 'rxjs';
 export class SidebarComponent implements OnInit, OnDestroy {
   studentId: any;
   student: any;
+  company_id: any;
   registrationStatus: any;
   class: any;
   private subscriptions = new Subscription();
@@ -41,6 +42,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
         (res: any) => {
           this.student = res.payload[0];
           this.registrationStatus = res.payload[0].registration_status;
+          this.company_id = res.payload[0].company_id;
           this.class = res.payload[0].block;
         },
         (error: any) => {
