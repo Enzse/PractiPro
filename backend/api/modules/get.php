@@ -659,4 +659,14 @@ class Get extends GlobalMethods
         return $this->get_records('vw_student_pending_submissions', $condition, $columns);
     }
 
+    public function getAllFinalReportsFromBlock($block)
+    {
+        $sql = "SELECT sfr.*
+        FROM student_final_reports sfr
+        JOIN students s ON sfr.user_id = s.id
+        WHERE s.block = :block";
+
+        return $this->get_records(null, null, null, $sql, ['block' => $block]);
+    }
+
 }

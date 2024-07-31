@@ -471,6 +471,15 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 }
                 break;
 
+            case 'getallfinalreportsfromblock':
+                if (isset($request[1])) {
+                    echo json_encode($get->getAllFinalReportsFromBlock($request[1]));
+                } else {
+                    echo "Invalid Endpoints";
+                    http_response_code(400);
+                }
+                break;
+
             default:
                 echo "This is forbidden";
                 http_response_code(403);
