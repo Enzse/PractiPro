@@ -470,4 +470,12 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/checkifstudenthaspendingsubmission/${student_id}/${submissionType}`);
   }
 
+  getFinalReportsAnalytics(block: string) {
+    return this.http.get<any>(`${this.apiurl}/getfinalreportsanalytics/${block}`);
+  }
+
+  getStudentEvaluationAnalytics(block: string) {
+    return this.http.get<any>(`${this.apiurl}/getstudentevaluationanalytics/${block}`);
+  }
+
 }

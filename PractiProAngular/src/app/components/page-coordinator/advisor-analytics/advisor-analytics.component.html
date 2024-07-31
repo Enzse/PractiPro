@@ -16,13 +16,136 @@
 
 
         <!-- ngIf on this div -->
-        <div>
+        <div class=" p-8 max-sm:p-4 rounded-md bg-slate-100 shadow-md">
 
-            <div class=" p-8 max-sm:p-4 rounded-md bg-slate-100 shadow-md">
-                <div class="card">
-                    <p-chart type="bar" [data]="data" [options]="options" />
+            <form>
+                <!-- Question 1 -->
+                <div>
+                    <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+                        1. Students' OJT Experience with the following OJT Standards/Criteria:
+                    </p>
+
+                    <div class="relative shadow-md overflow-auto sm:rounded-lg border border-gray-300">
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                            <thead
+                                class="text-xs text-gray-700 uppercase text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-center">CRITERIA</th>
+                                    <th scope="col" class="px-6 py-3">Answer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="bg-white w-full border-b">
+                                    <th scope="row"
+                                        class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        1. My scope of work is directly related to the academic program I am
+                                        pursuing.
+                                    </th>
+                                    <div class="flex justify-center">
+                                        <p-chart type="pie" [data]="p1q1" [options]="options2" />
+                                    </div>
+                                </tr>
+                                <tr class="bg-white w-full border-b">
+                                    <th scope="row"
+                                        class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        2. I was given an orientation on the company organization and operations.
+                                    </th>
+                                    <div class="flex justify-center">
+                                        <p-chart type="pie" [data]="p1q2" [options]="options2" />
+                                    </div>
+                                </tr>
+                                <tr class="bg-white w-full border-b">
+                                    <th scope="row"
+                                        class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        3. I was given a job description on my specific duties and reporting
+                                        relationships.
+                                    </th>
+                                    <div class="flex justify-center">
+                                        <p-chart type="pie" [data]="p1q3" [options]="options2" />
+                                    </div>
+                                </tr>
+                                <tr class="bg-white w-full border-b">
+                                    <th scope="row"
+                                        class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        4. My office/work hours were clear and convenient for me.
+                                    </th>
+                                    <div class="flex justify-center">
+                                        <p-chart type="pie" [data]="p1q4" [options]="options2" />
+                                    </div>
+                                </tr>
+                                <tr class="bg-white w-full border-b">
+                                    <th scope="row"
+                                        class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        5. I felt safe and secure in my work location and environment.
+                                    </th>
+                                    <div class="flex justify-center">
+                                        <p-chart type="pie" [data]="p1q5" [options]="options2" />
+                                    </div>
+                                </tr>
+                                <tr class="bg-white w-full border-b">
+                                    <th scope="row"
+                                        class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        6. I had no difficulty going to and from work.
+                                    </th>
+                                    <div class="flex justify-center">
+                                        <p-chart type="pie" [data]="p1q6" [options]="options2" />
+                                    </div>
+                                </tr>
+                                <tr class="bg-white w-full border-b">
+                                    <th scope="row"
+                                        class="px-6 py-4 font-medium w-[70%] text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        7. The company provided me with allowance, stipend, or subsidy.<br>
+                                        <span class="ms-5">Indicate if meal or cash. If cash, how much?</span>
+                                    </th>
+                                    <div class="flex justify-center">
+                                        <p-chart type="pie" [data]="p1q7" [options]="options2" />
+                                    </div>
+                                    <div class="flex justify-center">
+                                        <p-chart type="pie" [data]="p1q7x1" [options]="options2" />
+                                    </div>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-            </div>
+
+                <!-- Question 2 -->
+                <div>
+                    <p class="mb-2 mt-5 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+                        2. Extent of students in achieving their respective training objectives:
+                    </p>
+
+                    <div class=" p-8 max-sm:p-4 rounded-md bg-white shadow-md">
+                        <div class="card">
+                            <p-chart type="bar" [data]="p2x1" [options]="options" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="mt-5">
+                    <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+                        3. Student overall experience:
+                    </p>
+                    <div class=" p-8 max-sm:p-4 rounded-md bg-white shadow-md">
+                        <div class="card">
+                            <p-chart type="bar" [data]="p3q1" [options]="options" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <!-- <div class="mt-5 normal-case">
+                    <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+                        4. Please provide any additional comments or suggestions:
+                    </p>
+                    <div
+                        class="bg-white relative overflow-auto shadow-md sm:rounded-lg border text-base text-left border-gray-300 p-6">
+                        test
+                    </div>
+                </div> -->
+
+            </form>
 
             <ng-template #noBlockMessage>
                 <div class="m-10 flex flex-col items-center">

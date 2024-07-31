@@ -659,14 +659,220 @@ class Get extends GlobalMethods
         return $this->get_records('vw_student_pending_submissions', $condition, $columns);
     }
 
-    public function getAllFinalReportsFromBlock($block)
+    public function getFinalReportsAnalytics($block)
     {
-        $sql = "SELECT sfr.*
-        FROM student_final_reports sfr
-        JOIN students s ON sfr.user_id = s.id
-        WHERE s.block = :block";
+        $sql = "SELECT 
+        SUM(CASE WHEN sfr.p1q1 = 'yes' THEN 1 ELSE 0 END) AS p1q1_yes_count,
+        SUM(CASE WHEN sfr.p1q1 = 'no' THEN 1 ELSE 0 END) AS p1q1_no_count,
+        SUM(CASE WHEN sfr.p1q2 = 'yes' THEN 1 ELSE 0 END) AS p1q2_yes_count,
+        SUM(CASE WHEN sfr.p1q2 = 'no' THEN 1 ELSE 0 END) AS p1q2_no_count,
+        SUM(CASE WHEN sfr.p1q3 = 'yes' THEN 1 ELSE 0 END) AS p1q3_yes_count,
+        SUM(CASE WHEN sfr.p1q3 = 'no' THEN 1 ELSE 0 END) AS p1q3_no_count,
+        SUM(CASE WHEN sfr.p1q4 = 'yes' THEN 1 ELSE 0 END) AS p1q4_yes_count,
+        SUM(CASE WHEN sfr.p1q4 = 'no' THEN 1 ELSE 0 END) AS p1q4_no_count,
+        SUM(CASE WHEN sfr.p1q5 = 'yes' THEN 1 ELSE 0 END) AS p1q5_yes_count,
+        SUM(CASE WHEN sfr.p1q5 = 'no' THEN 1 ELSE 0 END) AS p1q5_no_count,
+        SUM(CASE WHEN sfr.p1q6 = 'yes' THEN 1 ELSE 0 END) AS p1q6_yes_count,
+        SUM(CASE WHEN sfr.p1q6 = 'no' THEN 1 ELSE 0 END) AS p1q6_no_count,
+        SUM(CASE WHEN sfr.p1q7 = 'yes' THEN 1 ELSE 0 END) AS p1q7_yes_count,
+        SUM(CASE WHEN sfr.p1q7 = 'no' THEN 1 ELSE 0 END) AS p1q7_no_count,
+        SUM(CASE WHEN sfr.p1q7x1 = 'meal' THEN 1 ELSE 0 END) AS p1q7x1_meal_count,
+        SUM(CASE WHEN sfr.p1q7x1 = 'cash' THEN 1 ELSE 0 END) AS p1q7x1_cash_count,
+        SUM(CASE WHEN sfr.p1q7x1 IS NULL THEN 1 ELSE 0 END) AS p1q7x1_null_count,
+        
+        SUM(CASE WHEN sfr.p2q1x1 = '0' OR sfr.p2q2x1 = '0' OR sfr.p2q3x1 = '0' OR sfr.p2q4x1 = '0' OR sfr.p2q5x1 = '0' THEN 1 ELSE 0 END) AS p2x1_0,
+        SUM(CASE WHEN sfr.p2q1x1 = '25' OR sfr.p2q2x1 = '25' OR sfr.p2q3x1 = '25' OR sfr.p2q4x1 = '25' OR sfr.p2q5x1 = '25' THEN 1 ELSE 0 END) AS p2x1_25,
+        SUM(CASE WHEN sfr.p2q1x1 = '50' OR sfr.p2q2x1 = '50' OR sfr.p2q3x1 = '50' OR sfr.p2q4x1 = '50' OR sfr.p2q5x1 = '50' THEN 1 ELSE 0 END) AS p2x1_50,
+        SUM(CASE WHEN sfr.p2q1x1 = '75' OR sfr.p2q2x1 = '75' OR sfr.p2q3x1 = '75' OR sfr.p2q4x1 = '75' OR sfr.p2q5x1 = '75' THEN 1 ELSE 0 END) AS p2x1_75,
+        SUM(CASE WHEN sfr.p2q1x1 = '100' OR sfr.p2q2x1 = '100' OR sfr.p2q3x1 = '100' OR sfr.p2q4x1 = '100' OR sfr.p2q5x1 = '100' THEN 1 ELSE 0 END) AS p2x1_100,
+        
+        SUM(CASE WHEN sfr.p3q1 = 'Poor' THEN 1 ELSE 0 END) AS p3q1_poor,
+        SUM(CASE WHEN sfr.p3q1 = 'Fair' THEN 1 ELSE 0 END) AS p3q1_fair,
+        SUM(CASE WHEN sfr.p3q1 = 'Good' THEN 1 ELSE 0 END) AS p3q1_good,
+        SUM(CASE WHEN sfr.p3q1 = 'Very Good' THEN 1 ELSE 0 END) AS p3q1_verygood,
+        SUM(CASE WHEN sfr.p3q1 = 'Excellent' THEN 1 ELSE 0 END) AS p3q1_excellent
+        
+        -- Add more questions here
+    FROM student_final_reports sfr
+    JOIN students s ON sfr.user_id = s.id
+    WHERE s.block = :block";
 
         return $this->get_records(null, null, null, $sql, ['block' => $block]);
     }
+
+    public function getStudentEvaluationAnalytics($block)
+    {
+        $sql = "SELECT 
+
+        SUM(CASE WHEN sse.p1q1 = '1' THEN 1 ELSE 0 END) AS p1q1_1,
+        SUM(CASE WHEN sse.p1q1 = '2' THEN 1 ELSE 0 END) AS p1q1_2,
+        SUM(CASE WHEN sse.p1q1 = '3' THEN 1 ELSE 0 END) AS p1q1_3,
+        SUM(CASE WHEN sse.p1q1 = '4' THEN 1 ELSE 0 END) AS p1q1_4,
+        SUM(CASE WHEN sse.p1q1 = '5' THEN 1 ELSE 0 END) AS p1q1_5,
+
+        SUM(CASE WHEN sse.p1q2 = '1' THEN 1 ELSE 0 END) AS p1q2_1,
+        SUM(CASE WHEN sse.p1q2 = '2' THEN 1 ELSE 0 END) AS p1q2_2,
+        SUM(CASE WHEN sse.p1q2 = '3' THEN 1 ELSE 0 END) AS p1q2_3,
+        SUM(CASE WHEN sse.p1q2 = '4' THEN 1 ELSE 0 END) AS p1q2_4,
+        SUM(CASE WHEN sse.p1q2 = '5' THEN 1 ELSE 0 END) AS p1q2_5,
+        
+        SUM(CASE WHEN sse.p1q3 = '1' THEN 1 ELSE 0 END) AS p1q3_1,
+        SUM(CASE WHEN sse.p1q3 = '2' THEN 1 ELSE 0 END) AS p1q3_2,
+        SUM(CASE WHEN sse.p1q3 = '3' THEN 1 ELSE 0 END) AS p1q3_3,
+        SUM(CASE WHEN sse.p1q3 = '4' THEN 1 ELSE 0 END) AS p1q3_4,
+        SUM(CASE WHEN sse.p1q3 = '5' THEN 1 ELSE 0 END) AS p1q3_5,
+        
+        SUM(CASE WHEN sse.p1q4 = '1' THEN 1 ELSE 0 END) AS p1q4_1,
+        SUM(CASE WHEN sse.p1q4 = '2' THEN 1 ELSE 0 END) AS p1q4_2,
+        SUM(CASE WHEN sse.p1q4 = '3' THEN 1 ELSE 0 END) AS p1q4_3,
+        SUM(CASE WHEN sse.p1q4 = '4' THEN 1 ELSE 0 END) AS p1q4_4,
+        SUM(CASE WHEN sse.p1q4 = '5' THEN 1 ELSE 0 END) AS p1q4_5,
+        
+        SUM(CASE WHEN sse.p1q5 = '1' THEN 1 ELSE 0 END) AS p1q5_1,
+        SUM(CASE WHEN sse.p1q5 = '2' THEN 1 ELSE 0 END) AS p1q5_2,
+        SUM(CASE WHEN sse.p1q5 = '3' THEN 1 ELSE 0 END) AS p1q5_3,
+        SUM(CASE WHEN sse.p1q5 = '4' THEN 1 ELSE 0 END) AS p1q5_4,
+        SUM(CASE WHEN sse.p1q5 = '5' THEN 1 ELSE 0 END) AS p1q5_5,
+
+        SUM(CASE WHEN sse.p2q1 = '1' THEN 1 ELSE 0 END) AS p2q1_1,
+        SUM(CASE WHEN sse.p2q1 = '2' THEN 1 ELSE 0 END) AS p2q1_2,
+        SUM(CASE WHEN sse.p2q1 = '3' THEN 1 ELSE 0 END) AS p2q1_3,
+        SUM(CASE WHEN sse.p2q1 = '4' THEN 1 ELSE 0 END) AS p2q1_4,
+        SUM(CASE WHEN sse.p2q1 = '5' THEN 1 ELSE 0 END) AS p2q1_5,
+        
+        SUM(CASE WHEN sse.p2q2 = '1' THEN 1 ELSE 0 END) AS p2q2_1,
+        SUM(CASE WHEN sse.p2q2 = '2' THEN 1 ELSE 0 END) AS p2q2_2,
+        SUM(CASE WHEN sse.p2q2 = '3' THEN 1 ELSE 0 END) AS p2q2_3,
+        SUM(CASE WHEN sse.p2q2 = '4' THEN 1 ELSE 0 END) AS p2q2_4,
+        SUM(CASE WHEN sse.p2q2 = '5' THEN 1 ELSE 0 END) AS p2q2_5,
+        
+        SUM(CASE WHEN sse.p2q3 = '1' THEN 1 ELSE 0 END) AS p2q3_1,
+        SUM(CASE WHEN sse.p2q3 = '2' THEN 1 ELSE 0 END) AS p2q3_2,
+        SUM(CASE WHEN sse.p2q3 = '3' THEN 1 ELSE 0 END) AS p2q3_3,
+        SUM(CASE WHEN sse.p2q3 = '4' THEN 1 ELSE 0 END) AS p2q3_4,
+        SUM(CASE WHEN sse.p2q3 = '5' THEN 1 ELSE 0 END) AS p2q3_5,
+        
+        SUM(CASE WHEN sse.p2q4 = '1' THEN 1 ELSE 0 END) AS p2q4_1,
+        SUM(CASE WHEN sse.p2q4 = '2' THEN 1 ELSE 0 END) AS p2q4_2,
+        SUM(CASE WHEN sse.p2q4 = '3' THEN 1 ELSE 0 END) AS p2q4_3,
+        SUM(CASE WHEN sse.p2q4 = '4' THEN 1 ELSE 0 END) AS p2q4_4,
+        SUM(CASE WHEN sse.p2q4 = '5' THEN 1 ELSE 0 END) AS p2q4_5,
+        
+        SUM(CASE WHEN sse.p2q5 = '1' THEN 1 ELSE 0 END) AS p2q5_1,
+        SUM(CASE WHEN sse.p2q5 = '2' THEN 1 ELSE 0 END) AS p2q5_2,
+        SUM(CASE WHEN sse.p2q5 = '3' THEN 1 ELSE 0 END) AS p2q5_3,
+        SUM(CASE WHEN sse.p2q5 = '4' THEN 1 ELSE 0 END) AS p2q5_4,
+        SUM(CASE WHEN sse.p2q5 = '5' THEN 1 ELSE 0 END) AS p2q5_5,
+
+        SUM(CASE WHEN sse.p2q6 = '1' THEN 1 ELSE 0 END) AS p2q6_1,
+        SUM(CASE WHEN sse.p2q6 = '2' THEN 1 ELSE 0 END) AS p2q6_2,
+        SUM(CASE WHEN sse.p2q6 = '3' THEN 1 ELSE 0 END) AS p2q6_3,
+        SUM(CASE WHEN sse.p2q6 = '4' THEN 1 ELSE 0 END) AS p2q6_4,
+        SUM(CASE WHEN sse.p2q6 = '5' THEN 1 ELSE 0 END) AS p2q6_5,
+
+        SUM(CASE WHEN sse.p2q7 = '1' THEN 1 ELSE 0 END) AS p2q7_1,
+        SUM(CASE WHEN sse.p2q7 = '2' THEN 1 ELSE 0 END) AS p2q7_2,
+        SUM(CASE WHEN sse.p2q7 = '3' THEN 1 ELSE 0 END) AS p2q7_3,
+        SUM(CASE WHEN sse.p2q7 = '4' THEN 1 ELSE 0 END) AS p2q7_4,
+        SUM(CASE WHEN sse.p2q7 = '5' THEN 1 ELSE 0 END) AS p2q7_5,
+
+        SUM(CASE WHEN sse.p2q8 = '1' THEN 1 ELSE 0 END) AS p2q8_1,
+        SUM(CASE WHEN sse.p2q8 = '2' THEN 1 ELSE 0 END) AS p2q8_2,
+        SUM(CASE WHEN sse.p2q8 = '3' THEN 1 ELSE 0 END) AS p2q8_3,
+        SUM(CASE WHEN sse.p2q8 = '4' THEN 1 ELSE 0 END) AS p2q8_4,
+        SUM(CASE WHEN sse.p2q8 = '5' THEN 1 ELSE 0 END) AS p2q8_5,
+
+        SUM(CASE WHEN sse.p3q1 = '1' THEN 1 ELSE 0 END) AS p3q1_1,
+        SUM(CASE WHEN sse.p3q1 = '2' THEN 1 ELSE 0 END) AS p3q1_2,
+        SUM(CASE WHEN sse.p3q1 = '3' THEN 1 ELSE 0 END) AS p3q1_3,
+        SUM(CASE WHEN sse.p3q1 = '4' THEN 1 ELSE 0 END) AS p3q1_4,
+        SUM(CASE WHEN sse.p3q1 = '5' THEN 1 ELSE 0 END) AS p3q1_5,
+        
+        SUM(CASE WHEN sse.p3q2 = '1' THEN 1 ELSE 0 END) AS p3q2_1,
+        SUM(CASE WHEN sse.p3q2 = '2' THEN 1 ELSE 0 END) AS p3q2_2,
+        SUM(CASE WHEN sse.p3q2 = '3' THEN 1 ELSE 0 END) AS p3q2_3,
+        SUM(CASE WHEN sse.p3q2 = '4' THEN 1 ELSE 0 END) AS p3q2_4,
+        SUM(CASE WHEN sse.p3q2 = '5' THEN 1 ELSE 0 END) AS p3q2_5,
+        
+        SUM(CASE WHEN sse.p3q3 = '1' THEN 1 ELSE 0 END) AS p3q3_1,
+        SUM(CASE WHEN sse.p3q3 = '2' THEN 1 ELSE 0 END) AS p3q3_2,
+        SUM(CASE WHEN sse.p3q3 = '3' THEN 1 ELSE 0 END) AS p3q3_3,
+        SUM(CASE WHEN sse.p3q3 = '4' THEN 1 ELSE 0 END) AS p3q3_4,
+        SUM(CASE WHEN sse.p3q3 = '5' THEN 1 ELSE 0 END) AS p3q3_5,
+        
+        SUM(CASE WHEN sse.p3q4 = '1' THEN 1 ELSE 0 END) AS p3q4_1,
+        SUM(CASE WHEN sse.p3q4 = '2' THEN 1 ELSE 0 END) AS p3q4_2,
+        SUM(CASE WHEN sse.p3q4 = '3' THEN 1 ELSE 0 END) AS p3q4_3,
+        SUM(CASE WHEN sse.p3q4 = '4' THEN 1 ELSE 0 END) AS p3q4_4,
+        SUM(CASE WHEN sse.p3q4 = '5' THEN 1 ELSE 0 END) AS p3q4_5,
+        
+        SUM(CASE WHEN sse.p3q5 = '1' THEN 1 ELSE 0 END) AS p3q5_1,
+        SUM(CASE WHEN sse.p3q5 = '2' THEN 1 ELSE 0 END) AS p3q5_2,
+        SUM(CASE WHEN sse.p3q5 = '3' THEN 1 ELSE 0 END) AS p3q5_3,
+        SUM(CASE WHEN sse.p3q5 = '4' THEN 1 ELSE 0 END) AS p3q5_4,
+        SUM(CASE WHEN sse.p3q5 = '5' THEN 1 ELSE 0 END) AS p3q5_5,
+
+        SUM(CASE WHEN sse.p3q6 = '1' THEN 1 ELSE 0 END) AS p3q6_1,
+        SUM(CASE WHEN sse.p3q6 = '2' THEN 1 ELSE 0 END) AS p3q6_2,
+        SUM(CASE WHEN sse.p3q6 = '3' THEN 1 ELSE 0 END) AS p3q6_3,
+        SUM(CASE WHEN sse.p3q6 = '4' THEN 1 ELSE 0 END) AS p3q6_4,
+        SUM(CASE WHEN sse.p3q6 = '5' THEN 1 ELSE 0 END) AS p3q6_5,
+
+        SUM(CASE WHEN sse.p3q7 = '1' THEN 1 ELSE 0 END) AS p3q7_1,
+        SUM(CASE WHEN sse.p3q7 = '2' THEN 1 ELSE 0 END) AS p3q7_2,
+        SUM(CASE WHEN sse.p3q7 = '3' THEN 1 ELSE 0 END) AS p3q7_3,
+        SUM(CASE WHEN sse.p3q7 = '4' THEN 1 ELSE 0 END) AS p3q7_4,
+        SUM(CASE WHEN sse.p3q7 = '5' THEN 1 ELSE 0 END) AS p3q7_5,
+
+        SUM(CASE WHEN sse.p3q8 = '1' THEN 1 ELSE 0 END) AS p3q8_1,
+        SUM(CASE WHEN sse.p3q8 = '2' THEN 1 ELSE 0 END) AS p3q8_2,
+        SUM(CASE WHEN sse.p3q8 = '3' THEN 1 ELSE 0 END) AS p3q8_3,
+        SUM(CASE WHEN sse.p3q8 = '4' THEN 1 ELSE 0 END) AS p3q8_4,
+        SUM(CASE WHEN sse.p3q8 = '5' THEN 1 ELSE 0 END) AS p3q8_5,
+
+        SUM(CASE WHEN sse.p3q9 = '1' THEN 1 ELSE 0 END) AS p3q9_1,
+        SUM(CASE WHEN sse.p3q9 = '2' THEN 1 ELSE 0 END) AS p3q9_2,
+        SUM(CASE WHEN sse.p3q9 = '3' THEN 1 ELSE 0 END) AS p3q9_3,
+        SUM(CASE WHEN sse.p3q9 = '4' THEN 1 ELSE 0 END) AS p3q9_4,
+        SUM(CASE WHEN sse.p3q9 = '5' THEN 1 ELSE 0 END) AS p3q9_5,
+        
+        SUM(CASE WHEN sse.p3q10 = '1' THEN 1 ELSE 0 END) AS p3q10_1,
+        SUM(CASE WHEN sse.p3q10 = '2' THEN 1 ELSE 0 END) AS p3q10_2,
+        SUM(CASE WHEN sse.p3q10 = '3' THEN 1 ELSE 0 END) AS p3q10_3,
+        SUM(CASE WHEN sse.p3q10 = '4' THEN 1 ELSE 0 END) AS p3q10_4,
+        SUM(CASE WHEN sse.p3q10 = '5' THEN 1 ELSE 0 END) AS p3q10_5,
+
+        SUM(CASE WHEN sse.p3q11 = '1' THEN 1 ELSE 0 END) AS p3q11_1,
+        SUM(CASE WHEN sse.p3q11 = '2' THEN 1 ELSE 0 END) AS p3q11_2,
+        SUM(CASE WHEN sse.p3q11 = '3' THEN 1 ELSE 0 END) AS p3q11_3,
+        SUM(CASE WHEN sse.p3q11 = '4' THEN 1 ELSE 0 END) AS p3q11_4,
+        SUM(CASE WHEN sse.p3q11 = '5' THEN 1 ELSE 0 END) AS p3q11_5,
+
+        SUM(CASE WHEN sse.p3q12 = '1' THEN 1 ELSE 0 END) AS p3q12_1,
+        SUM(CASE WHEN sse.p3q12 = '2' THEN 1 ELSE 0 END) AS p3q12_2,
+        SUM(CASE WHEN sse.p3q12 = '3' THEN 1 ELSE 0 END) AS p3q12_3,
+        SUM(CASE WHEN sse.p3q12 = '4' THEN 1 ELSE 0 END) AS p3q12_4,
+        SUM(CASE WHEN sse.p3q12 = '5' THEN 1 ELSE 0 END) AS p3q12_5,
+
+        SUM(CASE WHEN sse.p3q13 = '1' THEN 1 ELSE 0 END) AS p3q13_1,
+        SUM(CASE WHEN sse.p3q13 = '2' THEN 1 ELSE 0 END) AS p3q13_2,
+        SUM(CASE WHEN sse.p3q13 = '3' THEN 1 ELSE 0 END) AS p3q13_3,
+        SUM(CASE WHEN sse.p3q13 = '4' THEN 1 ELSE 0 END) AS p3q13_4,
+        SUM(CASE WHEN sse.p3q13 = '5' THEN 1 ELSE 0 END) AS p3q13_5,
+        
+        SUM(CASE WHEN sse.p4q1 = 'Poor' THEN 1 ELSE 0 END) AS p4q1_poor,
+        SUM(CASE WHEN sse.p4q1 = 'Fair' THEN 1 ELSE 0 END) AS p4q1_fair,
+        SUM(CASE WHEN sse.p4q1 = 'Good' THEN 1 ELSE 0 END) AS p4q1_good,
+        SUM(CASE WHEN sse.p4q1 = 'Very Good' THEN 1 ELSE 0 END) AS p4q1_verygood,
+        SUM(CASE WHEN sse.p4q1 = 'Excellent' THEN 1 ELSE 0 END) AS p4q1_excellent
+        
+        -- Add more questions here
+    FROM student_supervisor_evaluation sse
+    JOIN students s ON sse.student_id = s.id
+    WHERE s.block = :block";
+
+        return $this->get_records(null, null, null, $sql, ['block' => $block]);
+    }
+
 
 }
