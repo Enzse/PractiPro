@@ -77,7 +77,9 @@ export class CoordEvaluationspopupComponent {
   ngOnInit(): void {
     this.loadData();
   }
-
+  closePopup() {
+    this.dialog.close();
+  }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

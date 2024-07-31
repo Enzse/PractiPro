@@ -1,4 +1,17 @@
 <div class="p-3 max-w-screen max-h-screen overflow-auto bg-white shadow-lg rounded-xl font-secondary relative">
+
+    <div class="absolute top-4 right-4">
+        <button (click)="closePopup()"
+            class="p-1 bg-gray-200 opacity-60 hover:opacity-100 hover:shadow-lg rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-x">
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+            </svg>
+        </button>
+    </div>
+
     <div class="font-primary m-3">
         <h1 class="text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
             Leave a comment for: '{{this.data.fileName}}'
@@ -40,16 +53,15 @@
                 <div class="px-4 py-2 mb-2 bg-slate-200 rounded-lg dark:bg-gray-800 max-sm:mb-3">
                     <textarea id="comment" rows="4"
                         class="w-full px-0 text-sm text-black-900 bg-slate-200 border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-                        placeholder="Leave a comment regarding this particular submission."
-                        formControlName="comments" required></textarea>
+                        placeholder="Leave a comment regarding this particular submission." formControlName="comments"
+                        required></textarea>
                 </div>
                 <div class="flex justify-center dark:border-gray-600 py-2">
                     <button type="submit"
                         class="text-white p-2 px-5 bg-blue-600 shadow-sm hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg focus:outline-none">
                         Submit Comment
                         <svg class="w-6 h-6 text-gray-800 dark:text-white inline" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                            viewBox="0 0 24 24">
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
                             <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
                         </svg>

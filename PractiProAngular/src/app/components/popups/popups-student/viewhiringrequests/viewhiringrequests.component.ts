@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
+import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
   selector: 'app-viewhiringrequests',
@@ -16,8 +17,8 @@ import { Subscription } from 'rxjs';
 export class ViewhiringrequestsComponent implements OnInit {
   datalist: any[] = []
   private subscriptions = new Subscription();
-  constructor(private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewhiringrequestsComponent>, private sanitizer: DomSanitizer) {
-  
+  constructor(private changeDetection: ChangeDetectionService, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewhiringrequestsComponent>, private sanitizer: DomSanitizer) {
+
   }
 
   ngOnInit(): void {
@@ -59,6 +60,7 @@ export class ViewhiringrequestsComponent implements OnInit {
       if (result.isConfirmed) {
         this.subscriptions.add(
           this.service.addStudentToCompany(request).subscribe((res: any) => {
+            this.changeDetection.notifyChange(true);
             Swal.fire("Success", "You have successfully joined the company", "success");
             this.subscriptions.add(
               this.service.deleteHiringRequest(request.id).subscribe((res: any) => {

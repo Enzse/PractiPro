@@ -34,6 +34,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   tabWeekNumbers: number[] = [1];
   p: number = 1;
   private subscriptions = new Subscription();
+  isUploading = false;
 
   constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
     this.userId = this.service.getCurrentUserId();
@@ -99,6 +100,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
 
+    this.isUploading = true;
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
@@ -114,9 +116,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
               this.loadData();
               this.pdfPreview = undefined;
               fileInput.value = '';
+              this.isUploading = false;
             },
             error => {
               console.error('Error uploading file:', error);
+              this.isUploading = false;
             }
           ));
       }
@@ -126,6 +130,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           text: "Please select a file to upload first.",
           icon: "error"
         });
+        this.isUploading = false;
       }
     });
   }

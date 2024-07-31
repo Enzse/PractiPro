@@ -34,7 +34,9 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadRecords();
   }
-
+  closePopup() {
+    this.dialog.close();
+  }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

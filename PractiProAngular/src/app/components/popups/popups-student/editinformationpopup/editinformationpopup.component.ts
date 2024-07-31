@@ -71,5 +71,7 @@ export class EditinformationpopupComponent implements OnInit {
     }
   }
 
-
+  closePopup() {
+    this.dialog.close();
+  }
 }

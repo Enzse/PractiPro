@@ -42,7 +42,9 @@ export class SeminarspopupComponent {
       })
     );
   }
-
+  closePopup() {
+    this.dialogRef.close()
+  }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

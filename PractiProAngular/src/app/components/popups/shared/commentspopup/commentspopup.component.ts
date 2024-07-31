@@ -46,7 +46,7 @@ export class CommentspopupComponent implements OnInit {
     this.service.getSubmissionComments(this.data.table, this.fileID).subscribe((res: any) => {
       this.commentsList = res.payload.sort((a: any, b: any) => {
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-    });
+      });
     });
   }
 
@@ -73,5 +73,9 @@ export class CommentspopupComponent implements OnInit {
         icon: "error"
       });
     }
+  }
+
+  closePopup() {
+    this.dialog.close()
   }
 }

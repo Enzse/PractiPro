@@ -16,23 +16,23 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   styleUrl: './addcertificatepopup.component.css'
 })
 export class AddcertificatepopupComponent {
-  userId:any
-  file:any;
+  userId: any
+  file: any;
   pdfPreview?: SafeResourceUrl;
   constructor(
     private service: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data:any,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AddcertificatepopupComponent>,
     private changeDetection: ChangeDetectionService,
-    private sanitizer:DomSanitizer){
+    private sanitizer: DomSanitizer) {
     this.userId = this.service.getCurrentUserId();
   }
-  
+
   onFileChange(event: any) {
     const files = event.target.files as FileList;
     if (files.length > 0) {
       this.file = files[0];
-      this.previewPDF(); 
+      this.previewPDF();
     }
   }
 
@@ -73,5 +73,9 @@ export class AddcertificatepopupComponent {
         });
       }
     });
+  }
+
+  closePopup() {
+    this.dialogRef.close()
   }
 }

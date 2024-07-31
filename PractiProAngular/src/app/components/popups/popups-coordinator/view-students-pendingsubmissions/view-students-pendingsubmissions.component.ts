@@ -38,6 +38,9 @@ export class ViewStudentsPendingsubmissionsComponent implements OnInit, OnDestro
     this.subscriptions.unsubscribe();
   }
 
+  closePopup() {
+    this.dialog.close();
+  }
   ngOnInit(): void {
     this.loadData()
 

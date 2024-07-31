@@ -78,7 +78,9 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.loadEvaluation();
   }
-
+  closePopup() {
+    this.dialogref.close();
+  }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

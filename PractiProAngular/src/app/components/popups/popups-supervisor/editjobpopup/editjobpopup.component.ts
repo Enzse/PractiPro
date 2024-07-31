@@ -16,6 +16,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 export class EditjobpopupComponent {
   existingdata?: any;
   changeDetected: any;
+  userId: any = this.service.getCurrentUserId();
 
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditjobpopupComponent>, private changeDetection: ChangeDetectionService) {
@@ -39,21 +40,16 @@ export class EditjobpopupComponent {
   }
 
   jobForm = this.builder.group({
-    student_id: this.builder.control(''),
-    supervisor_id: this.builder.control(''),
-    job_title: this.builder.control(''),
-    start_date: this.builder.control(''),
-    end_date: this.builder.control(''),
-    job_description: this.builder.control(''),
+    student_id: this.data.student.id,
+    supervisor_id: this.userId,
+    job_title: this.builder.control('', Validators.required),
+    start_date: this.builder.control('', Validators.required),
+    end_date: this.builder.control('', Validators.required),
+    job_description: this.builder.control('', Validators.required),
   });
 
   editJob() {
     if (this.jobForm.valid) {
-      const userId: any = this.service.getCurrentUserId();
-      this.jobForm.patchValue({
-        student_id: this.data.student.id,
-        supervisor_id: userId,
-      })
       console.log(this.jobForm.value)
       this.service.assignJobToStudent(this.jobForm.value).subscribe(res => {
         this.changeDetected = true;
@@ -62,9 +58,9 @@ export class EditjobpopupComponent {
       })
     } else {
       Swal.fire({
-        title: "Invalid Input",
-        text: "Double-check your information to see any areas you've not yet inputted",
-        icon: "error"
+        title: "Invalid Job!",
+        text: "Please enter valid job credentials.",
+        icon: "warning"
       });
     }
   }

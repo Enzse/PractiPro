@@ -33,6 +33,10 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
+  closePopup() {
+    this.dialogRef.close();
+  }
+
   loadData() {
     this.isLoading = true;
     this.subscriptions.add(

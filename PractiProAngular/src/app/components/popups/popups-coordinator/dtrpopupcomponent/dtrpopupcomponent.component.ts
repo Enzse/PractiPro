@@ -24,8 +24,8 @@ export class DtrpopupcomponentComponent {
   constructor(private service: AuthService, private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DtrpopupcomponentComponent>, private dialog2: MatDialog) { }
 
-  origlist:any;
-  searchtext:any;
+  origlist: any;
+  searchtext: any;
   isLoading = true;
   p: number = 1;
   itemsPerPage: number = 7
@@ -41,7 +41,9 @@ export class DtrpopupcomponentComponent {
 
   ngOnInit(): void {
     this.loadData();
-
+  }
+  closePopup() {
+    this.dialog.close();
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

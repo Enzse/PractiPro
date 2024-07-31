@@ -30,28 +30,61 @@ export class EditschedulespopupComponent {
   ];
 
 
+
+
   ngOnInit(): void {
-    if (this.data.schedules.length > 0) {
-      this.schedules = this.data.schedules
+    const hasValidSchedules = this.data.schedules.some((schedule: any) =>
+      schedule.start_time.trim() !== '00:00:00' && schedule.end_time.trim() !== '00:00:00'
+    );
+    // If there are valid schedules, assign them to this.schedules
+    if (hasValidSchedules) {
+      this.schedules = this.data.schedules;
     }
   }
 
   toggleWork(schedule: any) {
-    schedule.start_time = '';
-    schedule.end_time = '';
-
+    if ((schedule.start_time === '' && schedule.end_time === '') || (schedule.start_time === '00:00:00' && schedule.end_time === '00:00:00')) {
+      schedule.start_time = '09:00:00';
+      schedule.end_time = '17:00:00';
+    }
+    else if (schedule.start_time !== '' && schedule.end_time !== '') {
+      schedule.start_time = '';
+      schedule.end_time = '';
+    }
+    // if (schedule.end_time !== '' && schedule.start_time !== '') {
+    //   schedule.start_time = '09:00:00';
+    //   schedule.end_time = '17:00:00';
+    // } else {
+    //   schedule.start_time = '';
+    //   schedule.end_time = '';
+    // }
   }
 
 
   assignSchedules() {
-    this.service.assignSchedulesToStudent(this.data.student.id, this.schedules).subscribe(res => {
-      this.changeDetected = true;
-      this.dialog.close(this.changeDetected);
-      Swal.fire({
-        title: "Schedule saved!",
-        icon: "success"
+    const hasValidSchedules = this.schedules.some(schedule =>
+      schedule.start_time.trim() !== '' ||
+      schedule.end_time.trim() !== '' ||
+      schedule.has_work
+    );
+
+    if (hasValidSchedules) {
+      this.service.assignSchedulesToStudent(this.data.student.id, this.schedules).subscribe(res => {
+        this.changeDetected = true;
+        this.dialog.close(this.changeDetected);
+        Swal.fire({
+          title: "Schedule saved!",
+          icon: "success"
+        });
       });
-    });
+    }
+    else {
+      Swal.fire({
+        title: 'Invalid Schedules!',
+        text: "Please assign at least 1 work day for a schedule to be valid.",
+        icon: "warning"
+      });
+    }
   }
 
 

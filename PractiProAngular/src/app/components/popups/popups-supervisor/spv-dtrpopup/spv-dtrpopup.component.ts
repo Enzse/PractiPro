@@ -37,7 +37,9 @@ export class SpvDtrpopupComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadData();
-
+  }
+  closePopup() {
+    this.dialog.close();
   }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();

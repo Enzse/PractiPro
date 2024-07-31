@@ -134,4 +134,9 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+  closePopup() {
+    this.dialog.close();
+  }
+
 }

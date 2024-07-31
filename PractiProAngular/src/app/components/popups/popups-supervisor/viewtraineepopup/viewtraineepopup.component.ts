@@ -39,25 +39,27 @@ export class ViewtraineepopupComponent implements OnInit, OnDestroy {
     this.loadData()
     this.loadSchedules();
   }
-
+  closePopup() {
+    this.dialog.close();
+  }
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }
 
   loadData() {
     this.subscriptions.add(
-    this.service.getStudentJob(this.data.student.id).subscribe((res: any) => {
-      this.studentjob = res.payload[0];
-      console.log(this.studentjob);
-    }));
+      this.service.getStudentJob(this.data.student.id).subscribe((res: any) => {
+        this.studentjob = res.payload[0];
+        console.log(this.studentjob);
+      }));
   }
 
   loadSchedules() {
     this.subscriptions.add(
-    this.service.getStudentSchedules(this.data.student.id).subscribe((res: any) => {
-      this.schedules = res.payload
-      console.log(this.schedules)
-    }));
+      this.service.getStudentSchedules(this.data.student.id).subscribe((res: any) => {
+        this.schedules = res.payload
+        console.log(this.schedules)
+      }));
   }
 
 
@@ -82,7 +84,7 @@ export class ViewtraineepopupComponent implements OnInit, OnDestroy {
   }
 
 
-  
+
   assignSchedules() {
     const popup = this.dialog2.open(EditschedulespopupComponent, {
       enterAnimationDuration: "500ms",

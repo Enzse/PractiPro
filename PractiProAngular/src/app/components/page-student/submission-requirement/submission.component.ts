@@ -34,6 +34,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   origlist: any;
   pdfPreview?: SafeResourceUrl;
   file: any;
+  isUploading = false;
 
   private subscriptions = new Subscription();
   selectedTabLabel: string = 'Resume';
@@ -73,12 +74,14 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     reader.readAsDataURL(this.file);
   }
 
+
   submitFiles() {
     const fileInputs = document.querySelectorAll('input[type="file"]');
     if (!this.userId) {
       console.error('User ID not found.');
       return;
     }
+    this.isUploading = true;
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
@@ -94,9 +97,11 @@ export class SubmissionComponent implements OnInit, OnDestroy {
               this.pdfPreview = undefined;
               this.loadData();
               fileInput.value = '';
+              this.isUploading = false;
             },
             error => {
               console.error('Error uploading file:', error);
+              this.isUploading = false;
             }
           ));
       }
@@ -106,6 +111,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
           text: "Please select a file to upload first.",
           icon: "error"
         });
+        this.isUploading = false;
       }
     });
   }

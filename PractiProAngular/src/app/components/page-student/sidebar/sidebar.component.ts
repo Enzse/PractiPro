@@ -11,6 +11,7 @@ import { initFlowbite } from 'flowbite';
 import { AuthService } from '../../../services/auth.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
+import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -29,14 +30,27 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private service: AuthService
+    private service: AuthService,
+    private changeDetection: ChangeDetectionService
   ) {
     this.studentId = this.service.getCurrentUserId();
   }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) initFlowbite();
+    this.loadData();
 
+
+    this.subscriptions.add(
+      this.changeDetection.changeDetected$.subscribe(changeDetected => {
+        if (changeDetected) {
+          this.loadData();
+        }
+      })
+    )
+  }
+
+  loadData() {
     this.subscriptions.add(
       this.service.getStudentOjtInfo(this.studentId).subscribe(
         (res: any) => {

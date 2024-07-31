@@ -33,6 +33,9 @@ export class ViewSentInvitesComponent {
   ngOnInit(): void {
     this.loadData();
   }
+  closePopup() {
+    this.dialogRef.close();
+  }
 
   loadData() {
     this.isLoading = true;

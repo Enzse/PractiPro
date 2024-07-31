@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class AddseminarpopupComponent {
   userId: any;
   seminarRecordForm: FormGroup;
+  isUploading = false;
 
   file: any;
   pdfPreview?: SafeResourceUrl;
@@ -44,7 +45,7 @@ export class AddseminarpopupComponent {
     if (this.seminarRecordForm.valid) {
       this.service.uploadSeminarRecord(this.data.id, this.seminarRecordForm.value).subscribe((res: any) => {
 
-
+        this.isUploading = true;
         const fileInputs = document.querySelectorAll('input[type="file"]');
         fileInputs.forEach((fileInput: any) => {
           const file = fileInput.files[0];
@@ -52,9 +53,11 @@ export class AddseminarpopupComponent {
             this.service.uploadSeminarCertificate(res.payload.record_id, file).subscribe(
               response => {
                 this.changeDetection.notifyChange(true);
+                this.isUploading = false;
               },
               error => {
                 console.error('Error uploading file:', error);
+                this.isUploading = false;
               }
             );
           }
@@ -74,6 +77,7 @@ export class AddseminarpopupComponent {
         text: "Please enter valid data before submitting the record.",
         icon: "warning"
       });
+      this.isUploading = false;
     }
   }
 
@@ -95,4 +99,7 @@ export class AddseminarpopupComponent {
     reader.readAsDataURL(this.file);
   }
 
+  closePopup() {
+    this.dialogRef.close()
+  }
 }
