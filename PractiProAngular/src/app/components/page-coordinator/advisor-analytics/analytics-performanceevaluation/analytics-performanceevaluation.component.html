@@ -1,1 +1,501 @@
-<p>analytics-performanceevaluation works!</p>
+<div class="p-1 xl:p-10">
+
+
+    <!-- ngIf on this div -->
+    <div class=" p-8 max-sm:p-4 rounded-md bg-slate-100 shadow-md">
+
+        <div class="bg-slate-50 rounded-lg w-full p-4 font-secondary text-center shadow-md border border-gray-200">
+            <form>
+
+                <!-- Question 1 -->
+                <div class="space-y-8">
+                    <div>
+                        <p class="mb-2 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                            1. Knowledge:
+                        </p>
+
+                        <div class="relative shadow-md overflow-auto sm:rounded-lg border border-gray-300">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                                <thead
+                                    class="text-xs text-gray-700 uppercase text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">RESPONSES</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center grid grid-cols-2 max-sm:grid-cols-1">
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                1. Identifies problems, gathers data related to the problem, analyzes
+                                                the data gathered and
+                                                selects
+                                                appropriate actions.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p1q1" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                2. Sets priorities in the workplace based on the identified needs.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p1q2" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                3. Formulates plans based on priority needs and problems in the
+                                                workplace.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p1q3" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                4. Promotes safety measures in all aspects of the job assigned to
+                                                him/her.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p1q4" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r col-span-2 max-sm:col-span-1 p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-center text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                5. Applies appropriate IT/CS principles on the tasks on hand.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p1q5" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div>
+                        <p class="mb-2 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                            2. Skills:
+                        </p>
+
+                        <div class="relative overflow-auto shadow-md sm:rounded-lg border border-gray-300">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                                <thead
+                                    class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-center">RESPONSES</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center grid grid-cols-2 max-sm:grid-cols-1">
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                1. Analyzes the tasks assigned to him/her.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p2q1" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b p-4">
+                                        <tr class="flex flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                2. Works with thoroughness and accuracy, orderliness and neatness.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p2q2" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                3. Sets systematic objectives in their order of priority.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p2q3" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b p-4">
+                                        <tr class="flex flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                4. Has the initiative and ingenuity in finding ways and means to
+                                                accomplish objectives.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p2q4" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                5. Relates IT/CS principles correctly to the assigned task.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p2q5" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b p-4">
+                                        <tr class="flex flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                6. Prepares and administers necessary and appropriate evaluation for the
+                                                accomplished work.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p2q6" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b p-4">
+                                        <tr class="flex flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                7. Maintains accurate and updates documentation of the work done.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p2q7" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b p-4">
+                                        <tr class="flex flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                8. Provides safety measures for the preventation of accidents.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p2q8" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Question 3 -->
+                    <div>
+                        <p class="mb-2 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                            3. Attitude:
+                        </p>
+
+                        <div class="relative overflow-auto shadow-md sm:rounded-lg border border-gray-300">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                                <thead
+                                    class="text-xs text-gray-700 text-center uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">RESPONSES</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-center grid grid-cols-2 max-sm:grid-cols-1">
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                1. Reports in the workplace on time regularly.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q1" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                2. Never leaves the area without permission from his/her superior.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q2" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                3. Practices good grooming.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q3" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                4. Carries self with dignity and respect, projects a positive
+                                                self-image.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q4" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                5. Observes personal and professional decorum.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q5" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                6. Establishes friendliness but not familiarity.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q6" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                7. Gives due respect to the superiors; always tactful in dealing with
+                                                them.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q7" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                8. Behaves in accordance with the set policies and standards of the
+                                                university and company.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q8" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                9. Works collaboratively and cooperates with other members of the
+                                                company as necessary.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q9" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                10. Works harmoniously with others towards overall efficiency of the
+                                                organization.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q10" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                11. Accepts constructive criticisms and suggestions given by superior
+                                                and co-worker.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q11" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                12. Helps in keeping the immediate environment clean and orderly.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q12" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                    <div class="bg-white border-b border-r p-4 col-span-2 max-sm:col-span-1">
+                                        <tr class="flex justify-center flex-col">
+                                            <th
+                                                class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                                13. Submits requirements on time.
+                                            </th>
+                                            <td class="flex max-sm:w-56 justify-center py-2">
+                                                <p-chart type="doughnut" [data]="p3q13" [options]="options2"></p-chart>
+                                            </td>
+                                        </tr>
+                                    </div>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <!-- Question 4 -->
+                    <div class="mt-5">
+                        <p class="mb-2 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                            4. Overall Performance:
+                        </p>
+                        <div class=" p-8 max-sm:p-4 rounded-md bg-white shadow-md">
+                            <div class="card">
+                                <p-chart type="bar" [data]="p4q1" [options]="options" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- question 5 -->
+                    <!-- <div>
+                        <p class="mb-8 text-xl font-bold font-primary text-gray-800 dark:text-gray-400">
+                            5. Comments / Suggestions to Improve Trainee's Performance
+                        </p>
+
+                        <div class="space-y-6">
+                            <div>
+                                <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                    1. The student's major strong points are:
+                                </p>
+                                <textarea readonly id="message" rows="4" name="p5q1" formControlName="p5q1"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Write here ... "></textarea>
+                            </div>
+
+                            <div>
+                                <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                    2. These might be utilized more effectively by:
+                                </p>
+                                <textarea readonly id="message" rows="4" name="p5q2" formControlName="p5q2"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Write here ... "></textarea>
+                            </div>
+
+                            <div>
+                                <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                    3. The student's major weak points are:
+                                </p>
+                                <textarea readonly id="message" rows="4" name="p5q3" formControlName="p5q3"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Write here ... "></textarea>
+                            </div>
+
+                            <div>
+                                <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                    4. These might be corrected by:
+                                </p>
+                                <textarea readonly id="message" rows="4" name="p5q4" formControlName="p5q4"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Write here ... "></textarea>
+                            </div>
+
+                            <div>
+                                <p class="font-primary font-medium text-left mb-3 text-gray-900">
+                                    5. Other comments / suggestions:
+                                </p>
+                                <textarea readonly id="message" rows="4" name="p5q5" formControlName="p5q5"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Write here ... "></textarea>
+                            </div>
+
+                            <div>
+
+
+                                <div class="inline-flex gap-3 mb-3">
+                                    <p class="font-primary font-medium text-left text-gray-900">
+                                        6. Would you recommend this student for further employment in your own
+                                        firm?:
+                                    </p>
+                                    <div class="flex items-center">
+                                        <input id="good" type="radio" value="yes" name="p5q6x1" formControlName="p5q6x1"
+                                            class="w-4 h-4 disabled border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+                                        <label for="good" class="block ms-2 font-primary text-sm font-medium">
+                                            Yes
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center">
+                                        <input id="fair" type="radio" value="no" name="p5q6x1" formControlName="p5q6x1"
+                                            class="w-4 h-4 disabled border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600" />
+                                        <label for="fair" class="block ms-2 font-primary text-sm font-medium">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <textarea readonly id="message" rows="4" name="p5q6" formControlName="p5q6"
+                                    class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Explain why here ... "></textarea>
+                            </div>
+
+                        </div>
+
+                    </div> -->
+
+                </div>
+            </form>
+            <!-- <div class="w-full mt-7 flex justify-center">
+                <button type="submit" (click)="scrollToTop()"
+                    class=" text-white py-2 px-10 text-lg bg-blue-900 hover:bg-blue-800 font-medium rounded-md">
+                    Back to Top
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide inline -mt-0.5 lucide-arrow-up">
+                        <path d="m5 12 7-7 7 7" />
+                        <path d="M12 19V5" />
+                    </svg>
+                </button>
+            </div> -->
+        </div>
+
+        <ng-template #noBlockMessage>
+            <div class="m-10 flex flex-col items-center">
+                <div>
+                    <img class="opacity-40 h-36 w-36" src="../../../../assets/empty2.png">
+                </div>
+                <div>
+                    <h1 class="opacity-40 text-center text-4xl font-primary mt-5">
+                        Please select a Class...
+                    </h1>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

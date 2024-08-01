@@ -474,7 +474,7 @@ export class AuthService {
     return this.http.get<any>(`${this.apiurl}/getfinalreportsanalytics/${block}`);
   }
 
-  getStudentEvaluationAnalytics(block: string) {
+  getPerformanceEvaluationAnalytics(block: string) {
     return this.http.get<any>(`${this.apiurl}/getstudentevaluationanalytics/${block}`);
   }
 
