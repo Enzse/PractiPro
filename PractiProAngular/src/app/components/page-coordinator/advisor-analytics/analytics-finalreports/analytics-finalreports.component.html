@@ -6,7 +6,7 @@
 
         <form>
             <!-- Question 1 -->
-            <div>
+            <div id="ojtstandards">
                 <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
                     1. Students' OJT Experience with the following OJT Standards/Criteria:
                 </p>
@@ -101,7 +101,7 @@
             </div>
 
             <!-- Question 2 -->
-            <div>
+            <div id="trainingobjectives">
                 <p class="mb-2 mt-5 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
                     2. Extent of students in achieving their respective training objectives:
                 </p>
@@ -114,7 +114,7 @@
             </div>
 
             <!-- Question 3 -->
-            <div class="mt-5">
+            <div id="overallexperience" class="mt-5">
                 <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
                     3. Student overall experience:
                 </p>
@@ -125,16 +125,6 @@
                 </div>
             </div>
 
-            <!-- Question 4 -->
-            <!-- <div class="mt-5 normal-case">
-                    <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
-                        4. Please provide any additional comments or suggestions:
-                    </p>
-                    <div
-                        class="bg-white relative overflow-auto shadow-md sm:rounded-lg border text-base text-left border-gray-300 p-6">
-                        test
-                    </div>
-                </div> -->
 
         </form>
 
@@ -150,5 +140,28 @@
                 </div>
             </div>
         </ng-template>
+    </div>
+
+</div>
+
+<div class="comment-form-sticky font-primary sticky bottom-0 left-0 right-0 bg-white shadow-md px-3 py-2 ">
+    <div class="text-center">
+        <h1>
+            Jump to:
+        </h1>
+    </div>
+    <div class="flex justify-evenly text-center">
+        <button (click)="scrollToSection('ojtstandards')"
+            class="shadow-md rounded-lg w-[40vh] py-1 hover:bg-blue-900 hover:text-white">
+            I. OJT Standards
+        </button>
+        <button (click)="scrollToSection('trainingobjectives')"
+            class="shadow-md rounded-lg w-[40vh] py-1 hover:bg-blue-900 hover:text-white">
+            II. Training Objectives
+        </button>
+        <button (click)="scrollToSection('overallexperience')"
+            class="shadow-md rounded-lg w-[40vh] py-1 hover:bg-blue-900 hover:text-white">
+            III. Overall Experience
+        </button>
     </div>
 </div>

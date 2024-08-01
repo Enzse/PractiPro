@@ -428,4 +428,12 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
     )
   }
 
+  scrollToSection(sectionId: string): void {
+    const sectionElement = document.getElementById(sectionId);
+    if (sectionElement) {
+      sectionElement.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      console.error(`Section with id '${sectionId}' not found`);
+    }
+  }
 }
