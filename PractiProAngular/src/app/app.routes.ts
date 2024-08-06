@@ -59,6 +59,9 @@ import { InvitestudentsByStudentidComponent } from './components/page-coordinato
 import { InvitestudentsByLinkComponent } from './components/page-coordinator/coord-invitestudents/invitestudents-by-link/invitestudents-by-link.component';
 import { JoinclassesByLinkComponent } from './components/page-student/joinclasses-by-link/joinclasses-by-link.component';
 import { classjoinlinkGuard } from './guard/classjoinlink.guard';
+import { AdvisorAnalyticsComponent } from './components/page-coordinator/advisor-analytics/advisor-analytics.component';
+import { AnalyticsFinalreportsComponent } from './components/page-coordinator/advisor-analytics/analytics-finalreports/analytics-finalreports.component';
+import { AnalyticsPerformanceevaluationComponent } from './components/page-coordinator/advisor-analytics/analytics-performanceevaluation/analytics-performanceevaluation.component';
 
 
 export const routes: Routes = [
@@ -135,6 +138,13 @@ export const routes: Routes = [
                     { path: 'coord-accomplishmentreport', component: CoordAccomplishmentReportComponent, title: 'Accomplishment Reports', },
                     { path: 'coord-evaluations', component: CoordEvaluationsComponent, title: 'Performance Evaluations', },
                     { path: 'coord-finalreport', component: CoordFinalreportComponent, title: 'Final Reports', },
+                    {
+                        path: 'advisor-analytics', component: AdvisorAnalyticsComponent, title: 'Analytics', children:
+                            [
+                                { path: 'analytics-finalreports', component: AnalyticsFinalreportsComponent, },
+                                { path: 'analytics-performanceevaluations', component: AnalyticsPerformanceevaluationComponent, },
+                            ]
+                    }
                 ]
             },
         ]

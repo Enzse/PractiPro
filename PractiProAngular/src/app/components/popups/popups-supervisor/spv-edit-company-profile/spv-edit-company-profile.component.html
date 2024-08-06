@@ -1,0 +1,84 @@
+<div class="p-5 overflow-auto max-sm:max-h-96 bg-white shadow-lg rounded-lg font-secondary relative">
+    <div class="absolute top-3 right-3">
+        <button (click)="closePopup()"
+            class="p-1 bg-gray-200 opacity-60 hover:opacity-100 hover:shadow-lg rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-x">
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+            </svg>
+        </button>
+    </div>
+    <form [formGroup]="editForm" (ngSubmit)="editInformation()">
+        <div class="grid gap-4 mb-6 grid-cols-1 sm:grid-cols-2">
+            <div>
+                <label for="company_ceo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company
+                    CEO
+                    (Full Name): </label>
+                <input type="text" id="company_ceo"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(Full CEO Name)" formControlName="company_ceo" />
+            </div>
+            <div>
+                <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company
+                    Address</label>
+                <input type="text" id="address"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(Company Address)" formControlName="address" />
+            </div>
+            <div>
+                <label for="company_size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company
+                    Size</label>
+                <input type="text" id="company_size"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="(Number of Employees)" formControlName="company_size" />
+            </div>
+            <div>
+                <label for="industry"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Industry</label>
+                <input type="text" id="industry"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Company Industry (Technology, Finance, Government, etc.)" formControlName="industry" />
+            </div>
+            <div>
+                <label for="scope_of_business"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scope of Business</label>
+                <input type="text" id="scope_of_business"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="Scope of Business (Software Development, IT Consulting, Logistics, etc.)"
+                    formControlName="scope_of_business" />
+            </div>
+            <div>
+                <label for="it-equipment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT
+                    Equipment</label>
+                <select id="it-equipment" formControlName="itEquipment" multiple
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <option value="desktop">Desktop</option>
+                    <option value="laptop">Laptop</option>
+                    <option value="ipad">iPad</option>
+                    <option value="tablet">Tablet</option>
+                    <option value="smartphone">Smartphone</option>
+                    <option value="server">Server</option>
+                    <option value="router">Router</option>
+                    <option value="printer">Printer</option>
+                    <option value="scanner">Scanner</option>
+                    <option value="virtual-machine">Virtual Machine</option>
+                    <option value="cabling">Cabling and Connectors</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+
+
+        </div>
+
+
+        <div class="mb-3 border-b border-gray-300"></div>
+        <div class="flex justify-center">
+            <button type="submit"
+                class="text-white bg-blue-900 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-16 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Confirm
+                Changes</button>
+        </div>
+    </form>
+</div>

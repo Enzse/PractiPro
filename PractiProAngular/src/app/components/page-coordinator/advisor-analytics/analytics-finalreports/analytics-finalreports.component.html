@@ -1,0 +1,167 @@
+<div class="p-1 xl:p-10">
+
+
+    <!-- ngIf on this div -->
+    <div class=" p-8 max-sm:p-4 rounded-md bg-slate-100 shadow-md">
+
+        <form>
+            <!-- Question 1 -->
+            <div id="ojtstandards">
+                <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+                    1. Students' OJT Experience with the following OJT Standards/Criteria:
+                </p>
+
+                <div class="relative font-secondary shadow-md sm:rounded-lg border rounded-md border-gray-300">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-800 dark:text-gray-400">
+                        <thead
+                            class="text-xs text-gray-700 uppercase text-center bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-center">RESPONSES</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center grid grid-cols-2 max-sm:grid-cols-1">
+                            <div class="bg-white border-b border-r p-4">
+                                <tr class="flex justify-center flex-col">
+                                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        1. My scope of work is directly related to the academic program I am
+                                        pursuing.
+                                    </th>
+                                    <td class="flex max-sm:w-56 justify-center py-2">
+                                        <p-chart type="doughnut" [data]="p1q1" [options]="options2"></p-chart>
+                                    </td>
+                                </tr>
+                            </div>
+                            <div class="bg-white border-b p-4">
+                                <tr class="flex flex-col">
+                                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        2. I was given an orientation on the company organization and operations.
+                                    </th>
+                                    <td class="flex max-sm:w-56 justify-center py-2">
+                                        <p-chart type="doughnut" [data]="p1q2" [options]="options2"></p-chart>
+                                    </td>
+                                </tr>
+                            </div>
+                            <div class="bg-white border-b border-r p-4">
+                                <tr class="flex flex-col">
+                                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        3. I was given a job description on my specific duties and reporting
+                                        relationships.
+                                    </th>
+                                    <td class="flex max-sm:w-56 justify-center py-2">
+                                        <p-chart type="doughnut" [data]="p1q3" [options]="options2"></p-chart>
+                                    </td>
+                                </tr>
+                            </div>
+                            <div class="bg-white border-b p-4">
+                                <tr class="flex flex-col">
+                                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        4. My office/work hours were clear and convenient for me.
+                                    </th>
+                                    <td class="flex max-sm:w-56 justify-center py-2">
+                                        <p-chart type="doughnut" [data]="p1q4" [options]="options2"></p-chart>
+                                    </td>
+                                </tr>
+                            </div>
+                            <div class="bg-white border-b border-r p-4">
+                                <tr class="flex flex-col">
+                                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        5. I felt safe and secure in my work location and environment.
+                                    </th>
+                                    <td class="flex max-sm:w-56 justify-center py-2">
+                                        <p-chart type="doughnut" [data]="p1q5" [options]="options2"></p-chart>
+                                    </td>
+                                </tr>
+                            </div>
+                            <div class="bg-white border-b p-4">
+                                <tr class="flex flex-col">
+                                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        6. I had no difficulty going to and from work.
+                                    </th>
+                                    <td class="flex max-sm:w-56 justify-center py-2">
+                                        <p-chart type="doughnut" [data]="p1q6" [options]="options2"></p-chart>
+                                    </td>
+                                </tr>
+                            </div>
+                            <div class="bg-white border-b col-span-2 max-sm:col-span-1 p-4">
+                                <tr class="flex flex-col">
+                                    <th
+                                        class="px-6 py-4 max-sm:p-2 font-medium text-gray-900 whitespace-pre-wrap dark:text-white">
+                                        7. The company provided me with allowance, stipend, or subsidy.
+                                        Indicate if meal or cash. If cash, how much?
+                                    </th>
+                                    <td class="flex justify-center py-2 max-sm:flow-root max-sm:w-64 space-x-4">
+                                        <p-chart type="doughnut" [data]="p1q7" [options]="options2"></p-chart>
+                                        <p-chart type="doughnut" [data]="p1q7x1" [options]="options2"></p-chart>
+                                    </td>
+                                </tr>
+                            </div>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div id="trainingobjectives">
+                <p class="mb-2 mt-5 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+                    2. Extent of students in achieving their respective training objectives:
+                </p>
+
+                <div class=" p-8 max-sm:p-4 rounded-md bg-white shadow-md">
+                    <div class="card">
+                        <p-chart type="bar" [data]="p2x1" [options]="options" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question 3 -->
+            <div id="overallexperience" class="mt-5">
+                <p class="mb-2 text-base font-bold font-secondary text-gray-800 dark:text-gray-400">
+                    3. Student overall experience:
+                </p>
+                <div class=" p-8 max-sm:p-4 rounded-md bg-white shadow-md">
+                    <div class="card">
+                        <p-chart type="bar" [data]="p3q1" [options]="options" />
+                    </div>
+                </div>
+            </div>
+
+
+        </form>
+
+        <ng-template #noBlockMessage>
+            <div class="m-10 flex flex-col items-center">
+                <div>
+                    <img class="opacity-40 h-36 w-36" src="../../../../assets/empty2.png">
+                </div>
+                <div>
+                    <h1 class="opacity-40 text-center text-4xl font-primary mt-5">
+                        Please select a Class...
+                    </h1>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+</div>
+
+<div class="comment-form-sticky font-primary sticky bottom-0 left-0 right-0 bg-white shadow-md px-3 py-2 ">
+    <div class="text-center">
+        <h1>
+            Jump to:
+        </h1>
+    </div>
+    <div class="flex justify-evenly text-center">
+        <button (click)="scrollToSection('ojtstandards')"
+            class="shadow-md rounded-lg w-[40vh] py-1 hover:bg-blue-900 hover:text-white">
+            I. OJT Standards
+        </button>
+        <button (click)="scrollToSection('trainingobjectives')"
+            class="shadow-md rounded-lg w-[40vh] py-1 hover:bg-blue-900 hover:text-white">
+            II. Training Objectives
+        </button>
+        <button (click)="scrollToSection('overallexperience')"
+            class="shadow-md rounded-lg w-[40vh] py-1 hover:bg-blue-900 hover:text-white">
+            III. Overall Experience
+        </button>
+    </div>
+</div>

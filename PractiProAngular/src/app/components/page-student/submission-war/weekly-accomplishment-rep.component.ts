@@ -253,7 +253,11 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
 
 
   addRow() {
+    const latestId = this.selectedRecordActivities.reduce((max, activity) => {
+      return activity.id > max ? activity.id : max;
+    }, 0);
     const newActivity = {
+      id: latestId + 1,
       description: '',
       date: '',
       startTime: '09:00',
@@ -311,6 +315,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   }
 
   deleteRow(activityId: number) {
+    console.log(this.selectedRecordActivities);
     Swal.fire({
       title: "Are you sure you want to delete this row?",
       icon: "question",
@@ -357,37 +362,3 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   }
 
 }
-
-
-// setFilter(filter: string) {
-//   this.datalist = this.origlist;
-//   switch (filter) {
-//     case 'all':
-//       this.datalist = this.origlist;
-//       break;
-//     case 'a-approved':
-//       this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
-//       break;
-//     case 'a-unapproved':
-//       this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Unapproved');
-//       break;
-//     case 'a-pending':
-//       this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
-//       break;
-//     case 's-approved':
-//       this.datalist = this.datalist.filter((user: any) => user.supervisor_approval === 'Approved');
-//       break;
-//     case 's-unapproved':
-//       this.datalist = this.datalist.filter((user: any) => user.supervisor_approval === 'Unapproved');
-//       break;
-//     case 's-pending':
-//       this.datalist = this.datalist.filter((user: any) => user.supervisor_approval === 'Pending');
-//       break;
-//   }
-// }
-
-// setFilterWeek(week: any) {
-//   this.datalist = this.origlist;
-//   this.datalist = this.datalist.filter((user: any) => user.week === week);
-
-// }

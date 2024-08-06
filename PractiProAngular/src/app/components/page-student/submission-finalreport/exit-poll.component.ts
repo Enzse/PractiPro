@@ -123,6 +123,7 @@ export class ExitPollComponent implements OnInit, OnDestroy {
               timerProgressBar: true,
               confirmButtonColor: '#233876',
             });
+            this.loadReport();
           })
         );
       }
@@ -140,10 +141,6 @@ export class ExitPollComponent implements OnInit, OnDestroy {
         table: 'comments_finalreports'
       }
     })
-    // this.subscriptions.add(
-    //   popup.afterClosed().subscribe(res => {
-    //     this.loadData()
-    //   }));
   }
 
 }

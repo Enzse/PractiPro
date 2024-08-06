@@ -1,4 +1,3 @@
-<!-- <app-navbar></app-navbar> -->
 <div class="p-2 sm:ml-56">
   <div class="p-1 xl:p-10">
     <div>
@@ -9,175 +8,204 @@
       <br />
     </div>
 
-    <div class="flex flex-col w-full bg-slate-50 rounded-lg border-2 border-slate-100 shadow-md max-lg:w-auto max-lg:flex-col justify-center mx-auto space-y-3">
-      <!-- SUPERVISOR CONTAINER -->
-      <div class="w-full p-3">
-        
-        <div class="grid grid-flow-row grid-cols-1">
+    <div
+      class="flex flex-col w-full bg-slate-50 rounded-lg border-2 border-slate-100 shadow-md max-lg:w-auto max-lg:flex-col justify-center mx-auto space-y-3">
 
-
-          <!-- Supervisor Picture -->
-        <div class="avatar-container mx-auto p-3">
-          <img *ngIf="user?.avatar; else placeholder" [src]="user?.avatar" class="image-container" alt="Avatar" />
-          <ng-template #placeholder>
-            <div class="image-container avatar-placeholder"></div>
-          </ng-template>
-
-          <label for="avatar-input-file">
-            <div class="icon-wrapper">
-              <mat-icon class="icon" fontIcon="edit"></mat-icon>
-              <input type="file" id="avatar-input-file" accept="image/*" (change)="onAvatarChange($event)" />
-            </div>
-          </label>
-        </div>
-
-        <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
-
-        <!-- bottom div -->
-
-        <div class="grid grid-flow-col grid-cols-2 px-4 py-4 max-sm:grid-flow-row max-sm:grid-cols-1">
-
-          
-          <!-- Info Container -->
-        <div class="flow-root mt-10 max-sm:mt-0 max-sm:mb-3">
-          <ul role="list" class="flex flex-col flex-1 max-sm:px-5 px-3">
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-xl font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Full Name:
-                  </p><span class="text-sm font-medium lg:text-lg font-secondary text-gray-900">{{user?.firstName}}
-                    {{user?.lastName}}</span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-xl font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Position:
-                  </p>
-                  <span class="text-sm font-normal lg:text-lg font-secondary">{{ user?.position || "Not set"}}</span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-xl font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Contact Number:
-                  </p>
-                  <span class="text-sm font-normal lg:text-lg font-secondary text-gray-900">{{ user?.phone || "Not set" }}</span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-xl font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Email:
-                  </p>
-                  <span class="text-sm font-normal lg:text-lg font-secondary">{{ user?.email || "Not set" }}</span>
-                </div>
-              </div>
-            </li>
-          </ul>
-
-          
-        </div>
-
-
-        <!-- company div -->
-        <div class="w-full px-5 py-3 border-slate-600">
-  
-          <div class="flex flex-row max-sm:flex-col">
-            <!-- Company Logo -->
-          <div class="avatar-container my-auto p-3 mx-auto">
-            <img *ngIf="company?.logo; else placeholder" [src]="company?.logo" class="image-container-2" alt="Avatar" />
+      <!-- SUPERVISOR INFO -->
+      <div class="flex justify-center gap-x-16 max-sm:flex-col">
+        <div class="-ml-20 max-sm:-ml-0">
+          <div class="avatar-container mx-auto p-3">
+            <img *ngIf="user?.avatar; else placeholder" [src]="user?.avatar" class="image-container" alt="Avatar" />
             <ng-template #placeholder>
               <div class="image-container avatar-placeholder"></div>
             </ng-template>
-  
-            <label for="logo-input-file">
+
+            <label for="avatar-input-file">
               <div class="icon-wrapper">
                 <mat-icon class="icon" fontIcon="edit"></mat-icon>
-                <input type="file" id="logo-input-file" accept="image/*" (change)="onLogoChange($event)" />
+                <input type="file" id="avatar-input-file" accept="image/*" (change)="onAvatarChange($event)" />
               </div>
             </label>
           </div>
-  
-          <!-- Info Container -->
-          <div class="flow-root my-auto w-[60%] max-sm:w-full">
-
-            <div class="mb-3 border-b-4 rounded-b-sm border-blue-900 w-3/5 mx-auto max-sm:mt-3">
-              <h5 class="mb-1 text-md max-sm:text-base font-bold text-gray-900 font-primary text-center">
-                Company Profile
-              </h5>
+        </div>
+        <div class="flex justify-center max-sm:text-center">
+          <div class="flow-root mt-10 max-sm:mt-0 max-sm:mb-3">
+            <div class="flex-col -space-y-1 mb-7">
+              <p class="inline text-2xl lg:text-4xl font-semibold font-primary text-gray-900 truncate dark:text-white">
+                {{user?.firstName}}
+                {{user?.lastName}}
+              </p>
+              <p class="text-sm ms-1 lg:text-base font-secondary">
+                {{ user?.position || "Not set"}}
+              </p>
             </div>
 
-            <ul role="list" class="grid grid-flow-row grid-cols-1 ml-6 max-sm:ml-0">
+            <div>
+              <div class="flex items-center">
+                <p
+                  class="inline me-1 text-base lg:text-base font-medium font-primary text-gray-900 truncate dark:text-white">
+                  Company: {{company?.company_name}}
+                </p>
+              </div>
+              <div class="flex items-center">
+                <p
+                  class="inline me-1 text-base lg:text-base font-medium font-primary text-gray-900 truncate dark:text-white">
+                  Contact Number:
+                </p>
+                <span class="text-sm font-normal lg:text-lg font-secondary text-gray-900">{{ user?.phone ||
+                  "Not set"
+                  }}</span>
+              </div>
+              <div class="flex items-center">
+                <p
+                  class="inline me-1 text-base lg:text-base font-medium font-primary text-gray-900 truncate dark:text-white">
+                  Email:
+                </p>
+                <span class="text-sm font-normal lg:text-lg font-secondary">{{ user?.email || "Not set"
+                  }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
+
+      <div class="w-full px-5 py-3 border-slate-600">
+        <div class="mb-3 border-b-4 rounded-b-sm border-blue-900 w-3/5 mx-auto max-sm:mt-3">
+          <h5 class="mb-1 text-2xl max-sm:text-base font-bold text-gray-900 font-primary text-center">
+            Company Information:
+          </h5>
+        </div>
+
+        <div class="grid grid-cols-5 bg-slate-50 shadow-md">
+          <div class="col-span-2 max-sm:col-span-5 border border-gray-200 p-5">
+            <div class="avatar-container my-auto p-3 mb-4 mx-auto">
+              <img *ngIf="company?.logo; else placeholder" [src]="company?.logo" class="image-container-2"
+                alt="Avatar" />
+              <ng-template #placeholder>
+                <div class="image-container avatar-placeholder"></div>
+              </ng-template>
+
+              <label for="logo-input-file">
+                <div class="icon-wrapper">
+                  <mat-icon class="icon" fontIcon="edit"></mat-icon>
+                  <input type="file" id="logo-input-file" accept="image/*" (change)="onLogoChange($event)" />
+                </div>
+              </label>
+            </div>
+            <div class="flex-col text-center">
+              <div class="flex-1 min-w-0 ms-4">
+                <p class="inline text-xl font-primary text-gray-900 truncate dark:text-white">
+                  Company Name: <b>{{company?.company_name}}</b>
+                </p>
+              </div>
+              <div class="flex-col mt-2">
+                <div>
+                  <p class="inline me-1 text-base font-medium font-primary text-gray-900 truncate dark:text-white">
+                    Students Handled:
+                  </p>
+                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
+                    company?.students_handled || "None" }}</span>
+                </div>
+                <div>
+                  <p class="inline me-1 text-base font-medium font-primary text-gray-900 truncate dark:text-white">
+                    Supervisor Accounts:
+                  </p>
+                  <span class="text-sm font-normal lg:text-base font-secondary">{{ company?.supervisors ||
+                    "None" }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-span-3 max-sm:col-span-5 relative border border-gray-200 max-sm:p-5">
+            <ul role="list" class="grid  grid-flow-row grid-cols-1 ms-6 mt-6 max-sm:ml-0">
               <li class="mb-2">
                 <div class="flex items-center">
                   <div class="flex-1 min-w-0 ms-4">
-                    <p
-                      class="inline me-1 text-base font-medium font-primary text-gray-900 truncate dark:text-white">
-                      Company Name:
-                    </p><span class="text-sm font-medium lg:text-base font-secondary text-gray-900">{{company?.company_name}}</span>
+                    <p class="inline me-1 text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                      CEO:
+                    </p><span [ngClass]="{'text-red-500' : !company?.company_ceo}"
+                      class="text-sm font-medium lg:text-lg font-secondary text-gray-900">{{
+                      company?.company_ceo
+                      ||
+                      "Not set"
+                      }}</span>
                   </div>
                 </div>
               </li>
               <li class="mb-2">
                 <div class="flex items-center">
                   <div class="flex-1 min-w-0 ms-4">
-                    <p
-                      class="inline me-1 text-base font-medium font-primary text-gray-900 truncate dark:text-white">
+                    <p class="inline me-1 text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
                       Company Address:
                     </p>
-                    <span class="text-sm font-normal lg:text-base font-secondary">{{ company?.address || "Not set" }}</span>
+                    <span class="text-sm font-normal lg:text-lg font-secondary">{{ company?.address || "Not set"
+                      }}</span>
                   </div>
                 </div>
               </li>
               <li class="mb-2">
                 <div class="flex items-center">
                   <div class="flex-1 min-w-0 ms-4">
-                    <p
-                      class="inline me-1 text-base font-medium font-primary text-gray-900 truncate dark:text-white">
-                      Students Handled:
-                    </p>
-                    <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{ company?.students_handled || "None" }}</span>
+                    <p class="inline me-1 text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                      Company Size:
+                    </p><span [ngClass]="{'text-red-500' : !company?.company_size}"
+                      class="text-sm font-medium lg:text-lg font-secondary text-gray-900">{{
+                      company?.company_size
+                      ||
+                      "Not set"
+                      }}</span>
                   </div>
                 </div>
               </li>
               <li class="mb-2">
                 <div class="flex items-center">
                   <div class="flex-1 min-w-0 ms-4">
-                    <p
-                      class="inline me-1 text-base font-medium font-primary text-gray-900 truncate dark:text-white">
-                      Supervisors:
-                    </p>
-                    <span class="text-sm font-normal lg:text-base font-secondary">{{ company?.supervisors || "None" }}</span>
+                    <p class="inline me-1 text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                      Industry:
+                    </p><span [ngClass]="{'text-red-500' : !company?.industry}"
+                      class="text-sm font-medium lg:text-lg font-secondary text-gray-900">{{
+                      company?.industry
+                      ||
+                      "Not set"
+                      }}</span>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-2">
+                <div class="flex items-center">
+                  <div class="flex-1 min-w-0 ms-4">
+                    <p class="inline me-1 text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                      Scope of Business:
+                    </p><span [ngClass]="{'text-red-500' : !company?.scope_of_business}"
+                      class="text-sm font-medium lg:text-lg font-secondary text-gray-900">{{
+                      company?.scope_of_business
+                      ||
+                      "Not set"
+                      }}</span>
                   </div>
                 </div>
               </li>
             </ul>
+            <div class="flex justify-end lg:mt-14 lg:m-4">
+              <button (click)="editCompanyProfile(company)" type="button"
+                class="inline-flex items-center py-3 px-4 text-sm font-medium text-center text-white bg-blue-900 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
+                <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                  width="24" height="24" fill="white" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd"
+                    d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
+                    clip-rule="evenodd" />
+                </svg>
+
+                <span class="ms-1 max-sm:hidden">Edit Company Profile</span>
+              </button>
+            </div>
           </div>
-  
-          </div>
-  
         </div>
-  
-        
       </div>
 
-      <!-- old placement -->
-
-        </div>
-        
-        
 
     </div>
   </div>

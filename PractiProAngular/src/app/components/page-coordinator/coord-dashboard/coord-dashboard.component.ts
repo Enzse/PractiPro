@@ -48,10 +48,11 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
     this.options = {
       plugins: {
+        aspectRatio: 2.5,
         legend: {
           labels: {
             usePointStyle: true,
-            color: "#333"
+            color: "#333",
           }
         }
       }
