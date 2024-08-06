@@ -7,6 +7,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 import { EditinformationpopupComponent } from '../../popups/popups-student/editinformationpopup/editinformationpopup.component';
 import { Subscription } from 'rxjs';
+import { SpvEditCompanyProfileComponent } from '../../popups/popups-supervisor/spv-edit-company-profile/spv-edit-company-profile.component';
 
 @Component({
   selector: 'app-supervisor-profile',
@@ -120,19 +121,18 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
     );
   }
 
-  editInfo(code: any) {
-    const popup = this.dialog.open(EditinformationpopupComponent, {
+  editCompanyProfile(company: any) {
+    const popup = this.dialog.open(SpvEditCompanyProfileComponent, {
       enterAnimationDuration: "1000ms",
       exitAnimationDuration: "500ms",
       width: "80%",
       data: {
-        usercode: code
+        company: company
       }
     });
-
     this.subscriptions.add(
       popup.afterClosed().subscribe(() => {
-        this.loadSupervisor();
+        this.loadData();
       })
     );
   }
