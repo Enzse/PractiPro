@@ -1,4 +1,4 @@
-<div class="p-5 overflow-auto max-sm:max-h-96 bg-white shadow-lg rounded-lg font-secondary relative">
+<div class="p-5 overflow-auto max-sm:max-h-[90vh] bg-white shadow-lg rounded-lg font-secondary relative">
     <div class="absolute top-3 right-3">
         <button (click)="closePopup()"
             class="p-1 bg-gray-200 opacity-60 hover:opacity-100 hover:shadow-lg rounded-full">
@@ -10,9 +10,9 @@
             </svg>
         </button>
     </div>
-    <form [formGroup]="editForm" (ngSubmit)="editInformation()">
+    <form [formGroup]="editForm" (ngSubmit)="saveChanges()">
         <div class="grid gap-4 mb-6 grid-cols-1 sm:grid-cols-2">
-            <div>
+            <div class="max-sm:col-span-2">
                 <label for="company_ceo" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company
                     CEO
                     (Full Name): </label>
@@ -20,54 +20,92 @@
                     class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="(Full CEO Name)" formControlName="company_ceo" />
             </div>
-            <div>
+            <div class="max-sm:col-span-2">
                 <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company
-                    Address</label>
+                    Address:</label>
                 <input type="text" id="address"
                     class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="(Company Address)" formControlName="address" />
             </div>
-            <div>
+            <div class="max-sm:col-span-2">
                 <label for="company_size" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company
-                    Size</label>
+                    Size:</label>
                 <input type="text" id="company_size"
                     class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="(Number of Employees)" formControlName="company_size" />
             </div>
-            <div>
+            <div class="max-sm:col-span-2">
                 <label for="industry"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Industry</label>
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Industry:</label>
                 <input type="text" id="industry"
                     class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Company Industry (Technology, Finance, Government, etc.)" formControlName="industry" />
             </div>
-            <div>
+            <div class="col-span-2">
                 <label for="scope_of_business"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scope of Business</label>
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scope of Business:</label>
                 <input type="text" id="scope_of_business"
                     class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Scope of Business (Software Development, IT Consulting, Logistics, etc.)"
                     formControlName="scope_of_business" />
             </div>
-            <div>
+
+            <div class="col-span-2">
                 <label for="it-equipment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT
-                    Equipment</label>
-                <select id="it-equipment" formControlName="itEquipment" multiple
-                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    <option value="desktop">Desktop</option>
-                    <option value="laptop">Laptop</option>
-                    <option value="ipad">iPad</option>
-                    <option value="tablet">Tablet</option>
-                    <option value="smartphone">Smartphone</option>
-                    <option value="server">Server</option>
-                    <option value="router">Router</option>
-                    <option value="printer">Printer</option>
-                    <option value="scanner">Scanner</option>
-                    <option value="virtual-machine">Virtual Machine</option>
-                    <option value="cabling">Cabling and Connectors</option>
-                    <option value="other">Other</option>
-                </select>
+                    Equipment:</label>
+                <div class="grid grid-cols-4" id="it-equipment">
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="desktop" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Desktop</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="laptop" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Laptop</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="ipad" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Ipad</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="tablet" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Tablet</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="smartphone" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Smartphone</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="server" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Server</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="router" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Router</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="printer" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Printer</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="scanner" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Scanner</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="virtual-machine" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Virtual Machine</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="cabling" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Cabling and Connectors</span>
+                    </div>
+                    <div class="flex items-center max-sm:col-span-2 truncate overflow-ellipsis">
+                        <input type="checkbox" value="other" (change)="onCheckboxChange($event)">
+                        <span class="indent-2">Other</span>
+                    </div>
+                </div>
             </div>
+
+
 
 
 

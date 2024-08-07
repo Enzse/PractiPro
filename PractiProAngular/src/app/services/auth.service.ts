@@ -187,6 +187,7 @@ export class AuthService {
 
 
 
+
   //Student features.
 
   getStudentRequirements(userId: number) {
@@ -476,6 +477,9 @@ export class AuthService {
 
   getPerformanceEvaluationAnalytics(block: string) {
     return this.http.get<any>(`${this.apiurl}/getstudentevaluationanalytics/${block}`);
+  }
+  editCompanyProfile(inputdata: any) {
+    return this.http.post(`${this.apiurl}/editcompanyprofile`, inputdata);
   }
 
 }

@@ -1237,6 +1237,38 @@ class Post extends GlobalMethods
         }
     }
 
+
+    public function editCompanyProfile($data)
+    {
+        $itEquipment = json_encode($data->itEquipment);
+
+        $sql = "UPDATE industry_partners 
+                SET address = ?, company_ceo = ?, company_size = ?, industry = ?, scope_of_business = ?, it_equipment = ?
+                WHERE id = ?";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute(
+                [
+                    $data->address,
+                    $data->company_ceo,
+                    $data->company_size,
+                    $data->industry,
+                    $data->scope_of_business,
+                    $itEquipment,
+                    $data->id
+                ]
+            );
+            $this->pdo->commit();
+            return $this->sendPayload(null, "success", "Successfully updated record", 200);
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            $errmsg = $e->getMessage();
+            $code = 400;
+            return $this->sendPayload(null, "failed", $errmsg, $code);
+        }
+    }
+
 }
 
 

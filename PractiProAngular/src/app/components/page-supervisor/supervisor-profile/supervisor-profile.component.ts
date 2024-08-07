@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { EditinformationpopupComponent } from '../../popups/popups-student/editinformationpopup/editinformationpopup.component';
 import { Subscription } from 'rxjs';
 import { SpvEditCompanyProfileComponent } from '../../popups/popups-supervisor/spv-edit-company-profile/spv-edit-company-profile.component';
+import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 
 @Component({
   selector: 'app-supervisor-profile',
@@ -23,12 +24,19 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
   file: any;
   subscriptions: Subscription = new Subscription();
 
-  constructor(private authService: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
+  constructor(private authService: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
     this.userId = this.authService.getCurrentUserId();
   }
 
   ngOnInit(): void {
     this.loadData();
+    this.subscriptions.add(
+      this.changeDetection.changeDetected$.subscribe(changeDetected => {
+        if (changeDetected) {
+          this.loadCompany(this.user.company_id);
+        }
+      })
+    );
   }
 
   ngOnDestroy(): void {
@@ -107,6 +115,8 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.authService.getCompanies(companyId).subscribe((res: any) => {
         this.company = res.payload[0];
+        const itEquipmentArray: string[] = JSON.parse(res.payload[0].it_equipment);
+        this.company.it_equipment = itEquipmentArray
         this.company.logo = '';
 
         this.subscriptions.add(
@@ -119,6 +129,7 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
         );
       })
     );
+
   }
 
   editCompanyProfile(company: any) {
@@ -130,10 +141,5 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
         company: company
       }
     });
-    this.subscriptions.add(
-      popup.afterClosed().subscribe(() => {
-        this.loadData();
-      })
-    );
   }
 }

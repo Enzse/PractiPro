@@ -700,6 +700,10 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 echo json_encode($post->createStudentEvaluation($data));
                 break;
 
+            case 'editcompanyprofile':
+                echo json_encode($post->editCompanyProfile($data));
+                break;
+
             default:
                 // Return a 403 response for unsupported requests
                 echo "No Such Request";

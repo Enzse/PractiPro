@@ -13,7 +13,7 @@
 
       <!-- SUPERVISOR INFO -->
       <div class="flex justify-center gap-x-16 max-sm:flex-col">
-        <div class="-ml-20 max-sm:-ml-0">
+        <div class="-ml-24 max-sm:-ml-0">
           <div class="avatar-container mx-auto p-3">
             <img *ngIf="user?.avatar; else placeholder" [src]="user?.avatar" class="image-container" alt="Avatar" />
             <ng-template #placeholder>
@@ -184,6 +184,18 @@
                       company?.scope_of_business
                       ||
                       "Not set"
+                      }}</span>
+                  </div>
+                </div>
+              </li>
+              <li class="mb-2">
+                <div class="flex items-center">
+                  <div class="flex-1 min-w-0 ms-4">
+                    <p class="inline me-1 text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                      IT Equipment:
+                    </p><span [ngClass]="{'text-red-500' : !company?.it_equipment || company.it_equipment.length === 0}"
+                      class="text-sm font-medium lg:text-lg font-secondary text-gray-900">{{
+                      company?.it_equipment.length > 0 ? company?.it_equipment : "None set"
                       }}</span>
                   </div>
                 </div>
