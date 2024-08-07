@@ -41,7 +41,7 @@
                     class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Company Industry (Technology, Finance, Government, etc.)" formControlName="industry" />
             </div>
-            <div>
+            <div class="col-span-2">
                 <label for="scope_of_business"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Scope of Business</label>
                 <input type="text" id="scope_of_business"
@@ -49,11 +49,31 @@
                     placeholder="Scope of Business (Software Development, IT Consulting, Logistics, etc.)"
                     formControlName="scope_of_business" />
             </div>
-            <div>
+
+            <!-- <div>
                 <label for="it-equipment" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT
                     Equipment</label>
                 <select id="it-equipment" formControlName="itEquipment" multiple
                     class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+
+
+                    <div class="flex items-center">
+                        <input type="checkbox" value="desktop">
+                        <span class="indent-2">
+                            Desktop
+                        </span>
+                    </div>
+
+                    <option>
+                        <div>
+                            <input type="checkbox" value="desktop">
+                            <span>
+                                Desktop
+                            </span>
+                        </div>
+                    </option>
+
+
                     <option value="desktop">Desktop</option>
                     <option value="laptop">Laptop</option>
                     <option value="ipad">iPad</option>
@@ -67,7 +87,100 @@
                     <option value="cabling">Cabling and Connectors</option>
                     <option value="other">Other</option>
                 </select>
+            </div> -->
+
+            <div class="col-span-2">
+                <label for="it-equipment2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">IT
+                    Equipment</label>
+
+                <!-- Dropdown menu -->
+                <div class="grid grid-cols-4 " id="it-equipment2" formControlName="itEquipment">
+
+                    <div class="flex items-center">
+                        <input type="checkbox" value="desktop">
+                        <span class="indent-2">
+                            Desktop
+                        </span>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" value="laptop">
+                        <span class="indent-2">
+                            Laptop
+                        </span>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" value="ipad">
+                        <span class="indent-2">
+                            Ipad
+                        </span>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" value="tablet">
+                        <span class="indent-2">
+                            Tablet
+                        </span>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" value="smartphone">
+                        <span class="indent-2">
+                            Smartphone
+                        </span>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" value="server">
+                        <span class="indent-2">
+                            Server
+                        </span>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" value="router">
+                        <span class="indent-2">
+                            Router
+                        </span>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" value="printer">
+                        <span class="indent-2">
+                            Printer
+                        </span>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" value="scanner">
+                        <span class="indent-2">
+                            Scanner
+                        </span>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" value="virtual-machine">
+                        <span class="indent-2">
+                            Virtual Machine
+                        </span>
+                    </div>
+
+                    <div class="flex items-center">
+                        <input type="checkbox" value="cabling">
+                        <span class="indent-2">
+                            Cabling and Connectors
+                        </span>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" value="other">
+                        <span class="indent-2">
+                            Other
+                        </span>
+                    </div>
+
+                </div>`
+
+
+
             </div>
+
 
 
 

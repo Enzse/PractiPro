@@ -4,6 +4,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { initFlowbite } from 'flowbite';
 @Component({
   selector: 'app-spv-edit-company-profile',
   standalone: true,
@@ -30,6 +31,7 @@ export class SpvEditCompanyProfileComponent implements OnInit {
 
 
   ngOnInit(): void {
+    initFlowbite();
   }
 
 
