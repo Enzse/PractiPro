@@ -193,9 +193,10 @@
                   <div class="flex-1 min-w-0 ms-4">
                     <p class="inline me-1 text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
                       IT Equipment:
-                    </p><span [ngClass]="{'text-red-500' : !company?.it_equipment || company.it_equipment.length === 0}"
-                      class="text-sm font-medium lg:text-lg font-secondary text-gray-900">{{
-                      company?.it_equipment.length > 0 ? company?.it_equipment : "None set"
+                    </p><span
+                      [ngClass]="{'text-red-500' : !company?.it_equipment || company?.it_equipment?.length === 0}"
+                      class="capitalize text-sm font-medium lg:text-lg font-secondary text-gray-900">{{
+                      company?.it_equipment?.length > 0 ? company?.it_equipment : "None set"
                       }}</span>
                   </div>
                 </div>

@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from 
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { dateRangeValidator } from '../../../../validators/date-range.validator';
 
 @Component({
   selector: 'app-editjobpopup',
@@ -46,7 +47,9 @@ export class EditjobpopupComponent {
     start_date: this.builder.control('', Validators.required),
     end_date: this.builder.control('', Validators.required),
     job_description: this.builder.control('', Validators.required),
-  });
+  }, { validators: dateRangeValidator() });
+
+
 
   editJob() {
     if (this.jobForm.valid) {

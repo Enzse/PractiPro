@@ -95,7 +95,7 @@
                                         </p>
                                         <br />
                                         <span [ngClass]="{'text-red-500': !studentProfile.email}"
-                                            class="text-lg max-sm:text-base font-semibold font-secondary">{{
+                                            class="text-lg max-sm:text-base truncate overflow-ellipsis font-semibold font-secondary">{{
                                             studentProfile.email ||
                                             "Not set" }}</span>
                                     </div>
@@ -116,70 +116,164 @@
                     </div>
 
                     <!-- third col -->
-                    <div class="flow-root">
+                    <div class="flow-root relative">
                         <h5 class="mb-2 text-lg max-sm:text-base mt-2 font-bold text-gray-900 font-primary text-center">
                             OJT Information
                         </h5>
                         <div *ngIf="!studentProfile.company_id">
                             <div class="flex justify-center">
-                                <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
+                                <img class="opacity-40 h-32 w-3h-32" src="../../../../assets/empty1.png">
                             </div>
                             <div>
-                                <h1 class="opacity-40 text-center text-lg font-primary mt-5">
+                                <h1 class="opacity-40 text-center text-lg font-primary mt-4">
                                     This student currently does not have an OJT site.
                                 </h1>
                             </div>
                         </div>
                         <ul *ngIf="studentProfile.company_id" role="list" class="flex flex-col flex-1">
-                            <li class="mb-2">
-                                <div class="grid grid-cols-1 items-center">
-                                    <div class="flex-1 min-w-0 ms-4">
-                                        <p
-                                            class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
-                                            Currently working at:
-                                        </p>
-                                        <br />
-                                        <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
-                                            studentProfile.company_name }}</span>
+                            <div *ngIf="!companyView">
+                                <li class="mb-2">
+                                    <div class="grid grid-cols-2 gap-20 max-sm:gap-5 max-sm:items-start items-center">
+                                        <div class="flex-1  min-w-0 ms-4">
+                                            <p
+                                                class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
+                                                Currently working at:
+                                            </p>
+                                            <br />
+                                            <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
+                                                studentProfile.company_name }}</span>
+                                        </div>
+                                        <div class="flex-1 min-w-0 ms-4">
+                                            <p
+                                                class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
+                                                Date Hired:
+                                            </p>
+                                            <br />
+                                            <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
+                                                studentProfile.hire_date | date : "longDate" }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="mb-2">
-                                <div class="grid-cols-1 grid items-center">
-                                    <div class="flex-1 min-w-0 ms-4">
-                                        <p
-                                            class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
-                                            Job Title:
-                                        </p>
-                                        <br />
-                                        <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
-                                            studentProfile.job_title || "Unassigned"}}</span>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="grid-cols-1 grid items-center">
+                                        <div class="flex-1 min-w-0 ms-4">
+                                            <p
+                                                class="inline me-1 text-sm font-normal font-primary text-gray-900 truncate dark:text-white">
+                                                Job Title:
+                                            </p>
+                                            <br />
+                                            <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
+                                                studentProfile.job_title || "Unassigned"}}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="mb-2">
-                                <div class="grid grid-cols-2 gap-20 max-sm:gap-5 max-sm:items-start items-center">
-                                    <div class="flex-1  min-w-0 ms-4">
-                                        <p
-                                            class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
-                                            Total Hours Worked:
-                                        </p>
-                                        <br />
-                                        <span
-                                            class="text-lg max-sm:text-base font-semibold font-secondary">{{studentProfile.TotalHoursWorked
-                                            ? (studentProfile.TotalHoursWorked + " hrs") : "Not Started" }}</span>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="grid grid-cols-2 gap-20 max-sm:gap-5 max-sm:items-start items-center">
+                                        <div class="flex-1  min-w-0 ms-4">
+                                            <p
+                                                class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
+                                                Total Hours Worked:
+                                            </p>
+                                            <br />
+                                            <span
+                                                class="text-lg max-sm:text-base font-semibold font-secondary">{{studentProfile.TotalHoursWorked
+                                                ? (studentProfile.TotalHoursWorked + " hrs") : "Not Started" }}</span>
+                                        </div>
+
                                     </div>
-                                    <div class="flex-1 min-w-0 ms-4">
-                                        <p
-                                            class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
-                                            Date Hired:
-                                        </p>
-                                        <br />
-                                        <span class="text-lg max-sm:text-base font-semibold font-secondary">{{
-                                            studentProfile.hire_date | date : "longDate" }}</span>
+                                </li>
+                            </div>
+                            <div *ngIf="companyView">
+                                <li class="mb-2">
+                                    <div class="grid grid-cols-2 gap-20 max-sm:gap-5 max-sm:items-start items-center">
+                                        <div class="flex-1  min-w-0 ms-4">
+                                            <p
+                                                class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
+                                                Company CEO:
+                                            </p>
+                                            <br />
+                                            <span [ngClass]="{'text-red-500' : !company?.company_ceo}"
+                                                class="text-lg max-sm:text-base font-semibold font-secondary">{{
+                                                company?.company_ceo
+                                                ||
+                                                "Not set"
+                                                }}</span>
+                                        </div>
+                                        <div class="flex-1  min-w-0 ms-4">
+                                            <p
+                                                class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
+                                                Company Address:
+                                            </p>
+                                            <br />
+                                            <span [ngClass]="{'text-red-500' : !company?.address}"
+                                                class="text-sm max-sm:text-base font-semibold font-secondary">{{
+                                                company?.address || "Not set"
+                                                }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="grid grid-cols-2 gap-20 max-sm:gap-5 max-sm:items-start items-center">
+                                        <div class="flex-1  min-w-0 ms-4">
+                                            <p
+                                                class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
+                                                Company Size:
+                                            </p>
+                                            <br />
+                                            <span [ngClass]="{'text-red-500' : !company?.company_size}"
+                                                class="text-lg max-sm:text-base font-semibold font-secondary">{{
+                                                company?.company_size
+                                                ||
+                                                "Not set"
+                                                }}</span>
+                                        </div>
+                                        <div class="flex-1  min-w-0 ms-4">
+                                            <p
+                                                class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
+                                                IT Equipment:
+                                            </p>
+                                            <br />
+                                            <span
+                                                [ngClass]="{'text-red-500' : !company?.it_equipment || company?.it_equipment?.length === 0}"
+                                                class="text-sm max-sm:text-base capitalize font-semibold font-secondary">{{
+                                                company?.it_equipment?.length > 0 ? company?.it_equipment : "None set"
+                                                }}</span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-2">
+                                    <div class="grid grid-cols-2 gap-20 max-sm:gap-5 max-sm:items-start items-center">
+                                        <div class="flex-1  min-w-0 ms-4">
+                                            <p
+                                                class="inline me-1 text-sm max-sm:text-xs font-normal font-primary text-gray-900 truncate dark:text-white">
+                                                Industry:
+                                            </p>
+                                            <br />
+                                            <span [ngClass]="{'text-red-500' : !company?.industry}"
+                                                class="text-lg max-sm:text-base font-semibold font-secondary">{{
+                                                company?.industry
+                                                ||
+                                                "Not set"
+                                                }}</span>
+                                        </div>
+
+                                    </div>
+                                </li>
+                            </div>
+
+                            <div class="absolute bottom-1.5 right-1.5">
+                                <button (click)="toggleCompanyView()"
+                                    class="bg-blue-900 font-primary text-white px-3 py-1 rounded-lg hover:bg-blue-800"
+                                    type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="lucide -mt-0.5 me-1 inline lucide-search">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.3-4.3" />
+                                    </svg>
+                                    <span class="max-sm:hidden">{{!companyView ? 'View Company' : 'View Job'}}</span>
+                                </button>
+                            </div>
                         </ul>
                     </div>
                 </div>

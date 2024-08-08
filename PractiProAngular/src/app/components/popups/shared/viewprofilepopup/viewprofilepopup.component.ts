@@ -18,6 +18,8 @@ export class ViewprofilepopupComponent implements OnInit, OnDestroy {
   studentProfile: any;
   avatarUrl?: SafeUrl;
   private subscriptions = new Subscription();
+  companyView = false;
+  company: any;
 
   constructor(private builder: FormBuilder, private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewprofilepopupComponent>, private sanitizer: DomSanitizer, private dialog2: MatDialog) { }
@@ -42,11 +44,38 @@ export class ViewprofilepopupComponent implements OnInit, OnDestroy {
               this.studentProfile.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
             }
           });
+          if (this.studentProfile.company_id) {
+            this.loadCompany(this.studentProfile.company_id);
+          }
         }));
+  }
+
+  private loadCompany(companyId: any) {
+    this.subscriptions.add(
+      this.service.getCompanies(companyId).subscribe((res: any) => {
+        this.company = res.payload[0];
+        const itEquipmentArray: string[] = JSON.parse(res.payload[0].it_equipment);
+        this.company.it_equipment = itEquipmentArray
+
+        // this.company.logo = '';
+        // this.subscriptions.add(
+        //   this.service.getLogo(this.company.id).subscribe((logoRes: any) => {
+        //     if (logoRes.size > 0) {
+        //       const url = URL.createObjectURL(logoRes);
+        //       this.company.logo = this.sanitizer.bypassSecurityTrustUrl(url);
+        //     }
+        //   })
+        // );
+      })
+    );
   }
 
   closePopup() {
     this.dialog.close();
+  }
+
+  toggleCompanyView() {
+    this.companyView = !this.companyView
   }
 
 }
