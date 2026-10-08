@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ViewJoinRequestsComponent } from '../../popups/popups-coordinator/view-join-requests/view-join-requests.component';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 import { ViewAllStudentsComponent } from '../../popups/popups-coordinator/view-all-students/view-all-students.component';
-import { ChartModule } from 'primeng/chart';
+import { ChartComponent } from '../../shared/chart/chart.component';
 import { ViewSentInvitesComponent } from '../../popups/popups-coordinator/view-sent-invites/view-sent-invites.component';
 import { RouterLink } from '@angular/router';
 import { ViewStudentsPendingsubmissionsComponent } from '../../popups/popups-coordinator/view-students-pendingsubmissions/view-students-pendingsubmissions.component';
@@ -17,7 +17,7 @@ import { ViewStudentsPendingsubmissionsComponent } from '../../popups/popups-coo
 @Component({
   selector: 'app-coord-dashboard',
   standalone: true,
-  imports: [RouterLink, CommonModule, MatTooltipModule, ChartModule],
+  imports: [RouterLink, CommonModule, MatTooltipModule, ChartComponent],
   templateUrl: './coord-dashboard.component.html',
   styleUrl: './coord-dashboard.component.css'
 })

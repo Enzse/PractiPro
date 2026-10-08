@@ -154,7 +154,7 @@
                 <div routerLink="/coord-registrations"
                     class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
                     <div class="w-40 mx-auto">
-                        <p-chart class="" type="doughnut" [data]="registered" [options]="options" />
+                        <app-chart class="" type="doughnut" [data]="registered" [options]="options" />
                     </div>
                     <h2 class="font-primary font-bold text-orange-500">
                         {{blockData.registered_students}}/{{blockData.students_handled}} Cleared
@@ -172,7 +172,7 @@
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'ojtsite')"
                     class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
                     <div class="w-40 mx-auto">
-                        <p-chart class="" type="doughnut" [data]="ojtsite" [options]="options" />
+                        <app-chart class="" type="doughnut" [data]="ojtsite" [options]="options" />
                     </div>
                     <h2 class="font-primary font-bold text-orange-500">
                         {{blockData.hired_students}}/{{blockData.students_handled}} Cleared
@@ -193,7 +193,7 @@
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'onsitehours')"
                     class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
                     <div class="w-40 mx-auto">
-                        <p-chart class="" type="doughnut" [data]="traininghours" [options]="options" />
+                        <app-chart class="" type="doughnut" [data]="traininghours" [options]="options" />
                     </div>
                     <h2 class="font-primary font-bold text-orange-500">
                         {{blockData.ojt_cleared_students}}/{{blockData.students_handled}} Cleared
@@ -212,7 +212,7 @@
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'seminarhours')"
                     class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
                     <div class="w-40 mx-auto">
-                        <p-chart class="" type="doughnut" [data]="seminarhours" [options]="options" />
+                        <app-chart class="" type="doughnut" [data]="seminarhours" [options]="options" />
                     </div>
                     <h2 class="font-primary font-bold text-orange-500">
                         {{blockData.seminar_cleared_students}}/{{blockData.students_handled}} Cleared
@@ -231,7 +231,7 @@
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'evaluation')"
                     class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
                     <div class="w-40 mx-auto">
-                        <p-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
+                        <app-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
                     </div>
                     <h2 class="font-primary font-bold text-orange-500">
                         {{blockData.evaluation_cleared_students}}/{{blockData.students_handled}} Cleared
@@ -249,7 +249,7 @@
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'exitpoll')"
                     class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
                     <div class="w-40 mx-auto">
-                        <p-chart class="" type="doughnut" [data]="finalreports" [options]="options" />
+                        <app-chart class="" type="doughnut" [data]="finalreports" [options]="options" />
                     </div>
                     <h2 class="font-primary font-bold text-orange-500">
                         {{blockData.exitpoll_cleared_students}}/{{blockData.students_handled}} Cleared
@@ -270,7 +270,7 @@
                 <div (click)="viewStudentsWithCondition(blockData.block_name, 'completed')"
                     class="cursor-pointer w-full inline-flex justify-center max-sm:flex-col px-2 py-6 shadow-md hover:shadow-xl bg-white">
                     <div>
-                        <p-chart class="w-56" type="doughnut" [data]="completed" [options]="options2" />
+                        <app-chart class="w-56" type="doughnut" [data]="completed" [options]="options2" />
                     </div>
 
                     <div class="flex-col flex justify-center">

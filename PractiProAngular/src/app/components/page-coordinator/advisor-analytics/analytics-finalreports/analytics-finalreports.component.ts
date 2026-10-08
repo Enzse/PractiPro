@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { ChartModule } from 'primeng/chart';
+import { ChartComponent } from '../../../shared/chart/chart.component';
+import { ChartOptions } from 'chart.js';
 import { AuthService } from '../../../../services/auth.service';
 import { Subscription, map } from 'rxjs';
 import { BlockService } from '../../../../services/block.service';
@@ -8,7 +9,7 @@ import { BlockService } from '../../../../services/block.service';
 @Component({
   selector: 'app-analytics-finalreports',
   standalone: true,
-  imports: [ChartModule, CommonModule],
+  imports: [ChartComponent, CommonModule],
   templateUrl: './analytics-finalreports.component.html',
   styleUrl: './analytics-finalreports.component.css'
 })
@@ -17,7 +18,7 @@ export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
   data: any;
   private subscriptions = new Subscription();
   responseData: any;
-  options2 = {
+  options2: ChartOptions = {
     indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
@@ -33,7 +34,7 @@ export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
     }
   };
 
-  options3 = {
+  options3: ChartOptions = {
     indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
@@ -48,7 +49,7 @@ export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
     }
   };
 
-  options = {
+  options: ChartOptions = {
     indexAxis: 'y',
     maintainAspectRatio: false,
     aspectRatio: 1.5,
@@ -70,7 +71,6 @@ export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
         },
         grid: {
           color: 'rgb(148 163 184)',
-          drawBorder: true,
           z: -1
         }
       },
@@ -80,7 +80,6 @@ export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
         },
         grid: {
           color: 'rgb(148 163 184)',
-          drawBorder: true,
           z: -1
         }
       }

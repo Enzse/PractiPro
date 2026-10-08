@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
+import { JwtService } from './jwt.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) { }
+  constructor(private http: HttpClient, private jwt: JwtService) { }
 
   isLoggedIn = false;
 
@@ -43,25 +43,13 @@ export class AuthService {
     return this.http.post(`${this.apiurl}/login`, inputdata);
   }
   IsLoggedIn(): boolean {
-    const myToken = sessionStorage.getItem('token');
-    return !this.jwtHelper.isTokenExpired(myToken);
+    return this.jwt.IsLoggedIn();
   }
-  //Decode Token Data
   GetUserRole(): string | null {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      return decodedToken.role;
-    }
-    return null;
+    return this.jwt.getUserRole();
   }
   getCurrentUserId(): number | null {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      return decodedToken.id;
-    }
-    return null;
+    return this.jwt.getCurrentUserId();
   }
 
 
@@ -166,15 +154,6 @@ export class AuthService {
   }
   updateAdvisorApproval(table: string, id: number, data: any) {
     return this.http.post(`${this.apiurl}/updateadvisorapproval/${table}/${id}`, data);
-  }
-  toggleRequirementStatus(data: any) {
-    return this.http.post(`${this.apiurl}/toggleRequirementStatus`, data);
-  }
-  toggleSubmissionRemark(table: string, data: any) {
-    return this.http.post(`${this.apiurl}/togglesubmissionremark/${table}`, data);
-  }
-  toggleStudentEvaluation(data: any) {
-    return this.http.post(`${this.apiurl}/togglestudentevaluation`, data);
   }
   getSubmissionFile(table: string, submissionId: number) {
     return this.http.get(`${this.apiurl}/getsubmissionfile/${table}/${submissionId}`, { responseType: 'blob' });
@@ -399,9 +378,6 @@ export class AuthService {
   createClassJoinLink(inputdata: any) {
     return this.http.post(`${this.apiurl}/createclassjoinlink`, inputdata);
   }
-  clearExpiredJoinLinks() {
-    return this.http.delete(`${this.apiurl}/clearexpiredjoinlinks`);
-  };
 
   getClassJoinToken(token: any) {
     return this.http.get<any>(`${this.apiurl}/getclassjointoken/${token}`);
@@ -431,9 +407,6 @@ export class AuthService {
   }
   clearWarActivities(warId: number) {
     return this.http.delete(`${this.apiurl}/clearwaractivities/${warId}`);
-  };
-  deleteWarActivity(id: number) {
-    return this.http.delete(`${this.apiurl}/deletewaractivity/${id}`);
   };
   saveWarActivities(inputdata: any) {
     return this.http.post(`${this.apiurl}/savewaractivities`, inputdata);

@@ -4,7 +4,7 @@ import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EditjobpopupComponent } from '../editjobpopup/editjobpopup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { EditschedulespopupComponent } from '../editschedulespopup.component.ts/editschedulespopup.component.ts.component';
+import { EditschedulespopupComponent } from '../editschedulespopup/editschedulespopup.component';
 import { TimePipe } from '../../../../pipes/time.pipe';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
-import { ChartModule } from 'primeng/chart';
+import { ChartComponent } from '../../../shared/chart/chart.component';
+import { ChartOptions } from 'chart.js';
 import { AuthService } from '../../../../services/auth.service';
 import { Subscription, map } from 'rxjs';
 import { BlockService } from '../../../../services/block.service';
@@ -8,7 +9,7 @@ import { BlockService } from '../../../../services/block.service';
 @Component({
   selector: 'app-analytics-performanceevaluation',
   standalone: true,
-  imports: [ChartModule, CommonModule],
+  imports: [ChartComponent, CommonModule],
   templateUrl: './analytics-performanceevaluation.component.html',
   styleUrl: './analytics-performanceevaluation.component.css'
 })
@@ -17,7 +18,7 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
   data: any;
   private subscriptions = new Subscription();
   responseData: any;
-  options2 = {
+  options2: ChartOptions = {
     indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
@@ -33,7 +34,7 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
     }
   };
 
-  options3 = {
+  options3: ChartOptions = {
     indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
@@ -48,7 +49,7 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
     }
   };
 
-  options = {
+  options: ChartOptions = {
     indexAxis: 'y',
     maintainAspectRatio: false,
     aspectRatio: 1.5,
@@ -70,7 +71,6 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
         },
         grid: {
           color: 'rgb(148 163 184)',
-          drawBorder: true,
           z: -1
         }
       },
@@ -80,7 +80,6 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
         },
         grid: {
           color: 'rgb(148 163 184)',
-          drawBorder: true,
           z: -1
         }
       }

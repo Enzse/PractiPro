@@ -1,44 +1,28 @@
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { decodeToken, isTokenExpired } from './token';
 
+/**
+ * Reads the logged-in user's details from the token saved at login.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class JwtService {
 
-  constructor(private jwtHelper: JwtHelperService) { }
-
   IsLoggedIn(): boolean {
-    const myToken = sessionStorage.getItem('token');
-    return !this.jwtHelper.isTokenExpired(myToken);
+    return !isTokenExpired(sessionStorage.getItem('token'));
   }
-  //Decode Token Data
+
   getUserRole(): string | null {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      return decodedToken.role;
-    }
-    return null;
+    return decodeToken(sessionStorage.getItem('token'))?.role ?? null;
   }
+
   getCurrentUserId(): number | null {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      return decodedToken.userId;
-    }
-    return null;
+    return decodeToken(sessionStorage.getItem('token'))?.id ?? null;
   }
-  getUserName(): any {
-    const token = sessionStorage.getItem('token');
-    if (token) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      const userName = {
-        firstName: decodedToken.firstName,
-        lastName: decodedToken.lastName
-      }
-      return userName;
-    }
-    return null;
+
+  getUserName(): { firstName: string; lastName: string } | null {
+    const claims = decodeToken(sessionStorage.getItem('token'));
+    return claims ? { firstName: claims.firstName, lastName: claims.lastName } : null;
   }
 }

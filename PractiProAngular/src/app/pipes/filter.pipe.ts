@@ -11,8 +11,10 @@ export class FilterPipe implements PipeTransform {
     if(!args) return value;
 
     args=args.toLowerCase();
+    // Search the values only: stringifying the whole object would also match
+    // field names, so searching "name" would match every row.
     return value.filter(function(item:any){
-      return JSON.stringify(item).toLowerCase().includes(args);
+      return JSON.stringify(Object.values(item)).toLowerCase().includes(args);
     })
   }
 
