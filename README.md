@@ -1,0 +1,55 @@
+# PractiPro
+
+A practicum (OJT) management system for students, coordinators, industry supervisors and administrators. It covers class enrollment, requirement submissions, daily time records, weekly accomplishment reports, seminars, evaluations and final reports.
+
+| Part | Stack | Location |
+|---|---|---|
+| Frontend | Angular 17, Tailwind CSS | [PractiProAngular/](PractiProAngular/) |
+| API | PHP 8.2, PDO | [backend/api/](backend/api/) |
+| Database | MySQL / MariaDB 10.4+ | [backend/database/](backend/database/) |
+
+## Local setup
+
+Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB), [Composer](https://getcomposer.org/), and Node.js 18+.
+
+1. **Clone into XAMPP's web root** so Apache serves the API at `http://localhost/PractiPro/backend/api`:
+
+   ```sh
+   cd C:/xampp/htdocs
+   git clone <repo-url> PractiPro
+   ```
+
+   Apache needs `mod_rewrite` and `mod_headers` enabled (both are on by default in XAMPP).
+
+2. **Create the database** and load the schema and development seed:
+
+   ```sh
+   mysql -u root -e "CREATE DATABASE practipro CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
+   mysql -u root practipro < backend/database/schema.sql
+   mysql -u root practipro < backend/database/seed.sql
+   ```
+
+3. **Install the API's dependencies and configure it:**
+
+   ```sh
+   cd backend
+   composer install
+   cp api/.env.example api/.env
+   ```
+
+   Open `api/.env` and set `SECRET_KEY` (the file explains how to generate one). Set the `MAIL_*` values if you need activation and password-reset emails to send.
+
+4. **Start the frontend:**
+
+   ```sh
+   cd PractiProAngular
+   npm install
+   npm start
+   ```
+
+   Open http://localhost:4200 and sign in as `admin@practipro.test` with password `password`.
+
+## Configuration
+
+- **API:** `backend/api/.env`, which is never committed. [`.env.example`](backend/api/.env.example) lists every setting.
+- **Frontend:** the API URL is in [`src/environments/`](PractiProAngular/src/environments/). `ng serve` uses `environment.development.ts`, and `ng build` uses `environment.ts`.
