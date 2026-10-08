@@ -56,6 +56,10 @@
                   <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
                     (click)="setFilter('inactive')">Inactive Accounts</button>
                 </li>
+                <li>
+                  <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
+                    (click)="setFilter('pending')">Awaiting Approval</button>
+                </li>
               </ul>
             </mat-menu>
           </div>
@@ -103,11 +107,35 @@
               <p *ngIf="user.isActive === 0" class="text-orange-500">
                 INACTIVE
               </p>
+              <p *ngIf="!user.approved_at" class="text-blue-600">
+                AWAITING APPROVAL
+              </p>
             </td>
             <td class="px-6 py-4">
               {{ user.role }}
             </td>
-            <td class="px-6 py-4 flex justify-center">
+            <td class="px-6 py-4 flex justify-center gap-2">
+              <ng-container *ngIf="!user.approved_at">
+                <button (click)="approveUser(user)" matTooltip="Approve" class="text-green-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-user-check inline">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <polyline points="16 11 18 13 22 9" />
+                  </svg>
+                </button>
+                <button (click)="rejectUser(user)" matTooltip="Reject and delete" class="text-red-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-user-x inline">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <line x1="17" x2="22" y1="8" y2="13" />
+                    <line x1="22" x2="17" y1="8" y2="13" />
+                  </svg>
+                </button>
+              </ng-container>
               <button (click)="isUpdateButtonVisible(user.role) ? Updateuser(user.id) : handleDisabledClick()"
                 [ngClass]="{'disabled': !isUpdateButtonVisible(user.role)}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

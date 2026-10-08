@@ -22,6 +22,9 @@ final class Role
     /** Roles anyone can sign up for. Admin accounts can only be created by an admin. */
     public const SELF_REGISTRABLE = [self::STUDENT, self::ADVISOR, self::SUPERVISOR];
 
+    /** Self-registered accounts with these roles can't log in until an admin approves them. */
+    public const REQUIRES_APPROVAL = [self::ADVISOR, self::SUPERVISOR];
+
     private function __construct()
     {
     }

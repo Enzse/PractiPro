@@ -42,13 +42,17 @@ final class ReportController extends Controller
 
     public function evaluation(Request $request): Response
     {
-        return $this->ok($this->reports->evaluationOf($request->intParam('studentId')));
+        $studentId = $request->intParam('studentId');
+        $this->authorizeStudent($request, $studentId);
+
+        return $this->ok($this->reports->evaluationOf($studentId));
     }
 
     public function createEvaluation(Request $request): Response
     {
         $data = $request->require(['supervisor_id', 'student_id']);
         $this->authorizeSelf($request, (int) $data['supervisor_id']);
+        $this->authorizeStudent($request, (int) $data['student_id']);
         $this->reports->createEvaluation(
             (int) $data['supervisor_id'],
             (int) $data['student_id'],

@@ -17,7 +17,8 @@ backend/
 │   ├── Repositories/    The only classes that contain SQL.
 │   ├── Database/        PDO wrapper with transactions, and a .sql file loader.
 │   └── Support/         Mail, passwords and upload handling.
-├── database/        schema.sql (structure) and seed.sql (development data).
+├── bin/migrate.php  Applies new database migrations (composer migrate).
+├── database/        schema.sql (base structure), migrations/ (later changes), seed.sql (dev data).
 └── tests/           PHPUnit: Unit/ for single classes, Feature/ for full requests.
 ```
 
@@ -33,7 +34,14 @@ backend/
 ## Security rules
 
 - **Secure by default.** Routes require login unless marked `->public()`.
-- **Roles, then ownership.** `routes/api.php` limits which roles can call an endpoint. Controllers then check the specific record: students can only access their own records, coordinators only their assigned classes, supervisors only their own company. See the `authorize*` helpers in `Controllers/Controller.php`.
+- **Roles, then ownership.** `routes/api.php` limits which roles can call an endpoint. Controllers then check the specific record through the `authorize*` helpers in `Controllers/Controller.php`. A student's records (submissions, time records, reports, evaluations, comments, files) are visible only to:
+  - the student;
+  - the coordinator of the student's class;
+  - a supervisor at the company the student is placed in;
+  - admins.
+- **Directory lookups.** Coordinators and supervisors can look a student up by student number (to invite or hire them), but phone number, address and birth date are blanked unless the student is theirs.
+- **Approval.** Self-registered coordinator and supervisor accounts can't log in until an admin approves them (`POST /approveuser/{id}`). Accounts an admin creates are approved immediately.
+- **Joining classes.** A student joins a class only by accepting an invitation or presenting a valid join-link token. A coordinator adds a student only by accepting that student's join request.
 - **No values in SQL.** Every value is a bound parameter. Where a client picks a table or column, it must be on a constant allow-list in the repository.
 - **IDs from the token, not the request.** Actions such as commenting take the user's identity from the token, not from the request body.
 - **Tokens are hashed.** Activation and reset tokens are stored as SHA-256 hashes, and passwords with `password_hash()`.
@@ -55,12 +63,16 @@ composer install
 cp .env.example .env     # then set SECRET_KEY
 composer test            # PHPUnit; creates and rebuilds the `practipro_test` database
 composer analyse         # PHPStan, level 8
+composer migrate         # apply new files in database/migrations/
 ```
 
 With `MAIL_USERNAME` empty, emails (activation and reset links) are written to Apache's error log instead of being sent.
+
+### Changing the database
+
+Don't edit `schema.sql`. Add a new file to `database/migrations/` named so it sorts after the existing ones (for example `2026_11_02_01_add_x.sql`), then run `composer migrate`. The tests apply migrations automatically.
 
 ## Known limitations
 
 - Uploaded files are stored in the database as BLOBs. Moving them to disk or object storage would make the database much smaller.
 - Some business rules live in MySQL triggers (for example, creating the student, coordinator or supervisor row when a `user` is inserted). See `database/schema.sql`.
-- Coordinators and supervisors can read any student's records by id. Only class- and company-level endpoints are scoped to their own students.

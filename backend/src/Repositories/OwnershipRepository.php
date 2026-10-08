@@ -40,6 +40,32 @@ final class OwnershipRepository extends Repository
         return $owner === false || $owner === null ? null : (int) $owner;
     }
 
+    /**
+     * Is the student in one of the coordinator's classes?
+     */
+    public function advisorHasStudent(int $advisorId, int $studentId): bool
+    {
+        return (bool) $this->db->fetchValue(
+            'SELECT COUNT(*) FROM students s
+             JOIN rl_class_coordinators r ON r.block_name = s.block
+             WHERE s.id = ? AND r.coordinator_id = ?',
+            [$studentId, $advisorId],
+        );
+    }
+
+    /**
+     * Is the student placed at the supervisor's company?
+     */
+    public function supervisorHasStudent(int $supervisorId, int $studentId): bool
+    {
+        return (bool) $this->db->fetchValue(
+            'SELECT COUNT(*) FROM rl_company_students cs
+             JOIN supervisors sp ON sp.company_id = cs.company_id
+             WHERE sp.id = ? AND cs.student_id = ?',
+            [$supervisorId, $studentId],
+        );
+    }
+
     public function advisorHasBlock(int $advisorId, string $block): bool
     {
         return (bool) $this->db->fetchValue(

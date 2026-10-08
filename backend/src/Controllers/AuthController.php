@@ -47,6 +47,9 @@ final class AuthController extends Controller
         if ((int) $user['isActive'] !== 1) {
             throw HttpException::forbidden('This account has not been activated yet.');
         }
+        if ($user['approved_at'] === null) {
+            throw HttpException::forbidden('Your account is waiting for approval from an administrator.');
+        }
 
         $token = $this->jwt->encode([
             'id' => (int) $user['id'],
@@ -82,9 +85,14 @@ final class AuthController extends Controller
 
         [$activationToken, $activationHash] = Passwords::newToken();
 
+        // Coordinators and supervisors see student data, so a self-registered
+        // one waits for an admin. Accounts an admin creates are approved already.
+        $approved = $canCreateAdmins || !in_array($role, Role::REQUIRES_APPROVAL, true);
+        $approvedBy = $canCreateAdmins ? $actingUser->id : null;
+
         // If the email can't be sent the whole registration is rolled back, so
         // the person can simply try again.
-        $this->db->transaction(function () use ($request, $data, $email, $password, $role, $activationToken, $activationHash) {
+        $this->db->transaction(function () use ($request, $data, $email, $password, $role, $activationToken, $activationHash, $approved, $approvedBy) {
             $this->users->create(
                 (string) $data['firstName'],
                 (string) $data['lastName'],
@@ -92,6 +100,8 @@ final class AuthController extends Controller
                 password_hash($password, PASSWORD_DEFAULT),
                 $role,
                 $activationHash,
+                $approved,
+                $approvedBy,
             );
             $this->completeProfile($request, $role, $email);
 
@@ -139,12 +149,15 @@ final class AuthController extends Controller
 
     public function activate(Request $request): Response
     {
-        $token = (string) $request->require(['token'])['token'];
-        if ($this->users->activate(Passwords::hashToken($token)) === 0) {
+        $tokenHash = Passwords::hashToken((string) $request->require(['token'])['token']);
+        $role = $this->users->roleOfActivationToken($tokenHash);
+        if ($role === null || $this->users->activate($tokenHash) === 0) {
             throw HttpException::notFound('This activation link is invalid or has already been used.');
         }
 
-        return $this->done('Successfully activated account.');
+        return in_array($role, Role::REQUIRES_APPROVAL, true)
+            ? $this->done('Successfully activated account. An administrator must approve it before you can log in.', ['awaitingApproval' => true])
+            : $this->done('Successfully activated account.');
     }
 
     public function requestPasswordReset(Request $request): Response

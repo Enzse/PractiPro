@@ -62,7 +62,7 @@ export class RegistrationadvisorComponent implements OnInit {
           this.router.navigate(['login']);
           Swal.fire({
             title: 'Email Confirmation Sent!',
-            text: 'Please check your email for account activation.',
+            text: 'Please check your email for account activation. An administrator will also need to approve your account before you can log in.',
             icon: 'success',
             footer:
               '(This to prove the email is <b>valid </b>and is <b>yours</b>.)',

@@ -34,15 +34,28 @@ abstract class Controller
     }
 
     /**
-     * Students may only access their own records. Staff roles are let through
-     * here; the route's role list already limits which staff can call it.
+     * Only people responsible for a student may access their records: the
+     * student themselves, the coordinator of their class, a supervisor at the
+     * company they are placed in, and admins.
      */
     protected function authorizeStudent(Request $request, int $studentId): void
     {
-        $user = $request->user();
-        if ($user->is(Role::STUDENT) && $user->id !== $studentId) {
+        if (!$this->canAccessStudent($request, $studentId)) {
             throw HttpException::forbidden();
         }
+    }
+
+    protected function canAccessStudent(Request $request, int $studentId): bool
+    {
+        $user = $request->user();
+
+        return match (true) {
+            $user->isAdmin() => true,
+            $user->is(Role::STUDENT) => $user->id === $studentId,
+            $user->is(Role::ADVISOR) => $this->ownership->advisorHasStudent($user->id, $studentId),
+            $user->is(Role::SUPERVISOR) => $this->ownership->supervisorHasStudent($user->id, $studentId),
+            default => false,
+        };
     }
 
     /**
@@ -83,12 +96,12 @@ abstract class Controller
     }
 
     /**
-     * Students may only access a record whose owner column points at them.
-     * Returns quietly for staff. 404s if the record doesn't exist.
+     * Applies authorizeStudent() to the student a record belongs to.
+     * 404s if the record doesn't exist.
      */
     protected function authorizeStudentRecord(Request $request, string $table, int $recordId): void
     {
-        if (!$request->user()->is(Role::STUDENT)) {
+        if ($request->user()->isAdmin()) {
             return;
         }
         $owner = $this->ownership->studentOwnerOf($table, $recordId);

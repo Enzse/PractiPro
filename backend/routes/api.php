@@ -50,6 +50,7 @@ return static function (Router $r): void {
     $r->get("/user/{id:$id}", [UserController::class, 'show']);
     $r->get('/admin', [UserController::class, 'admins'])->roles($admin);
     $r->post("/edituser/{id:$id}", [UserController::class, 'update'])->roles($admin);
+    $r->post("/approveuser/{id:$id}", [UserController::class, 'approve'])->roles($admin);
     $r->delete("/deleteuser/{id:$id}", [UserController::class, 'delete'])->roles($admin);
     $r->post("/editcoordinator/{id:$id}", [UserController::class, 'updateCoordinator'])->roles($admin);
     $r->get('/role', [UserController::class, 'roles']);
@@ -60,12 +61,12 @@ return static function (Router $r): void {
     // Students
     $r->get('/student', [StudentController::class, 'index'])->roles($admin);
     $r->get("/student/{id:$id}", [StudentController::class, 'show']);
-    $r->get('/studentsojt', [StudentController::class, 'ojtStatusIndex'])->roles($advisor, $supervisor);
+    $r->get('/studentsojt', [StudentController::class, 'ojtStatusIndex'])->roles($admin);
     $r->get("/studentsojt/{id:$id}", [StudentController::class, 'ojtStatus']);
     $r->get('/class-students/{block}', [StudentController::class, 'byBlock'])->roles($advisor);
     $r->get("/studentbycourseandyear/{course}/{year:$id}", [StudentController::class, 'byCourseAndYear'])->roles($admin);
     $r->get('/studentbystudentid/{studentNumber}', [StudentController::class, 'byStudentNumber'])->roles($advisor, $supervisor);
-    $r->get("/studentsbycompany/{companyId:$id}", [StudentController::class, 'byCompany'])->roles($advisor, $supervisor);
+    $r->get("/studentsbycompany/{companyId:$id}", [StudentController::class, 'byCompany'])->roles($supervisor);
     $r->get("/studentsbysupervisor/{supervisorId:$id}", [StudentController::class, 'bySupervisor'])->roles($supervisor);
     $r->post("/editstudentinfo/{id:$id}", [StudentController::class, 'update'])->roles($student);
     $r->post("/assignclasstostudent/{id:$id}", [StudentController::class, 'assignBlock'])->roles($advisor, $student);
@@ -111,7 +112,7 @@ return static function (Router $r): void {
     $r->get('/supervisors', [CompanyController::class, 'supervisors']);
     $r->get("/supervisors/{id:$id}", [CompanyController::class, 'supervisors']);
     $r->get("/checkexistingassignment/{table}/{column1}/{column2}/{id1:$id}/{id2:$id}", [CompanyController::class, 'assignmentExists'])->roles($advisor, $supervisor);
-    $r->get("/gethiringrequests/{studentId:$id}", [CompanyController::class, 'hiringRequests'])->roles($student, $supervisor);
+    $r->get("/gethiringrequests/{studentId:$id}", [CompanyController::class, 'hiringRequests'])->roles($student);
     $r->post('/createhiringrequest', [CompanyController::class, 'createHiringRequest'])->roles($supervisor);
     $r->delete("/deletehiringrequest/{id:$id}", [CompanyController::class, 'deleteHiringRequest'])->roles($student, $supervisor);
     $r->post('/addstudenttocompany', [CompanyController::class, 'addStudentToCompany'])->roles($student, $supervisor);
@@ -131,7 +132,7 @@ return static function (Router $r): void {
     $r->post("/uploadlogo/{companyId:$id}", [MediaController::class, 'uploadLogo'])->roles($supervisor);
 
     // Submitted files and approvals
-    $r->get('/student-submission/{table}', [SubmissionController::class, 'index'])->roles($advisor, $supervisor);
+    $r->get('/student-submission/{table}', [SubmissionController::class, 'index'])->roles($admin);
     $r->get("/student-submission/{table}/{studentId:$id}", [SubmissionController::class, 'index']);
     $r->post("/uploadfile/{table}/{studentId:$id}", [SubmissionController::class, 'upload'])->roles($student);
     $r->post("/uploadfile/{table}/{studentId:$id}/{label}", [SubmissionController::class, 'upload'])->roles($student);
@@ -148,7 +149,7 @@ return static function (Router $r): void {
     $r->post("/submission-comment/{table}/{id:$id}", [CommentController::class, 'store']);
 
     // Daily time records
-    $r->get('/getdtr', [DtrController::class, 'index'])->roles($advisor, $supervisor);
+    $r->get('/getdtr', [DtrController::class, 'index'])->roles($admin);
     $r->get("/getdtr/{studentId:$id}", [DtrController::class, 'forStudent']);
     $r->post("/dtrclockin/{studentId:$id}", [DtrController::class, 'clockIn'])->roles($student);
     $r->post("/dtrclockout/{studentId:$id}", [DtrController::class, 'clockOut'])->roles($student);

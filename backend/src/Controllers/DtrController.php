@@ -77,8 +77,10 @@ final class DtrController extends Controller
 
     public function updateStatus(Request $request): Response
     {
+        $id = $request->intParam('id');
+        $this->authorizeStudentRecord($request, 'student_dailytimerecords', $id);
         $status = (string) $request->require(['status'])['status'];
-        if ($this->dtrs->setStatus($request->intParam('id'), $status) === 0) {
+        if ($this->dtrs->setStatus($id, $status) === 0) {
             throw HttpException::notFound('Time record not found.');
         }
 

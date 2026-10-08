@@ -66,6 +66,21 @@ final class UserController extends Controller
         return $this->done('Successfully updated record');
     }
 
+    /**
+     * Lets a self-registered coordinator or supervisor log in. To reject one,
+     * delete the account.
+     */
+    public function approve(Request $request): Response
+    {
+        $id = $request->intParam('id');
+        if (!$this->users->exists($id)) {
+            throw HttpException::notFound('User not found.');
+        }
+        $this->users->approve($id, $request->user()->id);
+
+        return $this->done('Account approved.');
+    }
+
     public function delete(Request $request): Response
     {
         $id = $request->intParam('id');

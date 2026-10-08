@@ -21,15 +21,7 @@ Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB
 
    Apache needs `mod_rewrite` and `mod_headers` enabled (both are on by default in XAMPP).
 
-2. **Create the database** and load the schema and development seed:
-
-   ```sh
-   mysql -u root -e "CREATE DATABASE practipro CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
-   mysql -u root practipro < backend/database/schema.sql
-   mysql -u root practipro < backend/database/seed.sql
-   ```
-
-3. **Install the API's dependencies and configure it:**
+2. **Install the API's dependencies and configure it:**
 
    ```sh
    cd backend
@@ -38,6 +30,17 @@ Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB
    ```
 
    Open `.env` and set `SECRET_KEY` (the file explains how to generate one). Leave the `MAIL_*` values empty to have emails written to Apache's error log instead of being sent.
+
+3. **Create the database:** load the base schema, apply the migrations, then add the development seed:
+
+   ```sh
+   mysql -u root -e "CREATE DATABASE practipro CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci"
+   mysql -u root practipro < database/schema.sql
+   composer migrate
+   mysql -u root practipro < database/seed.sql
+   ```
+
+   After pulling new code, run `composer migrate` again to apply any new schema changes.
 
 4. **Start the frontend:**
 

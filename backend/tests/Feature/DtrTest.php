@@ -42,7 +42,12 @@ final class DtrTest extends ApiTestCase
         $student = $this->createUser('student');
         $recordId = $this->db()->insert("INSERT INTO student_dailytimerecords (student_id, date, startTime, endTime) VALUES (?, CURDATE(), '08:00', '17:00')", [$student]);
 
+        $supervisor = $this->createUser('supervisor');
+        $this->placeAtCompany($student, $supervisor);
+        $otherSupervisor = $this->createUser('supervisor');
+
         self::assertStatus(403, $this->call('POST', "/updatedtrstatus/$recordId", ['status' => 'Approved'], $this->tokenFor($student)));
-        self::assertStatus(200, $this->call('POST', "/updatedtrstatus/$recordId", ['status' => 'Approved'], $this->tokenFor($this->createUser('supervisor'))));
+        self::assertStatus(403, $this->call('POST', "/updatedtrstatus/$recordId", ['status' => 'Approved'], $this->tokenFor($otherSupervisor)));
+        self::assertStatus(200, $this->call('POST', "/updatedtrstatus/$recordId", ['status' => 'Approved'], $this->tokenFor($supervisor)));
     }
 }

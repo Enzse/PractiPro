@@ -120,6 +120,7 @@ final class CompanyController extends Controller
         $companyId = $request->intParam('companyId');
         $studentId = $request->intParam('studentId');
         $this->authorizeCompany($request, $companyId);
+        $this->authorizeStudent($request, $studentId);
 
         $this->db->transaction(function () use ($companyId, $studentId) {
             if ($this->companies->removeStudentFromCompany($companyId, $studentId) === 0) {
@@ -138,6 +139,7 @@ final class CompanyController extends Controller
         $supervisorId = (int) $data['supervisor_id'];
         $studentId = (int) $data['student_id'];
         $this->authorizeSelf($request, $supervisorId);
+        $this->authorizeStudent($request, $studentId);
 
         if ($this->companies->assignmentCount('rl_supervisor_students', 'supervisor_id', 'student_id', $supervisorId, $studentId) > 0) {
             throw HttpException::conflict('Student is already assigned to the supervisor');
@@ -173,6 +175,7 @@ final class CompanyController extends Controller
     {
         $data = $request->require(['student_id', 'supervisor_id', 'job_title', 'job_description', 'start_date', 'end_date']);
         $this->authorizeSelf($request, (int) $data['supervisor_id']);
+        $this->authorizeStudent($request, (int) $data['student_id']);
 
         $this->db->transaction(function () use ($data) {
             $this->companies->unassignJob((int) $data['student_id']);
@@ -202,14 +205,18 @@ final class CompanyController extends Controller
             }
         }
 
-        $this->companies->replaceSchedules($request->intParam('studentId'), $schedules);
+        $studentId = $request->intParam('studentId');
+        $this->authorizeStudent($request, $studentId);
+        $this->companies->replaceSchedules($studentId, $schedules);
 
         return $this->done('Successfully assigned schedules to student');
     }
 
     public function clearSchedules(Request $request): Response
     {
-        if ($this->companies->clearSchedules($request->intParam('studentId')) === 0) {
+        $studentId = $request->intParam('studentId');
+        $this->authorizeStudent($request, $studentId);
+        if ($this->companies->clearSchedules($studentId) === 0) {
             throw HttpException::notFound('No student found');
         }
 

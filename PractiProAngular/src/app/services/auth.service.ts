@@ -21,6 +21,9 @@ export class AuthService {
   getAllUsers() {
     return this.http.get(`${this.apiurl}/user`);
   }
+  approveUser(id: number) {
+    return this.http.post(`${this.apiurl}/approveuser/${id}`, {});
+  }
   deleteUser(id: any) {
     return this.http.delete(`${this.apiurl}/deleteuser/${id}`);
   }

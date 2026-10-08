@@ -10,6 +10,7 @@ use PractiPro\App;
 use PractiPro\Auth\Jwt;
 use PractiPro\Config;
 use PractiPro\Database\Database;
+use PractiPro\Database\Migrator;
 use PractiPro\Database\SqlFile;
 use PractiPro\Http\Request;
 use PractiPro\Http\Response;
@@ -63,16 +64,43 @@ abstract class ApiTestCase extends TestCase
     }
 
     /**
-     * Creates an active account; database triggers add the role's profile row.
+     * Creates an active, approved account; database triggers add the role's profile row.
      */
     protected function createUser(string $role, string $email = '', string $firstName = 'Test', string $lastName = 'User'): int
     {
         $email = $email ?: $role . '.' . bin2hex(random_bytes(4)) . '@practipro.test';
 
         return $this->db()->insert(
-            'INSERT INTO user (firstName, lastName, email, password, role, isActive) VALUES (?, ?, ?, ?, ?, 1)',
+            'INSERT INTO user (firstName, lastName, email, password, role, isActive, approved_at) VALUES (?, ?, ?, ?, ?, 1, NOW())',
             [$firstName, $lastName, $email, password_hash(self::PASSWORD, PASSWORD_DEFAULT), $role],
         );
+    }
+
+    /**
+     * Puts the student in a class handled by the coordinator.
+     */
+    protected function assignToClass(int $studentId, int $advisorId, string $block = 'BSCS3-A'): void
+    {
+        $this->db()->execute('INSERT IGNORE INTO class_blocks (block_name, course, year_level) VALUES (?, ?, 3)', [$block, 'BSCS']);
+        $this->db()->execute('INSERT IGNORE INTO rl_class_coordinators (coordinator_id, block_name) VALUES (?, ?)', [$advisorId, $block]);
+        $this->db()->execute('UPDATE students SET block = ? WHERE id = ?', [$block, $studentId]);
+    }
+
+    /**
+     * Places the student at the supervisor's company (creating one if needed).
+     *
+     * @return int The company id.
+     */
+    protected function placeAtCompany(int $studentId, int $supervisorId): int
+    {
+        $companyId = $this->db()->fetchValue('SELECT company_id FROM supervisors WHERE id = ?', [$supervisorId]);
+        if ($companyId === null || $companyId === false) {
+            $companyId = $this->db()->insert('INSERT INTO industry_partners (company_name) VALUES (?)', ['Company ' . $supervisorId]);
+            $this->db()->execute('UPDATE supervisors SET company_id = ? WHERE id = ?', [$companyId, $supervisorId]);
+        }
+        $this->db()->execute('INSERT INTO rl_company_students (company_id, student_id, hired_by) VALUES (?, ?, ?)', [$companyId, $studentId, $supervisorId]);
+
+        return (int) $companyId;
     }
 
     protected function tokenFor(int $userId): string
@@ -88,9 +116,9 @@ abstract class ApiTestCase extends TestCase
         return self::database();
     }
 
-    protected static function assertStatus(int $expected, Response $response): void
+    protected static function assertStatus(int $expected, Response $response, string $message = 'Unexpected status.'): void
     {
-        self::assertSame($expected, $response->status(), 'Unexpected status. Body: ' . $response->body());
+        self::assertSame($expected, $response->status(), $message . ' Body: ' . $response->body());
     }
 
     /**
@@ -132,6 +160,7 @@ abstract class ApiTestCase extends TestCase
 
             self::$db = Database::connect($config);
             SqlFile::run(self::$db->pdo(), __DIR__ . '/../../database/schema.sql');
+            (new Migrator(self::$db->pdo(), __DIR__ . '/../../database/migrations'))->migrate();
         }
 
         return self::$db;

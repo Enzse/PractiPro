@@ -6,6 +6,7 @@ namespace PractiPro\Controllers;
 
 use PractiPro\Auth\Role;
 use PractiPro\Database\Database;
+use PractiPro\Http\HttpException;
 use PractiPro\Http\Request;
 use PractiPro\Http\Response;
 use PractiPro\Repositories\ClassJoinRepository;
@@ -44,9 +45,11 @@ final class StudentController extends Controller
     public function ojtStatus(Request $request): Response
     {
         $id = $request->intParam('id');
-        $this->authorizeStudent($request, $id);
+        if ($request->user()->is(Role::STUDENT)) {
+            $this->authorizeStudent($request, $id);
+        }
 
-        return $this->ok($this->students->ojtStatus($id));
+        return $this->ok($this->directory($request, $this->students->ojtStatus($id)));
     }
 
     public function byBlock(Request $request): Response
@@ -64,7 +67,25 @@ final class StudentController extends Controller
 
     public function byStudentNumber(Request $request): Response
     {
-        return $this->ok($this->students->byStudentNumber($request->param('studentNumber')));
+        return $this->ok($this->directory($request, $this->students->byStudentNumber($request->param('studentNumber'))));
+    }
+
+    /**
+     * Coordinators and supervisors can look up any student (to invite or hire
+     * them), but only see contact details for students they are responsible for.
+     *
+     * @param list<array<string, mixed>> $students
+     * @return list<array<string, mixed>>
+     */
+    private function directory(Request $request, array $students): array
+    {
+        return array_map(function (array $student) use ($request) {
+            if (!$this->canAccessStudent($request, (int) $student['id'])) {
+                $student['phoneNumber'] = $student['address'] = $student['dateOfBirth'] = null;
+            }
+
+            return $student;
+        }, $students);
     }
 
     public function byCompany(Request $request): Response
@@ -105,9 +126,19 @@ final class StudentController extends Controller
 
         $user = $request->user();
         if ($user->is(Role::STUDENT)) {
-            $this->authorizeStudent($request, $studentId);
+            // A student joins by accepting an invitation or opening a valid join link.
+            $this->authorizeSelf($request, $studentId);
+            $token = $request->input('token');
+            $invited = $this->classJoins->hasInvitation($studentId, $block);
+            if (!$invited && !(is_string($token) && $this->classJoins->isValidLink($token, $block))) {
+                throw HttpException::forbidden('You need an invitation or a valid join link to join this class.');
+            }
         } elseif ($user->is(Role::ADVISOR)) {
+            // A coordinator adds a student by accepting their join request.
             $this->authorizeBlock($request, $block);
+            if (!$this->classJoins->hasRequest($studentId, $block)) {
+                throw HttpException::forbidden('This student has not asked to join this class.');
+            }
         }
 
         $this->db->transaction(function () use ($studentId, $block) {
@@ -135,6 +166,7 @@ final class StudentController extends Controller
     public function pendingSubmissions(Request $request): Response
     {
         $studentId = $request->intParam('studentId');
+        $this->authorizeStudent($request, $studentId);
         $column = $request->hasParam('type')
             ? self::pick(array_combine(StudentRepository::PENDING_COLUMNS, StudentRepository::PENDING_COLUMNS), $request->param('type'), 'submission type')
             : null;

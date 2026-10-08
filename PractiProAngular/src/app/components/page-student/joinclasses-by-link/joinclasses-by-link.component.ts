@@ -49,7 +49,8 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
               (res: any) => {
                 this.tokenData = res.payload;
                 const joinForm = this.builder.group({
-                  block_name: this.tokenData.class
+                  block_name: this.tokenData.class,
+                  token: this.token, // proves the student was given the link
                 })
                 this.subscriptions.add(
                   this.service.assignClassToStudent(this.userID, joinForm.value).subscribe((res: any) => {

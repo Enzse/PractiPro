@@ -80,9 +80,13 @@ export class LoginComponent {
         });
       };
       if (error.status == 403) {
+        // 403 means either "not activated yet" or "waiting for admin approval"; the API says which.
+        const awaitingApproval = error.error?.status?.message?.includes('approval');
         Swal.fire({
-          title: "Inactive User!",
-          text: "Please check the inbox of your email for account activation.",
+          title: awaitingApproval ? "Awaiting Approval" : "Inactive User!",
+          text: awaitingApproval
+            ? "An administrator needs to approve your account before you can log in."
+            : "Please check the inbox of your email for account activation.",
           icon: "warning"
         });
       };

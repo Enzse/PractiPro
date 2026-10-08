@@ -75,7 +75,34 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
       case 'inactive':
         this.userlist = this.userlist.filter((user: any) => user.isActive === 0);
         break;
+      case 'pending':
+        this.userlist = this.userlist.filter((user: any) => !user.approved_at);
+        break;
     }
+  }
+
+  // Self-registered coordinators and supervisors can't log in until approved.
+  approveUser(user: any) {
+    this.subscription.add(
+      this.service.approveUser(user.id).subscribe(() => {
+        Swal.fire({ title: `${user.firstName} ${user.lastName} can now log in.`, icon: "success" });
+        this.loadUsers();
+      }));
+  }
+
+  rejectUser(user: any) {
+    Swal.fire({
+      title: `Reject ${user.firstName} ${user.lastName}?`,
+      text: "Their account will be deleted.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Reject",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.subscription.add(
+          this.service.deleteUser(user.id).subscribe(() => this.loadUsers()));
+      }
+    });
   }
 
 

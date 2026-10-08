@@ -152,9 +152,15 @@ final class ClassJoinController extends Controller
     public function cancelStudentInvitations(Request $request): Response
     {
         $studentId = $request->intParam('studentId');
-        $this->authorizeStudent($request, $studentId);
+        $user = $request->user();
+        if ($user->is(Role::ADVISOR)) {
+            $deleted = $this->joins->deleteInvitationsOfStudentByAdvisor($studentId, $user->id);
+        } else {
+            $this->authorizeStudent($request, $studentId);
+            $deleted = $this->joins->deleteInvitationsOfStudent($studentId);
+        }
 
-        if ($this->joins->deleteInvitationsOfStudent($studentId) === 0) {
+        if ($deleted === 0) {
             throw HttpException::notFound('No invitation found');
         }
 

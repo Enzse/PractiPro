@@ -47,6 +47,11 @@ final class ClassJoinRepository extends Repository
         return (bool) $this->db->fetchValue('SELECT COUNT(*) FROM class_join_requests WHERE student_id = ?', [$studentId]);
     }
 
+    public function hasRequest(int $studentId, string $block): bool
+    {
+        return (bool) $this->db->fetchValue('SELECT COUNT(*) FROM class_join_requests WHERE student_id = ? AND class = ?', [$studentId, $block]);
+    }
+
     public function createRequest(int $studentId, string $block): void
     {
         $this->db->execute('INSERT INTO class_join_requests (student_id, class) VALUES (?, ?)', [$studentId, $block]);
@@ -126,6 +131,11 @@ final class ClassJoinRepository extends Repository
         );
     }
 
+    public function hasInvitation(int $studentId, string $block): bool
+    {
+        return (bool) $this->db->fetchValue('SELECT COUNT(*) FROM class_join_invitations WHERE student_id = ? AND class = ?', [$studentId, $block]);
+    }
+
     public function createInvitation(int $studentId, int $advisorId, string $block): void
     {
         $this->db->execute('INSERT INTO class_join_invitations (student_id, advisor_id, class) VALUES (?, ?, ?)', [$studentId, $advisorId, $block]);
@@ -148,6 +158,18 @@ final class ClassJoinRepository extends Repository
         return $this->db->execute('DELETE FROM class_join_invitations WHERE student_id = ?', [$studentId]);
     }
 
+    /**
+     * Withdraws a student's invitations to the coordinator's own classes only.
+     */
+    public function deleteInvitationsOfStudentByAdvisor(int $studentId, int $advisorId): int
+    {
+        return $this->db->execute(
+            'DELETE FROM class_join_invitations
+             WHERE student_id = ? AND class IN (SELECT block_name FROM rl_class_coordinators WHERE coordinator_id = ?)',
+            [$studentId, $advisorId],
+        );
+    }
+
     // Shareable join links
 
     /**
@@ -164,6 +186,14 @@ final class ClassJoinRepository extends Repository
     public function linkByToken(string $token): ?array
     {
         return $this->db->fetchOne('SELECT * FROM class_join_links WHERE join_token_hash = ?', [$token]);
+    }
+
+    public function isValidLink(string $token, string $block): bool
+    {
+        return (bool) $this->db->fetchValue(
+            'SELECT COUNT(*) FROM class_join_links WHERE join_token_hash = ? AND class = ? AND join_token_expires_at > NOW()',
+            [$token, $block],
+        );
     }
 
     public function createLink(string $block, string $token, string $expiresAt): void

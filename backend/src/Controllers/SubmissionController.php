@@ -29,11 +29,7 @@ final class SubmissionController extends Controller
         $table = $this->studentFileTable($request);
         $studentId = $request->hasParam('studentId') ? $request->intParam('studentId') : null;
 
-        if ($studentId === null) {
-            if ($request->user()->is(Role::STUDENT)) {
-                throw HttpException::forbidden();
-            }
-        } else {
+        if ($studentId !== null) {
             $this->authorizeStudent($request, $studentId);
         }
 
@@ -76,13 +72,12 @@ final class SubmissionController extends Controller
             throw HttpException::badRequest("Unknown table '$table'.");
         }
 
+        $this->authorizeStudentRecord($request, $table, $id);
         $user = $request->user();
-        if ($user->is(Role::STUDENT)) {
-            if ($table === 'supervisor_student_evaluations') {
-                throw HttpException::forbidden();
-            }
-            $this->authorizeStudentRecord($request, $table, $id);
-        } elseif ($user->is(Role::SUPERVISOR)) {
+        if ($user->is(Role::STUDENT) && $table === 'supervisor_student_evaluations') {
+            throw HttpException::forbidden();
+        }
+        if ($user->is(Role::SUPERVISOR)) {
             // Supervisors may only remove evaluation files they uploaded.
             if ($table !== 'supervisor_student_evaluations' || $this->submissions->evaluationUploader($id) !== $user->id) {
                 throw HttpException::forbidden();
@@ -113,8 +108,10 @@ final class SubmissionController extends Controller
         if (!in_array($table, SubmissionRepository::ADVISOR_APPROVAL_TABLES, true)) {
             throw HttpException::badRequest("Unknown table '$table'.");
         }
+        $id = $request->intParam('id');
+        $this->authorizeStudentRecord($request, $table, $id);
         $approval = $request->require(['advisor_approval'])['advisor_approval'];
-        $this->submissions->setAdvisorApproval($table, $request->intParam('id'), $approval);
+        $this->submissions->setAdvisorApproval($table, $id, $approval);
 
         return $this->done('Successfully updated approval.');
     }
@@ -125,8 +122,10 @@ final class SubmissionController extends Controller
         if (!in_array($table, SubmissionRepository::SUPERVISOR_APPROVAL_TABLES, true)) {
             throw HttpException::badRequest("Unknown table '$table'.");
         }
+        $id = $request->intParam('id');
+        $this->authorizeStudentRecord($request, $table, $id);
         $approval = $request->require(['supervisor_approval'])['supervisor_approval'];
-        $this->submissions->setSupervisorApproval($table, $request->intParam('id'), $approval);
+        $this->submissions->setSupervisorApproval($table, $id, $approval);
 
         return $this->done('Successfully updated approval.');
     }
@@ -144,9 +143,11 @@ final class SubmissionController extends Controller
     public function uploadEvaluationFile(Request $request): Response
     {
         $supervisorId = $request->intParam('supervisorId');
+        $studentId = $request->intParam('studentId');
         $this->authorizeSelf($request, $supervisorId);
+        $this->authorizeStudent($request, $studentId);
 
-        $this->submissions->storeEvaluationFile($supervisorId, $request->intParam('studentId'), Uploads::document($request->file()));
+        $this->submissions->storeEvaluationFile($supervisorId, $studentId, Uploads::document($request->file()));
 
         return $this->done('Successfully uploaded file');
     }

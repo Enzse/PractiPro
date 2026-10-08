@@ -11,7 +11,7 @@ namespace PractiPro\Repositories;
 final class UserRepository extends Repository
 {
     /** Columns that are safe to send to the client: never password or token hashes. */
-    private const PUBLIC_COLUMNS = 'id, firstName, lastName, email, role, isActive';
+    private const PUBLIC_COLUMNS = 'id, firstName, lastName, email, role, isActive, approved_at';
 
     /**
      * @return list<array<string, mixed>>
@@ -44,7 +44,7 @@ final class UserRepository extends Repository
      */
     public function findForLogin(string $email): ?array
     {
-        return $this->db->fetchOne('SELECT id, firstName, lastName, email, role, isActive, password FROM user WHERE email = ?', [$email]);
+        return $this->db->fetchOne('SELECT id, firstName, lastName, email, role, isActive, approved_at, password FROM user WHERE email = ?', [$email]);
     }
 
     public function roleOf(int $id): ?string
@@ -63,12 +63,48 @@ final class UserRepository extends Repository
      * Inserts the account. Database triggers then create the matching
      * students / coordinators / supervisors row with the same id.
      */
-    public function create(string $firstName, string $lastName, string $email, string $passwordHash, string $role, string $activationHash): int
-    {
+    /**
+     * @param bool     $approved   False leaves the account waiting for an admin's approval.
+     * @param int|null $approvedBy The admin creating the account, if any.
+     */
+    public function create(
+        string $firstName,
+        string $lastName,
+        string $email,
+        string $passwordHash,
+        string $role,
+        string $activationHash,
+        bool $approved,
+        ?int $approvedBy = null,
+    ): int {
         return $this->db->insert(
-            'INSERT INTO user (firstName, lastName, email, password, role, account_activation_hash) VALUES (?, ?, ?, ?, ?, ?)',
-            [$firstName, $lastName, $email, $passwordHash, $role, $activationHash],
+            'INSERT INTO user (firstName, lastName, email, password, role, account_activation_hash, approved_at, approved_by)
+             VALUES (?, ?, ?, ?, ?, ?, ' . ($approved ? 'NOW()' : 'NULL') . ', ?)',
+            [$firstName, $lastName, $email, $passwordHash, $role, $activationHash, $approvedBy],
         );
+    }
+
+    /**
+     * @return int Rows changed: 0 if the user doesn't exist or was already approved.
+     */
+    public function approve(int $id, int $adminId): int
+    {
+        return $this->db->execute(
+            'UPDATE user SET approved_at = NOW(), approved_by = ? WHERE id = ? AND approved_at IS NULL',
+            [$adminId, $id],
+        );
+    }
+
+    public function exists(int $id): bool
+    {
+        return (bool) $this->db->fetchValue('SELECT COUNT(*) FROM user WHERE id = ?', [$id]);
+    }
+
+    public function roleOfActivationToken(string $tokenHash): ?string
+    {
+        $role = $this->db->fetchValue('SELECT role FROM user WHERE account_activation_hash = ?', [$tokenHash]);
+
+        return $role === false ? null : (string) $role;
     }
 
     public function completeStudentProfile(string $email, string $studentId, string $program, int $year): void

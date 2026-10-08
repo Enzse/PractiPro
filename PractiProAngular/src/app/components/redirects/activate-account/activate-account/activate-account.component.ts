@@ -58,6 +58,9 @@ export class ActivateAccountComponent implements OnInit, OnDestroy {
               this.status = 'valid';
               Swal.fire({
                 title: 'Account Activated',
+                text: res.payload?.awaitingApproval
+                  ? 'An administrator will review your account. You can log in once it is approved.'
+                  : undefined,
                 icon: 'success',
               })
             }));
