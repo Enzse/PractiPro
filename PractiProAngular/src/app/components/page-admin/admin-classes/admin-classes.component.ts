@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentationpopupComponent } from '../../popups/popups-coordinator/documentationpopup/documentationpopup.component';
 import { FormsModule } from '@angular/forms';
@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-admin-classes',
-    imports: [AdminNavbarComponent, MatMenuModule, MatTableModule, MatTooltipModule, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
+    imports: [AdminNavbarComponent, MatMenuModule, MatTableModule, MatTooltipModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
     templateUrl: './admin-classes.component.html',
     styleUrl: './admin-classes.component.css'
 })

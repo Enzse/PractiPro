@@ -1,7 +1,7 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-classes-studentpopup',
-    imports: [CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
+    imports: [MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
     templateUrl: './classes-studentpopup.component.html',
     styleUrl: './classes-studentpopup.component.css'
 })

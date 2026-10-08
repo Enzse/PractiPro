@@ -2,14 +2,14 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { dateRangeValidator } from '../../../../validators/date-range.validator';
 
 @Component({
     selector: 'app-editjobpopup',
-    imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
+    imports: [ReactiveFormsModule, MatDialogActions, MatDialogClose],
     templateUrl: './editjobpopup.component.html',
     styleUrl: './editjobpopup.component.css'
 })

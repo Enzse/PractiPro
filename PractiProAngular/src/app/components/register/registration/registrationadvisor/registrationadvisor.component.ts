@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import Swal from 'sweetalert2';
 import { TermsofserviceComponent } from '../../../popups/popups-registration/termsofservice/termsofservice.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,7 +16,7 @@ import { emailDomainValidator } from '../../../../validators/email-domain.valida
 
 @Component({
     selector: 'app-registrationadvisor',
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
+    imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
     templateUrl: './registrationadvisor.component.html',
     styleUrl: './registrationadvisor.component.css'
 })

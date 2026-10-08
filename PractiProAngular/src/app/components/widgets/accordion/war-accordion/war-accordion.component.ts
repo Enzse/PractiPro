@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Input, OnInit } from '@angular/core';
 import { initAccordions } from 'flowbite';
 
 
 @Component({
     selector: 'app-war-accordion',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './war-accordion.component.html',
     styleUrl: './war-accordion.component.css'
 })

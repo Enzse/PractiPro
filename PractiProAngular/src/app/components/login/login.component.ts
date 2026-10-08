@@ -2,7 +2,7 @@ import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import { JwtService } from '../../services/jwt.service';
 import Swal from 'sweetalert2';
 import { isPlatformBrowser } from '@angular/common';
@@ -13,7 +13,7 @@ import { ForgotpasswordComponent } from '../popups/popups-registration/forgotpas
 
 @Component({
     selector: 'app-login',
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
+    imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css'
 })

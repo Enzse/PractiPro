@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { WarpopupcomponentComponent } from '../../popups/popups-coordinator/warpopupcomponent/warpopupcomponent.component';
@@ -16,7 +16,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-coord-accomplishment-report',
-    imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
+    imports: [CoordNavbarComponent, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
     templateUrl: './coord-accomplishment-report.component.html',
     styleUrl: './coord-accomplishment-report.component.css'
 })

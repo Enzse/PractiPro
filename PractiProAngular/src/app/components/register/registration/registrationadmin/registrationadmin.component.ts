@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { TermsofserviceComponent } from '../../../popups/popups-registration/termsofservice/termsofservice.component';
@@ -15,7 +15,7 @@ import { passwordStrengthValidator } from '../../../../validators/password-stren
 
 @Component({
     selector: 'app-registrationadmin',
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
+    imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
     templateUrl: './registrationadmin.component.html',
     styleUrl: './registrationadmin.component.css'
 })

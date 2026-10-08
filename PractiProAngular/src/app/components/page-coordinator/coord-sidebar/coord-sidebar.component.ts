@@ -6,11 +6,11 @@ import { AuthService } from '../../../services/auth.service';
 import { BlockService } from '../../../services/block.service';
 import { Subscription } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
     selector: 'app-coord-sidebar',
-    imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet, MatTooltipModule],
+    imports: [RouterLink, RouterLinkActive, RouterOutlet, MatTooltipModule],
     templateUrl: './coord-sidebar.component.html',
     styleUrl: './coord-sidebar.component.css'
 })

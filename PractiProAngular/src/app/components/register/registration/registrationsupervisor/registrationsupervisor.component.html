@@ -15,105 +15,109 @@
             width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="m15 19-7-7 7-7" />
-          </svg>
+            </svg>
 
-          <span class="ml-2 text-center">Login</span>
-        </a>
-      </div>
-
-      <!-- form and img -->
-      <div class="flex-row p-8 max-md:flex-col grid grid-flow-col max-md:p-0 max-xl:mt-0 max-xl:p-0 max-md:grid-flow-row">
-        <!-- img -->
-        <div class="h-auto text-3xl p-2 -mt-10 mx-16  max-md:my-auto max-md:mx-auto text-center flex justify-center max-md:size-2/4 flex-col max-md:text-2xl">
-          <img src="../../../assets/logo.png" class="" alt="PractiPro" />
-          <h1 class="-mt-8 max-md:-mt-0">
-            Practi<span class="text-orange-500">Pro</span>
-          </h1>
+            <span class="ml-2 text-center">Login</span>
+          </a>
         </div>
 
-        <!-- forms -->
-        <div class="px-10 py-5 max-sm:mt-4 max font-secondary">
-          <form [formGroup]="registerform" (ngSubmit)="proceedregistration()">
-            <div class="grid gap-2 mb-6 md:grid-cols-2">
-              <div>
-                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
+        <!-- form and img -->
+        <div class="flex-row p-8 max-md:flex-col grid grid-flow-col max-md:p-0 max-xl:mt-0 max-xl:p-0 max-md:grid-flow-row">
+          <!-- img -->
+          <div class="h-auto text-3xl p-2 -mt-10 mx-16  max-md:my-auto max-md:mx-auto text-center flex justify-center max-md:size-2/4 flex-col max-md:text-2xl">
+            <img src="../../../assets/logo.png" class="" alt="PractiPro" />
+            <h1 class="-mt-8 max-md:-mt-0">
+              Practi<span class="text-orange-500">Pro</span>
+            </h1>
+          </div>
+
+          <!-- forms -->
+          <div class="px-10 py-5 max-sm:mt-4 max font-secondary">
+            <form [formGroup]="registerform" (ngSubmit)="proceedregistration()">
+              <div class="grid gap-2 mb-6 md:grid-cols-2">
+                <div>
+                  <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First
                   name</label>
-                <input type="text" id="first_name"
-                  class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="First name" formControlName="firstName" />
-              </div>
-              <div>
-                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
-                  name</label>
-                <input type="text" id="last_name"
-                  class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Last name" formControlName="lastName" />
-              </div>
-              <div>
-                <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
-                  address</label>
-                <input type="email" id="email"
-                  class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="(youremail@gmail.com)" formControlName="email" />
-              </div>
-              <div>
-                <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
-                <input type="text" id="company"
-                  class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Company" formControlName="company_name" />
-              </div>
-              <div>
-                <label for="position" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Position</label>
-                <input type="text" id="position"
-                  class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Position" formControlName="position" />
-              </div>
-              <div>
-                <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-                <input type="text" id="phone"
-                  class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="09XX-XXX-XXXX" formControlName="phone" />
-              </div>
-  
-            </div>
-            <div class="mb-6">
-              <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Address</label>
-              <input type="text" id="address"
-                class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Company Address" formControlName="address" />
-            </div>
-            <div class="mb-6">
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-              <input type="password" id="password"
-                class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="(Please read label for password strength)" formControlName="password" />
-                <p *ngIf="registerform.get('password')?.hasError('shortPassword')" class="text-xs text-red-500">Password
-                  must be at least 8 characters long.</p>
-                <p *ngIf="registerform.get('password')?.hasError('weakPassword')" class="text-xs text-red-500">(Requires 1
-                  uppercase letter, 1 lowercase letter, and 1 number)</p>
-            </div>
-  
-            <div class="flex items-start mb-6">
-              <div class="flex items-center h-5">
-                <input id="terms" type="checkbox" formControlName="terms"
-                  class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
-                  required />
-              </div>
-              <label  class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree to PractiPro's <a class="text-blue-500 cursor-pointer" (click)="noticeToSupervisors()">Notice for Supervisors</a> and <a class="text-blue-500 cursor-pointer" (click)="termsOfService()">Terms and Conditions</a></label>
-            </div>
-            <div class="flex justify-center">
-              <button type="submit" [class.disabled]="!registerform.valid"
-                class="text-white bg-blue-950 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Register as Supervisor
-              </button>
-            </div>
-  
-          </form>
-        </div>
-      </div>
-      </div>
+                  <input type="text" id="first_name"
+                    class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="First name" formControlName="firstName" />
+                  </div>
+                  <div>
+                    <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last
+                    name</label>
+                    <input type="text" id="last_name"
+                      class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      placeholder="Last name" formControlName="lastName" />
+                    </div>
+                    <div>
+                      <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email
+                      address</label>
+                      <input type="email" id="email"
+                        class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="(youremail@gmail.com)" formControlName="email" />
+                      </div>
+                      <div>
+                        <label for="company" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company</label>
+                        <input type="text" id="company"
+                          class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          placeholder="Company" formControlName="company_name" />
+                        </div>
+                        <div>
+                          <label for="position" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Position</label>
+                          <input type="text" id="position"
+                            class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Position" formControlName="position" />
+                          </div>
+                          <div>
+                            <label for="phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
+                            <input type="text" id="phone"
+                              class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="09XX-XXX-XXXX" formControlName="phone" />
+                            </div>
+
+                          </div>
+                          <div class="mb-6">
+                            <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Address</label>
+                            <input type="text" id="address"
+                              class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                              placeholder="Company Address" formControlName="address" />
+                            </div>
+                            <div class="mb-6">
+                              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                              <input type="password" id="password"
+                                class="bg-transparent border-0 border-b-2 border-gray-800 text-gray-900 text-sm focus:ring-transparent focus:border-0 focus:border-b-2 focus:border-black block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="(Please read label for password strength)" formControlName="password" />
+                                @if (registerform.get('password')?.hasError('shortPassword')) {
+                                  <p class="text-xs text-red-500">Password
+                                  must be at least 8 characters long.</p>
+                                }
+                                @if (registerform.get('password')?.hasError('weakPassword')) {
+                                  <p class="text-xs text-red-500">(Requires 1
+                                  uppercase letter, 1 lowercase letter, and 1 number)</p>
+                                }
+                              </div>
+
+                              <div class="flex items-start mb-6">
+                                <div class="flex items-center h-5">
+                                  <input id="terms" type="checkbox" formControlName="terms"
+                                    class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
+                                    required />
+                                  </div>
+                                  <label  class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">I agree to PractiPro's <a class="text-blue-500 cursor-pointer" (click)="noticeToSupervisors()">Notice for Supervisors</a> and <a class="text-blue-500 cursor-pointer" (click)="termsOfService()">Terms and Conditions</a></label>
+                                </div>
+                                <div class="flex justify-center">
+                                  <button type="submit" [class.disabled]="!registerform.valid"
+                                    class="text-white bg-blue-950 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Register as Supervisor
+                                  </button>
+                                </div>
+
+                              </form>
+                            </div>
+                          </div>
+                        </div>
 
 
-      
-  </div>
-</div>
+
+                      </div>
+                    </div>

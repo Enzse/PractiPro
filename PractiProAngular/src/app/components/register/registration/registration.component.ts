@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import Swal from 'sweetalert2';
 import { TermsofserviceComponent } from '../../popups/popups-registration/termsofservice/termsofservice.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,7 +12,7 @@ import { passwordStrengthValidator } from '../../../validators/password-strength
 
 @Component({
     selector: 'app-registration',
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive, MatTooltipModule],
+    imports: [ReactiveFormsModule, RouterLink, RouterLinkActive, MatTooltipModule],
     templateUrl: './registration.component.html',
     styleUrl: './registration.component.css'
 })

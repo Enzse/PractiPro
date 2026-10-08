@@ -3,12 +3,12 @@ import { AuthService } from '../../../../services/auth.service';
 import { FormBuilder } from '@angular/forms';
 import { BlockService } from '../../../../services/block.service';
 import { Subscription } from 'rxjs';
-import { CommonModule } from '@angular/common';
+
 import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-invitestudents-by-link',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './invitestudents-by-link.component.html',
     styleUrl: './invitestudents-by-link.component.css'
 })

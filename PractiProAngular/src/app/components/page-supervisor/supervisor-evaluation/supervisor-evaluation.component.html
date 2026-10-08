@@ -1,64 +1,67 @@
 <div class="p-2 sm:ml-56 font-secondary">
-    <div class="p-1 xl:p-10">
-        <div>
-            <h1 class="indent-3 text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
-                Student Performance Evaluation
+  <div class="p-1 xl:p-10">
+    <div>
+      <h1 class="indent-3 text-orange-500 ml-5 font-bold font-primary text-lg mb-1 ms-0">
+        Student Performance Evaluation
+      </h1>
+      <div class="border-b border-gray-300"></div>
+      <br />
+    </div>
+
+    <div class="flex items-center space-x-4 mb-3">
+      <div class="form-outline flex-grow">
+        <input
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search for trainees..."
+          aria-label="search" />
+        </div>
+      </div>
+
+      @if (traineesList.length === 0) {
+        <div class="mt-20 flex flex-col items-center">
+          <div>
+            <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
+          </div>
+          <div>
+            <h1 class="opacity-40 text-center text-3xl font-primary mt-5">
+              You don't have students that meet the requirements for evaluation.
             </h1>
-            <div class="border-b border-gray-300"></div>
-            <br />
+            <h2 class="opacity-40 text-center text-md font-primary mt-5">
+              Students must meet atleast 200 hours of training in order to be evaluated.
+            </h2>
+          </div>
         </div>
+      }
 
-        <div class="flex items-center space-x-4 mb-3">
-            <div class="form-outline flex-grow">
-                <input
-                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search for trainees..."
-                    aria-label="search" />
-            </div>
-        </div>
-
-        <div *ngIf="traineesList.length === 0" class="mt-20 flex flex-col items-center">
-            <div>
-                <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
-            </div>
-            <div>
-                <h1 class="opacity-40 text-center text-3xl font-primary mt-5">
-                    You don't have students that meet the requirements for evaluation.
-                </h1>
-                <h2 class="opacity-40 text-center text-md font-primary mt-5">
-                    Students must meet atleast 200 hours of training in order to be evaluated.
-                </h2>
-            </div>
-        </div>
-
-        <div *ngIf="traineesList" class="flex flex-wrap w-full mt-10 justify-evenly space-x-3">
-            <!-- Trainee Containers -->
-            <div *ngFor="let data of traineesList | filter : searchtext"
-                class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewEvaluation(data)">
-
-
-                <div
-                    class="w-auto p-3 pb-5 shadow-md justify-around bg-slate-50 hover:bg-slate-100 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
-                    <!-- upper part -->
-                    <div class="px-4 py-3 grid-flow-col grid grid-cols-3">
-                        <div class="avatar-container mx-auto">
-                            <img *ngIf="data.avatar; else placeholder" [src]="data.avatar" class="image-container"
-                                alt="Avatar" />
-                            <ng-template #placeholder>
-                                <div class="image-container avatar-placeholder"></div>
-                            </ng-template>
-                        </div>
-                        <!-- name and status -->
-                        <div class="col-span-2 grid-flow-row grid-cols-3">
-                            <h5 class=" text-md font-bold text-gray-900 font-primary ms-3">
-                                {{ data.firstName }}
-                                {{ data.lastName }}
-                            </h5>
-                            <p
-                                class="text-base text-center lg:text-lg font-primary text-gray-900 truncate dark:text-white mr-2">
-                                Activity Status:
-                            </p>
-                            <span class="flex justify-center items-center">
+      @if (traineesList) {
+        <div class="flex flex-wrap w-full mt-10 justify-evenly space-x-3">
+          <!-- Trainee Containers -->
+          @for (data of traineesList | filter : searchtext; track data) {
+            <div
+              class="flex flex-col max-lg:w-full mb-4 hover:cursor-pointer relative" (click)="viewEvaluation(data)">
+              <div
+                class="w-auto p-3 pb-5 shadow-md justify-around bg-slate-50 hover:bg-slate-100 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
+                <!-- upper part -->
+                <div class="px-4 py-3 grid-flow-col grid grid-cols-3">
+                  <div class="avatar-container mx-auto">
+                    @if (data.avatar) {
+                      <img [src]="data.avatar" class="image-container"
+                        alt="Avatar" />
+                    } @else {
+                      <div class="image-container avatar-placeholder"></div>
+                    }
+                  </div>
+                  <!-- name and status -->
+                  <div class="col-span-2 grid-flow-row grid-cols-3">
+                    <h5 class=" text-md font-bold text-gray-900 font-primary ms-3">
+                      {{ data.firstName }}
+                      {{ data.lastName }}
+                    </h5>
+                    <p
+                      class="text-base text-center lg:text-lg font-primary text-gray-900 truncate dark:text-white mr-2">
+                      Activity Status:
+                    </p>
+                    <span class="flex justify-center items-center">
                                 <span [ngClass]="{
                                         'bg-green-500': data.clock_status === 'Clocked In',
                                         'bg-red-500': data.clock_status === 'Clocked Out',
@@ -69,58 +72,56 @@
                                         'text-red-500': data.clock_status === 'Clocked Out',
                                         'text-green-500': data.clock_status === 'Clocked In'
                                       }">
-                                    {{ data.clock_status }}
-                                </span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <hr />
-
-                    <div class="flow-root">
-
-                        <ul role="list" class="flex flex-col flex-1 px-4 py-2">
-                            <li class="mb-2">
-                                <div class="flex items-center">
-                                    <div class="flex-1 flex flex-col -space-y-1 text-center ms-3 min-w-0">
-                                        <p
-                                            class="inline me-1 text-base lg:text-lg font-primary text-gray-900 truncate dark:text-white">
-                                            Job Title
-                                        </p>
-                                        <span class="text-lg font-semibold font-secondary">
-                                            {{ data.job_title || "(Not Assigned)" }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="mb-2">
-                                <div class="grid grid-flow-col gap-5 grid-cols-2 items-center">
-                                    <div class="flex-1 min-w-0 ms-4">
-                                        <p
-                                            class="inline me-1 text-xs font-primary text-gray-900 truncate dark:text-white">
-                                            Date hired:
-                                        </p>
-                                        <br />
-                                        <span class="text-base font-medium font-secondary">
-                                            {{ data.hire_date | date : "longDate" }}
-                                        </span>
-                                    </div>
-                                    <div class="flex-1 min-w-0 ms-4">
-                                        <p class="inline me-1 font-primary text-gray-900 truncate dark:text-white">
-                                            Hours Worked:
-                                        </p>
-                                        <br />
-                                        <span class="text-base font-medium font-secondary text-gray-900">
-                                            {{ data.TotalHoursWorked || 0 }}hrs
-                                        </span>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                        {{ data.clock_status }}
+                      </span>
+                    </span>
+                  </div>
                 </div>
+                <hr />
+                <div class="flow-root">
+                  <ul role="list" class="flex flex-col flex-1 px-4 py-2">
+                    <li class="mb-2">
+                      <div class="flex items-center">
+                        <div class="flex-1 flex flex-col -space-y-1 text-center ms-3 min-w-0">
+                          <p
+                            class="inline me-1 text-base lg:text-lg font-primary text-gray-900 truncate dark:text-white">
+                            Job Title
+                          </p>
+                          <span class="text-lg font-semibold font-secondary">
+                            {{ data.job_title || "(Not Assigned)" }}
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                    <li class="mb-2">
+                      <div class="grid grid-flow-col gap-5 grid-cols-2 items-center">
+                        <div class="flex-1 min-w-0 ms-4">
+                          <p
+                            class="inline me-1 text-xs font-primary text-gray-900 truncate dark:text-white">
+                            Date hired:
+                          </p>
+                          <br />
+                          <span class="text-base font-medium font-secondary">
+                            {{ data.hire_date | date : "longDate" }}
+                          </span>
+                        </div>
+                        <div class="flex-1 min-w-0 ms-4">
+                          <p class="inline me-1 font-primary text-gray-900 truncate dark:text-white">
+                            Hours Worked:
+                          </p>
+                          <br />
+                          <span class="text-base font-medium font-secondary text-gray-900">
+                            {{ data.TotalHoursWorked || 0 }}hrs
+                          </span>
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
-
+          }
         </div>
+      }
     </div>
-</div>
+  </div>

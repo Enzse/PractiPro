@@ -10,385 +10,400 @@
 
 
 
-    <div *ngIf="isCompleted === true"
-      class="bg-slate-50 rounded-lg w-full p-5 mb-10 shadow-md font-secondary text-center border border-gray-200">
-      <div>
-        <h1 class="text-blue-900 font-bold font-primary text-center text-3xl mb-5">
-          Congratulations, <span class="text-orange-500">{{student.firstName}}</span>!
-        </h1>
-        <div class="border-b border-gray-300"></div>
-        <div class="flex-col max-sm:gap-2 pt-5 pb-3 px-5">
-          <h2 class="text-gray-900 font-bold font-primary text-center text-xl">
-            You have successfully completed the Practicum Process.
-          </h2>
-          <h3 class="text-gray-900 font-primary text-center text-base">
-            Best wishes for your future career
-            endeavors!
-          </h3>
+    @if (isCompleted === true) {
+      <div
+        class="bg-slate-50 rounded-lg w-full p-5 mb-10 shadow-md font-secondary text-center border border-gray-200">
+        <div>
+          <h1 class="text-blue-900 font-bold font-primary text-center text-3xl mb-5">
+            Congratulations, <span class="text-orange-500">{{student.firstName}}</span>!
+          </h1>
+          <div class="border-b border-gray-300"></div>
+          <div class="flex-col max-sm:gap-2 pt-5 pb-3 px-5">
+            <h2 class="text-gray-900 font-bold font-primary text-center text-xl">
+              You have successfully completed the Practicum Process.
+            </h2>
+            <h3 class="text-gray-900 font-primary text-center text-base">
+              Best wishes for your future career
+              endeavors!
+            </h3>
+          </div>
         </div>
       </div>
-    </div>
+    }
 
     <!-- REGISTRATION STATUS -->
-    <div *ngIf="registrationStatus === 0"
-      class="overflow-x-hidden text-center bg-slate-50 h-auto items-center justify-center rounded-lg shadow-md border border-gray-200">
-      <div class="mb-auto mt-3 inline-block border-b-8 rounded-b-md border-orange-500 w-4/5">
-        <h1 class="font-primary font-bold text-lg">REGISTRATION STATUS</h1>
-      </div>
-      <div class="pt-2 pl-4 pr-4 text-xs mb-3">
-        <table class="w-full">
-          <thead>
-            <tr>
-              <th class="text-center font-bold border border-darkblue w-1/2 font-primary text-base">TO DO</th>
-              <th class="text-center font-bold border border-darkblue w-1/2 font-primary text-base">STATUS</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">RESUME</td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                <p *ngIf="studentRequirements.length > 0 && studentRequirements[0].resume" class="text-green-600">
-                  CLEARED</p>
-                <p *ngIf="studentRequirements.length > 0 && !studentRequirements[0].resume" class="text-orange-500">NOT
-                  CLEARED</p>
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
-                APPLICATION LETTER
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                <p *ngIf="
+    @if (registrationStatus === 0) {
+      <div
+        class="overflow-x-hidden text-center bg-slate-50 h-auto items-center justify-center rounded-lg shadow-md border border-gray-200">
+        <div class="mb-auto mt-3 inline-block border-b-8 rounded-b-md border-orange-500 w-4/5">
+          <h1 class="font-primary font-bold text-lg">REGISTRATION STATUS</h1>
+        </div>
+        <div class="pt-2 pl-4 pr-4 text-xs mb-3">
+          <table class="w-full">
+            <thead>
+              <tr>
+                <th class="text-center font-bold border border-darkblue w-1/2 font-primary text-base">TO DO</th>
+                <th class="text-center font-bold border border-darkblue w-1/2 font-primary text-base">STATUS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="pl-4 text-left border border-darkblue font-secondary text-sm">RESUME</td>
+                <td class="text-center border border-darkblue font-secondary text-sm">
+                  @if (studentRequirements.length > 0 && studentRequirements[0].resume) {
+                    <p class="text-green-600">
+                    CLEARED</p>
+                  }
+                  @if (studentRequirements.length > 0 && !studentRequirements[0].resume) {
+                    <p class="text-orange-500">NOT
+                    CLEARED</p>
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
+                  APPLICATION LETTER
+                </td>
+                <td class="text-center border border-darkblue font-secondary text-sm">
+                  @if (
                     studentRequirements.length > 0 &&
                     studentRequirements[0].application_letter
-                  " class="text-green-600">
-                  CLEARED
-                </p>
-                <p *ngIf="
+                    ) {
+                    <p class="text-green-600">
+                      CLEARED
+                    </p>
+                  }
+                  @if (
                     studentRequirements.length > 0 &&
                     !studentRequirements[0].application_letter
-                  " class="text-orange-500">
-                  NOT CLEARED
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
-                ACCEPTANCE LETTER
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                <p *ngIf="
+                    ) {
+                    <p class="text-orange-500">
+                      NOT CLEARED
+                    </p>
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
+                  ACCEPTANCE LETTER
+                </td>
+                <td class="text-center border border-darkblue font-secondary text-sm">
+                  @if (
                     studentRequirements.length > 0 &&
                     studentRequirements[0].acceptance_letter
-                  " class="text-green-600">
-                  CLEARED
-                </p>
-                <p *ngIf="
+                    ) {
+                    <p class="text-green-600">
+                      CLEARED
+                    </p>
+                  }
+                  @if (
                     studentRequirements.length > 0 &&
                     !studentRequirements[0].acceptance_letter
-                  " class="text-orange-500">
-                  NOT CLEARED
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
-                ENDORSEMENT LETTER
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                <p *ngIf="
+                    ) {
+                    <p class="text-orange-500">
+                      NOT CLEARED
+                    </p>
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
+                  ENDORSEMENT LETTER
+                </td>
+                <td class="text-center border border-darkblue font-secondary text-sm">
+                  @if (
                     studentRequirements.length > 0 &&
                     studentRequirements[0].endorsement_letter
-                  " class="text-green-600">
-                  CLEARED
-                </p>
-                <p *ngIf="
+                    ) {
+                    <p class="text-green-600">
+                      CLEARED
+                    </p>
+                  }
+                  @if (
                     studentRequirements.length > 0 &&
                     !studentRequirements[0].endorsement_letter
-                  " class="text-orange-500">
-                  NOT CLEARED
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
-                PARENT'S/GUARDIAN'S WAIVER
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                <p *ngIf="
+                    ) {
+                    <p class="text-orange-500">
+                      NOT CLEARED
+                    </p>
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
+                  PARENT'S/GUARDIAN'S WAIVER
+                </td>
+                <td class="text-center border border-darkblue font-secondary text-sm">
+                  @if (
                     studentRequirements.length > 0 &&
                     studentRequirements[0].guardians_waiver
-                  " class="text-green-600">
-                  CLEARED
-                </p>
-                <p *ngIf="
+                    ) {
+                    <p class="text-green-600">
+                      CLEARED
+                    </p>
+                  }
+                  @if (
                     studentRequirements.length > 0 &&
                     !studentRequirements[0].guardians_waiver
-                  " class="text-orange-500">
-                  NOT CLEARED
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
-                VACCINATION CARD
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                <p *ngIf="
+                    ) {
+                    <p class="text-orange-500">
+                      NOT CLEARED
+                    </p>
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
+                  VACCINATION CARD
+                </td>
+                <td class="text-center border border-darkblue font-secondary text-sm">
+                  @if (
                     studentRequirements.length > 0 &&
                     studentRequirements[0].vaccination_card
-                  " class="text-green-600">
-                  CLEARED
-                </p>
-                <p *ngIf="
+                    ) {
+                    <p class="text-green-600">
+                      CLEARED
+                    </p>
+                  }
+                  @if (
                     studentRequirements.length > 0 &&
                     !studentRequirements[0].vaccination_card
-                  " class="text-orange-500">
-                  NOT CLEARED
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
-                BARANGGAY CLEARANCE
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                <p *ngIf="
+                    ) {
+                    <p class="text-orange-500">
+                      NOT CLEARED
+                    </p>
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
+                  BARANGGAY CLEARANCE
+                </td>
+                <td class="text-center border border-darkblue font-secondary text-sm">
+                  @if (
                     studentRequirements.length > 0 &&
                     studentRequirements[0].barangay_clearance
-                  " class="text-green-600">
-                  CLEARED
-                </p>
-                <p *ngIf="
+                    ) {
+                    <p class="text-green-600">
+                      CLEARED
+                    </p>
+                  }
+                  @if (
                     studentRequirements.length > 0 &&
                     !studentRequirements[0].barangay_clearance
-                  " class="text-orange-500">
-                  NOT CLEARED
-                </p>
-              </td>
-            </tr>
-            <tr>
-              <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
-                MEDICAL CERTIFICATE
-              </td>
-              <td class="text-center border border-darkblue font-secondary text-sm">
-                <p *ngIf="
+                    ) {
+                    <p class="text-orange-500">
+                      NOT CLEARED
+                    </p>
+                  }
+                </td>
+              </tr>
+              <tr>
+                <td class="pl-4 text-left border border-darkblue font-secondary text-sm">
+                  MEDICAL CERTIFICATE
+                </td>
+                <td class="text-center border border-darkblue font-secondary text-sm">
+                  @if (
                     studentRequirements.length > 0 &&
                     studentRequirements[0].medical_certificate
-                  " class="text-green-600">
-                  CLEARED
-                </p>
-                <p *ngIf="
+                    ) {
+                    <p class="text-green-600">
+                      CLEARED
+                    </p>
+                  }
+                  @if (
                     studentRequirements.length > 0 &&
                     !studentRequirements[0].medical_certificate
-                  " class="text-orange-500">
-                  NOT CLEARED
-                </p>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="mt-4 text-xm text-red-500">
-          ** If your status was marked as "NOT CLEARED", you need to proceed to
-          submit the specified document for your registration status. You will not be
-          able to proceed with the practicum process and evaluation until you have been cleared
-          in all <b class="text-red-700">OJT</b> requirements.
-        </p>
+                    ) {
+                    <p class="text-orange-500">
+                      NOT CLEARED
+                    </p>
+                  }
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p class="mt-4 text-xm text-red-500">
+            ** If your status was marked as "NOT CLEARED", you need to proceed to
+            submit the specified document for your registration status. You will not be
+            able to proceed with the practicum process and evaluation until you have been cleared
+            in all <b class="text-red-700">OJT</b> requirements.
+          </p>
+        </div>
       </div>
-    </div>
+    }
 
 
 
 
     <!-- IF STUDENT IS CLEARED IN REGISTRATION STATUS -->
-    <div *ngIf="registrationStatus === 1"
-      class="overflow-x-hidden text-center bg-slate-100 h-auto items-center justify-center rounded-lg shadow-md border border-gray-200">
-      <div class="mb-auto mt-3 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
-        <h1 class="font-primary font-bold text-lg">PRACTICUM STATUS</h1>
-      </div>
-
-      <div class="flex flex-col md:flex-row justify-evenly">
-
-
-        <div class="flex flex-col justify-center p-10 m-5 shadow-md hover:shadow-xl rounded-xl bg-white">
-          <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalHoursWorked || '0.00'}}<span
-              class="text-sm">hrs</span></h1>
-          <h2 matTooltip="You must meet a total of 200+ hours to be completed in Training Hours."
+    @if (registrationStatus === 1) {
+      <div
+        class="overflow-x-hidden text-center bg-slate-100 h-auto items-center justify-center rounded-lg shadow-md border border-gray-200">
+        <div class="mb-auto mt-3 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
+          <h1 class="font-primary font-bold text-lg">PRACTICUM STATUS</h1>
+        </div>
+        <div class="flex flex-col md:flex-row justify-evenly">
+          <div class="flex flex-col justify-center p-10 m-5 shadow-md hover:shadow-xl rounded-xl bg-white">
+            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalHoursWorked || '0.00'}}<span
+            class="text-sm">hrs</span></h1>
+            <h2 matTooltip="You must meet a total of 200+ hours to be completed in Training Hours."
             class="font-primary text-sm">Total Training Hours Accumulated</h2>
-        </div>
-
-
-
-        <div class="flex flex-col justify-center p-10 m-5 shadow-md hover:shadow-xl  rounded-xl bg-white">
-          <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalSeminarHours || '0.00'}}<span
-              class="text-sm">hrs</span></h1>
-          <h2 matTooltip="You must meet a total of 50+ hours to be completed in Seminar Hours."
+          </div>
+          <div class="flex flex-col justify-center p-10 m-5 shadow-md hover:shadow-xl  rounded-xl bg-white">
+            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalSeminarHours || '0.00'}}<span
+            class="text-sm">hrs</span></h1>
+            <h2 matTooltip="You must meet a total of 50+ hours to be completed in Seminar Hours."
             class="font-primary text-sm">Total Seminar Hours Accumulated</h2>
-        </div>
-      </div>
-
-
-      <!-- IF STUDENT IS HIRED -->
-      <div *ngIf="student.company_id" class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
-
-
-        <div class="grid grid-cols-5 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
-
-          <div class="col-span-3">
-            <!-- First column content here -->
-            <div *ngIf="studentjob" class="w-full h-full bg-white shadow-md p-3">
-              <div>
-                <h1 class="font-primary font-bold text-lg">{{studentjob.job_title || "Unassigned"}}</h1>
-              </div>
-
-              <p class="font-primary">Job Title</p>
-              <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
-
-              <div class="flex justify-start text-left">
-                <ul role="list" class="">
-                  <li class="mb-2">
-                    <div class="flex items-center">
-                      <div class="flex-1 min-w-0 ms-4">
-                        <p
-                          class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                          Job Description:
-                        </p><span
-                          class="text-sm font-medium lg:text-base font-secondary text-gray-900">{{studentjob.job_description}}</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="mb-2">
-                    <div class="flex items-center">
-                      <div class="flex-1 min-w-0 ms-4">
-                        <p
-                          class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                          Start Date:
-                        </p>
-                        <span class="text-sm font-normal lg:text-base font-secondary">{{
-                          studentjob.start_date | date: "longDate"}}</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="mb-2">
-                    <div class="flex items-center">
-                      <div class="flex-1 min-w-0 ms-4">
-                        <p
-                          class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                          End Date:
-                        </p>
-                        <span class="text-sm font-normal lg:text-base font-secondary">{{
-                          studentjob.end_date | date: "longDate"}}</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="mb-2">
-                    <div class="flex items-center">
-                      <div class="flex-1 min-w-0 ms-4">
-                        <p
-                          class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                          Assigned by:
-                        </p>
-                        <span class="text-sm font-normal lg:text-base font-secondary">{{
-                          studentjob.sfirstName}} {{ studentjob.slastName}}</span>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div *ngIf="!studentjob" class="w-full bg-white shadow-md p-3">
-              <div>
-                <div class="flex justify-center">
-                  <img class="h-48 opacity-50" src="../../../../../assets/empty1.png">
-                </div>
-                <h1 class="font-secondary text-lg text-gray-800 my-2">This student has yet to be assigned a job.</h1>
-              </div>
-            </div>
-
           </div>
-
-          <div class="col-span-2 max-sm:mt-3 max-sm:mx-auto shadow-md w-full p-3 bg-white relative">
-            <!-- Second column content here -->
-            <div *ngIf="schedules.length">
-
-              <h1 class="font-primary -mt-1 mb-2 font-bold text-lg">Schedules</h1>
-
-              <table class="w-full">
-                <tbody>
-                  <tr *ngFor="let schedule of schedules">
-                    <td class="px-4 py-1 text-left border font-secondary text-sm">{{ schedule.day_of_week }}
-                    </td>
-                    <td class="text-center border px-4 py-1 font-secondary text-sm">{{schedule.start_time |
-                      time:schedule.end_time
-                      }}</td>
-                    <td class="text-center border px-4 py-1 font-secondary text-sm">{{schedule.end_time |
-                      time:schedule.start_time
-                      }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div *ngIf="schedules.length === 0">
-
-              <h1 class="font-primary -mt-1 mb-2 font-bold text-lg">Schedules</h1>
-
-              <div>
-                <div class="flex justify-center">
-                  <img class="h-32 opacity-50" src="../../../../../assets/empty1.png">
-                </div>
-                <h1 class="font-secondary text-lg text-gray-800 my-2">This student has yet to be assigned work
-                  schedules.
-                </h1>
-              </div>
-            </div>
-
-
-          </div>
-
-
         </div>
-
-
-
-
-
-      </div>
-
-
+        <!-- IF STUDENT IS HIRED -->
+        @if (student.company_id) {
+          <div class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
+            <div class="grid grid-cols-5 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
+              <div class="col-span-3">
+                <!-- First column content here -->
+                @if (studentjob) {
+                  <div class="w-full h-full bg-white shadow-md p-3">
+                    <div>
+                      <h1 class="font-primary font-bold text-lg">{{studentjob.job_title || "Unassigned"}}</h1>
+                    </div>
+                    <p class="font-primary">Job Title</p>
+                    <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
+                    <div class="flex justify-start text-left">
+                      <ul role="list" class="">
+                        <li class="mb-2">
+                          <div class="flex items-center">
+                            <div class="flex-1 min-w-0 ms-4">
+                              <p
+                                class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                                Job Description:
+                              </p><span
+                            class="text-sm font-medium lg:text-base font-secondary text-gray-900">{{studentjob.job_description}}</span>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="flex items-center">
+                          <div class="flex-1 min-w-0 ms-4">
+                            <p
+                              class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                              Start Date:
+                            </p>
+                            <span class="text-sm font-normal lg:text-base font-secondary">{{
+                            studentjob.start_date | date: "longDate"}}</span>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="flex items-center">
+                          <div class="flex-1 min-w-0 ms-4">
+                            <p
+                              class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                              End Date:
+                            </p>
+                            <span class="text-sm font-normal lg:text-base font-secondary">{{
+                            studentjob.end_date | date: "longDate"}}</span>
+                          </div>
+                        </div>
+                      </li>
+                      <li class="mb-2">
+                        <div class="flex items-center">
+                          <div class="flex-1 min-w-0 ms-4">
+                            <p
+                              class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                              Assigned by:
+                            </p>
+                            <span class="text-sm font-normal lg:text-base font-secondary">{{
+                            studentjob.sfirstName}} {{ studentjob.slastName}}</span>
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              }
+              @if (!studentjob) {
+                <div class="w-full bg-white shadow-md p-3">
+                  <div>
+                    <div class="flex justify-center">
+                      <img class="h-48 opacity-50" src="../../../../../assets/empty1.png">
+                    </div>
+                    <h1 class="font-secondary text-lg text-gray-800 my-2">This student has yet to be assigned a job.</h1>
+                  </div>
+                </div>
+              }
+            </div>
+            <div class="col-span-2 max-sm:mt-3 max-sm:mx-auto shadow-md w-full p-3 bg-white relative">
+              <!-- Second column content here -->
+              @if (schedules.length) {
+                <div>
+                  <h1 class="font-primary -mt-1 mb-2 font-bold text-lg">Schedules</h1>
+                  <table class="w-full">
+                    <tbody>
+                      @for (schedule of schedules; track schedule) {
+                        <tr>
+                          <td class="px-4 py-1 text-left border font-secondary text-sm">{{ schedule.day_of_week }}
+                          </td>
+                          <td class="text-center border px-4 py-1 font-secondary text-sm">{{schedule.start_time |
+                            time:schedule.end_time
+                          }}</td>
+                          <td class="text-center border px-4 py-1 font-secondary text-sm">{{schedule.end_time |
+                            time:schedule.start_time
+                          }}</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+              @if (schedules.length === 0) {
+                <div>
+                  <h1 class="font-primary -mt-1 mb-2 font-bold text-lg">Schedules</h1>
+                  <div>
+                    <div class="flex justify-center">
+                      <img class="h-32 opacity-50" src="../../../../../assets/empty1.png">
+                    </div>
+                    <h1 class="font-secondary text-lg text-gray-800 my-2">This student has yet to be assigned work
+                      schedules.
+                    </h1>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
       <!-- IF STUDENT IS NOT HIRED -->
-      <div *ngIf="!student.company_id" class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
-        <!-- First column content here -->
-        <div class="w-full bg-white shadow-md p-3">
-
-
-          <div *ngIf="hiringRequests.length === 0">
-            <div class="flex justify-center">
-              <img class="h-48 opacity-80" src="../../../../assets/empty1.png">
-            </div>
-            <h1 class="font-primary opacity-80 text-lg">You currently do not have an OJT site.</h1>
+      @if (!student.company_id) {
+        <div class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
+          <!-- First column content here -->
+          <div class="w-full bg-white shadow-md p-3">
+            @if (hiringRequests.length === 0) {
+              <div>
+                <div class="flex justify-center">
+                  <img class="h-48 opacity-80" src="../../../../assets/empty1.png">
+                </div>
+                <h1 class="font-primary opacity-80 text-lg">You currently do not have an OJT site.</h1>
+              </div>
+            }
+            @if (hiringRequests.length > 0) {
+              <div (click)="viewHiringRequests(student.id)" class="cursor-pointer">
+                <div class="flex justify-center">
+                  <img class="h-40 mb-3 opacity-80" src="../../../../assets/mail1.png">
+                </div>
+                <h1 class="font-primary opacity-90 mb-3 text-lg">You have pending Company Invitations!
+                ({{hiringRequests.length}})</h1>
+              </div>
+            }
           </div>
-
-          <div *ngIf="hiringRequests.length > 0" (click)="viewHiringRequests(student.id)" class="cursor-pointer">
-            <div class="flex justify-center">
-              <img class="h-40 mb-3 opacity-80" src="../../../../assets/mail1.png">
-            </div>
-            <h1 class="font-primary opacity-90 mb-3 text-lg">You have pending Company Invitations!
-              ({{hiringRequests.length}})</h1>
-          </div>
-
         </div>
-      </div>
-
-
-
-
-
-
+      }
     </div>
+  }
 
 
 
 
-  </div>
+</div>
 </div>

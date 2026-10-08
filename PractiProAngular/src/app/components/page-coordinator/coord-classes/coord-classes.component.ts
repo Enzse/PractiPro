@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { MatSelectModule } from '@angular/material/select';
@@ -9,7 +9,7 @@ import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
 
 @Component({
     selector: 'app-coord-classes',
-    imports: [CommonModule, MatSelectModule, MatButtonModule, FilterPipe, OrdinalPipe],
+    imports: [MatSelectModule, MatButtonModule, FilterPipe, OrdinalPipe],
     templateUrl: './coord-classes.component.html',
     styleUrl: './coord-classes.component.css'
 })

@@ -1,12 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-viewsubmissions',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './viewsubmissions.component.html',
     styleUrl: './viewsubmissions.component.css'
 })

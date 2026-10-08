@@ -2,12 +2,12 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-viewseminarpopup',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './viewseminarpopup.component.html',
     styleUrls: ['./viewseminarpopup.component.css']
 })

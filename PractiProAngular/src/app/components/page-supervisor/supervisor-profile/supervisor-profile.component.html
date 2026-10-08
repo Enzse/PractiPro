@@ -15,10 +15,11 @@
       <div class="flex justify-center gap-x-16 max-sm:flex-col">
         <div class="-ml-24 max-sm:-ml-0">
           <div class="avatar-container mx-auto p-3">
-            <img *ngIf="user?.avatar; else placeholder" [src]="user?.avatar" class="image-container" alt="Avatar" />
-            <ng-template #placeholder>
+            @if (user?.avatar) {
+              <img [src]="user?.avatar" class="image-container" alt="Avatar" />
+            } @else {
               <div class="image-container avatar-placeholder"></div>
-            </ng-template>
+            }
 
             <label for="avatar-input-file">
               <div class="icon-wrapper">
@@ -81,11 +82,11 @@
         <div class="grid grid-cols-5 bg-slate-50 shadow-md">
           <div class="col-span-2 max-sm:col-span-5 border border-gray-200 p-5">
             <div class="avatar-container my-auto p-3 mb-4 mx-auto">
-              <img *ngIf="company?.logo; else placeholder" [src]="company?.logo" class="image-container-2"
-                alt="Avatar" />
-              <ng-template #placeholder>
+              @if (company?.logo) {
+                <img [src]="company?.logo" class="image-container-2" alt="Avatar" />
+              } @else {
                 <div class="image-container avatar-placeholder"></div>
-              </ng-template>
+              }
 
               <label for="logo-input-file">
                 <div class="icon-wrapper">

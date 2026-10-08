@@ -1,6 +1,6 @@
 import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
-import { CommonModule } from '@angular/common';
+
 import { AuthService } from '../../../services/auth.service';
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
@@ -9,7 +9,7 @@ import { JwtService } from '../../../services/jwt.service';
 
 @Component({
     selector: 'app-navbar',
-    imports: [SidebarComponent, CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
+    imports: [SidebarComponent, RouterLink, RouterLinkActive, RouterOutlet],
     templateUrl: './navbar.component.html',
     styleUrls: ['./navbar.component.css']
 })

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-editschedulespopup.component.ts',
-    imports: [FormsModule, CommonModule],
+    imports: [FormsModule],
     templateUrl: './editschedulespopup.component.html',
     styleUrl: './editschedulespopup.component.css'
 })

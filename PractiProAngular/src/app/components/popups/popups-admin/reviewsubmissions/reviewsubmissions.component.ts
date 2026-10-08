@@ -1,14 +1,14 @@
 
 import { Component, OnInit, Inject } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { saveAs } from 'file-saver';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 
 @Component({
     selector: 'app-reviewsubmissions',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './reviewsubmissions.component.html',
     styleUrl: './reviewsubmissions.component.css'
 })

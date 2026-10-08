@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 @Component({
     selector: 'app-joinclasses-by-link',
-    imports: [CommonModule, RouterLink],
+    imports: [RouterLink],
     templateUrl: './joinclasses-by-link.component.html',
     styleUrl: './joinclasses-by-link.component.css'
 })

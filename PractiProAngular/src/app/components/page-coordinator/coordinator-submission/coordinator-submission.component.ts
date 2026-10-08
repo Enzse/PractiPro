@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewsubmissionsComponent } from '../../popups/popups-admin/viewsubmissions/viewsubmissions.component';
@@ -20,7 +20,7 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
 
 @Component({
     selector: 'app-coordinator-submission',
-    imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
+    imports: [CoordNavbarComponent, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
     templateUrl: './coordinator-submission.component.html',
     styleUrl: './coordinator-submission.component.css'
 })

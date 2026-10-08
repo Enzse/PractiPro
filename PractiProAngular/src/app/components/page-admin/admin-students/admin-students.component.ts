@@ -1,6 +1,6 @@
 import { Component, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewsubmissionsComponent } from '../../popups/popups-admin/viewsubmissions/viewsubmissions.component';
@@ -21,7 +21,7 @@ import { RequirementspopupComponent } from '../../popups/popups-coordinator/requ
 
 @Component({
     selector: 'app-admin-students',
-    imports: [MatButtonModule, MatMenuModule, MatTooltipModule, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
+    imports: [MatButtonModule, MatMenuModule, MatTooltipModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
     templateUrl: './admin-students.component.html',
     styleUrl: './admin-students.component.css'
 })

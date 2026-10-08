@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { AuthService } from '../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/updatepopup.component';
@@ -21,7 +21,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-admin-coordinators',
-    imports: [AdminSidebarComponent, MatButtonModule, MatMenuModule, MatTooltipModule, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent, NgxPaginationModule],
+    imports: [AdminSidebarComponent, MatButtonModule, MatMenuModule, MatTooltipModule, AdminNavbarComponent, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent, NgxPaginationModule],
     templateUrl: './admin-coordinators.component.html',
     styleUrl: './admin-coordinators.component.css'
 })

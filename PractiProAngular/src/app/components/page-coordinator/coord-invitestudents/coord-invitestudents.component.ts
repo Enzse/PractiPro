@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
@@ -8,7 +8,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 
 @Component({
     selector: 'app-coord-invitestudents',
-    imports: [ReactiveFormsModule, CommonModule, RouterOutlet, RouterLinkActive, RouterLink],
+    imports: [ReactiveFormsModule, RouterOutlet, RouterLinkActive, RouterLink],
     templateUrl: './coord-invitestudents.component.html',
     styleUrl: './coord-invitestudents.component.css'
 })

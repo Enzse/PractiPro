@@ -10,7 +10,7 @@ import {
   RouterLink,
   RouterLinkActive,
 } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import Swal from 'sweetalert2';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
@@ -18,12 +18,11 @@ import { Subscription } from 'rxjs';
 @Component({
     selector: 'app-activate-account',
     imports: [
-        ReactiveFormsModule,
-        CommonModule,
-        RouterLink,
-        RouterLinkActive,
-        MatTooltipModule,
-    ],
+    ReactiveFormsModule,
+    RouterLink,
+    RouterLinkActive,
+    MatTooltipModule
+],
     templateUrl: './activate-account.component.html',
     styleUrl: './activate-account.component.css'
 })

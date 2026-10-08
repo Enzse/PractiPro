@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -19,7 +19,7 @@ import { FinalreportpopupComponent } from '../finalreportpopup/finalreportpopup.
 
 @Component({
     selector: 'app-view-students-pendingsubmissions',
-    imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
+    imports: [FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
     templateUrl: './view-students-pendingsubmissions.component.html',
     styleUrl: './view-students-pendingsubmissions.component.css'
 })

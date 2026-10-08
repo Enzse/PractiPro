@@ -1,323 +1,319 @@
 <div class="p-2 sm:ml-56 font-secondary">
-    <div class="p-1 xl:p-10">
-        <div>
-            <h1 class="text-orange-500 font-bold text-center font-primary text-xl mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="w-6 h-6 -mt-0.5 text-orange-500 inline">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M11 9h6m-6 3h6m-6 3h6M6.996 9h.01m-.01 3h.01m-.01 3h.01M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
-                </svg>
-                Dashboard
-            </h1>
-            <div class="border-b border-gray-300"></div>
-            <br />
-        </div>
-        <div *ngIf="blockData; else noBlockMessage"
-            class="text-center py-5 px-10 max-sm:p-5 bg-slate-100 h-auto justify-center rounded-lg shadow-md border border-gray-200">
-            <div class=" inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
-                <h1 class="font-primary font-bold text-3xl">{{blockData.block_name}}</h1>
-            </div>
-
-
-            <div class="grid grid-cols-12 max-sm:grid-cols-1 space-x-1 max-sm:space-y-1 my-5">
-                <div (click)="viewAllStudents(blockData.block_name)"
-                    class="col-span-7 max-sm:col-span-1 font-primary cursor-pointer shadow-md hover:shadow-xl bg-white px-10 py-5 rounded-lg flex flex-col justify-center">
-                    <div>
-                        <h1 class="font-bold text-4xl text-blue-900">{{blockData.students_handled}} Total Students</h1>
-                        <h1 class="text-sm">Click here to view all students</h1>
-                    </div>
-                </div>
-                <div class="col-span-5 max-sm:col-span-1 space-y-1 text-sm">
-                    <div (click)="viewJoinRequests(blockData.block_name)"
-                        matTooltip="(Click here to see join requests for this class.)"
-                        class="font-primary w-full px-4 cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
-
-                        <p *ngIf="requestCount > 0" class="font-primary text-green-500">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide inline -mt-0.5 lucide-inbox">
-                                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
-                                <path
-                                    d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
-                            </svg>
-                            This class has pending join requests:
-                            ({{requestCount}})
-                        </p>
-                        <p *ngIf="requestCount === 0" class="opacity-70">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide inline -mt-0.5 lucide-inbox">
-                                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
-                                <path
-                                    d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
-                            </svg>
-                            This class currently has no join requests.
-                        </p>
-                    </div>
-
-                    <div (click)="viewSentInvites(blockData.block_name)"
-                        matTooltip="(Click here to see sent invitations to students.)"
-                        class="font-primary w-full px-4 cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
-                        <p *ngIf="invitationCount > 0" class="opacity-70">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide inline -mt-1 lucide-inbox">
-                                <path
-                                    d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
-                                <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
-                            </svg>
-                            You currently have {{invitationCount}} pending invitations.
-                        </p>
-                        <p *ngIf="invitationCount === 0" class="opacity-70">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="lucide inline -mt-1 lucide-inbox">
-                                <path
-                                    d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
-                                <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
-                            </svg>
-                            You currently have no invitations sent.
-                        </p>
-                    </div>
-                </div>
-
-                <div *ngIf="pendingSubmissionsTotal" class="col-span-12 max-sm:col-span-1 mt-5">
-                    <div class="bg-white rounded-lg grid grid-cols-12 shadow-md">
-                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_req_count === 0}"
-                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_req_count')"
-                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
-                                {{pendingSubmissionsTotal.pending_req_count ?
-                                pendingSubmissionsTotal.pending_req_count
-                                : 0}}</h1>
-                            <p class="text-xs">Pending Requirements</p>
-                        </div>
-                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_doc_count === 0}"
-                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_doc_count')"
-                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
-                                {{pendingSubmissionsTotal.pending_doc_count ?
-                                pendingSubmissionsTotal.pending_doc_count
-                                : 0}}</h1>
-                            <p class="text-xs">Pending Documentations</p>
-                        </div>
-                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_sem_count === 0}"
-                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_sem_count')"
-                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
-                                {{pendingSubmissionsTotal.pending_sem_count ?
-                                pendingSubmissionsTotal.pending_sem_count
-                                : 0}}</h1>
-                            <p class="text-xs">Pending Seminar Records</p>
-                        </div>
-                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_war_count_advisor === 0}"
-                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_war_count_advisor')"
-                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
-                                {{pendingSubmissionsTotal.pending_war_count_advisor ?
-                                pendingSubmissionsTotal.pending_war_count_advisor
-                                : 0}}</h1>
-                            <p class="text-xs">Pending Accomplishment Reports</p>
-                        </div>
-                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_sse_count === 0}"
-                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_sse_count')"
-                            class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
-                                {{pendingSubmissionsTotal.pending_sse_count ?
-                                pendingSubmissionsTotal.pending_sse_count
-                                : 0}}</h1>
-                            <p class="text-xs">Pending Student Evaluation</p>
-                        </div>
-                        <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_frp_count === 0}"
-                            (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_frp_count')"
-                            class="p-5 border border-gray-200 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto">
-                            <h1 class="text-blue-900 text-3xl font-bold font-primary">
-                                {{pendingSubmissionsTotal.pending_frp_count ?
-                                pendingSubmissionsTotal.pending_frp_count
-                                : 0}}</h1>
-                            <p class="text-xs">Pending Final Reports</p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="border-b border-gray-300"></div>
-
-            <!-- apply the pie chart to other divs -->
-            <div class="my-6 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
-                <h1 class="font-primary font-bold text-3xl">Student OJT Status:</h1>
-            </div>
-
-            <div class="grid grid-cols-12 shadow-md">
-
-                <div routerLink="/coord-registrations"
-                    class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                    <div class="w-40 mx-auto">
-                        <app-chart class="" type="doughnut" [data]="registered" [options]="options" />
-                    </div>
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.registered_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have a cleared registration status."
-                        class="font-secondary text-base mt-2">Students cleared in <br>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 -mt-0.5 mr-1 inline">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
-                        </svg>
-                        <b>Registration Status</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'ojtsite')"
-                    class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                    <div class="w-40 mx-auto">
-                        <app-chart class="" type="doughnut" [data]="ojtsite" [options]="options" />
-                    </div>
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.hired_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that are successfully hired and active in a company."
-                        class="font-secondary text-base mt-2">Students with <br>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-0.5 mr-1 lucide-briefcase-business">
-                            <path d="M12 12h.01" />
-                            <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-                            <path d="M22 13a18.15 18.15 0 0 1-20 0" />
-                            <rect width="20" height="14" x="2" y="6" rx="2" />
-                        </svg>
-                        <b>OJT Sites</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'onsitehours')"
-                    class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                    <div class="w-40 mx-auto">
-                        <app-chart class="" type="doughnut" [data]="traininghours" [options]="options" />
-                    </div>
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.ojt_cleared_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have met 200+ total hours worth of Daily Attendance records."
-                        class="font-secondary text-base mt-2">Students with 200+ total<br>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-0.5 mr-1 lucide-clock">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>
-                        <b>On-site Training Hours</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'seminarhours')"
-                    class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                    <div class="w-40 mx-auto">
-                        <app-chart class="" type="doughnut" [data]="seminarhours" [options]="options" />
-                    </div>
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.seminar_cleared_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have met 50+ total hours worth of Seminar Records."
-                        class="font-secondary text-base mt-2">Students with 50+ total<br>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                            class="lucide inline -mt-0.5 mr-1 lucide-clock">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 16 14" />
-                        </svg>
-                        <b>Seminar Hours</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'evaluation')"
-                    class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                    <div class="w-40 mx-auto">
-                        <app-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
-                    </div>
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.evaluation_cleared_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have been evaluated by their company supervisors."
-                        class="font-secondary text-base mt-2">Students cleared in<br>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 inline -mt-0.5 mr-1">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
-                        </svg>
-                        <b>Performance Evaluation</b>
-                    </h2>
-                </div>
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'exitpoll')"
-                    class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
-                    <div class="w-40 mx-auto">
-                        <app-chart class="" type="doughnut" [data]="finalreports" [options]="options" />
-                    </div>
-                    <h2 class="font-primary font-bold text-orange-500">
-                        {{blockData.exitpoll_cleared_students}}/{{blockData.students_handled}} Cleared
-                    </h2>
-                    <h2 matTooltip="Ratio of students that have a cleared Final Report."
-                        class="font-secondary text-base mt-2">Students cleared in<br>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="w-5 h-5 inline -mt-0.5 mr-1">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
-                        </svg>
-                        <b>Final Reports</b>
-                    </h2>
-                </div>
-            </div>
-            <div class="border-b my-5 border-gray-300"></div>
-            <div class="flex justify-center">
-                <div (click)="viewStudentsWithCondition(blockData.block_name, 'completed')"
-                    class="cursor-pointer w-full inline-flex justify-center max-sm:flex-col px-2 py-6 shadow-md hover:shadow-xl bg-white">
-                    <div>
-                        <app-chart class="w-56" type="doughnut" [data]="completed" [options]="options2" />
-                    </div>
-
-                    <div class="flex-col flex justify-center">
-                        <h2 class="font-primary text-2xl font-bold mx-auto text-orange-500">
-                            {{blockData.practicum_completed_students}}/{{blockData.students_handled}} Cleared
-                        </h2>
-                        <h2 class="font-secondary text-xl mt-2 px-10">Students that are finished with the overall<br>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round" class="inline -mt-0.5 mr-1 lucide lucide-graduation-cap">
-                                <path
-                                    d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
-                                <path d="M22 10v6" />
-                                <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
-                            </svg>
-                            <b>Practicum Process </b><svg class="w-5 h-5 inline -mt-0.5 text-gray-500 dark:text-white"
-                                aria-hidden="true"
-                                matTooltip="Students cleared in: On-Site Hours, Seminar Hours, Evaluation, and Final Report."
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                                viewBox="0 0 24 24">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-                        </h2>
-                        <p class="text-gray-800 opacity-60">(Click here to view)</p>
-
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-        <ng-template #noBlockMessage>
-            <div class="m-10 flex flex-col items-center">
-                <div>
-                    <img class="opacity-40 h-36 w-36" src="../../../../assets/empty2.png">
-                </div>
-                <div>
-                    <h1 class="opacity-40 text-center text-4xl font-primary mt-5">
-                        Please select a Class...
-                    </h1>
-                </div>
-            </div>
-        </ng-template>
-
+  <div class="p-1 xl:p-10">
+    <div>
+      <h1 class="text-orange-500 font-bold text-center font-primary text-xl mb-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+          stroke="currentColor" class="w-6 h-6 -mt-0.5 text-orange-500 inline">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M11 9h6m-6 3h6m-6 3h6M6.996 9h.01m-.01 3h.01m-.01 3h.01M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+        </svg>
+        Dashboard
+      </h1>
+      <div class="border-b border-gray-300"></div>
+      <br />
     </div>
+    @if (blockData) {
+      <div
+        class="text-center py-5 px-10 max-sm:p-5 bg-slate-100 h-auto justify-center rounded-lg shadow-md border border-gray-200">
+        <div class=" inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
+          <h1 class="font-primary font-bold text-3xl">{{blockData.block_name}}</h1>
+        </div>
+        <div class="grid grid-cols-12 max-sm:grid-cols-1 space-x-1 max-sm:space-y-1 my-5">
+          <div (click)="viewAllStudents(blockData.block_name)"
+            class="col-span-7 max-sm:col-span-1 font-primary cursor-pointer shadow-md hover:shadow-xl bg-white px-10 py-5 rounded-lg flex flex-col justify-center">
+            <div>
+              <h1 class="font-bold text-4xl text-blue-900">{{blockData.students_handled}} Total Students</h1>
+              <h1 class="text-sm">Click here to view all students</h1>
+            </div>
+          </div>
+          <div class="col-span-5 max-sm:col-span-1 space-y-1 text-sm">
+            <div (click)="viewJoinRequests(blockData.block_name)"
+              matTooltip="(Click here to see join requests for this class.)"
+              class="font-primary w-full px-4 cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
+              @if (requestCount > 0) {
+                <p class="font-primary text-green-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide inline -mt-0.5 lucide-inbox">
+                    <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+                    <path
+                      d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                  </svg>
+                  This class has pending join requests:
+                  ({{requestCount}})
+                </p>
+              }
+              @if (requestCount === 0) {
+                <p class="opacity-70">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide inline -mt-0.5 lucide-inbox">
+                    <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+                    <path
+                      d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                  </svg>
+                  This class currently has no join requests.
+                </p>
+              }
+            </div>
+            <div (click)="viewSentInvites(blockData.block_name)"
+              matTooltip="(Click here to see sent invitations to students.)"
+              class="font-primary w-full px-4 cursor-pointer shadow-md hover:shadow-xl bg-white rounded-lg py-5">
+              @if (invitationCount > 0) {
+                <p class="opacity-70">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide inline -mt-1 lucide-inbox">
+                    <path
+                      d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
+                    <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
+                  </svg>
+                  You currently have {{invitationCount}} pending invitations.
+                </p>
+              }
+              @if (invitationCount === 0) {
+                <p class="opacity-70">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide inline -mt-1 lucide-inbox">
+                    <path
+                      d="M21.2 8.4c.5.38.8.97.8 1.6v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V10a2 2 0 0 1 .8-1.6l8-6a2 2 0 0 1 2.4 0l8 6Z" />
+                    <path d="m22 10-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 10" />
+                  </svg>
+                  You currently have no invitations sent.
+                </p>
+              }
+            </div>
+          </div>
+          @if (pendingSubmissionsTotal) {
+            <div class="col-span-12 max-sm:col-span-1 mt-5">
+              <div class="bg-white rounded-lg grid grid-cols-12 shadow-md">
+                <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_req_count === 0}"
+                  (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_req_count')"
+                  class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                  <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                    {{pendingSubmissionsTotal.pending_req_count ?
+                    pendingSubmissionsTotal.pending_req_count
+                  : 0}}</h1>
+                  <p class="text-xs">Pending Requirements</p>
+                </div>
+                <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_doc_count === 0}"
+                  (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_doc_count')"
+                  class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                  <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                    {{pendingSubmissionsTotal.pending_doc_count ?
+                    pendingSubmissionsTotal.pending_doc_count
+                  : 0}}</h1>
+                  <p class="text-xs">Pending Documentations</p>
+                </div>
+                <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_sem_count === 0}"
+                  (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_sem_count')"
+                  class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                  <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                    {{pendingSubmissionsTotal.pending_sem_count ?
+                    pendingSubmissionsTotal.pending_sem_count
+                  : 0}}</h1>
+                  <p class="text-xs">Pending Seminar Records</p>
+                </div>
+                <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_war_count_advisor === 0}"
+                  (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_war_count_advisor')"
+                  class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                  <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                    {{pendingSubmissionsTotal.pending_war_count_advisor ?
+                    pendingSubmissionsTotal.pending_war_count_advisor
+                  : 0}}</h1>
+                  <p class="text-xs">Pending Accomplishment Reports</p>
+                </div>
+                <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_sse_count === 0}"
+                  (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_sse_count')"
+                  class="border p-5 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+                  <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                    {{pendingSubmissionsTotal.pending_sse_count ?
+                    pendingSubmissionsTotal.pending_sse_count
+                  : 0}}</h1>
+                  <p class="text-xs">Pending Student Evaluation</p>
+                </div>
+                <div [ngClass]="{'cursor-auto' : pendingSubmissionsTotal.pending_frp_count === 0}"
+                  (click)="viewStudentsWithPendingSubmissions(blockData.block_name, 'pending_frp_count')"
+                  class="p-5 border border-gray-200 col-span-4 max-sm:col-span-6 hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto">
+                  <h1 class="text-blue-900 text-3xl font-bold font-primary">
+                    {{pendingSubmissionsTotal.pending_frp_count ?
+                    pendingSubmissionsTotal.pending_frp_count
+                  : 0}}</h1>
+                  <p class="text-xs">Pending Final Reports</p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="border-b border-gray-300"></div>
+        <!-- apply the pie chart to other divs -->
+        <div class="my-6 inline-block border-b-8 rounded-b-md border-blue-900 w-4/5">
+          <h1 class="font-primary font-bold text-3xl">Student OJT Status:</h1>
+        </div>
+        <div class="grid grid-cols-12 shadow-md">
+          <div routerLink="/coord-registrations"
+            class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+            <div class="w-40 mx-auto">
+              <app-chart class="" type="doughnut" [data]="registered" [options]="options" />
+            </div>
+            <h2 class="font-primary font-bold text-orange-500">
+              {{blockData.registered_students}}/{{blockData.students_handled}} Cleared
+            </h2>
+            <h2 matTooltip="Ratio of students that have a cleared registration status."
+              class="font-secondary text-base mt-2">Students cleared in <br>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 -mt-0.5 mr-1 inline">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+              </svg>
+              <b>Registration Status</b>
+            </h2>
+          </div>
+          <div (click)="viewStudentsWithCondition(blockData.block_name, 'ojtsite')"
+            class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+            <div class="w-40 mx-auto">
+              <app-chart class="" type="doughnut" [data]="ojtsite" [options]="options" />
+            </div>
+            <h2 class="font-primary font-bold text-orange-500">
+              {{blockData.hired_students}}/{{blockData.students_handled}} Cleared
+            </h2>
+            <h2 matTooltip="Ratio of students that are successfully hired and active in a company."
+              class="font-secondary text-base mt-2">Students with <br>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide inline -mt-0.5 mr-1 lucide-briefcase-business">
+                <path d="M12 12h.01" />
+                <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+                <path d="M22 13a18.15 18.15 0 0 1-20 0" />
+                <rect width="20" height="14" x="2" y="6" rx="2" />
+              </svg>
+              <b>OJT Sites</b>
+            </h2>
+          </div>
+          <div (click)="viewStudentsWithCondition(blockData.block_name, 'onsitehours')"
+            class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+            <div class="w-40 mx-auto">
+              <app-chart class="" type="doughnut" [data]="traininghours" [options]="options" />
+            </div>
+            <h2 class="font-primary font-bold text-orange-500">
+              {{blockData.ojt_cleared_students}}/{{blockData.students_handled}} Cleared
+            </h2>
+            <h2 matTooltip="Ratio of students that have met 200+ total hours worth of Daily Attendance records."
+              class="font-secondary text-base mt-2">Students with 200+ total<br>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide inline -mt-0.5 mr-1 lucide-clock">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <b>On-site Training Hours</b>
+            </h2>
+          </div>
+          <div (click)="viewStudentsWithCondition(blockData.block_name, 'seminarhours')"
+            class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+            <div class="w-40 mx-auto">
+              <app-chart class="" type="doughnut" [data]="seminarhours" [options]="options" />
+            </div>
+            <h2 class="font-primary font-bold text-orange-500">
+              {{blockData.seminar_cleared_students}}/{{blockData.students_handled}} Cleared
+            </h2>
+            <h2 matTooltip="Ratio of students that have met 50+ total hours worth of Seminar Records."
+              class="font-secondary text-base mt-2">Students with 50+ total<br>
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide inline -mt-0.5 mr-1 lucide-clock">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+              <b>Seminar Hours</b>
+            </h2>
+          </div>
+          <div (click)="viewStudentsWithCondition(blockData.block_name, 'evaluation')"
+            class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+            <div class="w-40 mx-auto">
+              <app-chart class="" type="doughnut" [data]="perfeval" [options]="options" />
+            </div>
+            <h2 class="font-primary font-bold text-orange-500">
+              {{blockData.evaluation_cleared_students}}/{{blockData.students_handled}} Cleared
+            </h2>
+            <h2 matTooltip="Ratio of students that have been evaluated by their company supervisors."
+              class="font-secondary text-base mt-2">Students cleared in<br>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 inline -mt-0.5 mr-1">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+              </svg>
+              <b>Performance Evaluation</b>
+            </h2>
+          </div>
+          <div (click)="viewStudentsWithCondition(blockData.block_name, 'exitpoll')"
+            class="border p-5 col-span-4 max-sm:col-span-12 bg-white hover:shadow-lg cursor-pointer max-md:col-span-6 my-auto border-gray-200">
+            <div class="w-40 mx-auto">
+              <app-chart class="" type="doughnut" [data]="finalreports" [options]="options" />
+            </div>
+            <h2 class="font-primary font-bold text-orange-500">
+              {{blockData.exitpoll_cleared_students}}/{{blockData.students_handled}} Cleared
+            </h2>
+            <h2 matTooltip="Ratio of students that have a cleared Final Report."
+              class="font-secondary text-base mt-2">Students cleared in<br>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 inline -mt-0.5 mr-1">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75" />
+              </svg>
+              <b>Final Reports</b>
+            </h2>
+          </div>
+        </div>
+        <div class="border-b my-5 border-gray-300"></div>
+        <div class="flex justify-center">
+          <div (click)="viewStudentsWithCondition(blockData.block_name, 'completed')"
+            class="cursor-pointer w-full inline-flex justify-center max-sm:flex-col px-2 py-6 shadow-md hover:shadow-xl bg-white">
+            <div>
+              <app-chart class="w-56" type="doughnut" [data]="completed" [options]="options2" />
+            </div>
+            <div class="flex-col flex justify-center">
+              <h2 class="font-primary text-2xl font-bold mx-auto text-orange-500">
+                {{blockData.practicum_completed_students}}/{{blockData.students_handled}} Cleared
+              </h2>
+              <h2 class="font-secondary text-xl mt-2 px-10">Students that are finished with the overall<br>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="inline -mt-0.5 mr-1 lucide lucide-graduation-cap">
+                  <path
+                    d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" />
+                  <path d="M22 10v6" />
+                  <path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" />
+                </svg>
+                <b>Practicum Process </b><svg class="w-5 h-5 inline -mt-0.5 text-gray-500 dark:text-white"
+                aria-hidden="true"
+                matTooltip="Students cleared in: On-Site Hours, Seminar Hours, Evaluation, and Final Report."
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </h2>
+            <p class="text-gray-800 opacity-60">(Click here to view)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  } @else {
+    <div class="m-10 flex flex-col items-center">
+      <div>
+        <img class="opacity-40 h-36 w-36" src="../../../../assets/empty2.png">
+      </div>
+      <div>
+        <h1 class="opacity-40 text-center text-4xl font-primary mt-5">
+          Please select a Class...
+        </h1>
+      </div>
+    </div>
+  }
+
+
+</div>
 </div>

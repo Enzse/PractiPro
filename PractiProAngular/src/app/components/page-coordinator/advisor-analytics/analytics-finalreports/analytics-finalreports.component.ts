@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
 import { ChartComponent } from '../../../shared/chart/chart.component';
 import { ChartOptions } from 'chart.js';
@@ -8,7 +8,7 @@ import { BlockService } from '../../../../services/block.service';
 
 @Component({
     selector: 'app-analytics-finalreports',
-    imports: [ChartComponent, CommonModule],
+    imports: [ChartComponent],
     templateUrl: './analytics-finalreports.component.html',
     styleUrl: './analytics-finalreports.component.css'
 })

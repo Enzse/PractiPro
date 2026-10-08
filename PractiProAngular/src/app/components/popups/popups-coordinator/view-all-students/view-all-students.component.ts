@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
+
 import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { FormBuilder, FormsModule } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-view-all-students',
-    imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
+    imports: [FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
     templateUrl: './view-all-students.component.html',
     styleUrl: './view-all-students.component.css'
 })

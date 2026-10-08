@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import Swal from 'sweetalert2';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { passwordStrengthValidator } from '../../../validators/password-strength.validator';
 import { passwordMatchValidator } from '../../../validators/password-match.validator';
 @Component({
     selector: 'app-reset-password-form',
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive, MatTooltipModule],
+    imports: [ReactiveFormsModule, RouterLink, RouterLinkActive, MatTooltipModule],
     templateUrl: './reset-password-form.component.html',
     styleUrl: './reset-password-form.component.css'
 })

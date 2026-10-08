@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { NoticetosupervisorsComponent } from '../../../popups/popups-registration/noticetosupervisors/noticetosupervisors.component';
@@ -16,7 +16,7 @@ import { passwordStrengthValidator } from '../../../../validators/password-stren
 
 @Component({
     selector: 'app-registrationsupervisor',
-    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
+    imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
     templateUrl: './registrationsupervisor.component.html',
     styleUrl: './registrationsupervisor.component.css'
 })

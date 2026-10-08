@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
-import { CommonModule } from '@angular/common';
+
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 @Component({
     selector: 'app-spv-edit-company-profile',
-    imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
+    imports: [ReactiveFormsModule, MatDialogActions, MatDialogClose],
     templateUrl: './spv-edit-company-profile.component.html',
     styleUrl: './spv-edit-company-profile.component.css'
 })

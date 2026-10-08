@@ -1,4 +1,4 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
   Inject,
@@ -15,7 +15,7 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
 
 @Component({
     selector: 'app-sidebar',
-    imports: [RouterLink, RouterLinkActive, CommonModule, MatTooltipModule],
+    imports: [RouterLink, RouterLinkActive, MatTooltipModule],
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.css'
 })

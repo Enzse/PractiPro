@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'app-advisor-analytics',
-    imports: [CommonModule, RouterOutlet, RouterLinkActive, RouterLink],
+    imports: [RouterOutlet, RouterLinkActive, RouterLink],
     templateUrl: './advisor-analytics.component.html',
     styleUrl: './advisor-analytics.component.css'
 })

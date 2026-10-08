@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-pdfviewer',
-    imports: [CommonModule],
+    imports: [],
     templateUrl: './pdfviewer.component.html',
     styleUrl: './pdfviewer.component.css'
 })

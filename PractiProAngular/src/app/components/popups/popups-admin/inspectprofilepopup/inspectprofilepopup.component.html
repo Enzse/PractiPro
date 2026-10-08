@@ -1,122 +1,34 @@
 <div class="mat-dialog-content">
-  <div *ngIf="studentProfile" class="w-full rounded-lg overflow-auto max-h-screen">
-    <div class="bg-slate-50 overflow-auto w-full mx-auto rounded-lg shadow-md border border-gray-300 h-[90vh]">
-      <div class="flex justify-center mt-10 mb-10">
-        <div class="avatar-container">
-          <img *ngIf="studentProfile.avatar; else placeholder" [src]="studentProfile.avatar" class="image-container"
-            alt="Avatar" />
-          <ng-template #placeholder>
-            <div class="image-container avatar-placeholder"></div>
-          </ng-template>
-        </div>
-      </div>
-
-      <div *ngIf="studentProfile" class="w-full bg-gray-50"></div>
-      <h5 class="mb-2 text-xl mt-2 lg:text-2xl font-bold text-gray-900 font-primary text-center">
-        Student Information
-      </h5>
-      <div class="flow-root pb-6">
-        <ul role="list" class="flex flex-col flex-1 px-10">
-          <li class="mb-2">
-            <div class="flex items-center">
-              <div class="flex-1 min-w-0 ms-4">
-                <p
-                  class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                  Full Name:
-                </p>
-                <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{ studentProfile.firstName
-                  }} {{ studentProfile.lastName }}</span>
-              </div>
-            </div>
-          </li>
-          <li class="mb-2">
-            <div class="flex items-center">
-              <div class="flex-1 min-w-0 ms-4">
-                <p
-                  class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                  Student ID:
-                </p>
-                <span [ngClass]="{'text-red-500': !studentProfile.studentId}"
-                  class="text-sm font-normal lg:text-base font-secondary">
-                  {{ studentProfile.studentId || "Not set" }}
-                </span>
-              </div>
-            </div>
-          </li>
-          <li class="mb-2">
-            <div class="flex items-center">
-              <div class="flex-1 min-w-0 ms-4">
-                <p
-                  class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                  Email:
-                </p>
-                <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{ studentProfile.email ||
-                  "Not set" }}</span>
-              </div>
-            </div>
-          </li>
-          <li class="mb-2">
-            <div class="flex items-center">
-              <div class="flex-1 min-w-0 ms-4">
-                <p
-                  class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                  Program:
-                </p>
-                <span [ngClass]="{'text-red-500': !studentProfile.program}"
-                  class="text-sm font-normal lg:text-base font-secondary">
-                  {{ studentProfile.program || "Not set" }}
-                </span>
-              </div>
-            </div>
-          </li>
-          <li class="mb-2">
-            <div class="flex items-center">
-              <div class="flex-1 min-w-0 ms-4">
-                <p
-                  class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                  Block:
-                </p>
-                <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{ studentProfile.block ||
-                  "(Please wait for assignation.)" }}</span>
-              </div>
-            </div>
-          </li>
-          <li class="mb-2">
-            <div class="flex items-center">
-              <div class="flex-1 min-w-0 ms-4">
-                <p
-                  class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                  Year Level:
-                </p>
-                <span [ngClass]="{'text-red-500': !studentProfile.year}"
-                  class="text-sm font-normal lg:text-base font-secondary">
-                  {{ studentProfile.year || "Not set" }}
-                </span>
-              </div>
-            </div>
-          </li>
-        </ul>
-        <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
-        <div>
-          <h5 class="mb-4 text-xl mt-2 lg:text-2xl font-bold text-gray-900 font-primary text-center">
-            OJT Information
-          </h5>
-          <div *ngIf="!studentProfile.company_id">
-            <div class="flex justify-center">
-              <img src="../../../../../assets/empty1.png">
-            </div>
-            <p class="px-10 font-secondary text-center mb-2">This student currently does not have an OJT Site.</p>
+  @if (studentProfile) {
+    <div class="w-full rounded-lg overflow-auto max-h-screen">
+      <div class="bg-slate-50 overflow-auto w-full mx-auto rounded-lg shadow-md border border-gray-300 h-[90vh]">
+        <div class="flex justify-center mt-10 mb-10">
+          <div class="avatar-container">
+            @if (studentProfile.avatar) {
+              <img [src]="studentProfile.avatar" class="image-container"
+                alt="Avatar" />
+            } @else {
+              <div class="image-container avatar-placeholder"></div>
+            }
           </div>
-          <ul *ngIf="studentProfile.company_id" role="list" class="flex flex-col flex-1 px-10">
+        </div>
+        @if (studentProfile) {
+          <div class="w-full bg-gray-50"></div>
+        }
+        <h5 class="mb-2 text-xl mt-2 lg:text-2xl font-bold text-gray-900 font-primary text-center">
+          Student Information
+        </h5>
+        <div class="flow-root pb-6">
+          <ul role="list" class="flex flex-col flex-1 px-10">
             <li class="mb-2">
               <div class="flex items-center">
                 <div class="flex-1 min-w-0 ms-4">
                   <p
                     class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    On-Site Hours:
+                    Full Name:
                   </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile.TotalHoursWorked || "0.00" }} hrs</span>
+                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{ studentProfile.firstName
+                  }} {{ studentProfile.lastName }}</span>
                 </div>
               </div>
             </li>
@@ -125,10 +37,12 @@
                 <div class="flex-1 min-w-0 ms-4">
                   <p
                     class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Seminar Hours:
+                    Student ID:
                   </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile.TotalSeminarHours || "0.00" }} hrs</span>
+                  <span [ngClass]="{'text-red-500': !studentProfile.studentId}"
+                    class="text-sm font-normal lg:text-base font-secondary">
+                    {{ studentProfile.studentId || "Not set" }}
+                  </span>
                 </div>
               </div>
             </li>
@@ -137,10 +51,10 @@
                 <div class="flex-1 min-w-0 ms-4">
                   <p
                     class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Currently working at:
+                    Email:
                   </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile.company_name }}</span>
+                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{ studentProfile.email ||
+                  "Not set" }}</span>
                 </div>
               </div>
             </li>
@@ -149,10 +63,12 @@
                 <div class="flex-1 min-w-0 ms-4">
                   <p
                     class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Company Address:
+                    Program:
                   </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile.company_address }}</span>
+                  <span [ngClass]="{'text-red-500': !studentProfile.program}"
+                    class="text-sm font-normal lg:text-base font-secondary">
+                    {{ studentProfile.program || "Not set" }}
+                  </span>
                 </div>
               </div>
             </li>
@@ -161,16 +77,108 @@
                 <div class="flex-1 min-w-0 ms-4">
                   <p
                     class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Date Hired:
+                    Block:
                   </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile.hire_date | date : "longDate" }}</span>
+                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{ studentProfile.block ||
+                  "(Please wait for assignation.)" }}</span>
                 </div>
               </div>
-            </li>            
+            </li>
+            <li class="mb-2">
+              <div class="flex items-center">
+                <div class="flex-1 min-w-0 ms-4">
+                  <p
+                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                    Year Level:
+                  </p>
+                  <span [ngClass]="{'text-red-500': !studentProfile.year}"
+                    class="text-sm font-normal lg:text-base font-secondary">
+                    {{ studentProfile.year || "Not set" }}
+                  </span>
+                </div>
+              </div>
+            </li>
           </ul>
+          <hr class="h-px w-[90%] mx-auto my-3 bg-gray-200 border-0 dark:bg-gray-700" />
+          <div>
+            <h5 class="mb-4 text-xl mt-2 lg:text-2xl font-bold text-gray-900 font-primary text-center">
+              OJT Information
+            </h5>
+            @if (!studentProfile.company_id) {
+              <div>
+                <div class="flex justify-center">
+                  <img src="../../../../../assets/empty1.png">
+                </div>
+                <p class="px-10 font-secondary text-center mb-2">This student currently does not have an OJT Site.</p>
+              </div>
+            }
+            @if (studentProfile.company_id) {
+              <ul role="list" class="flex flex-col flex-1 px-10">
+                <li class="mb-2">
+                  <div class="flex items-center">
+                    <div class="flex-1 min-w-0 ms-4">
+                      <p
+                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                        On-Site Hours:
+                      </p>
+                      <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
+                      studentProfile.TotalHoursWorked || "0.00" }} hrs</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="mb-2">
+                  <div class="flex items-center">
+                    <div class="flex-1 min-w-0 ms-4">
+                      <p
+                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                        Seminar Hours:
+                      </p>
+                      <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
+                      studentProfile.TotalSeminarHours || "0.00" }} hrs</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="mb-2">
+                  <div class="flex items-center">
+                    <div class="flex-1 min-w-0 ms-4">
+                      <p
+                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                        Currently working at:
+                      </p>
+                      <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
+                      studentProfile.company_name }}</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="mb-2">
+                  <div class="flex items-center">
+                    <div class="flex-1 min-w-0 ms-4">
+                      <p
+                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                        Company Address:
+                      </p>
+                      <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
+                      studentProfile.company_address }}</span>
+                    </div>
+                  </div>
+                </li>
+                <li class="mb-2">
+                  <div class="flex items-center">
+                    <div class="flex-1 min-w-0 ms-4">
+                      <p
+                        class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
+                        Date Hired:
+                      </p>
+                      <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
+                      studentProfile.hire_date | date : "longDate" }}</span>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            }
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  }
 </div>

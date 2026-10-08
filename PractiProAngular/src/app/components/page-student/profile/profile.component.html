@@ -21,12 +21,13 @@
 
         <!-- image -->
         <div class="avatar-container mx-auto">
-          <img *ngIf="avatarUrl; else placeholder" [src]="avatarUrl" class="image-container" alt="Avatar" />
-          <ng-template #placeholder>
+          @if (avatarUrl) {
+            <img [src]="avatarUrl" class="image-container" alt="Avatar" />
+          } @else {
             <div class="image-container avatar-placeholder">
               <!-- Placeholder content -->
             </div>
-          </ng-template>
+          }
 
           <label for="avatar-input-file">
             <div class="icon-wrapper">
@@ -51,7 +52,7 @@
                   </p>
                   <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
                     studentProfile[0]?.firstName }}
-                    {{ studentProfile[0]?.lastName }}</span>
+                  {{ studentProfile[0]?.lastName }}</span>
                 </div>
               </div>
             </li>
@@ -77,7 +78,7 @@
                     Email:
                   </p>
                   <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile[0]?.email || "Not set" }}</span>
+                  studentProfile[0]?.email || "Not set" }}</span>
                 </div>
               </div>
             </li>
@@ -118,7 +119,7 @@
                   </p>
                   <span [ngClass]="{'text-red-500': !studentProfile[0]?.block}"
                     class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile[0]?.block || "(You currently have not joined any classes.)" }}</span>
+                  studentProfile[0]?.block || "(You currently have not joined any classes.)" }}</span>
                 </div>
               </div>
             </li>
@@ -138,7 +139,7 @@
                     Phone No.:
                   </p>
                   <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile[0]?.phoneNumber || "Not Set" }}</span>
+                  studentProfile[0]?.phoneNumber || "Not Set" }}</span>
                 </div>
               </div>
             </li>
@@ -150,7 +151,7 @@
                     Address:
                   </p>
                   <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile[0]?.address || "Not Set" }}</span>
+                  studentProfile[0]?.address || "Not Set" }}</span>
                 </div>
               </div>
             </li>
@@ -163,7 +164,7 @@
                   </p>
                   <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
                     studentProfile[0]?.dateOfBirth ? (studentProfile[0]?.dateOfBirth | date : 'longDate') : 'Not Set'
-                    }}</span>
+                  }}</span>
                 </div>
               </div>
             </li>
@@ -176,15 +177,15 @@
                 <path fill-rule="evenodd"
                   d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
                   clip-rule="evenodd" />
-              </svg>
+                </svg>
 
-              <span class="ms-1 max-sm:hidden">Edit Profile</span>
-            </button>
+                <span class="ms-1 max-sm:hidden">Edit Profile</span>
+              </button>
+            </div>
           </div>
+
         </div>
 
       </div>
-
     </div>
   </div>
-</div>

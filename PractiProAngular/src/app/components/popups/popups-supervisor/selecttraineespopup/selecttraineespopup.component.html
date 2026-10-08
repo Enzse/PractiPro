@@ -22,92 +22,97 @@
       <input
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         type="search" [(ngModel)]="searchtext" id="form1" placeholder="Search for trainees..." aria-label="search" />
-    </div>
-
-    <button (click)="hireStudents()"
-      class="bg-blue-900 font-primary text-white px-4 py-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
-      type="button">
-
-      <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-        width="24" height="24" fill="white" viewBox="0 0 24 24">
-        <path fill-rule="evenodd"
-          d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z"
-          clip-rule="evenodd" />
-      </svg>
-      <p class="inline ml-1 max-lg:hidden">Add Trainees</p>
-    </button>
-  </div>
-
-
-
-  <!-- TABLE: -->
-  <div class="relative overflow-x-auto border border-gray-300 sm:rounded-lg">
-    <table mat-table class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
-      <!-- COLUMN TITLES: -->
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-        <tr>
-          <th scope="col" class="px-6 py-3 font-primary">Avatar:</th>
-          <th scope="col" class="px-6 py-3 font-primary">Full Name:</th>
-          <th scope="col" class="px-6 py-3 font-primary">Job Title:</th>
-          <th scope="col" class="px-6 py-3 font-primary">Hours Worked</th>
-          <th scope="col" class="px-6 py-3 font-primary">Date Hired:</th>
-          <th scope="col" class="px-6 py-3 font-primary">Hired by:</th>
-          <th scope="col" class="px-6 py-3 font-primary">Actions:</th>
-        </tr>
-      </thead>
-
-      <!-- COLUMN DATA: -->
-      <tbody>
-        <tr *ngFor="let data of traineesList | filter : searchtext" (click)="addStudentToSelection(data.id)"
-          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-slate-100">
-          <td class="px-6 py-4"><img *ngIf="data.avatar; else placeholder" [src]="data.avatar"
-              class="mx-auto w-20 h-20 rounded-full">
-            <ng-template #placeholder>
-              <div class="mx-auto w-20 h-20 image-container avatar-placeholder"></div>
-            </ng-template>
-          </td>
-          <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
-            data.firstName }} {{ data.lastName }}</th>
-          <td class="px-6 py-4">{{ data.job_title || "Not set" }}</td>
-          <td class="px-6 py-4">{{ data.TotalHoursWorked || "Not started" }}</td>
-          <td class="px-6 py-4">{{ data.hire_date | date: "longDate" }}</td>
-          <td class="px-6 py-4">{{ data.sFirstName }} {{ data.sLastName }}</td>
-          <td class="px-6 flex justify-center mt-10">
-            <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-user-cog">
-                <circle cx="18" cy="15" r="3" />
-                <circle cx="9" cy="7" r="4" />
-                <path d="M10 15H6a4 4 0 0 0-4 4v2" />
-                <path d="m21.7 16.4-.9-.3" />
-                <path d="m15.2 13.9-.9-.3" />
-                <path d="m16.6 18.7.3-.9" />
-                <path d="m19.1 12.2.3-.9" />
-                <path d="m19.6 18.7-.4-1" />
-                <path d="m16.8 12.3-.4-1" />
-                <path d="m14.3 16.6 1-.4" />
-                <path d="m20.7 13.8 1-.4" />
-              </svg>
-            </button>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="option1Action(data.id, data.firstName, data.lastName)">
-                <p class="text-red-500">Remove Student from Company</p>
-              </button>
-            </mat-menu>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="my-5" *ngIf="(traineesList | filter : searchtext)?.length === 0">
-      <div class="flex justify-center">
-        <img class="opacity-30 h-44 w-44" src="../../../../assets/empty1.png">
       </div>
-      <div class="text-center mb-5">
-        <h1 class="opacity-40 text-center text-xl font-primary">
-          No students found...
-        </h1>
+
+      <button (click)="hireStudents()"
+        class="bg-blue-900 font-primary text-white px-4 py-2 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+        type="button">
+
+        <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+          width="24" height="24" fill="white" viewBox="0 0 24 24">
+          <path fill-rule="evenodd"
+            d="M9 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4H7Zm8-1a1 1 0 0 1 1-1h1v-1a1 1 0 1 1 2 0v1h1a1 1 0 1 1 0 2h-1v1a1 1 0 1 1-2 0v-1h-1a1 1 0 0 1-1-1Z"
+            clip-rule="evenodd" />
+          </svg>
+          <p class="inline ml-1 max-lg:hidden">Add Trainees</p>
+        </button>
       </div>
+
+
+
+      <!-- TABLE: -->
+      <div class="relative overflow-x-auto border border-gray-300 sm:rounded-lg">
+        <table mat-table class="w-full text-sm text-center font-secondary rtl:text-right text-gray-500 dark:text-gray-400">
+          <!-- COLUMN TITLES: -->
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-6 py-3 font-primary">Avatar:</th>
+              <th scope="col" class="px-6 py-3 font-primary">Full Name:</th>
+              <th scope="col" class="px-6 py-3 font-primary">Job Title:</th>
+              <th scope="col" class="px-6 py-3 font-primary">Hours Worked</th>
+              <th scope="col" class="px-6 py-3 font-primary">Date Hired:</th>
+              <th scope="col" class="px-6 py-3 font-primary">Hired by:</th>
+              <th scope="col" class="px-6 py-3 font-primary">Actions:</th>
+            </tr>
+          </thead>
+
+          <!-- COLUMN DATA: -->
+          <tbody>
+            @for (data of traineesList | filter : searchtext; track data) {
+              <tr (click)="addStudentToSelection(data.id)"
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 cursor-pointer hover:bg-slate-100">
+                <td class="px-6 py-4">@if (data.avatar) {
+                  <img [src]="data.avatar"
+                    class="mx-auto w-20 h-20 rounded-full">
+                } @else {
+                  <div class="mx-auto w-20 h-20 image-container avatar-placeholder"></div>
+                }
+              </td>
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{{
+              data.firstName }} {{ data.lastName }}</th>
+              <td class="px-6 py-4">{{ data.job_title || "Not set" }}</td>
+              <td class="px-6 py-4">{{ data.TotalHoursWorked || "Not started" }}</td>
+              <td class="px-6 py-4">{{ data.hire_date | date: "longDate" }}</td>
+              <td class="px-6 py-4">{{ data.sFirstName }} {{ data.sLastName }}</td>
+              <td class="px-6 flex justify-center mt-10">
+                <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-user-cog">
+                    <circle cx="18" cy="15" r="3" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M10 15H6a4 4 0 0 0-4 4v2" />
+                    <path d="m21.7 16.4-.9-.3" />
+                    <path d="m15.2 13.9-.9-.3" />
+                    <path d="m16.6 18.7.3-.9" />
+                    <path d="m19.1 12.2.3-.9" />
+                    <path d="m19.6 18.7-.4-1" />
+                    <path d="m16.8 12.3-.4-1" />
+                    <path d="m14.3 16.6 1-.4" />
+                    <path d="m20.7 13.8 1-.4" />
+                  </svg>
+                </button>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="option1Action(data.id, data.firstName, data.lastName)">
+                    <p class="text-red-500">Remove Student from Company</p>
+                  </button>
+                </mat-menu>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+      @if ((traineesList | filter : searchtext)?.length === 0) {
+        <div class="my-5">
+          <div class="flex justify-center">
+            <img class="opacity-30 h-44 w-44" src="../../../../assets/empty1.png">
+          </div>
+          <div class="text-center mb-5">
+            <h1 class="opacity-40 text-center text-xl font-primary">
+              No students found...
+            </h1>
+          </div>
+        </div>
+      }
     </div>
   </div>
-</div>
