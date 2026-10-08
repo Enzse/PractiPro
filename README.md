@@ -5,14 +5,14 @@ A practicum (OJT) management system for students, coordinators, industry supervi
 | Part | Stack | Location |
 |---|---|---|
 | Frontend | Angular 17, Tailwind CSS | [PractiProAngular/](PractiProAngular/) |
-| API | PHP 8.2, PDO | [backend/api/](backend/api/) |
+| API | PHP 8.2, PDO (no framework) | [backend/](backend/) |
 | Database | MySQL / MariaDB 10.4+ | [backend/database/](backend/database/) |
 
 ## Local setup
 
 Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB), [Composer](https://getcomposer.org/), and Node.js 18+.
 
-1. **Clone into XAMPP's web root** so Apache serves the API at `http://localhost/PractiPro/backend/api`:
+1. **Clone into XAMPP's web root** so Apache serves the API at `http://localhost/PractiPro/backend/public`:
 
    ```sh
    cd C:/xampp/htdocs
@@ -34,10 +34,10 @@ Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB
    ```sh
    cd backend
    composer install
-   cp api/.env.example api/.env
+   cp .env.example .env
    ```
 
-   Open `api/.env` and set `SECRET_KEY` (the file explains how to generate one). Set the `MAIL_*` values if you need activation and password-reset emails to send.
+   Open `.env` and set `SECRET_KEY` (the file explains how to generate one). Leave the `MAIL_*` values empty to have emails written to Apache's error log instead of being sent.
 
 4. **Start the frontend:**
 
@@ -51,5 +51,18 @@ Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB
 
 ## Configuration
 
-- **API:** `backend/api/.env`, which is never committed. [`.env.example`](backend/api/.env.example) lists every setting.
+- **API:** `backend/.env`, which is never committed. [`.env.example`](backend/.env.example) lists every setting.
 - **Frontend:** the API URL is in [`src/environments/`](PractiProAngular/src/environments/). `ng serve` uses `environment.development.ts`, and `ng build` uses `environment.ts`.
+
+## Tests
+
+```sh
+cd backend
+composer test      # API tests (needs MySQL; uses its own `practipro_test` database)
+composer analyse   # static analysis
+
+cd PractiProAngular
+npm test
+```
+
+See [backend/README.md](backend/README.md) for how the API is put together.
