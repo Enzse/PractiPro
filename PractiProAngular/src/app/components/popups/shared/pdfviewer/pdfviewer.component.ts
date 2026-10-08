@@ -2,12 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-pdfviewer',
   standalone: true,
-  imports: [PdfViewerModule, CommonModule],
+  imports: [CommonModule],
   templateUrl: './pdfviewer.component.html',
   styleUrl: './pdfviewer.component.css'
 })

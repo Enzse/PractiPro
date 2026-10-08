@@ -7,13 +7,12 @@ import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
 import { isPlatformBrowser } from '@angular/common';
 import { JwtService } from './services/jwt.service';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoginComponent, PdfViewerModule],
+  imports: [RouterOutlet, LoginComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

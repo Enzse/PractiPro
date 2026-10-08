@@ -4,12 +4,11 @@ import { Subscription } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-viewseminarpopup',
   standalone: true,
-  imports: [CommonModule, PdfViewerModule],
+  imports: [CommonModule],
   templateUrl: './viewseminarpopup.component.html',
   styleUrls: ['./viewseminarpopup.component.css']
 })

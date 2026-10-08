@@ -24,8 +24,6 @@
     "chart.js": "^4.4.3",
     "file-saver": "^2.0.5",
     "flowbite": "^2.3.0",
-    "ng2-pdf-viewer": "^10.2.2",
-    "ngx-extended-pdf-viewer": "^20.0.1",
     "ngx-pagination": "^6.0.3",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.11.0",
