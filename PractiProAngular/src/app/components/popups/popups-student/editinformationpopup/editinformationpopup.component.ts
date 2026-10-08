@@ -7,11 +7,10 @@ import Swal from 'sweetalert2';
 
 
 @Component({
-  selector: 'app-editinformationpopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
-  templateUrl: './editinformationpopup.component.html',
-  styleUrl: './editinformationpopup.component.css'
+    selector: 'app-editinformationpopup',
+    imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
+    templateUrl: './editinformationpopup.component.html',
+    styleUrl: './editinformationpopup.component.css'
 })
 export class EditinformationpopupComponent implements OnInit {
 

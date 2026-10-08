@@ -15,11 +15,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 
 @Component({
-  selector: 'app-exit-poll',
-  standalone: true,
-  imports: [NavbarComponent, MatTabsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
-  templateUrl: './exit-poll.component.html',
-  styleUrl: './exit-poll.component.css'
+    selector: 'app-exit-poll',
+    imports: [NavbarComponent, MatTabsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
+    templateUrl: './exit-poll.component.html',
+    styleUrl: './exit-poll.component.css'
 })
 export class ExitPollComponent implements OnInit, OnDestroy {
   userId: any;

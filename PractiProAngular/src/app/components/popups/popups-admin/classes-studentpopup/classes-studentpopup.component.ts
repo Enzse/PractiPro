@@ -12,11 +12,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-classes-studentpopup',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
-  templateUrl: './classes-studentpopup.component.html',
-  styleUrl: './classes-studentpopup.component.css'
+    selector: 'app-classes-studentpopup',
+    imports: [CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
+    templateUrl: './classes-studentpopup.component.html',
+    styleUrl: './classes-studentpopup.component.css'
 })
 export class ClassesStudentpopupComponent {
   constructor(private router: Router, private service: AuthService,

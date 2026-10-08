@@ -7,11 +7,10 @@ import { Subscription, map } from 'rxjs';
 import { BlockService } from '../../../../services/block.service';
 
 @Component({
-  selector: 'app-analytics-performanceevaluation',
-  standalone: true,
-  imports: [ChartComponent, CommonModule],
-  templateUrl: './analytics-performanceevaluation.component.html',
-  styleUrl: './analytics-performanceevaluation.component.css'
+    selector: 'app-analytics-performanceevaluation',
+    imports: [ChartComponent, CommonModule],
+    templateUrl: './analytics-performanceevaluation.component.html',
+    styleUrl: './analytics-performanceevaluation.component.css'
 })
 export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestroy {
   studentlist: any[] = [];

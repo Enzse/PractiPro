@@ -6,11 +6,10 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-commentspopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './commentspopup.component.html',
-  styleUrl: './commentspopup.component.css'
+    selector: 'app-commentspopup',
+    imports: [ReactiveFormsModule, CommonModule],
+    templateUrl: './commentspopup.component.html',
+    styleUrl: './commentspopup.component.css'
 })
 export class CommentspopupComponent implements OnInit {
 

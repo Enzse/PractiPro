@@ -10,11 +10,10 @@ import Swal from 'sweetalert2';
 import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
 
 @Component({
-  selector: 'app-profile',
-  standalone: true,
-  imports: [NavbarComponent, CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe, OrdinalPipe],
-  templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+    selector: 'app-profile',
+    imports: [NavbarComponent, CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe, OrdinalPipe],
+    templateUrl: './profile.component.html',
+    styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
   studentProfile: any[] = [];

@@ -11,11 +11,10 @@ import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-classinvitations',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, MatMenuModule],
-  templateUrl: './classinvitations.component.html',
-  styleUrl: './classinvitations.component.css'
+    selector: 'app-classinvitations',
+    imports: [CommonModule, MatButtonModule, MatMenuModule],
+    templateUrl: './classinvitations.component.html',
+    styleUrl: './classinvitations.component.css'
 })
 export class ClassinvitationsComponent implements OnInit, OnDestroy {
   invitations$ = this.service.getClassInvitations(this.data.userId).pipe(

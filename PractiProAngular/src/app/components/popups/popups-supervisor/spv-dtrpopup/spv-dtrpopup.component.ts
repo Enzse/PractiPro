@@ -11,11 +11,10 @@ import { TimePipe } from '../../../../pipes/time.pipe';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-spv-dtrpopup',
-  standalone: true,
-  imports: [CommonModule, NgxPaginationModule, FormsModule, TimePipe],
-  templateUrl: './spv-dtrpopup.component.html',
-  styleUrl: './spv-dtrpopup.component.css'
+    selector: 'app-spv-dtrpopup',
+    imports: [CommonModule, NgxPaginationModule, FormsModule, TimePipe],
+    templateUrl: './spv-dtrpopup.component.html',
+    styleUrl: './spv-dtrpopup.component.css'
 })
 export class SpvDtrpopupComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private changeDetection: ChangeDetectionService,

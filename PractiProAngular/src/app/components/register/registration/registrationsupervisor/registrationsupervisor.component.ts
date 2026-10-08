@@ -15,11 +15,10 @@ import { TermsofserviceComponent } from '../../../popups/popups-registration/ter
 import { passwordStrengthValidator } from '../../../../validators/password-strength.validator';
 
 @Component({
-  selector: 'app-registrationsupervisor',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
-  templateUrl: './registrationsupervisor.component.html',
-  styleUrl: './registrationsupervisor.component.css',
+    selector: 'app-registrationsupervisor',
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
+    templateUrl: './registrationsupervisor.component.html',
+    styleUrl: './registrationsupervisor.component.css'
 })
 export class RegistrationsupervisorComponent implements OnInit {
   constructor(

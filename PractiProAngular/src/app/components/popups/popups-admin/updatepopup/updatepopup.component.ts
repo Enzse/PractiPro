@@ -6,11 +6,10 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from 
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-updatepopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
-  templateUrl: './updatepopup.component.html',
-  styleUrl: './updatepopup.component.css'
+    selector: 'app-updatepopup',
+    imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
+    templateUrl: './updatepopup.component.html',
+    styleUrl: './updatepopup.component.css'
 })
 export class UpdatepopupComponent implements OnInit {
   constructor(private builder: FormBuilder, private service: AuthService,

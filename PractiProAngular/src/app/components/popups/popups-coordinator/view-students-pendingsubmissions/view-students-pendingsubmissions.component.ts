@@ -18,11 +18,10 @@ import { CoordEvaluationsComponent } from '../../../page-coordinator/coord-evalu
 import { FinalreportpopupComponent } from '../finalreportpopup/finalreportpopup.component';
 
 @Component({
-  selector: 'app-view-students-pendingsubmissions',
-  standalone: true,
-  imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
-  templateUrl: './view-students-pendingsubmissions.component.html',
-  styleUrl: './view-students-pendingsubmissions.component.css'
+    selector: 'app-view-students-pendingsubmissions',
+    imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
+    templateUrl: './view-students-pendingsubmissions.component.html',
+    styleUrl: './view-students-pendingsubmissions.component.css'
 })
 export class ViewStudentsPendingsubmissionsComponent implements OnInit, OnDestroy {
   studentList: any;

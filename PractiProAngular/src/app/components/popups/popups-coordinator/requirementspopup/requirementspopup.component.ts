@@ -16,11 +16,10 @@ import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-requirementspopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, FormsModule, FilterPipe, NgxPaginationModule],
-  templateUrl: './requirementspopup.component.html',
-  styleUrl: './requirementspopup.component.css'
+    selector: 'app-requirementspopup',
+    imports: [ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, FormsModule, FilterPipe, NgxPaginationModule],
+    templateUrl: './requirementspopup.component.html',
+    styleUrl: './requirementspopup.component.css'
 })
 export class RequirementspopupComponent implements OnInit, OnDestroy {
   constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService,

@@ -15,11 +15,10 @@ import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-coord-accomplishment-report',
-  standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
-  templateUrl: './coord-accomplishment-report.component.html',
-  styleUrl: './coord-accomplishment-report.component.css'
+    selector: 'app-coord-accomplishment-report',
+    imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
+    templateUrl: './coord-accomplishment-report.component.html',
+    styleUrl: './coord-accomplishment-report.component.css'
 })
 export class CoordAccomplishmentReportComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {}

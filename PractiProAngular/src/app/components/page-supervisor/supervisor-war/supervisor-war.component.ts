@@ -9,11 +9,10 @@ import { Observable, Subscription, catchError, forkJoin, map, of, switchMap } fr
 import { SpvWarpopupComponent } from '../../popups/popups-supervisor/spv-warpopup/spv-warpopup.component';
 
 @Component({
-  selector: 'app-supervisor-war',
-  standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe],
-  templateUrl: './supervisor-war.component.html',
-  styleUrl: './supervisor-war.component.css'
+    selector: 'app-supervisor-war',
+    imports: [CommonModule, FormsModule, FilterPipe],
+    templateUrl: './supervisor-war.component.html',
+    styleUrl: './supervisor-war.component.css'
 })
 export class SupervisorWarComponent {
   userId: any;

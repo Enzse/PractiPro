@@ -9,11 +9,10 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-addseminarpopup',
-  standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, MatTooltipModule],
-  templateUrl: './addseminarpopup.component.html',
-  styleUrl: './addseminarpopup.component.css'
+    selector: 'app-addseminarpopup',
+    imports: [FormsModule, ReactiveFormsModule, CommonModule, MatTooltipModule],
+    templateUrl: './addseminarpopup.component.html',
+    styleUrl: './addseminarpopup.component.css'
 })
 export class AddseminarpopupComponent {
   userId: any;

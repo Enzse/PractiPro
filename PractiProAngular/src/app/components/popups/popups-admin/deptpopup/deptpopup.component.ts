@@ -10,11 +10,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @Component({
-  selector: 'app-deptpopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, MatDialogActions, MatDialogClose],
-  templateUrl: './deptpopup.component.html',
-  styleUrl: './deptpopup.component.css'
+    selector: 'app-deptpopup',
+    imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, MatDialogActions, MatDialogClose],
+    templateUrl: './deptpopup.component.html',
+    styleUrl: './deptpopup.component.css'
 })
 export class DeptpopupComponent implements OnInit {
   constructor(private builder: FormBuilder, private service: AuthService,

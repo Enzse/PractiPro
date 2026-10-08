@@ -11,11 +11,10 @@ import { SpvDtrpopupComponent } from '../../popups/popups-supervisor/spv-dtrpopu
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-supervisor-dtr',
-  standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe],
-  templateUrl: './supervisor-dtr.component.html',
-  styleUrls: ['./supervisor-dtr.component.css']
+    selector: 'app-supervisor-dtr',
+    imports: [CommonModule, FormsModule, FilterPipe],
+    templateUrl: './supervisor-dtr.component.html',
+    styleUrls: ['./supervisor-dtr.component.css']
 })
 export class SupervisorDtrComponent implements OnInit {
   userId: any;

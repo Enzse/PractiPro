@@ -6,11 +6,10 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { JwtService } from '../../../services/jwt.service';
 
 @Component({
-  selector: 'app-coord-navbar',
-  standalone: true,
-  imports: [CoordSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
-  templateUrl: './coord-navbar.component.html',
-  styleUrl: './coord-navbar.component.css'
+    selector: 'app-coord-navbar',
+    imports: [CoordSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
+    templateUrl: './coord-navbar.component.html',
+    styleUrl: './coord-navbar.component.css'
 })
 export class CoordNavbarComponent {
 

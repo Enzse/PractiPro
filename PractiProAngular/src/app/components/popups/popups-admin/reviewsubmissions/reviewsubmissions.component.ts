@@ -7,11 +7,10 @@ import { saveAs } from 'file-saver';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 
 @Component({
-  selector: 'app-reviewsubmissions',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './reviewsubmissions.component.html',
-  styleUrl: './reviewsubmissions.component.css'
+    selector: 'app-reviewsubmissions',
+    imports: [CommonModule],
+    templateUrl: './reviewsubmissions.component.html',
+    styleUrl: './reviewsubmissions.component.css'
 })
 export class ReviewsubmissionsComponent implements OnInit {
   constructor(private service: AuthService,

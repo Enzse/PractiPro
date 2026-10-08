@@ -5,11 +5,10 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../../services/auth.service';
 
 @Component({
-  selector: 'app-forgotpassword',
-  standalone: true,
-  imports: [ReactiveFormsModule],
-  templateUrl: './forgotpassword.component.html',
-  styleUrl: './forgotpassword.component.css'
+    selector: 'app-forgotpassword',
+    imports: [ReactiveFormsModule],
+    templateUrl: './forgotpassword.component.html',
+    styleUrl: './forgotpassword.component.css'
 })
 export class ForgotpasswordComponent {
   emailForm = this.builder.group({

@@ -20,11 +20,10 @@ import { Router } from '@angular/router';
 import { RequirementspopupComponent } from '../../popups/popups-coordinator/requirementspopup/requirementspopup.component';
 
 @Component({
-  selector: 'app-admin-students',
-  standalone: true,
-  imports: [MatButtonModule, MatMenuModule, MatTooltipModule, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
-  templateUrl: './admin-students.component.html',
-  styleUrl: './admin-students.component.css'
+    selector: 'app-admin-students',
+    imports: [MatButtonModule, MatMenuModule, MatTooltipModule, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
+    templateUrl: './admin-students.component.html',
+    styleUrl: './admin-students.component.css'
 })
 export class AdminStudentsComponent implements OnInit, OnDestroy {
   studentlist: any;

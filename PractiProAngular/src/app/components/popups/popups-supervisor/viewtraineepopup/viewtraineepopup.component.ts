@@ -10,11 +10,10 @@ import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-viewtraineepopup',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, TimePipe],
-  templateUrl: './viewtraineepopup.component.html',
-  styleUrl: './viewtraineepopup.component.css'
+    selector: 'app-viewtraineepopup',
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, TimePipe],
+    templateUrl: './viewtraineepopup.component.html',
+    styleUrl: './viewtraineepopup.component.css'
 })
 export class ViewtraineepopupComponent implements OnInit, OnDestroy {
   studentjob: any

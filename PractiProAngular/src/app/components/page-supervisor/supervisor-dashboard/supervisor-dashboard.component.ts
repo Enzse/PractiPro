@@ -12,11 +12,10 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-supervisor-dashboard',
-  standalone: true,
-  imports: [CommonModule, DatePipe, FormsModule, FilterPipe],
-  templateUrl: './supervisor-dashboard.component.html',
-  styleUrls: ['./supervisor-dashboard.component.css']
+    selector: 'app-supervisor-dashboard',
+    imports: [CommonModule, DatePipe, FormsModule, FilterPipe],
+    templateUrl: './supervisor-dashboard.component.html',
+    styleUrls: ['./supervisor-dashboard.component.css']
 })
 export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   userId: any;

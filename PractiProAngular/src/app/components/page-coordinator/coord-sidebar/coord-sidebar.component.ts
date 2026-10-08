@@ -9,11 +9,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-coord-sidebar',
-  standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet, MatTooltipModule],
-  templateUrl: './coord-sidebar.component.html',
-  styleUrl: './coord-sidebar.component.css'
+    selector: 'app-coord-sidebar',
+    imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet, MatTooltipModule],
+    templateUrl: './coord-sidebar.component.html',
+    styleUrl: './coord-sidebar.component.css'
 })
 export class CoordSidebarComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }

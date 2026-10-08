@@ -18,11 +18,10 @@ import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
 
 @Component({
-  selector: 'app-submission-seminars',
-  standalone: true,
-  imports: [CommonModule, DatePipe, FormsModule, FilterPipe, MatButtonModule, MatMenuModule, MatTooltipModule],
-  templateUrl: './submission-seminars.component.html',
-  styleUrl: './submission-seminars.component.css'
+    selector: 'app-submission-seminars',
+    imports: [CommonModule, DatePipe, FormsModule, FilterPipe, MatButtonModule, MatMenuModule, MatTooltipModule],
+    templateUrl: './submission-seminars.component.html',
+    styleUrl: './submission-seminars.component.css'
 })
 export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
   userId: any;

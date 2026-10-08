@@ -18,11 +18,10 @@ import { FinalreportpopupComponent } from '../../popups/popups-coordinator/final
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-coord-documentation',
-  standalone: true,
-  imports: [CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
-  templateUrl: './coord-documentation.component.html',
-  styleUrl: './coord-documentation.component.css'
+    selector: 'app-coord-documentation',
+    imports: [CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+    templateUrl: './coord-documentation.component.html',
+    styleUrl: './coord-documentation.component.css'
 })
 export class CoordDocumentationComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }

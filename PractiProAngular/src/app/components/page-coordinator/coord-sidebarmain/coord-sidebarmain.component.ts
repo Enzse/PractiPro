@@ -7,11 +7,10 @@ import { BlockService } from '../../../services/block.service';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-coord-sidebarmain',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive, RouterOutlet],
-  templateUrl: './coord-sidebarmain.component.html',
-  styleUrl: './coord-sidebarmain.component.css'
+    selector: 'app-coord-sidebarmain',
+    imports: [RouterLink, RouterLinkActive, RouterOutlet],
+    templateUrl: './coord-sidebarmain.component.html',
+    styleUrl: './coord-sidebarmain.component.css'
 })
 export class CoordSidebarmainComponent {
   constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }

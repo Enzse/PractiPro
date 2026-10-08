@@ -13,11 +13,10 @@ import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-coord-evaluationspopup',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule, ReactiveFormsModule],
-  templateUrl: './coord-evaluationspopup.component.html',
-  styleUrl: './coord-evaluationspopup.component.css'
+    selector: 'app-coord-evaluationspopup',
+    imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule, ReactiveFormsModule],
+    templateUrl: './coord-evaluationspopup.component.html',
+    styleUrl: './coord-evaluationspopup.component.css'
 })
 export class CoordEvaluationspopupComponent {
   isLoading: boolean = true;

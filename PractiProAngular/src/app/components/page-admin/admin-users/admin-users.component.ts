@@ -14,11 +14,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-users',
-  standalone: true,
-  imports: [MatMenuModule, MatButtonModule, MatTooltipModule, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, NgxPaginationModule],
-  templateUrl: './admin-users.component.html',
-  styleUrl: './admin-users.component.css'
+    selector: 'app-admin-users',
+    imports: [MatMenuModule, MatButtonModule, MatTooltipModule, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, NgxPaginationModule],
+    templateUrl: './admin-users.component.html',
+    styleUrl: './admin-users.component.css'
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();

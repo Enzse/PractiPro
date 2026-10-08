@@ -10,11 +10,10 @@ import { FormBuilder } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-view-join-requests',
-  standalone: true,
-  imports: [CommonModule, MatTooltipModule],
-  templateUrl: './view-join-requests.component.html',
-  styleUrl: './view-join-requests.component.css'
+    selector: 'app-view-join-requests',
+    imports: [CommonModule, MatTooltipModule],
+    templateUrl: './view-join-requests.component.html',
+    styleUrl: './view-join-requests.component.css'
 })
 export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
   datalist: any;

@@ -6,11 +6,10 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { JwtService } from '../../../services/jwt.service';
 
 @Component({
-  selector: 'app-admin-navbar',
-  standalone: true,
-  imports: [AdminSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
-  templateUrl: './admin-navbar.component.html',
-  styleUrl: './admin-navbar.component.css'
+    selector: 'app-admin-navbar',
+    imports: [AdminSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
+    templateUrl: './admin-navbar.component.html',
+    styleUrl: './admin-navbar.component.css'
 })
 export class AdminNavbarComponent implements OnInit {
 

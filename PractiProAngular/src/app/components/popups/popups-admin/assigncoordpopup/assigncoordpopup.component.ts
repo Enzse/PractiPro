@@ -11,11 +11,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-assigncoordpopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
-  templateUrl: './assigncoordpopup.component.html',
-  styleUrl: './assigncoordpopup.component.css'
+    selector: 'app-assigncoordpopup',
+    imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
+    templateUrl: './assigncoordpopup.component.html',
+    styleUrl: './assigncoordpopup.component.css'
 })
 export class AssigncoordpopupComponent {
   classlist: any;

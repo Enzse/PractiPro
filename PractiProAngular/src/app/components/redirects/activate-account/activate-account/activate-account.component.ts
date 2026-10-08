@@ -16,17 +16,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-activate-account',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    CommonModule,
-    RouterLink,
-    RouterLinkActive,
-    MatTooltipModule,
-  ],
-  templateUrl: './activate-account.component.html',
-  styleUrl: './activate-account.component.css',
+    selector: 'app-activate-account',
+    imports: [
+        ReactiveFormsModule,
+        CommonModule,
+        RouterLink,
+        RouterLinkActive,
+        MatTooltipModule,
+    ],
+    templateUrl: './activate-account.component.html',
+    styleUrl: './activate-account.component.css'
 })
 export class ActivateAccountComponent implements OnInit, OnDestroy {
   token: string;

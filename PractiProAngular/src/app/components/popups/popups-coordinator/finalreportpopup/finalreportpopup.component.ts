@@ -13,11 +13,10 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 
 
 @Component({
-  selector: 'app-finalreportpopup',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
-  templateUrl: './finalreportpopup.component.html',
-  styleUrl: './finalreportpopup.component.css'
+    selector: 'app-finalreportpopup',
+    imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
+    templateUrl: './finalreportpopup.component.html',
+    styleUrl: './finalreportpopup.component.css'
 })
 export class FinalreportpopupComponent implements OnInit, OnDestroy {
   constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService,

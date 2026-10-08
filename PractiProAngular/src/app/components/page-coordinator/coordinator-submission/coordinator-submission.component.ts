@@ -19,11 +19,10 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
 
 
 @Component({
-  selector: 'app-coordinator-submission',
-  standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
-  templateUrl: './coordinator-submission.component.html',
-  styleUrl: './coordinator-submission.component.css'
+    selector: 'app-coordinator-submission',
+    imports: [CoordNavbarComponent, CommonModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
+    templateUrl: './coordinator-submission.component.html',
+    styleUrl: './coordinator-submission.component.css'
 })
 export class CoordinatorSubmissionComponent implements OnInit, OnDestroy {
 

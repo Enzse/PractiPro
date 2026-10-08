@@ -11,11 +11,10 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-view-sent-invites',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './view-sent-invites.component.html',
-  styleUrl: './view-sent-invites.component.css'
+    selector: 'app-view-sent-invites',
+    imports: [CommonModule],
+    templateUrl: './view-sent-invites.component.html',
+    styleUrl: './view-sent-invites.component.css'
 })
 export class ViewSentInvitesComponent {
   datalist: any;

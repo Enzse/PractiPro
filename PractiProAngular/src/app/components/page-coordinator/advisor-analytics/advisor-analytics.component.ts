@@ -5,11 +5,10 @@ import Swal from 'sweetalert2';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-advisor-analytics',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLinkActive, RouterLink],
-  templateUrl: './advisor-analytics.component.html',
-  styleUrl: './advisor-analytics.component.css'
+    selector: 'app-advisor-analytics',
+    imports: [CommonModule, RouterOutlet, RouterLinkActive, RouterLink],
+    templateUrl: './advisor-analytics.component.html',
+    styleUrl: './advisor-analytics.component.css'
 })
 export class AdvisorAnalyticsComponent implements OnInit, OnDestroy {
 

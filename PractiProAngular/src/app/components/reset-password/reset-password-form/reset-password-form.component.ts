@@ -8,11 +8,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { passwordStrengthValidator } from '../../../validators/password-strength.validator';
 import { passwordMatchValidator } from '../../../validators/password-match.validator';
 @Component({
-  selector: 'app-reset-password-form',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive, MatTooltipModule],
-  templateUrl: './reset-password-form.component.html',
-  styleUrl: './reset-password-form.component.css'
+    selector: 'app-reset-password-form',
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive, MatTooltipModule],
+    templateUrl: './reset-password-form.component.html',
+    styleUrl: './reset-password-form.component.css'
 })
 export class ResetPasswordFormComponent implements OnInit {
   passwordForm = this.builder.group({

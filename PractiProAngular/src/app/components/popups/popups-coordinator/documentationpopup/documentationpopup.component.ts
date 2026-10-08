@@ -16,11 +16,10 @@ import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-documentationpopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, FilterPipe, CommonModule, FormsModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
-  templateUrl: './documentationpopup.component.html',
-  styleUrl: './documentationpopup.component.css'
+    selector: 'app-documentationpopup',
+    imports: [ReactiveFormsModule, FilterPipe, CommonModule, FormsModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
+    templateUrl: './documentationpopup.component.html',
+    styleUrl: './documentationpopup.component.css'
 })
 export class DocumentationpopupComponent implements OnInit, OnDestroy {
   constructor(private builder: FormBuilder, private service: AuthService, private changeDetection: ChangeDetectionService,

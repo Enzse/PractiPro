@@ -9,11 +9,10 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-addcertificatepopup',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './addcertificatepopup.component.html',
-  styleUrl: './addcertificatepopup.component.css'
+    selector: 'app-addcertificatepopup',
+    imports: [CommonModule],
+    templateUrl: './addcertificatepopup.component.html',
+    styleUrl: './addcertificatepopup.component.css'
 })
 export class AddcertificatepopupComponent {
   userId: any

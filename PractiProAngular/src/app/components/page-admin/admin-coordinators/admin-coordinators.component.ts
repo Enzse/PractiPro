@@ -20,11 +20,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-coordinators',
-  standalone: true,
-  imports: [AdminSidebarComponent, MatButtonModule, MatMenuModule, MatTooltipModule, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent, NgxPaginationModule],
-  templateUrl: './admin-coordinators.component.html',
-  styleUrl: './admin-coordinators.component.css'
+    selector: 'app-admin-coordinators',
+    imports: [AdminSidebarComponent, MatButtonModule, MatMenuModule, MatTooltipModule, AdminNavbarComponent, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent, NgxPaginationModule],
+    templateUrl: './admin-coordinators.component.html',
+    styleUrl: './admin-coordinators.component.css'
 })
 export class AdminCoordinatorsComponent implements OnInit, OnDestroy {
   userlist: any[] = [];

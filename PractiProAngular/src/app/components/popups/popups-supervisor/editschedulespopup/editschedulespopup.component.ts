@@ -6,11 +6,10 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-editschedulespopup.component.ts',
-  standalone: true,
-  imports: [FormsModule, CommonModule],
-  templateUrl: './editschedulespopup.component.html',
-  styleUrl: './editschedulespopup.component.css'
+    selector: 'app-editschedulespopup.component.ts',
+    imports: [FormsModule, CommonModule],
+    templateUrl: './editschedulespopup.component.html',
+    styleUrl: './editschedulespopup.component.css'
 })
 export class EditschedulespopupComponent {
   changeDetected: any;

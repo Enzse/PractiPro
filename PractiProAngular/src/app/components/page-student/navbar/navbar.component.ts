@@ -8,11 +8,10 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { JwtService } from '../../../services/jwt.service';
 
 @Component({
-  selector: 'app-navbar',
-  standalone: true,
-  imports: [SidebarComponent, CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+    selector: 'app-navbar',
+    imports: [SidebarComponent, CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
   data: any;

@@ -15,11 +15,10 @@ import { passwordStrengthValidator } from '../../../../validators/password-stren
 import { emailDomainValidator } from '../../../../validators/email-domain.validator';
 
 @Component({
-  selector: 'app-registrationadvisor',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
-  templateUrl: './registrationadvisor.component.html',
-  styleUrl: './registrationadvisor.component.css',
+    selector: 'app-registrationadvisor',
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
+    templateUrl: './registrationadvisor.component.html',
+    styleUrl: './registrationadvisor.component.css'
 })
 export class RegistrationadvisorComponent implements OnInit {
   constructor(

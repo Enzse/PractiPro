@@ -12,11 +12,10 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-joinclasses',
-  standalone: true,
-  imports: [CommonModule, FilterPipe, FormsModule],
-  templateUrl: './joinclasses.component.html',
-  styleUrls: ['./joinclasses.component.css'] // Corrected to styleUrls
+    selector: 'app-joinclasses',
+    imports: [CommonModule, FilterPipe, FormsModule],
+    templateUrl: './joinclasses.component.html',
+    styleUrls: ['./joinclasses.component.css'] // Corrected to styleUrls
 })
 export class JoinclassesComponent implements OnInit, OnDestroy {
   userId: any;

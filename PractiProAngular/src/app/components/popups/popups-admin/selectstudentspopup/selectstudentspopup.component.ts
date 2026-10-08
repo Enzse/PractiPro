@@ -11,11 +11,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { OrdinalPipe } from '../../../../pipes/ordinal.pipe';
 
 @Component({
-  selector: 'app-selectstudentspopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, OrdinalPipe],
-  templateUrl: './selectstudentspopup.component.html',
-  styleUrl: './selectstudentspopup.component.css'
+    selector: 'app-selectstudentspopup',
+    imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, OrdinalPipe],
+    templateUrl: './selectstudentspopup.component.html',
+    styleUrl: './selectstudentspopup.component.css'
 })
 export class SelectstudentspopupComponent {
   constructor(private builder: FormBuilder, private service: AuthService,

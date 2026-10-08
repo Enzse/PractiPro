@@ -9,11 +9,10 @@ import { Subscription } from 'rxjs';
 import { SpvEvaluationpopupComponent } from '../../popups/popups-supervisor/spv-evaluationpopup/spv-evaluationpopup.component';
 
 @Component({
-  selector: 'app-supervisor-evaluation',
-  standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe],
-  templateUrl: './supervisor-evaluation.component.html',
-  styleUrl: './supervisor-evaluation.component.css'
+    selector: 'app-supervisor-evaluation',
+    imports: [CommonModule, FormsModule, FilterPipe],
+    templateUrl: './supervisor-evaluation.component.html',
+    styleUrl: './supervisor-evaluation.component.css'
 })
 export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
   userId: any;

@@ -16,11 +16,10 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 
 
 @Component({
-  selector: 'app-warpopupcomponent',
-  standalone: true,
-  imports: [WarAccordionComponent, CommonModule, TimePipe, FormsModule, NgxPaginationModule, MatTooltipModule],
-  templateUrl: './warpopupcomponent.component.html',
-  styleUrl: './warpopupcomponent.component.css'
+    selector: 'app-warpopupcomponent',
+    imports: [WarAccordionComponent, CommonModule, TimePipe, FormsModule, NgxPaginationModule, MatTooltipModule],
+    templateUrl: './warpopupcomponent.component.html',
+    styleUrl: './warpopupcomponent.component.css'
 })
 export class WarpopupcomponentComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private changeDetection: ChangeDetectionService,

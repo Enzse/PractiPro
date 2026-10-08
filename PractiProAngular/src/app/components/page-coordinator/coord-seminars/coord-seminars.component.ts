@@ -16,11 +16,10 @@ import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-coord-seminars',
-  standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
-  templateUrl: './coord-seminars.component.html',
-  styleUrl: './coord-seminars.component.css'
+    selector: 'app-coord-seminars',
+    imports: [CoordNavbarComponent, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+    templateUrl: './coord-seminars.component.html',
+    styleUrl: './coord-seminars.component.css'
 })
 export class CoordSeminarsComponent implements OnInit, OnDestroy {
   constructor(private changeDetection: ChangeDetectionService, private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }

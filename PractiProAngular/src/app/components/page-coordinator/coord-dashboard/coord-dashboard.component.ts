@@ -15,11 +15,10 @@ import { ViewStudentsPendingsubmissionsComponent } from '../../popups/popups-coo
 
 
 @Component({
-  selector: 'app-coord-dashboard',
-  standalone: true,
-  imports: [RouterLink, CommonModule, MatTooltipModule, ChartComponent],
-  templateUrl: './coord-dashboard.component.html',
-  styleUrl: './coord-dashboard.component.css'
+    selector: 'app-coord-dashboard',
+    imports: [RouterLink, CommonModule, MatTooltipModule, ChartComponent],
+    templateUrl: './coord-dashboard.component.html',
+    styleUrl: './coord-dashboard.component.css'
 })
 export class CoordDashboardComponent implements OnInit, OnDestroy {
   userId: any;

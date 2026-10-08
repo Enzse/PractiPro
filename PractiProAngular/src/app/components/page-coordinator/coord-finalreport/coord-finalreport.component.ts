@@ -16,11 +16,10 @@ import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-coord-finalreport',
-  standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
-  templateUrl: './coord-finalreport.component.html',
-  styleUrl: './coord-finalreport.component.css'
+    selector: 'app-coord-finalreport',
+    imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+    templateUrl: './coord-finalreport.component.html',
+    styleUrl: './coord-finalreport.component.css'
 })
 export class CoordFinalreportComponent implements OnInit, OnDestroy {
 

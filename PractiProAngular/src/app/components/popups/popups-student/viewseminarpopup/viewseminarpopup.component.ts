@@ -6,11 +6,10 @@ import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-viewseminarpopup',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './viewseminarpopup.component.html',
-  styleUrls: ['./viewseminarpopup.component.css']
+    selector: 'app-viewseminarpopup',
+    imports: [CommonModule],
+    templateUrl: './viewseminarpopup.component.html',
+    styleUrls: ['./viewseminarpopup.component.css']
 })
 export class ViewseminarpopupComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();

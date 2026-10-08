@@ -7,11 +7,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-coord-invitestudents',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterOutlet, RouterLinkActive, RouterLink],
-  templateUrl: './coord-invitestudents.component.html',
-  styleUrl: './coord-invitestudents.component.css'
+    selector: 'app-coord-invitestudents',
+    imports: [ReactiveFormsModule, CommonModule, RouterOutlet, RouterLinkActive, RouterLink],
+    templateUrl: './coord-invitestudents.component.html',
+    styleUrl: './coord-invitestudents.component.css'
 })
 export class CoordInvitestudentsComponent {
 

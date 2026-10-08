@@ -13,11 +13,10 @@ import { TimePipe } from '../../../../pipes/time.pipe';
 
 
 @Component({
-  selector: 'app-spv-warpopup',
-  standalone: true,
-  imports: [WarAccordionComponent, CommonModule, TimePipe, FormsModule, NgxPaginationModule],
-  templateUrl: './spv-warpopup.component.html',
-  styleUrl: './spv-warpopup.component.css'
+    selector: 'app-spv-warpopup',
+    imports: [WarAccordionComponent, CommonModule, TimePipe, FormsModule, NgxPaginationModule],
+    templateUrl: './spv-warpopup.component.html',
+    styleUrl: './spv-warpopup.component.css'
 })
 export class SpvWarpopupComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService,

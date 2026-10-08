@@ -12,11 +12,10 @@ import { ChooseRolePopupComponent } from '../popups/popups-registration/choose-r
 import { ForgotpasswordComponent } from '../popups/popups-registration/forgotpassword/forgotpassword.component';
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+    selector: 'app-login',
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.css'
 })
 export class LoginComponent {
   returnUrl: any

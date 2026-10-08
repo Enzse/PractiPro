@@ -16,11 +16,10 @@ import { Subscription } from 'rxjs';
 import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
 
 @Component({
-  selector: 'app-coord-evaluations',
-  standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
-  templateUrl: './coord-evaluations.component.html',
-  styleUrl: './coord-evaluations.component.css'
+    selector: 'app-coord-evaluations',
+    imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+    templateUrl: './coord-evaluations.component.html',
+    styleUrl: './coord-evaluations.component.css'
 })
 export class CoordEvaluationsComponent implements OnInit, OnDestroy {
 

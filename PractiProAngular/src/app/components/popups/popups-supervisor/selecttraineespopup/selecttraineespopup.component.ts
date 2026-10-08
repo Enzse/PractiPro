@@ -13,11 +13,10 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-selecttraineespopup',
-  standalone: true,
-  imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
-  templateUrl: './selecttraineespopup.component.html',
-  styleUrl: './selecttraineespopup.component.css'
+    selector: 'app-selecttraineespopup',
+    imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
+    templateUrl: './selecttraineespopup.component.html',
+    styleUrl: './selecttraineespopup.component.css'
 })
 export class SelecttraineespopupComponent implements OnInit, OnDestroy {
   traineesList: any;

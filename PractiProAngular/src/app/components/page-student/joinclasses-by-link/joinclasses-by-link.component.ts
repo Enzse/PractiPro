@@ -7,11 +7,10 @@ import { FormBuilder } from '@angular/forms';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-joinclasses-by-link',
-  standalone: true,
-  imports: [CommonModule, RouterLink],
-  templateUrl: './joinclasses-by-link.component.html',
-  styleUrl: './joinclasses-by-link.component.css'
+    selector: 'app-joinclasses-by-link',
+    imports: [CommonModule, RouterLink],
+    templateUrl: './joinclasses-by-link.component.html',
+    styleUrl: './joinclasses-by-link.component.css'
 })
 export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();

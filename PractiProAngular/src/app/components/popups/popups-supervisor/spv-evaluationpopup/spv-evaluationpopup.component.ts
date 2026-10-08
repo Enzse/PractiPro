@@ -8,11 +8,10 @@ import { Subscription } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-spv-evaluationpopup',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './spv-evaluationpopup.component.html',
-  styleUrl: './spv-evaluationpopup.component.css'
+    selector: 'app-spv-evaluationpopup',
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './spv-evaluationpopup.component.html',
+    styleUrl: './spv-evaluationpopup.component.css'
 })
 export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
   userId: any;

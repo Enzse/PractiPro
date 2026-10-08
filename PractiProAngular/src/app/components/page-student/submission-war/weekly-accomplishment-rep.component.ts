@@ -16,11 +16,10 @@ import { TimePipe } from '../../../pipes/time.pipe';
 
 
 @Component({
-  selector: 'app-weekly-accomplishment-rep',
-  standalone: true,
-  imports: [FilterPipe, CommonModule, FormsModule, TimePipe, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, NgxPaginationModule],
-  templateUrl: './weekly-accomplishment-rep.component.html',
-  styleUrl: './weekly-accomplishment-rep.component.css'
+    selector: 'app-weekly-accomplishment-rep',
+    imports: [FilterPipe, CommonModule, FormsModule, TimePipe, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, NgxPaginationModule],
+    templateUrl: './weekly-accomplishment-rep.component.html',
+    styleUrl: './weekly-accomplishment-rep.component.css'
 })
 export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   searchweek: any;

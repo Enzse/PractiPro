@@ -3,11 +3,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
 @Component({
-  selector: 'app-supervisor-sidebar',
-  standalone: true,
-  imports: [RouterLink, RouterLinkActive],
-  templateUrl: './supervisor-sidebar.component.html',
-  styleUrl: './supervisor-sidebar.component.css'
+    selector: 'app-supervisor-sidebar',
+    imports: [RouterLink, RouterLinkActive],
+    templateUrl: './supervisor-sidebar.component.html',
+    styleUrl: './supervisor-sidebar.component.css'
 })
 export class SupervisorSidebarComponent {
   constructor(private service: AuthService) { }

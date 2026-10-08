@@ -14,11 +14,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
-  selector: 'app-admin-admins',
-  standalone: true,
-  imports: [CommonModule, UpdatepopupComponent, MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, NgxPaginationModule],
-  templateUrl: './admin-admins.component.html',
-  styleUrl: './admin-admins.component.css'
+    selector: 'app-admin-admins',
+    imports: [CommonModule, UpdatepopupComponent, MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, NgxPaginationModule],
+    templateUrl: './admin-admins.component.html',
+    styleUrl: './admin-admins.component.css'
 })
 export class AdminAdminsComponent implements OnInit, OnDestroy {
   userlist: any;

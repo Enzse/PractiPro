@@ -11,11 +11,10 @@ import { emailDomainValidator } from '../../../validators/email-domain.validator
 import { passwordStrengthValidator } from '../../../validators/password-strength.validator';
 
 @Component({
-  selector: 'app-registration',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive, MatTooltipModule],
-  templateUrl: './registration.component.html',
-  styleUrl: './registration.component.css'
+    selector: 'app-registration',
+    imports: [ReactiveFormsModule, CommonModule, RouterLink, RouterLinkActive, MatTooltipModule],
+    templateUrl: './registration.component.html',
+    styleUrl: './registration.component.css'
 })
 export class RegistrationComponent implements OnInit {
   constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private dialog: MatDialog) { }

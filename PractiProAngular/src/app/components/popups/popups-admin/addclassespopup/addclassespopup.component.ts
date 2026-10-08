@@ -12,11 +12,10 @@ import Swal from 'sweetalert2';
 
 
 @Component({
-  selector: 'app-addclassespopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
-  templateUrl: './addclassespopup.component.html',
-  styleUrl: './addclassespopup.component.css'
+    selector: 'app-addclassespopup',
+    imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
+    templateUrl: './addclassespopup.component.html',
+    styleUrl: './addclassespopup.component.css'
 })
 export class AddclassespopupComponent {
   constructor(private builder: FormBuilder, private service: AuthService,

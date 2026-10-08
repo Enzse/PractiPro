@@ -6,11 +6,10 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialog
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 @Component({
-  selector: 'app-inspectprofilepopup',
-  standalone: true,
-  imports: [CommonModule, MatDialogActions, MatDialogClose],
-  templateUrl: './inspectprofilepopup.component.html',
-  styleUrl: './inspectprofilepopup.component.css'
+    selector: 'app-inspectprofilepopup',
+    imports: [CommonModule, MatDialogActions, MatDialogClose],
+    templateUrl: './inspectprofilepopup.component.html',
+    styleUrl: './inspectprofilepopup.component.css'
 })
 export class InspectprofilepopupComponent {
 

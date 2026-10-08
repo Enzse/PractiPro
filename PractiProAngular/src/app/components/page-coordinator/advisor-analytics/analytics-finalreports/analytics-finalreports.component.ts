@@ -7,11 +7,10 @@ import { Subscription, map } from 'rxjs';
 import { BlockService } from '../../../../services/block.service';
 
 @Component({
-  selector: 'app-analytics-finalreports',
-  standalone: true,
-  imports: [ChartComponent, CommonModule],
-  templateUrl: './analytics-finalreports.component.html',
-  styleUrl: './analytics-finalreports.component.css'
+    selector: 'app-analytics-finalreports',
+    imports: [ChartComponent, CommonModule],
+    templateUrl: './analytics-finalreports.component.html',
+    styleUrl: './analytics-finalreports.component.css'
 })
 export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
   studentlist: any[] = [];

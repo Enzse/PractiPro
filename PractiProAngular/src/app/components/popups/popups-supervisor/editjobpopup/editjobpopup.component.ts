@@ -8,11 +8,10 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 import { dateRangeValidator } from '../../../../validators/date-range.validator';
 
 @Component({
-  selector: 'app-editjobpopup',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
-  templateUrl: './editjobpopup.component.html',
-  styleUrl: './editjobpopup.component.css'
+    selector: 'app-editjobpopup',
+    imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
+    templateUrl: './editjobpopup.component.html',
+    styleUrl: './editjobpopup.component.css'
 })
 export class EditjobpopupComponent {
   existingdata?: any;

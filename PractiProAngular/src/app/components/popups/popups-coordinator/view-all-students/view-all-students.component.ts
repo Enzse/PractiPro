@@ -14,11 +14,10 @@ import { ViewprofilepopupComponent } from '../../shared/viewprofilepopup/viewpro
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-view-all-students',
-  standalone: true,
-  imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
-  templateUrl: './view-all-students.component.html',
-  styleUrl: './view-all-students.component.css'
+    selector: 'app-view-all-students',
+    imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
+    templateUrl: './view-all-students.component.html',
+    styleUrl: './view-all-students.component.css'
 })
 export class ViewAllStudentsComponent implements OnInit, OnDestroy {
   studentList: any;

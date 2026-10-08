@@ -4,11 +4,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-pdfviewer',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './pdfviewer.component.html',
-  styleUrl: './pdfviewer.component.css'
+    selector: 'app-pdfviewer',
+    imports: [CommonModule],
+    templateUrl: './pdfviewer.component.html',
+    styleUrl: './pdfviewer.component.css'
 })
 export class PdfviewerComponent implements OnInit {
 

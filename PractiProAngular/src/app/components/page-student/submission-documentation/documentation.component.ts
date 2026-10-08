@@ -18,11 +18,10 @@ import { FilterPipe } from '../../../pipes/filter.pipe';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-documentation',
-  standalone: true,
-  imports: [NavbarComponent, MatTabsModule, FilterPipe, FormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
-  templateUrl: './documentation.component.html',
-  styleUrl: './documentation.component.css'
+    selector: 'app-documentation',
+    imports: [NavbarComponent, MatTabsModule, FilterPipe, FormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
+    templateUrl: './documentation.component.html',
+    styleUrl: './documentation.component.css'
 })
 export class DocumentationComponent implements OnInit, OnDestroy {
   userId: any;

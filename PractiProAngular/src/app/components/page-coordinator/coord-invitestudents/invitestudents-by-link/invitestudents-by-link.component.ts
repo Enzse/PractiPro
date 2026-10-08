@@ -7,11 +7,10 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-invitestudents-by-link',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './invitestudents-by-link.component.html',
-  styleUrl: './invitestudents-by-link.component.css'
+    selector: 'app-invitestudents-by-link',
+    imports: [CommonModule],
+    templateUrl: './invitestudents-by-link.component.html',
+    styleUrl: './invitestudents-by-link.component.css'
 })
 export class InvitestudentsByLinkComponent implements OnInit, OnDestroy {
   link: any;

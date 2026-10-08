@@ -13,11 +13,10 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-checkclasses',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, FormsModule, FilterPipe],
-  templateUrl: './checkclasses.component.html',
-  styleUrl: './checkclasses.component.css'
+    selector: 'app-checkclasses',
+    imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, FormsModule, FilterPipe],
+    templateUrl: './checkclasses.component.html',
+    styleUrl: './checkclasses.component.css'
 })
 export class CheckclassesComponent {
   constructor(private builder: FormBuilder, private service: AuthService,

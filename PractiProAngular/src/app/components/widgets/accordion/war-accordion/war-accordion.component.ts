@@ -4,11 +4,10 @@ import { initAccordions } from 'flowbite';
 
 
 @Component({
-  selector: 'app-war-accordion',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './war-accordion.component.html',
-  styleUrl: './war-accordion.component.css'
+    selector: 'app-war-accordion',
+    imports: [CommonModule],
+    templateUrl: './war-accordion.component.html',
+    styleUrl: './war-accordion.component.css'
 })
 export class WarAccordionComponent implements OnInit {
   @Input() headerText: string = '';

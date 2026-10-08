@@ -6,11 +6,10 @@ import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from 
 import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 @Component({
-  selector: 'app-spv-edit-company-profile',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
-  templateUrl: './spv-edit-company-profile.component.html',
-  styleUrl: './spv-edit-company-profile.component.css'
+    selector: 'app-spv-edit-company-profile',
+    imports: [ReactiveFormsModule, CommonModule, MatDialogActions, MatDialogClose],
+    templateUrl: './spv-edit-company-profile.component.html',
+    styleUrl: './spv-edit-company-profile.component.css'
 })
 export class SpvEditCompanyProfileComponent implements OnInit {
 

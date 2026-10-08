@@ -8,11 +8,10 @@ import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-viewhiringrequests',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './viewhiringrequests.component.html',
-  styleUrl: './viewhiringrequests.component.css'
+    selector: 'app-viewhiringrequests',
+    imports: [CommonModule],
+    templateUrl: './viewhiringrequests.component.html',
+    styleUrl: './viewhiringrequests.component.css'
 })
 export class ViewhiringrequestsComponent implements OnInit {
   datalist: any[] = []

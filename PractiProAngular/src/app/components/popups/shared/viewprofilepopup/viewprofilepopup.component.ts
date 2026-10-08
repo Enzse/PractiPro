@@ -8,11 +8,10 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-viewprofilepopup',
-  standalone: true,
-  imports: [CommonModule, MatDialogActions, MatDialogClose],
-  templateUrl: './viewprofilepopup.component.html',
-  styleUrl: './viewprofilepopup.component.css'
+    selector: 'app-viewprofilepopup',
+    imports: [CommonModule, MatDialogActions, MatDialogClose],
+    templateUrl: './viewprofilepopup.component.html',
+    styleUrl: './viewprofilepopup.component.css'
 })
 export class ViewprofilepopupComponent implements OnInit, OnDestroy {
   studentProfile: any;

@@ -20,11 +20,10 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
 
 @Component({
-  selector: 'app-submission',
-  standalone: true,
-  imports: [NavbarComponent, MatTabsModule, FilterPipe, CommonModule, FormsModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
-  templateUrl: './submission.component.html',
-  styleUrl: './submission.component.css'
+    selector: 'app-submission',
+    imports: [NavbarComponent, MatTabsModule, FilterPipe, CommonModule, FormsModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
+    templateUrl: './submission.component.html',
+    styleUrl: './submission.component.css'
 })
 export class SubmissionComponent implements OnInit, OnDestroy {
   userId: any;

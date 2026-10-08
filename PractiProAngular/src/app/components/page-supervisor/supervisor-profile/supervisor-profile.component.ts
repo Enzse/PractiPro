@@ -11,11 +11,10 @@ import { SpvEditCompanyProfileComponent } from '../../popups/popups-supervisor/s
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 
 @Component({
-  selector: 'app-supervisor-profile',
-  standalone: true,
-  imports: [CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe],
-  templateUrl: './supervisor-profile.component.html',
-  styleUrls: ['./supervisor-profile.component.css']
+    selector: 'app-supervisor-profile',
+    imports: [CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe],
+    templateUrl: './supervisor-profile.component.html',
+    styleUrls: ['./supervisor-profile.component.css']
 })
 export class SupervisorProfileComponent implements OnInit, OnDestroy {
   company: any;

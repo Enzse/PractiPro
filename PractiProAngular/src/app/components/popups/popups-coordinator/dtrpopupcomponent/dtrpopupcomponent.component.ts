@@ -14,11 +14,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { TimePipe } from '../../../../pipes/time.pipe';
 
 @Component({
-  selector: 'app-dtrpopupcomponent',
-  standalone: true,
-  imports: [CommonModule, MatButtonModule, MatMenuModule, TimePipe, MatTooltipModule, NgxPaginationModule, FilterPipe, FormsModule],
-  templateUrl: './dtrpopupcomponent.component.html',
-  styleUrl: './dtrpopupcomponent.component.css'
+    selector: 'app-dtrpopupcomponent',
+    imports: [CommonModule, MatButtonModule, MatMenuModule, TimePipe, MatTooltipModule, NgxPaginationModule, FilterPipe, FormsModule],
+    templateUrl: './dtrpopupcomponent.component.html',
+    styleUrl: './dtrpopupcomponent.component.css'
 })
 export class DtrpopupcomponentComponent {
   constructor(private service: AuthService, private changeDetection: ChangeDetectionService,

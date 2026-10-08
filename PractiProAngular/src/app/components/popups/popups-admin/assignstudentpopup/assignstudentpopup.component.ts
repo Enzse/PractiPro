@@ -16,11 +16,10 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SelectstudentspopupComponent } from '../selectstudentspopup/selectstudentspopup.component';
 
 @Component({
-  selector: 'app-assignstudentpopup',
-  standalone: true,
-  imports: [NgSelectModule, ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, FilterPipe, OrdinalPipe],
-  templateUrl: './assignstudentpopup.component.html',
-  styleUrl: './assignstudentpopup.component.css'
+    selector: 'app-assignstudentpopup',
+    imports: [NgSelectModule, ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, FilterPipe, OrdinalPipe],
+    templateUrl: './assignstudentpopup.component.html',
+    styleUrl: './assignstudentpopup.component.css'
 })
 export class AssignstudentpopupComponent {
   classlist: any;

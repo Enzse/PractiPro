@@ -7,7 +7,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-supervisor-hirestudents',
-    standalone: true,
     imports: [ReactiveFormsModule, CommonModule],
     templateUrl: './supervisor-hirestudents.component.html',
     styleUrls: ['./supervisor-hirestudents.component.css']

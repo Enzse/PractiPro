@@ -8,11 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
 
 @Component({
-  selector: 'app-coord-classes',
-  standalone: true,
-  imports: [CommonModule, MatSelectModule, MatButtonModule, FilterPipe, OrdinalPipe],
-  templateUrl: './coord-classes.component.html',
-  styleUrl: './coord-classes.component.css'
+    selector: 'app-coord-classes',
+    imports: [CommonModule, MatSelectModule, MatButtonModule, FilterPipe, OrdinalPipe],
+    templateUrl: './coord-classes.component.html',
+    styleUrl: './coord-classes.component.css'
 })
 export class CoordClassesComponent {
   constructor(private service: AuthService,

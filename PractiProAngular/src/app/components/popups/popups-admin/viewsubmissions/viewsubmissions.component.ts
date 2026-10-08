@@ -5,11 +5,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-viewsubmissions',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './viewsubmissions.component.html',
-  styleUrl: './viewsubmissions.component.css'
+    selector: 'app-viewsubmissions',
+    imports: [CommonModule],
+    templateUrl: './viewsubmissions.component.html',
+    styleUrl: './viewsubmissions.component.css'
 })
 export class ViewsubmissionsComponent implements OnInit {
   constructor(private service: AuthService,

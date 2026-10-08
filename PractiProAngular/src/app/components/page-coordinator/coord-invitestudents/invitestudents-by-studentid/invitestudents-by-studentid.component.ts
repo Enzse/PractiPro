@@ -11,11 +11,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
-  selector: 'app-invitestudents-by-studentid',
-  standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, MatTooltipModule],
-  templateUrl: './invitestudents-by-studentid.component.html',
-  styleUrl: './invitestudents-by-studentid.component.css'
+    selector: 'app-invitestudents-by-studentid',
+    imports: [ReactiveFormsModule, CommonModule, MatTooltipModule],
+    templateUrl: './invitestudents-by-studentid.component.html',
+    styleUrl: './invitestudents-by-studentid.component.css'
 })
 export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
   matchingStudent: any;

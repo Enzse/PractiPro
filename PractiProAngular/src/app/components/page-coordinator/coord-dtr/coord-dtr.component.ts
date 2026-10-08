@@ -15,11 +15,10 @@ import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-coord-dtr',
-  standalone: true,
-  imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
-  templateUrl: './coord-dtr.component.html',
-  styleUrl: './coord-dtr.component.css'
+    selector: 'app-coord-dtr',
+    imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+    templateUrl: './coord-dtr.component.html',
+    styleUrl: './coord-dtr.component.css'
 })
 export class CoordDtrComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {

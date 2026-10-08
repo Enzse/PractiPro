@@ -14,11 +14,10 @@ import { FormsModule } from '@angular/forms';
 import { TimePipe } from '../../../pipes/time.pipe';
 
 @Component({
-  selector: 'app-dtr',
-  standalone: true,
-  imports: [CommonModule, FormsModule, FilterPipe, TimePipe, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule, MatTooltipModule],
-  templateUrl: './dtr.component.html',
-  styleUrl: './dtr.component.css'
+    selector: 'app-dtr',
+    imports: [CommonModule, FormsModule, FilterPipe, TimePipe, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule, MatTooltipModule],
+    templateUrl: './dtr.component.html',
+    styleUrl: './dtr.component.css'
 })
 export class DtrComponent implements OnInit, OnDestroy {
   searchtext: any;

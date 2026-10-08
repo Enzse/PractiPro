@@ -16,11 +16,10 @@ import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup
 import { AuthService } from '../../../../services/auth.service';
 
 @Component({
-  selector: 'app-seminarspopup',
-  standalone: true,
-  imports: [CommonModule, DatePipe, FormsModule, FilterPipe, MatButtonModule, MatMenuModule, MatTooltipModule],
-  templateUrl: './seminarspopup.component.html',
-  styleUrl: './seminarspopup.component.css'
+    selector: 'app-seminarspopup',
+    imports: [CommonModule, DatePipe, FormsModule, FilterPipe, MatButtonModule, MatMenuModule, MatTooltipModule],
+    templateUrl: './seminarspopup.component.html',
+    styleUrl: './seminarspopup.component.css'
 })
 export class SeminarspopupComponent {
   datalist: any[] = [];

@@ -6,11 +6,10 @@ import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 
 @Component({
-  selector: 'app-supervisor-navbar',
-  standalone: true,
-  imports: [SupervisorSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
-  templateUrl: './supervisor-navbar.component.html',
-  styleUrl: './supervisor-navbar.component.css'
+    selector: 'app-supervisor-navbar',
+    imports: [SupervisorSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
+    templateUrl: './supervisor-navbar.component.html',
+    styleUrl: './supervisor-navbar.component.css'
 })
 export class SupervisorNavbarComponent {
   data: any;

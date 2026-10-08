@@ -16,11 +16,10 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-admin-classes',
-  standalone: true,
-  imports: [AdminNavbarComponent, MatMenuModule, MatTableModule, MatTooltipModule, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
-  templateUrl: './admin-classes.component.html',
-  styleUrl: './admin-classes.component.css'
+    selector: 'app-admin-classes',
+    imports: [AdminNavbarComponent, MatMenuModule, MatTableModule, MatTooltipModule, CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
+    templateUrl: './admin-classes.component.html',
+    styleUrl: './admin-classes.component.css'
 })
 export class AdminClassesComponent implements OnInit, OnDestroy {
   constructor(private service: AuthService, private dialog: MatDialog) { }
