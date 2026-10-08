@@ -6,6 +6,7 @@
 # Local database dumps (may contain personal data)
 *.sql
 !/database/*.sql
+!/database/migrations/*.sql
 
 # Tool caches
 /.phpunit.cache/

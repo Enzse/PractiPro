@@ -23,7 +23,8 @@
     },
     "scripts": {
         "test": "phpunit",
-        "analyse": "phpstan analyse --memory-limit=512M"
+        "analyse": "phpstan analyse --memory-limit=512M",
+        "migrate": "php bin/migrate.php"
     },
     "config": {
         "platform": {
