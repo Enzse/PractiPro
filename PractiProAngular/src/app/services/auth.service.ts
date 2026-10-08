@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,9 +11,7 @@ export class AuthService {
 
   isLoggedIn = false;
 
-  // apiurl = 'http://localhost/PractiPro/backend/api';
-
-  apiurl = 'http://gcpractipro.online/backend/api';
+  apiurl = environment.apiUrl;
 
 
   //User handlers. 

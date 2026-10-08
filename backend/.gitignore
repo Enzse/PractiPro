@@ -1,11 +1,8 @@
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-
-# Node
 /vendor/
 
-# Ignore the composer lock file
-/composer.lock
+# Local configuration and secrets
+/api/.env
 
-
-
-
+# Local database dumps (may contain personal data)
+*.sql
+!/database/*.sql

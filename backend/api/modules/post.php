@@ -77,14 +77,13 @@ class Post extends GlobalMethods
             $this->registerRoleSpecificData($data);
 
             $this->pdo->commit();
-            require __DIR__ . "../../src/Mailer.php";
+            require_once __DIR__ . "/../src/Mailer.php";
             $mail = initializeMailer();
 
-            $mail->setFrom("GCPractiPro@gcpractipro.online", "GCPractiProAdmin");
             $mail->addAddress($data->email);
             $mail->Subject = "Account Activation";
             $mail->Body = <<<END
-            Click <a href="http://localhost:4200/activateaccount?token=$activation_token">here</a> to activate your account.
+            Click <a href="{$_ENV['FRONTEND_URL']}/activateaccount?token=$activation_token">here</a> to activate your account.
 
             END;
 
@@ -883,14 +882,13 @@ class Post extends GlobalMethods
             $this->pdo->commit();
 
 
-            require __DIR__ . "../../src/Mailer.php";
+            require_once __DIR__ . "/../src/Mailer.php";
             $mail = initializeMailer();
 
-            $mail->setFrom("GCPractiPro@gcpractipro.online", "GCPractiProAdmin");
             $mail->addAddress($data->email);
             $mail->Subject = "Password Reset";
             $mail->Body = <<<END
-            Click <a href="http://localhost:4200/resetpassword?token=$token">here</a> to reset your password.
+            Click <a href="{$_ENV['FRONTEND_URL']}/resetpassword?token=$token">here</a> to reset your password.
 
             END;
 
@@ -1026,7 +1024,7 @@ class Post extends GlobalMethods
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($result) {
             $token = $result['join_token_hash'];
-            $link = "http://localhost:4200/joinclassbylink?token=$token"; // Change this to the actual link
+            $link = $_ENV['FRONTEND_URL'] . "/joinclassbylink?token=$token";
             return $this->sendPayload($link, "success", "Existing link found.", 200);
         }
 
@@ -1046,7 +1044,7 @@ class Post extends GlobalMethods
                 ]
             );
 
-            $link = "http://localhost:4200/joinclassbylink?token=$token"; // Change this to the actual link
+            $link = $_ENV['FRONTEND_URL'] . "/joinclassbylink?token=$token";
 
             $this->pdo->commit();
             return $this->sendPayload($link, "success", "Successfully created class join link", 200);
