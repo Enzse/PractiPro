@@ -345,8 +345,7 @@ class Get extends GlobalMethods
             $fileName = $result['payload'][0]['file_name'];
             header('Content-Type: application/pdf');
             header('Content-Disposition: attachment; filename="' . $fileName . '"');
-            echo $fileData;
-            exit();
+            return $fileData;
         } else {
             echo "File not Found";
         }

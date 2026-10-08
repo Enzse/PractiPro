@@ -10,9 +10,9 @@ export class AuthService {
 
   isLoggedIn = false;
 
-  apiurl = 'http://localhost/PractiPro/backend/api';
+  // apiurl = 'http://localhost/PractiPro/backend/api';
 
-  // apiurl = 'http://gcpractipro.online/backend/api';
+  apiurl = 'http://gcpractipro.online/backend/api';
 
 
   //User handlers. 
@@ -481,5 +481,8 @@ export class AuthService {
   editCompanyProfile(inputdata: any) {
     return this.http.post(`${this.apiurl}/editcompanyprofile`, inputdata);
   }
+  clearObsoleteDtrs(id: number) {
+    return this.http.delete(`${this.apiurl}/clearobsoletedtrs/${id}`);
+  };
 
 }

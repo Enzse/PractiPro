@@ -599,6 +599,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
                 break;
             case 'dtrclockout':
                 echo json_encode($post->dtrClockOut($request[1]));
+                // $delete->clearObsoleteDtrs($request[1]);
                 break;
             case 'uploadavatar':
                 if (isset($request[1])) {
@@ -860,6 +861,14 @@ switch ($_SERVER['REQUEST_METHOD']) {
             case 'deletewaractivity':
                 if (isset($request[1])) {
                     echo json_encode($delete->deleteWarActivity($request[1]));
+                } else {
+                    echo "ID not provided";
+                    http_response_code(400);
+                }
+                break;
+            case 'clearobsoletedtrs':
+                if (isset($request[1])) {
+                    echo json_encode($delete->clearObsoleteDtrs($request[1]));
                 } else {
                     echo "ID not provided";
                     http_response_code(400);

@@ -131,11 +131,24 @@ export class DtrComponent implements OnInit, OnDestroy {
   clockOut() {
     this.subscriptions.add(
       this.service.dtrClockOut(this.userId, null).subscribe((res: any) => {
-        this.loadData();
-        Swal.fire({
-          title: "Successfully clocked out for today!",
-          icon: "success"
-        });
+        this.subscriptions.add(
+          this.service.clearObsoleteDtrs(this.userId).subscribe((res: any) => {
+            console.log(res);
+            if (res.status.message.includes("Successfully deleted")) {
+              Swal.fire({
+                title: "Minimum hours not met",
+                text: "A record must be worth at least 1 hour to be recorded.",
+                icon: "warning"
+              });
+            } else {
+              Swal.fire({
+                title: "Successfully clocked out for today!",
+                icon: "success"
+              });
+            }
+            this.loadData();
+          })
+        )
       }, error => {
         if (error.status == 400) {
           console.log(error);
@@ -148,6 +161,7 @@ export class DtrComponent implements OnInit, OnDestroy {
         };
       }));
   }
+
 
 
 }

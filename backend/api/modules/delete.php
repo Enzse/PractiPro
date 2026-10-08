@@ -414,4 +414,31 @@ class Delete extends GlobalMethods
             return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
         }
     }
+
+    public function clearObsoleteDtrs($id)
+    {
+        $sql = "DELETE FROM student_dailytimerecords
+                WHERE totalHours BETWEEN 0.00 AND 0.99 
+                AND student_id = :id
+        ";
+        try {
+            $this->pdo->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+
+            $deletedRows = $stmt->rowCount();
+
+            $this->pdo->commit();
+            if ($deletedRows > 0) {
+                return $this->sendPayload($deletedRows, 'success', "Successfully deleted $deletedRows records.", 200);
+            } else {
+                return $this->sendPayload(null, 'success', "No records found to delete.", 200);
+            }
+
+        } catch (PDOException $e) {
+            $this->pdo->rollBack();
+            return $this->sendPayload(null, 'failed', $e->getMessage(), 500);
+        }
+    }
 }
