@@ -1,0 +1,16 @@
+# This folder is the only part of the backend that should be reachable over HTTP.
+# In production, point the web server's document root here.
+
+Require all granted
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Pass the Authorization header through to PHP (Apache strips it by default).
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Send every request that isn't an existing file to the front controller.
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>

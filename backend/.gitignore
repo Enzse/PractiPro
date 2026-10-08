@@ -1,8 +1,12 @@
 /vendor/
 
 # Local configuration and secrets
-/api/.env
+/.env
 
 # Local database dumps (may contain personal data)
 *.sql
 !/database/*.sql
+
+# Tool caches
+/.phpunit.cache/
+/.phpunit.result.cache

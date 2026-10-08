@@ -1,0 +1,3 @@
+# Source code, configuration and dependencies must never be served directly.
+# Only backend/public/ is web-accessible (it re-enables access in its own .htaccess).
+Require all denied
