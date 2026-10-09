@@ -4,33 +4,45 @@ The Angular 22 frontend. See the [root README](../README.md) for setup.
 
 ## Layout
 
+Code is grouped by feature (Angular style guide):
+
 ```
 src/app/
-├── app.routes.ts      Every page and the guard that protects it. Pages load on demand.
-├── components/        Pages, grouped by role (page-student, page-coordinator, ...), and popups.
-├── services/
-│   ├── api/           One service per feature area. All HTTP calls live here.
-│   ├── session.service.ts   The logged-in user, read from the login token.
-│   └── sidebar.service.ts   Whether the sidebar is open on small screens.
-├── models/            TypeScript types for what the API sends and accepts.
-├── interceptors/      Adds the login token to API requests; logs out on an expired session.
-├── guard/             Route guards (role checks and student prerequisites).
-├── pipes/, validators/, utils/
+├── app.routes.ts       Public pages; each role's pages load from features/<role>/<role>.routes.ts.
+├── core/               App-wide, one instance each
+│   ├── api/            One service per feature area. All HTTP calls live here.
+│   ├── models/         Types for what the API sends and accepts.
+│   ├── auth/           SessionService, the token interceptor, role guards.
+│   ├── layout/         SidebarService (sidebar open/closed on small screens).
+│   └── data-refresh.service.ts   "Data changed, reload" notifications between components.
+├── shared/             Reusable across roles
+│   ├── components/     chart, accordion
+│   ├── dialogs/        comments, PDF viewer, submissions, requirements, add seminar
+│   └── pipes/, validators/, utils/
+└── features/
+    ├── auth/           login, registration (one page per role), reset password, activation
+    ├── landing/
+    ├── student/        layout/, one folder per page, dialogs/, guards/, student.routes.ts
+    ├── coordinator/    same shape; also class selection and selected-class.service.ts
+    ├── supervisor/
+    └── admin/
 ```
+
+A page's dialogs live in its feature's `dialogs/` folder; a dialog used by more than one role lives in `shared/dialogs/`.
 
 ## Calling the API
 
 Inject the service for the feature and subscribe:
 
 ```ts
-private readonly dtrApi = inject(DtrService);
+private readonly dtrApi = inject(DtrService); // core/api/dtr.service.ts
 
 this.dtrApi.forStudent(studentId).subscribe((res) => {
   this.records = res.payload; // TimeRecord[]
 });
 ```
 
-Most endpoints return `ApiResponse<T>` (`{ status, payload, timestamp }`), defined in `models/api.ts`. The login token is attached automatically by `interceptors/auth.interceptor.ts`.
+Most endpoints return `ApiResponse<T>` (`{ status, payload, timestamp }`), defined in `core/models/api.ts`. The login token is attached automatically by `core/auth/auth.interceptor.ts`.
 
 ## Commands
 
