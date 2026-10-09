@@ -4,13 +4,13 @@ A practicum (OJT) management system for students, coordinators, industry supervi
 
 | Part | Stack | Location |
 |---|---|---|
-| Frontend | Angular 17, Tailwind CSS | [PractiProAngular/](PractiProAngular/) |
+| Frontend | Angular 22, Angular Material, Tailwind CSS | [PractiProAngular/](PractiProAngular/) |
 | API | PHP 8.2, PDO (no framework) | [backend/](backend/) |
 | Database | MySQL / MariaDB 10.4+ | [backend/database/](backend/database/) |
 
 ## Local setup
 
-Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB), [Composer](https://getcomposer.org/), and Node.js 18+.
+Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB), [Composer](https://getcomposer.org/), and Node.js 22.22.3+, 24.15+ or 26+ (required by Angular 22).
 
 1. **Clone into XAMPP's web root** so Apache serves the API at `http://localhost/PractiPro/backend/public`:
 
