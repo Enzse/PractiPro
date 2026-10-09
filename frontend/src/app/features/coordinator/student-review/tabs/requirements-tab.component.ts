@@ -5,7 +5,7 @@ import { SubmittedFile } from '../../../../core/models/records';
 import { StudentRequirements } from '../../../../core/models/student';
 import { REQUIREMENT_TYPES } from '../../../../shared/practicum/requirement-types';
 import { IconComponent } from '../../../../shared/ui/icon/icon.component';
-import { FileReviewListComponent } from '../file-review-list.component';
+import { FileReviewListComponent } from '../../../../shared/practicum/file-review-list.component';
 import { StudentReviewContextService } from '../student-review-context.service';
 
 /** The eight pre-practicum documents, each with the files uploaded for it. */

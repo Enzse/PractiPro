@@ -1,75 +1,101 @@
-import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
-
-import Swal from 'sweetalert2';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { passwordStrengthValidator } from '../../../shared/validators/password-strength.validator';
-import { passwordMatchValidator } from '../../../shared/validators/password-match.validator';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/api/auth.service';
+import { SessionService } from '../../../core/auth/session.service';
+import { passwordMatchValidator } from '../../../shared/validators/password-match.validator';
+import { passwordStrengthValidator } from '../../../shared/validators/password-strength.validator';
+import { IconComponent } from '../../../shared/ui/icon/icon.component';
+import { PasswordRulesComponent } from '../../../shared/ui/password-rules/password-rules.component';
+import { AuthShellComponent } from '../auth-shell.component';
+
+/**
+ * Without a token: ask for a reset link. With one (from the emailed link):
+ * choose a new password.
+ */
+type Step = 'request' | 'sent' | 'checking' | 'choose' | 'done' | 'expired' | 'invalid';
+
 @Component({
-    selector: 'app-reset-password',
-    imports: [ReactiveFormsModule, RouterLink, RouterLinkActive, MatTooltipModule],
-    templateUrl: './reset-password.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './reset-password.component.css'
+  selector: 'app-reset-password',
+  imports: [ReactiveFormsModule, RouterLink, IconComponent, PasswordRulesComponent, AuthShellComponent],
+  templateUrl: './reset-password.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ResetPasswordComponent implements OnInit {
   private readonly authApi = inject(AuthService);
-  passwordForm = this.builder.group({
-    password: this.builder.control('', [Validators.required, passwordStrengthValidator]),
-    repeatPassword: this.builder.control('', [Validators.required, passwordMatchValidator]),
-    token: this.builder.control('')
-  }, { validators: passwordMatchValidator });
-  token: string;
-  status: any;
+  private readonly fb = inject(NonNullableFormBuilder);
+  private readonly token: string | undefined = inject(ActivatedRoute).snapshot.queryParams['token'];
 
-  constructor(private builder: NonNullableFormBuilder, private router: Router, private route: ActivatedRoute) {
-    this.token = this.route.snapshot.queryParams['token'];    
-    // alert(this.token);
-    // Swal.fire({
-    //   title: `${this.token}`
-    // });
-  }
+  protected readonly step = signal<Step>(this.token ? 'checking' : 'request');
+  protected readonly busy = signal(false);
+  protected readonly error = signal<string | null>(null);
+  protected readonly showPassword = signal(false);
+
+  protected readonly requestForm = this.fb.group({
+    // Someone signed in (e.g. changing their password from their profile) gets their email filled in.
+    email: [inject(SessionService).email() ?? '', [Validators.required, Validators.email]],
+  });
+  protected readonly passwordForm = this.fb.group(
+    {
+      password: ['', [Validators.required, passwordStrengthValidator]],
+      repeatPassword: ['', Validators.required],
+    },
+    { validators: passwordMatchValidator },
+  );
+  protected readonly password = toSignal(this.passwordForm.controls.password.valueChanges, { initialValue: '' });
 
   ngOnInit(): void {
-    this.authApi.checkResetToken(this.token).subscribe((res) => {
-      this.status = 'valid';
-      this.passwordForm.patchValue({
-        token: this.token
-      })
-    }, error => {
-      if (error.status === 401) {
-        this.status = 'expired';
-        alert("This request for password reset has expired. Please issue another request. You are now being redirected to the login page.");
-        this.router.navigate(['/login']);
-      }
-      if (error.status === 404) {
-        this.status = 'invalid';
-        alert("No such token is found. You are now being redirected to the login page.");
-        this.router.navigate(['/login']);
-      }
+    if (!this.token) return;
+    this.authApi.checkResetToken(this.token).subscribe({
+      next: () => this.step.set('choose'),
+      error: (error) => this.step.set(error.status === 401 ? 'expired' : 'invalid'),
     });
   }
 
-  proceedReset() {
-    if (this.passwordForm.valid) {
-      this.authApi.resetPassword(this.passwordForm.getRawValue()).subscribe(() => {
-        this.router.navigate(['/login']);
-        Swal.fire({
-          title: "Password Reset Successful!",
-          text: "Be sure to remember your new password.",
-          icon: "success"
-        });
-      });
-    } else {
-      Swal.fire({
-        title: "Please enter valid data.",
-        text: "Double check the forms to see if you have mistakenly inputted data.",
-        icon: "error"
-      });
+  protected sendLink(): void {
+    if (this.requestForm.invalid) {
+      this.requestForm.markAllAsTouched();
+      return;
     }
+    this.busy.set(true);
+    this.error.set(null);
+    this.authApi.requestPasswordReset({ email: this.requestForm.getRawValue().email.trim() }).subscribe({
+      next: () => {
+        this.busy.set(false);
+        this.step.set('sent');
+      },
+      error: (error) => {
+        this.busy.set(false);
+        this.error.set(error.status === 404
+          ? 'No account uses that email address.'
+          : error.error?.status?.message ?? 'We couldn’t send the link right now. Please try again.');
+      },
+    });
   }
 
+  protected savePassword(): void {
+    if (this.passwordForm.invalid || !this.token) {
+      this.passwordForm.markAllAsTouched();
+      return;
+    }
+    this.busy.set(true);
+    this.error.set(null);
+    this.authApi.resetPassword({ token: this.token, password: this.passwordForm.getRawValue().password }).subscribe({
+      next: () => {
+        this.busy.set(false);
+        this.step.set('done');
+      },
+      error: (error) => {
+        this.busy.set(false);
+        this.error.set(error.error?.status?.message ?? 'We couldn’t change your password right now. Please try again.');
+      },
+    });
+  }
 
+  /** Start over with a fresh link after an expired or broken one. */
+  protected requestAgain(): void {
+    this.error.set(null);
+    this.step.set('request');
+  }
 }

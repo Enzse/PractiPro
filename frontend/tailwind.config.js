@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["./src/**/*.{html,ts}", "./node_modules/flowbite/**/*.js"],
+  content: ["./src/**/*.{html,ts}"],
   theme: {
     extend: {
       colors: {
@@ -40,22 +40,10 @@ module.exports = {
           track: "#dce9fa",
           orange: "#eb6834",
         },
-
-        // Legacy names, still used by pages that have not been redesigned yet.
-        neon: "#51abcb",
-        darkblue: "#000136",
-        navbar: "#2187ab",
-      },
-      backgroundColor: {
-        "dash-b": "#1e1b4b",
-        "hover-side": "#312e81",
       },
       fontFamily: {
         sans: ['"Geist Variable"', "ui-sans-serif", "system-ui", "sans-serif"],
         display: ['"Bricolage Grotesque Variable"', '"Geist Variable"', "ui-sans-serif", "sans-serif"],
-        // Legacy names, mapped onto the new typefaces.
-        primary: ['"Geist Variable"', "ui-sans-serif", "system-ui", "sans-serif"],
-        secondary: ['"Geist Variable"', "ui-sans-serif", "system-ui", "sans-serif"],
       },
       boxShadow: {
         // Shadows tinted with the brand navy rather than pure black.
@@ -89,5 +77,6 @@ module.exports = {
       },
     },
   },
-  plugins: [require("flowbite/plugin")],
+  // Base styles for checkboxes, radios and selects (the select chevron).
+  plugins: [require("@tailwindcss/forms")],
 };

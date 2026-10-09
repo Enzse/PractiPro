@@ -1,0 +1,85 @@
+<app-page-header title="Students" description="Every student in PractiPro. Select students to put them in a class." />
+
+<section class="card overflow-hidden">
+  <div class="flex flex-col gap-4 border-b border-slate-100 p-5 sm:p-6">
+    <div class="w-full sm:w-80"><app-search-field [(value)]="search" placeholder="Search name, ID, class or email" (valueChange)="page = 1" /></div>
+    <app-filter-chips [options]="filterOptions()" [(value)]="filter" label="Filter students" (valueChange)="page = 1" />
+  </div>
+
+  @if (selected().size > 0) {
+    <div class="flex items-center justify-between gap-3 border-b border-brand-100 bg-brand-50 px-5 py-3 sm:px-6">
+      <span class="text-sm font-medium text-brand-900">{{ selected().size }} selected</span>
+      <div class="flex gap-2">
+        <button type="button" class="btn btn-ghost btn-sm" (click)="clearSelection()">Clear</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="addToClass()"><app-icon name="users-three" [size]="14" /> Add to class</button>
+      </div>
+    </div>
+  }
+
+  @if (students() === null) {
+    <div class="space-y-3 p-6">
+      @for (row of [1, 2, 3, 4]; track row) {
+        <div class="skeleton h-11"></div>
+      }
+    </div>
+  } @else if (visible().length === 0) {
+    <app-empty-state icon="student:duotone" title="No students match" description="Try another search or filter." [compact]="true" />
+  } @else {
+    <div class="overflow-x-auto">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="w-10">
+              <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-brand-700 focus:ring-brand-600" aria-label="Select all shown"
+                [checked]="allVisibleSelected()" (change)="toggleAll()" />
+            </th>
+            <th>Student</th>
+            <th class="max-sm:hidden">Program</th>
+            <th>Class</th>
+            <th>Status</th>
+            <th class="text-right">Hours</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of visible() | paginate: { itemsPerPage: pageSize, currentPage: page }; track s.id) {
+            <tr class="cursor-pointer" [class.bg-brand-50]="selected().has(s.id)" (click)="open(s)">
+              <td (click)="$event.stopPropagation()">
+                <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-brand-700 focus:ring-brand-600"
+                  [attr.aria-label]="'Select ' + s.firstName + ' ' + s.lastName" [checked]="selected().has(s.id)" (change)="toggle(s.id)" />
+              </td>
+              <td>
+                <p class="font-medium text-slate-900">{{ s.lastName }}, {{ s.firstName }}</p>
+                <p class="text-xs text-slate-500">{{ s.studentId || 'No student ID' }}<span class="sm:hidden"> · {{ s.program || '—' }}@if (s.year) { {{ s.year }} }</span></p>
+              </td>
+              <td class="whitespace-nowrap text-slate-600 max-sm:hidden">{{ s.program || '—' }}@if (s.year) { · {{ s.year }} }</td>
+              <td class="whitespace-nowrap">
+                @if (s.block) {
+                  <span class="text-slate-700">{{ s.block }}</span>
+                } @else {
+                  <span class="text-slate-400">No class</span>
+                }
+              </td>
+              <td>
+                @if (!s.block) {
+                  <span class="badge badge-neutral">Not enrolled</span>
+                } @else if (s.registration_status !== 1) {
+                  <span class="badge badge-warning">Registering</span>
+                } @else if (!s.company_id) {
+                  <span class="badge badge-brand">Looking for a company</span>
+                } @else {
+                  <span class="badge badge-success">In practicum</span>
+                }
+              </td>
+              <td class="text-right tabular-nums text-slate-600">{{ hours(s) | number: '1.0-0' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    @if (visible().length > pageSize) {
+      <div class="border-t border-slate-100 px-4 py-3">
+        <pagination-controls [responsive]="true" previousLabel="" nextLabel="" (pageChange)="page = $event" />
+      </div>
+    }
+  }
+</section>

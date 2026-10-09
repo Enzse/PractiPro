@@ -36,7 +36,7 @@ export interface AddTraineesData {
         <ul class="space-y-2">
           @for (student of available(); track student.id) {
             <li class="flex items-center gap-3 rounded-xl p-3 ring-1 ring-slate-200">
-              <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">
+              <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold uppercase text-brand-700">
                 {{ student.firstName.charAt(0) }}{{ student.lastName.charAt(0) }}
               </span>
               <div class="min-w-0 flex-1">

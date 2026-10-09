@@ -1,0 +1,81 @@
+<app-page-header title="Accounts" description="Students, coordinators and supervisors. Coordinators and supervisors who sign up themselves wait here for your approval." />
+
+@if (users.awaitingApproval().length > 0 && filter() !== 'awaiting') {
+  <button type="button" class="card mb-6 flex w-full items-center gap-4 p-4 text-left ring-coral-200 transition hover:shadow-raised sm:px-6" (click)="filter.set('awaiting')">
+    <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-coral-50 text-coral-600"><app-icon name="hourglass" [size]="20" /></span>
+    <span class="flex-1">
+      <span class="block font-semibold text-slate-900">{{ users.awaitingApproval().length }} {{ users.awaitingApproval().length === 1 ? 'person is' : 'people are' }} waiting for approval</span>
+      <span class="block text-sm text-slate-500">They can’t sign in until you approve them.</span>
+    </span>
+    <app-icon name="arrow-right" [size]="18" class="text-slate-400" />
+  </button>
+}
+
+<section class="card overflow-hidden">
+  <div class="flex flex-col gap-4 border-b border-slate-100 p-5 sm:p-6">
+    <div class="w-full sm:w-80"><app-search-field [(value)]="search" placeholder="Search name or email" (valueChange)="page = 1" /></div>
+    <app-filter-chips [options]="filterOptions()" [(value)]="filter" label="Filter accounts" (valueChange)="page = 1" />
+  </div>
+
+  @if (users.users() === null) {
+    <div class="space-y-3 p-6">
+      @for (row of [1, 2, 3, 4]; track row) {
+        <div class="skeleton h-12"></div>
+      }
+    </div>
+  } @else if (visible().length === 0) {
+    <app-empty-state icon="users-three:duotone" [compact]="true"
+      [title]="filter() === 'awaiting' ? 'No one is waiting for approval' : 'No accounts match'"
+      [description]="filter() === 'awaiting' ? 'New coordinator and supervisor sign-ups show up here.' : 'Try another search or filter.'" />
+  } @else {
+    <ul class="divide-y divide-slate-100">
+      @for (user of visible() | paginate: { itemsPerPage: pageSize, currentPage: page }; track user.id) {
+        <li class="flex flex-col gap-3 px-5 py-3.5 sm:flex-row sm:items-center sm:px-6">
+          <div class="flex min-w-0 flex-1 items-center gap-3">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">{{ initials(user) }}</span>
+            <div class="min-w-0">
+              <p class="truncate text-sm font-medium text-slate-900">{{ user.firstName }} {{ user.lastName }}</p>
+              <p class="truncate text-xs text-slate-500">{{ user.email }}</p>
+            </div>
+          </div>
+          <!-- One row on phones: badges left, actions right. -->
+          <div class="flex items-center justify-between gap-2 sm:contents">
+            <div class="flex flex-wrap items-center gap-2 sm:w-64">
+              <span class="badge badge-neutral">{{ user.role | roleLabel }}</span>
+              @if (isAwaiting(user)) {
+                <span class="badge badge-warning">Awaiting approval</span>
+              } @else if (user.isActive !== 1) {
+                <span class="badge badge-neutral" matTooltip="They haven’t clicked the link in their activation email yet.">Not activated</span>
+              } @else {
+                <span class="badge badge-success">Active</span>
+              }
+            </div>
+            <div class="flex items-center justify-end gap-1 sm:w-56">
+              @if (isAwaiting(user)) {
+                <button type="button" class="btn btn-ghost btn-sm" [disabled]="busyId() === user.id" (click)="reject(user)">Reject</button>
+                <button type="button" class="btn btn-primary btn-sm" [disabled]="busyId() === user.id" (click)="approve(user)">
+                  @if (busyId() === user.id) {
+                    <app-icon name="circle-notch" [size]="14" class="animate-spin" />
+                  } @else {
+                    <app-icon name="check" [size]="14" />
+                  }
+                  Approve
+                </button>
+              }
+              @if (users.canManage(user)) {
+                <button type="button" class="icon-btn h-8 w-8" matTooltip="Edit account" (click)="edit(user)">
+                  <app-icon name="pencil-simple" [size]="16" label="Edit account" />
+                </button>
+              }
+            </div>
+          </div>
+        </li>
+      }
+    </ul>
+    @if (visible().length > pageSize) {
+      <div class="border-t border-slate-100 px-4 py-3">
+        <pagination-controls [responsive]="true" previousLabel="" nextLabel="" (pageChange)="page = $event" />
+      </div>
+    }
+  }
+</section>

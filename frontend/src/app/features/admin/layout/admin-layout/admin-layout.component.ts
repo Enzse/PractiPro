@@ -1,26 +1,37 @@
-import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
-import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { SessionService } from '../../../../core/auth/session.service';
-import { SidebarService } from '../../../../core/layout/sidebar.service';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { AppShellComponent, NavGroup } from '../../../../shared/layout/app-shell/app-shell.component';
+import { AdminUsersService } from '../../admin-users.service';
 
+/** The administration area: accounts, coordinators and classes. */
 @Component({
-    selector: 'app-admin-layout',
-    imports: [AdminSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
-    templateUrl: './admin-layout.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './admin-layout.component.css'
+  selector: 'app-admin-layout',
+  imports: [AppShellComponent, RouterOutlet],
+  template: `
+    <app-shell [navGroups]="nav()" [roleLabel]="users.myRole === 'superadmin' ? 'Super Admin' : 'Admin'">
+      <router-outlet />
+    </app-shell>
+  `,
+  // Tied to the layout: loaded at sign-in, discarded at sign-out.
+  providers: [AdminUsersService],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminLayoutComponent {
-  protected readonly sidebarState = inject(SidebarService);
-  /** The account menu under the user's name (opens on hover, or on tap). */
-  protected readonly userMenuOpen = signal(false);
-  private readonly session = inject(SessionService);
+  protected readonly users = inject(AdminUsersService);
 
-  data: any;
-  constructor() {
-    this.data = this.session.userName();    
-  }
-
-
+  protected readonly nav = computed<NavGroup[]>(() => [
+    {
+      label: 'People',
+      items: [
+        { label: 'Accounts', icon: 'user-circle', link: '/admin/users', badge: this.users.awaitingApproval().length },
+        { label: 'Students', icon: 'student', link: '/admin/students' },
+        { label: 'Coordinators', icon: 'chalkboard-teacher', link: '/admin/coordinators' },
+        { label: 'Administrators', icon: 'key', link: '/admin/admins' },
+      ],
+    },
+    {
+      label: 'School',
+      items: [{ label: 'Classes', icon: 'users-three', link: '/admin/classes' }],
+    },
+  ]);
 }

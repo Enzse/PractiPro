@@ -1,157 +1,146 @@
+<div class="min-h-dvh bg-canvas">
+  <!-- Top bar -->
+  <header class="sticky top-0 z-20 border-b border-white/10 bg-brand-900/90 backdrop-blur">
+    <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <a routerLink="/welcome" class="flex items-center gap-2.5 text-white">
+        <img src="assets/logo.png" alt="" class="h-9 w-9 rounded-full ring-2 ring-white/10" />
+        <span class="font-display text-lg font-semibold tracking-[-0.01em]">PractiPro</span>
+      </a>
+      <nav class="flex items-center gap-2">
+        <a routerLink="/login" class="btn btn-sm text-white hover:bg-white/10">Sign in</a>
+        <a routerLink="/register" class="btn btn-accent btn-sm">Create account</a>
+      </nav>
+    </div>
+  </header>
 
-<div class="flex-col items-center bg-slate-50 font-secondary">
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-brand-900 text-white">
+    <div class="pointer-events-none absolute -right-40 -top-40 h-[28rem] w-[28rem] rounded-full bg-brand-600/40 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-48 left-1/4 h-[28rem] w-[28rem] rounded-full bg-coral-500/20 blur-3xl"></div>
 
-  <!-- landing page navbar -->
-  <div class="bg-white z-10 flex w-full p-2 shadow-md justify-between px-4 items-center fixed top-0 left-0 right-0">
-    <div class="flex items-center">
-      <a routerLink="/login" routerLinkActive="active" class="flex items-center text-gray-900 dark:text-white">
-        <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-          width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="m15 19-7-7 7-7" />
-        </svg>
-        <span class="ml-2 hidden sm:block">Login</span>
+    <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-4 py-16 sm:px-6 sm:py-24 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+      <div class="animate-fade-up">
+        <p class="text-sm font-medium uppercase tracking-[0.14em] text-coral-300">Practicum management</p>
+        <h1 class="mt-4 font-display text-4xl text-white font-semibold leading-[1.05] tracking-[-0.03em] sm:text-6xl">The practicum,<br />organized.</h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-brand-100">
+          PractiPro streamlines student internships by digitizing the paperwork and bringing students, educators and
+          administrators together. Its evaluation and reporting tools give insight into program and student
+          performance, helping students on their path to professional success.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a routerLink="/register" class="btn btn-accent btn-lg">
+            Create an account <app-icon name="arrow-right" [size]="18" />
+          </a>
+          <a routerLink="/login" class="btn btn-lg bg-white/10 text-white ring-1 ring-white/15 hover:bg-white/15">Sign in</a>
+        </div>
+      </div>
+
+      <div class="relative mx-auto hidden w-full max-w-sm lg:block">
+        <div class="absolute inset-6 rounded-full bg-brand-500/30 blur-2xl"></div>
+        <img src="assets/logo.png" alt="PractiPro logo" class="relative w-full rounded-full ring-8 ring-white/5" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Who it's for -->
+  <section class="mx-auto -mt-10 max-w-6xl px-4 sm:px-6">
+    <ul class="relative grid gap-4 md:grid-cols-3">
+      @for (role of roles; track role.title) {
+        <li class="card card-pad shadow-raised">
+          <span class="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
+            <app-icon [name]="role.icon" [size]="22" />
+          </span>
+          <h2 class="mt-4 font-semibold text-slate-900">{{ role.title }}</h2>
+          <p class="mt-1 text-sm leading-relaxed text-slate-500">{{ role.text }}</p>
+        </li>
+      }
+    </ul>
+  </section>
+
+  <!-- Objectives -->
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+    <p class="eyebrow">Our objectives</p>
+    <h2 class="mt-2 max-w-2xl font-display text-3xl font-semibold tracking-[-0.02em] text-slate-900 sm:text-4xl">
+      Built to take the friction out of the practicum.
+    </h2>
+    <div class="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+      @for (objective of objectives; track objective.title) {
+        <div class="flex gap-4">
+          <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-coral-50 text-coral-600">
+            <app-icon [name]="objective.icon" [size]="20" />
+          </span>
+          <div>
+            <h3 class="font-semibold text-slate-900">{{ objective.title }}</h3>
+            <p class="mt-1 text-sm leading-relaxed text-slate-600">{{ objective.text }}</p>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="mt-14 grid gap-4 md:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
+      <div class="card card-pad flex gap-4">
+        <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-700">
+          <app-icon name="notebook" [size]="20" />
+        </span>
+        <div>
+          <h3 class="font-semibold text-slate-900">Practicum Manual</h3>
+          <p class="mt-1 text-sm leading-relaxed text-slate-600">
+            Students need the <span class="font-medium text-slate-800">Practicum Manual for ITE Students</span> to go
+            through the practicum process.
+          </p>
+        </div>
+      </div>
+      <a [href]="gordonCcs" target="_blank" rel="noopener" class="card card-pad group flex items-center gap-4 transition hover:shadow-raised">
+        <img src="assets/gclogo.jpg" alt="Gordon College" class="h-14 w-14 shrink-0 rounded-full object-cover" />
+        <div class="flex-1">
+          <p class="text-xs font-medium uppercase tracking-[0.12em] text-slate-400">Associated with</p>
+          <p class="mt-0.5 font-semibold text-slate-900">Gordon College · College of Computer Studies</p>
+        </div>
+        <app-icon name="arrow-square-out" [size]="18" class="text-slate-300 transition group-hover:text-brand-700" />
       </a>
     </div>
+  </section>
 
-    <a href="https://gordoncollege.edu.ph/ccs/" class="mr-1">
-      <div class="flex items-center">
-        <img src="../../../assets/gclogo.jpg" class="size-10 ml-2">
-        <img src="../../../assets/logo.png" class="size-12 mr-1 ml-1">
-        <span class="font-semibold">Practi</span><span class="text-orange-600 font-semibold">Pro</span>
-      </div>
-    </a>
+  <!-- Team -->
+  <section class="border-t border-slate-200 bg-white">
+    <div class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+      <p class="eyebrow text-center">The team</p>
+      <h2 class="mt-2 text-center font-display text-3xl font-semibold tracking-[-0.02em] text-slate-900 sm:text-4xl">Who made PractiPro</h2>
 
-  </div>
+      <figure class="mx-auto mt-12 flex max-w-xs flex-col items-center text-center">
+        <img [src]="'assets/team/' + lead.photo + '.png'" [alt]="lead.name"
+          class="h-32 w-32 rounded-full object-cover ring-4 ring-brand-100 ring-offset-4" />
+        <figcaption class="mt-4">
+          <p class="font-semibold text-slate-900">{{ lead.name }}</p>
+          <p class="text-sm text-slate-500">{{ lead.role }}</p>
+        </figcaption>
+      </figure>
 
-  <div class="max-sm:flex-col flex items-center bg-blue-950 px-12 mt-16 pb-5">
-    <img class="size-64" src="../../../assets/logo.png" alt="Logo Image" />
-    <div class="items-center max-sm:text-center">
-      <h2 class="font-extrabold opacity-80 text-xl mb-2 font-primary text-white">ABOUT PRACTI<span
-          class="text-orange-500">PRO</span></h2>
-      <p class="text-white">• PractiPro is an innovative platform that streamlines the management of student internships by
-        digitizing paperwork and facilitating collaboration between students, educators and administrators. It offers
-        digital evaluation and reporting tools to provide insights into program and student performance, helping
-        students on their path to professional success.</p>
+      <ul class="mt-12 grid grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+        @for (member of team; track member.photo) {
+          <li class="flex flex-col items-center text-center">
+            <img [src]="'assets/team/' + member.photo + '.png'" [alt]="member.name" loading="lazy"
+              class="h-24 w-24 rounded-full object-cover ring-1 ring-slate-200" />
+            <p class="mt-3 text-sm font-semibold text-slate-900">{{ member.name }}</p>
+            <p class="text-xs text-slate-500">{{ member.role }}</p>
+          </li>
+        }
+      </ul>
     </div>
-  </div>
+  </section>
 
-  <hr class="mx-auto w-11/12 h-0.5 mt-3 bg-gray-600">
-
-  <div class="flex-row flex max-sm:flex-col">
-
-    <div class="flex-col max-sm:w-full w-2/5 px-4 py-8">
-
-      <div class="px-4 py-2 border mb-4 border-gray-500 ">
-        <h2 class="font-extrabold opacity-80 text-lg mb-1 text-orange-600">• OUR OBJECTIVES:</h2>
-        <p class="text-md px-2 text-gray-800">To provide clear directions and centralization of practicum requirements
-          and submissions, along
-          with the ability to upload a variety of file formats easily.<br>
-          Allow smooth communication between teachers and
-          students. Facilitate interaction, respond to inquiries, and offer an opportunity for users to provide
-          constructive feedback.<br>
-          Give students the ability to monitor their progress on
-          practicum submissions. Encourage students to fulfill their Practicum assignments and expectations by
-          increasing accessibility and obligation.<br>
-          To reduce the amount of paperwork and effort required for the traditional practicum process, allowing
-          instructors and administrators to digitally complete evaluation forms
-          within the platform based on information gathered through the platform. Handle
-          reports on program performance, practicum layouts, and student documentation to facilitate the digitalized
-          evaluation of students during their practicum process.
-        </p>
+  <!-- Closing call to action -->
+  <section class="bg-brand-900 text-white">
+    <div class="mx-auto flex max-w-6xl flex-col items-start gap-6 px-4 py-14 sm:px-6 md:flex-row md:items-center md:justify-between">
+      <div>
+        <h2 class="font-display text-2xl font-semibold tracking-[-0.02em] text-white">Ready to start your practicum?</h2>
+        <p class="mt-1 text-brand-200">Create your account with your Gordon College email.</p>
       </div>
-
-      <div class="px-4 py-2 border mb-4 border-gray-500 ">
-        <h2 class="font-extrabold opacity-80 text-lg mb-1 text-orange-600">• Practicum Manual</h2>
-        <p class="text-md px-2 text-gray-800">For students, you will be required to purchase and utilize the 'Practicum Manial for ITE Students' to undergo the Practicum Process.
-        </p>
+      <div class="flex flex-wrap gap-3">
+        <a routerLink="/register" class="btn btn-accent btn-lg">Create an account</a>
+        <a routerLink="/login" class="btn btn-lg bg-white/10 text-white ring-1 ring-white/15 hover:bg-white/15">Sign in</a>
       </div>
-
-      <div class="px-4 py-2 border pb-8 border-gray-500">
-        <h2 class="font-extrabold opacity-70 text-lg mb-3 text-orange-600">• ASSOCIATED WITH:</h2>
-        <a href="https://gordoncollege.edu.ph/ccs/">
-          <img class="size-48 mx-auto" src="../../../assets/gclogo.jpg">
-        </a>
-
-      </div>
-
     </div>
-
-    <div class="w-3/5 max-sm:w-full flex-col px-4 py-8 my-2 justify-center">
-      <div class="text-center">
-        <h1 class="text-xl font-extrabold opacity-80 text-blue-900 mb-3">MEET THE <span
-            class="text-orange-700">TEAM!</span></h1>
-      </div>
-      <div class="mt-4 flex flex-col items-center justify-center">
-        <div class="p-1 text-center text-sm">
-          <img class="size-32 rounded-full mb-1 border-4 border-blue-800 ml-16" src="../../../assets/team/denz.png">
-          <p class="font-semibold">Project Manager and Fullstack Developer</p>
-          <p>Denzel Manz Perez</p>
-        </div>
-        <div class="mt-2 flex flex-nowrap max-sm:flex-col max-sm:space-x-0 space-x-6">
-          <div class="p-1 text-center text-sm max-sm:mb-3">
-            <img class="size-32 rounded-full mb-1 border-4 border-blue-800" src="../../../assets/team/sherwin.png">
-            <p class="font-semibold">Wireframe Designer</p>
-            <p>Sherwin De Guzman</p>
-          </div>
-          <div class="p-1 text-center text-sm max-sm:mb-3">
-            <img class="size-32 rounded-full mb-1 border-4 border-blue-800" src="../../../assets/team/carmi.png">
-            <p class="font-semibold">Wireframe Designer</p>
-            <p>Carmi Wilna Tongson</p>
-          </div>
-          <div class="p-1 text-center text-sm max-sm:mb-3">
-            <img class="mx-auto size-32 rounded-full mb-1 border-4 border-blue-800" src="../../../assets/team/dei.png">
-            <p class="font-semibold">Wireframe Designer</p>
-            <p class="text-sm">Deianne Jeinne <br> Resurreccion</p>
-          </div>
-        </div>
-
-        <div class="mt-2 flex flex-nowrap max-sm:flex-col max-sm:space-x-0 space-x-6">
-          <div class="p-1 text-center text-sm max-sm:mb-3">
-            <img class="size-32 rounded-full mb-1 border-4 border-blue-800" src="../../../assets/team/shwn.png">
-            <p class="font-semibold">Frontend Developer</p>
-            <p>Shawn Tyrone D. Rada</p>
-          </div>
-          <div class="p-1 text-center text-sm max-sm:mb-3">
-            <img class="size-32 rounded-full mb-1 border-4 border-blue-800" src="../../../assets/team/pajaro.png">
-            <p class="font-semibold">Frontend Developer</p>
-            <p>Roescen Abie Pajaro</p>
-          </div>
-          <div class="p-1 text-center text-sm max-sm:mb-3">
-            <img class="size-32 rounded-full mb-1 border-4 border-blue-800" src="../../../assets/team/jadev.png">
-            <p class="font-semibold">Frontend Developer</p>
-            <p>Jade Vinas</p>
-          </div>
-        </div>
-
-        <div class="p-1 mt-2 flex flex-nowrap max-sm:flex-col max-sm:space-x-0 space-x-6">
-          <div class="text-center text-sm max-sm:mb-3">
-            <img class="size-32 rounded-full mb-1 border-4 border-blue-800" src="../../../assets/team/rj.png">
-            <p class="font-semibold">Frontend Developer</p>
-            <p>Rj Verceles</p>
-          </div>
-          <div class="p-1 text-center text-sm max-sm:mb-3">
-            <img class="size-32 rounded-full mb-1 border-4 border-blue-800" src="../../../assets/team/well.png">
-            <p class="font-semibold">Frontend Developer</p>
-            <p>Jimmuel Bernardino</p>
-          </div>
-          <div class="p-1 text-center text-sm max-sm:mb-3">
-            <img class="size-32 rounded-full mb-1 border-4 border-blue-800" src="../../../assets/team/nicholas.png">
-            <p class="font-semibold">Quality Assurance</p>
-            <p>Nicolas Milton Ching</p>
-          </div>
-        </div>
-
-        <div class="p-1 text-center text-sm">
-          <img class=" mx-auto size-32 rounded-full border-4 border-blue-800" src="../../../assets/team/chard.png">
-          <p class="font-semibold">Member</p>
-          <p>Richard Biaculo</p>
-        </div>
-
-      </div>
-
-
-
-
-
-    </div>
+    <p class="border-t border-white/10 py-6 text-center text-xs text-brand-300">© PractiPro · Denzel Manz S. Perez</p>
+  </section>
+</div>

@@ -15,6 +15,8 @@ export interface NavItem {
   locked?: string | null;
   /** Only highlight on this exact URL, not on pages below it. */
   exact?: boolean;
+  /** A count shown beside the label, e.g. things waiting for approval. */
+  badge?: number;
 }
 
 export interface NavGroup {

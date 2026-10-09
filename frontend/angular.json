@@ -31,10 +31,7 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
-            "scripts": [],
-            "allowedCommonJsDependencies": [
-              "sweetalert2"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {

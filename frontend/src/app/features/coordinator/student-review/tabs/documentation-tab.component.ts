@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, signal } 
 import { SubmissionService } from '../../../../core/api/submission.service';
 import { SubmittedFile } from '../../../../core/models/records';
 import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
-import { FileReviewListComponent } from '../file-review-list.component';
+import { FileReviewListComponent } from '../../../../shared/practicum/file-review-list.component';
 import { StudentReviewContextService } from '../student-review-context.service';
 
 /** Weekly documentation files, newest week first. */

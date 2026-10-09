@@ -46,6 +46,10 @@ export class SessionService {
     return (decodeToken(this.token())?.role as Role | undefined) ?? null;
   }
 
+  email(): string | null {
+    return decodeToken(this.token())?.email ?? null;
+  }
+
   userName(): { firstName: string; lastName: string } | null {
     const claims = decodeToken(this.token());
     return claims ? { firstName: claims.firstName, lastName: claims.lastName } : null;

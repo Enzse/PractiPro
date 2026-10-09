@@ -1,0 +1,169 @@
+<app-auth-shell [wide]="true">
+  @if (sentTo(); as email) {
+    <div class="text-center">
+      <span class="mx-auto inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-50 text-brand-700">
+        <app-icon name="envelope-simple" [size]="32" />
+      </span>
+      <h1 class="mt-5 font-display text-3xl font-semibold tracking-[-0.02em] text-slate-900">Check your email</h1>
+      <p class="mt-3 text-slate-600">
+        We sent an activation link to <span class="font-medium text-slate-900">{{ email }}</span>.
+        Open it to activate your account.
+      </p>
+      @if (needsApproval) {
+        <div class="mt-6 flex gap-3 rounded-xl bg-amber-50 p-4 text-left text-sm text-amber-900 ring-1 ring-amber-100">
+          <app-icon name="hourglass" [size]="18" class="mt-0.5 shrink-0" />
+          <span>An administrator also needs to approve {{ role === 'coordinator' ? 'coordinator' : 'supervisor' }} accounts. You can sign in once your account is activated and approved.</span>
+        </div>
+      }
+      <a routerLink="/login" class="btn btn-primary btn-lg mt-8 w-full">Go to sign in</a>
+    </div>
+  } @else {
+    <a routerLink="/register" class="link inline-flex items-center gap-1.5 text-sm">
+      <app-icon name="arrow-left" [size]="14" /> All account types
+    </a>
+    <h1 class="mt-4 font-display text-3xl font-semibold tracking-[-0.02em] text-slate-900">{{ title }}</h1>
+    <p class="mt-2 text-slate-500">
+      @switch (role) {
+        @case ('student') { Use your Gordon College email. }
+        @case ('coordinator') { Use your Gordon College email. An administrator approves new coordinator accounts. }
+        @case ('supervisor') { An administrator approves new supervisor accounts. }
+      }
+    </p>
+
+    @if (error(); as message) {
+      <div class="mt-6 flex gap-3 rounded-xl bg-red-50 p-4 text-sm text-red-800 ring-1 ring-red-100" role="alert">
+        <app-icon name="warning-circle" [size]="18" class="mt-0.5 shrink-0" />
+        <span>{{ message }}</span>
+      </div>
+    }
+
+    <form class="mt-6 space-y-4" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label class="label" for="firstName">First name</label>
+          <input id="firstName" class="input h-11" autocomplete="given-name" formControlName="firstName" />
+          @if (invalid('firstName')) { <p class="field-error">Enter your first name.</p> }
+        </div>
+        <div>
+          <label class="label" for="lastName">Last name</label>
+          <input id="lastName" class="input h-11" autocomplete="family-name" formControlName="lastName" />
+          @if (invalid('lastName')) { <p class="field-error">Enter your last name.</p> }
+        </div>
+      </div>
+
+      @if (role === 'student') {
+        <div class="grid gap-4 sm:grid-cols-3">
+          <div>
+            <label class="label" for="studentId">Student ID</label>
+            <input id="studentId" class="input h-11" inputmode="numeric" maxlength="9" placeholder="202312345" formControlName="studentId" />
+            @if (invalid('studentId')) { <p class="field-error">Enter your 9-digit student ID.</p> }
+          </div>
+          <div>
+            <label class="label" for="program">Program</label>
+            <select id="program" class="input h-11" formControlName="program">
+              <option value="" disabled>Choose…</option>
+              @for (program of programs; track program) {
+                <option [value]="program">{{ program }}</option>
+              }
+            </select>
+            @if (invalid('program')) { <p class="field-error">Choose your program.</p> }
+          </div>
+          <div>
+            <label class="label" for="year">Year level</label>
+            <select id="year" class="input h-11" formControlName="year">
+              <option value="" disabled>Choose…</option>
+              <option value="1">1st year</option>
+              <option value="2">2nd year</option>
+              <option value="3">3rd year</option>
+              <option value="4">4th year</option>
+            </select>
+            @if (invalid('year')) { <p class="field-error">Choose your year level.</p> }
+          </div>
+        </div>
+      }
+
+      @if (role === 'coordinator') {
+        <div>
+          <label class="label" for="department">Department</label>
+          <select id="department" class="input h-11" formControlName="department">
+            <option value="" disabled>Choose…</option>
+            @for (department of departments; track department) {
+              <option [value]="department">{{ department }}</option>
+            }
+          </select>
+          @if (invalid('department')) { <p class="field-error">Choose your department.</p> }
+        </div>
+      }
+
+      @if (role === 'supervisor') {
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label class="label" for="company">Company</label>
+            <input id="company" class="input h-11" autocomplete="organization" formControlName="company_name" />
+            @if (invalid('company_name')) { <p class="field-error">Enter your company’s name.</p> }
+          </div>
+          <div>
+            <label class="label" for="position">Position</label>
+            <input id="position" class="input h-11" autocomplete="organization-title" formControlName="position" />
+            @if (invalid('position')) { <p class="field-error">Enter your position.</p> }
+          </div>
+          <div>
+            <label class="label" for="phone">Phone</label>
+            <input id="phone" type="tel" class="input h-11" autocomplete="tel" formControlName="phone" />
+            @if (invalid('phone')) { <p class="field-error">Enter a phone number.</p> }
+          </div>
+          <div>
+            <label class="label" for="address">Company address</label>
+            <input id="address" class="input h-11" autocomplete="street-address" formControlName="address" />
+            @if (invalid('address')) { <p class="field-error">Enter the company’s address.</p> }
+          </div>
+        </div>
+      }
+
+      <div>
+        <label class="label" for="email">{{ role === 'supervisor' ? 'Work email' : 'School email' }}</label>
+        <input id="email" type="email" class="input h-11" autocomplete="email" formControlName="email"
+          [placeholder]="role === 'supervisor' ? '' : 'you@' + schoolDomain" />
+        @if (invalid('email')) {
+          <p class="field-error">
+            {{ form.controls.email.hasError('emailDomain') ? 'Use your @' + schoolDomain + ' email.' : 'Enter a valid email address.' }}
+          </p>
+        }
+      </div>
+
+      <div>
+        <label class="label" for="password">Password</label>
+        <div class="relative">
+          <input id="password" [type]="showPassword() ? 'text' : 'password'" class="input h-11 pr-10" autocomplete="new-password" formControlName="password" />
+          <button type="button" class="absolute right-1.5 top-1/2 -translate-y-1/2 rounded-md p-1.5 text-slate-400 hover:text-slate-700"
+            (click)="showPassword.set(!showPassword())" [attr.aria-label]="showPassword() ? 'Hide password' : 'Show password'">
+            <app-icon name="eye" [size]="16" />
+          </button>
+        </div>
+        <app-password-rules [value]="password()" />
+      </div>
+
+      <div>
+        <label class="flex items-start gap-3 text-sm text-slate-600">
+          <input type="checkbox" class="mt-0.5 h-4 w-4 rounded border-slate-300 text-brand-700 focus:ring-brand-500" formControlName="terms" />
+          <span>
+            I agree to the <a href="#" class="link" (click)="openTerms($event)">Terms of Service</a>@if (role === 'supervisor') {
+              and have read the <a href="#" class="link" (click)="openNotice($event)">notice to supervisors</a>}.
+          </span>
+        </label>
+        @if (invalid('terms')) { <p class="field-error">You need to agree to the terms to sign up.</p> }
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-lg w-full" [disabled]="busy()">
+        @if (busy()) {
+          <app-icon name="circle-notch" [size]="18" class="animate-spin" />
+        }
+        Create account
+      </button>
+    </form>
+
+    <p class="mt-8 text-center text-sm text-slate-500">
+      Already have an account? <a routerLink="/login" class="link">Sign in</a>
+    </p>
+  }
+</app-auth-shell>

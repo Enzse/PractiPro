@@ -11,10 +11,9 @@ export const routes: Routes = [
   { path: '', component: LoginComponent, title: 'Login' },
   { path: 'login', component: LoginComponent, title: 'Login' },
   { path: 'welcome', loadComponent: () => import('./features/landing/landing-page.component').then(m => m.LandingPageComponent), title: 'PractiPro' },
-  { path: 'register/student', loadComponent: () => import('./features/auth/registration/student-registration/student-registration.component').then(m => m.StudentRegistrationComponent), title: 'Registration' },
-  { path: 'register/coordinator', loadComponent: () => import('./features/auth/registration/coordinator-registration/coordinator-registration.component').then(m => m.CoordinatorRegistrationComponent), title: 'Registration' },
-  { path: 'register/admin', loadComponent: () => import('./features/auth/registration/admin-registration/admin-registration.component').then(m => m.AdminRegistrationComponent), title: 'Registration' },
-  { path: 'register/supervisor', loadComponent: () => import('./features/auth/registration/supervisor-registration/supervisor-registration.component').then(m => m.SupervisorRegistrationComponent), title: 'Registration' },
+  { path: 'register', loadComponent: () => import('./features/auth/register/choose-role.component').then(m => m.ChooseRoleComponent), title: 'Create an account' },
+  // Administrators are added by other administrators, from the admin pages.
+  { path: 'register/:role', loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent), title: 'Create an account' },
   // The next three are linked from emails the backend sends.
   { path: 'reset-password', loadComponent: () => import('./features/auth/reset-password/reset-password.component').then(m => m.ResetPasswordComponent), title: 'Reset Password' },
   { path: 'activate-account', loadComponent: () => import('./features/auth/activate-account/activate-account.component').then(m => m.ActivateAccountComponent), title: 'Activate Account' },

@@ -42,6 +42,9 @@
                 <a class="nav-item" [routerLink]="item.link" routerLinkActive="nav-active" [routerLinkActiveOptions]="{ exact: !!item.exact }" ariaCurrentWhenActive="page">
                   <app-icon [name]="item.icon" [size]="18" class="text-slate-400" />
                   <span class="flex-1 truncate">{{ item.label }}</span>
+                  @if (item.badge) {
+                    <span class="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-coral-500 px-1.5 text-[11px] font-semibold text-white">{{ item.badge }}</span>
+                  }
                 </a>
               }
             </li>

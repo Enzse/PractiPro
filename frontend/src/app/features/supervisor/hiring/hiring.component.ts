@@ -42,7 +42,7 @@ import { SupervisorContextService } from '../supervisor-context.service';
         @if (found(); as s) {
           <div class="mt-5 rounded-xl p-4 ring-1 ring-slate-200">
             <div class="flex items-start gap-3">
-              <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold text-brand-700">
+              <span class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-brand-50 text-sm font-semibold uppercase text-brand-700">
                 {{ s.firstName.charAt(0) }}{{ s.lastName.charAt(0) }}
               </span>
               <div class="min-w-0 flex-1">

@@ -19,7 +19,7 @@
             @if (item.block_name === block()) {
               <app-icon name="check" [size]="16" class="text-brand-700" />
             } @else {
-              <span class="text-xs text-slate-400">{{ item.students_handled }} students</span>
+              <span class="text-xs text-slate-400">{{ item.students_handled }} {{ item.students_handled === 1 ? 'student' : 'students' }}</span>
             }
           </span>
         </button>
