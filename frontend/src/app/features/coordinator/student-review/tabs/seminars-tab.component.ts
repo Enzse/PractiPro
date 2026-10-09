@@ -11,7 +11,7 @@ import { IconComponent } from '../../../../shared/ui/icon/icon.component';
 import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
 import { ToastService } from '../../../../shared/ui/toast/toast.service';
 import { ConfirmService } from '../../../../shared/ui/confirm/confirm.service';
-import { ReviewActionsComponent } from '../review-actions.component';
+import { ReviewActionsComponent } from '../../../../shared/ui/review-actions/review-actions.component';
 import { StudentReviewContextService } from '../student-review-context.service';
 
 /** Seminars and webinars the student attended; approved hours count toward the requirement. */

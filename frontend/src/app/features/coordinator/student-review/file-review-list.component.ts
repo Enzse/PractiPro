@@ -11,7 +11,7 @@ import { IconComponent } from '../../../shared/ui/icon/icon.component';
 import { StatusBadgeComponent } from '../../../shared/ui/status-badge/status-badge.component';
 import { ToastService } from '../../../shared/ui/toast/toast.service';
 import { ConfirmService } from '../../../shared/ui/confirm/confirm.service';
-import { ReviewActionsComponent } from './review-actions.component';
+import { ReviewActionsComponent } from '../../../shared/ui/review-actions/review-actions.component';
 
 /** Uploaded files with everything a coordinator does to them: read, discuss, approve. */
 @Component({

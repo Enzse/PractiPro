@@ -1,0 +1,96 @@
+@if (loading()) {
+  <div class="skeleton h-64 rounded-2xl"></div>
+} @else if (evaluation(); as ev) {
+  <!-- Already submitted -->
+  <section class="card overflow-hidden">
+    <header class="flex flex-col gap-3 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <div>
+        <h2 class="section-title">Your evaluation</h2>
+        <p class="text-sm text-slate-500">Submitted {{ ev.created_at | date: 'MMMM d, y' }}.</p>
+      </div>
+      <span class="flex items-center gap-2 text-sm text-slate-600">Coordinator <app-status-badge [status]="ev.advisor_approval" /></span>
+    </header>
+    <app-evaluation-answers [evaluation]="ev" />
+  </section>
+} @else if (!eligible()) {
+  <section class="card">
+    <app-empty-state icon="lock-simple:duotone" title="Not time to evaluate yet"
+      [description]="'You evaluate a trainee once they have ' + requiredHours + ' approved hours. ' + (trainee.trainee()?.firstName ?? 'This trainee') + ' has ' + (hours() | number: '1.0-0') + '.'" />
+  </section>
+} @else {
+  <!-- The form -->
+  <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-6" novalidate>
+    <section class="card card-pad flex gap-4">
+      <span class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-coral-50 text-coral-600">
+        <app-icon name="medal" [size]="22" />
+      </span>
+      <div>
+        <h2 class="section-title">Evaluate {{ trainee.trainee()?.firstName }}’s performance</h2>
+        <p class="mt-1 text-sm text-slate-500">Rate each statement from 1 (poor) to 5 (excellent). The coordinator reviews your evaluation, and it counts toward the student’s practicum.</p>
+      </div>
+    </section>
+
+    @for (section of sections; track section.title; let s = $index) {
+      <section class="card overflow-hidden">
+        <header class="border-b border-slate-100 p-5 sm:px-6">
+          <p class="eyebrow">Part {{ s + 1 }} of 5</p>
+          <h3 class="section-title mt-1">{{ section.title }}</h3>
+        </header>
+        <ul class="divide-y divide-slate-100">
+          @for (item of section.items; track item.key; let i = $index) {
+            <li class="flex flex-col gap-3 px-5 py-4 transition-colors sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:gap-6"
+              [class.bg-red-50]="missing(item.key)" [attr.data-missing]="missing(item.key)">
+              <p class="text-sm text-slate-700"><span class="mr-2 tabular-nums text-slate-400">{{ i + 1 }}.</span>{{ item.text }}</p>
+              <div class="segmented shrink-0 self-start lg:self-auto" role="radiogroup" [attr.aria-label]="item.text">
+                @for (score of ['1', '2', '3', '4', '5']; track score) {
+                  <label class="min-w-9 text-center"><input type="radio" class="sr-only" [value]="score" [formControlName]="item.key" />{{ score }}</label>
+                }
+              </div>
+            </li>
+          }
+        </ul>
+      </section>
+    }
+
+    <section class="card card-pad" [class.ring-red-300]="missing('p4q1')" [attr.data-missing]="missing('p4q1')">
+      <p class="eyebrow">Part 4 of 5</p>
+      <h3 class="section-title mt-1">Overall performance</h3>
+      <div class="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-5" role="radiogroup" aria-label="Overall performance">
+        @for (rating of overallOptions; track rating) {
+          <label class="radio-card justify-center">
+            <input type="radio" class="sr-only" [value]="rating" formControlName="p4q1" />{{ rating }}
+          </label>
+        }
+      </div>
+    </section>
+
+    <section class="card card-pad">
+      <p class="eyebrow">Part 5 of 5</p>
+      <h3 class="section-title mt-1">Comments and suggestions</h3>
+      <div class="mt-4 grid gap-5 sm:grid-cols-2">
+        @for (question of comments; track question.key) {
+          <div [attr.data-missing]="missing(question.key)" [class]="question.key === 'p5q5' ? 'sm:col-span-2' : ''">
+            <label class="label" [for]="question.key">{{ question.text }}</label>
+            <textarea [id]="question.key" rows="3" class="input" [formControlName]="question.key"></textarea>
+          </div>
+        }
+        <div class="sm:col-span-2" [attr.data-missing]="missing(recommend.key) || missing(recommend.reasonKey)">
+          <p class="label">{{ recommend.text }}</p>
+          <div class="segmented" role="radiogroup" [attr.aria-label]="recommend.text">
+            <label><input type="radio" class="sr-only" value="yes" [formControlName]="recommend.key" />Yes</label>
+            <label><input type="radio" class="sr-only" value="no" [formControlName]="recommend.key" />No</label>
+          </div>
+          <label class="sr-only" for="recommend-reason">Why?</label>
+          <textarea id="recommend-reason" rows="2" class="input mt-3" placeholder="Why?" [formControlName]="recommend.reasonKey"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <div class="flex justify-end">
+      <button type="submit" class="btn btn-primary btn-lg" [disabled]="submitting()">
+        <app-icon [name]="submitting() ? 'circle-notch' : 'paper-plane-tilt'" [size]="18" [class.animate-spin]="submitting()" />
+        Submit evaluation
+      </button>
+    </div>
+  </form>
+}

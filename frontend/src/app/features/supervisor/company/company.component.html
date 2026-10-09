@@ -1,0 +1,137 @@
+<app-page-header title="Company profile" description="What students and coordinators see about your company." />
+
+@if (!context.profile()) {
+  <div class="skeleton h-64 rounded-2xl"></div>
+} @else if (!context.profile()!.company_id) {
+  <section class="card">
+    <app-empty-state icon="buildings:duotone" title="Your account isn’t linked to a company"
+      description="Ask a PractiPro administrator to link your account to your company." />
+  </section>
+} @else {
+  <div class="grid gap-6 lg:grid-cols-3">
+    <!-- Company -->
+    <section class="card overflow-hidden lg:col-span-2">
+      @if (company(); as c) {
+        <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
+          <label class="group relative block h-20 w-20 shrink-0 cursor-pointer overflow-hidden rounded-2xl bg-slate-50 ring-1 ring-slate-900/5" title="Change logo">
+            @if (logo(); as url) {
+              <img [src]="url" alt="Company logo" class="h-full w-full object-contain p-1" />
+            } @else {
+              <span class="flex h-full w-full items-center justify-center text-brand-700"><app-icon name="buildings" [size]="32" /></span>
+            }
+            <span class="absolute inset-0 flex flex-col items-center justify-center gap-0.5 bg-brand-950/60 text-[11px] font-medium text-white opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100"
+              [class.opacity-100]="uploading() === 'logo'">
+              <app-icon [name]="uploading() === 'logo' ? 'circle-notch' : 'camera'" [size]="18" [class.animate-spin]="uploading() === 'logo'" />
+              Logo
+            </span>
+            <input #logoInput type="file" accept="image/*" class="sr-only" (change)="upload('logo', logoInput)" />
+          </label>
+          <div class="min-w-0 flex-1">
+            <h2 class="font-display text-2xl font-semibold tracking-[-0.02em] text-slate-900">{{ c.company_name }}</h2>
+            <p class="text-sm text-slate-500">{{ c.industry || 'Industry not set' }}</p>
+          </div>
+          <button type="button" class="btn btn-secondary self-start sm:self-auto" (click)="edit()">
+            <app-icon name="pencil-simple" [size]="16" /> Edit
+          </button>
+        </div>
+
+        <dl class="grid gap-x-8 gap-y-5 border-t border-slate-100 p-5 sm:grid-cols-2 sm:p-6">
+          <div>
+            <dt class="text-xs text-slate-500">Address</dt>
+            <dd class="mt-0.5 text-sm text-slate-900">{{ c.address || '—' }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-slate-500">CEO or head</dt>
+            <dd class="mt-0.5 text-sm text-slate-900">{{ c.company_ceo || '—' }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-slate-500">Employees</dt>
+            <dd class="mt-0.5 text-sm text-slate-900">{{ c.company_size || '—' }}</dd>
+          </div>
+          <div>
+            <dt class="text-xs text-slate-500">On PractiPro</dt>
+            <dd class="mt-0.5 text-sm text-slate-900">{{ c.students_handled }} {{ c.students_handled === 1 ? 'student' : 'students' }} · {{ c.supervisors }} {{ c.supervisors === 1 ? 'supervisor' : 'supervisors' }}</dd>
+          </div>
+          <div class="sm:col-span-2">
+            <dt class="text-xs text-slate-500">Scope of business</dt>
+            <dd class="mt-0.5 whitespace-pre-line text-sm text-slate-900">{{ c.scope_of_business || '—' }}</dd>
+          </div>
+          <div class="sm:col-span-2">
+            <dt class="text-xs text-slate-500">IT equipment</dt>
+            <dd class="mt-1.5 flex flex-wrap gap-1.5">
+              @for (item of equipment(); track item) {
+                <span class="badge badge-neutral">{{ item }}</span>
+              } @empty {
+                <span class="text-sm text-slate-900">—</span>
+              }
+            </dd>
+          </div>
+        </dl>
+      } @else {
+        <div class="skeleton m-6 h-40"></div>
+      }
+    </section>
+
+    <!-- You -->
+    <section class="card card-pad self-start">
+      @if (context.profile(); as me) {
+        <div class="flex items-center gap-4">
+          <label class="group relative block h-16 w-16 shrink-0 cursor-pointer overflow-hidden rounded-full bg-brand-50" title="Change photo">
+            @if (avatar(); as url) {
+              <img [src]="url" alt="Your photo" class="h-full w-full object-cover" />
+            } @else {
+              <span class="flex h-full w-full items-center justify-center font-display text-lg font-semibold text-brand-700">{{ initials(me.firstName, me.lastName) }}</span>
+            }
+            <span class="absolute inset-0 flex items-center justify-center bg-brand-950/60 text-white opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100"
+              [class.opacity-100]="uploading() === 'avatar'">
+              <app-icon [name]="uploading() === 'avatar' ? 'circle-notch' : 'camera'" [size]="18" [class.animate-spin]="uploading() === 'avatar'" />
+            </span>
+            <input #avatarInput type="file" accept="image/*" class="sr-only" (change)="upload('avatar', avatarInput)" />
+          </label>
+          <div class="min-w-0">
+            <p class="text-xs text-slate-500">You</p>
+            <p class="truncate font-semibold text-slate-900">{{ me.firstName }} {{ me.lastName }}</p>
+            <p class="truncate text-sm text-slate-500">{{ me.position || 'Supervisor' }}</p>
+          </div>
+        </div>
+        <dl class="mt-5 space-y-3 border-t border-slate-100 pt-4 text-sm">
+          <div class="flex items-center gap-3">
+            <app-icon name="envelope-simple" [size]="16" class="text-slate-400" />
+            <dd class="truncate text-slate-700">{{ me.email }}</dd>
+          </div>
+          <div class="flex items-center gap-3">
+            <app-icon name="phone" [size]="16" class="text-slate-400" />
+            <dd class="text-slate-700">{{ me.phone || 'No phone number' }}</dd>
+          </div>
+        </dl>
+      }
+    </section>
+  </div>
+
+  <!-- Students at the company -->
+  <section class="card mt-6 overflow-hidden">
+    <header class="border-b border-slate-100 p-5 sm:px-6">
+      <h2 class="section-title">Students at {{ company()?.company_name ?? 'your company' }}</h2>
+      <p class="text-sm text-slate-500">Everyone placed here, including other supervisors’ trainees.</p>
+    </header>
+    @if (students() === null) {
+      <div class="p-6"><div class="skeleton h-10"></div></div>
+    } @else if (students()!.length === 0) {
+      <app-empty-state icon="student:duotone" title="No students placed here yet" [compact]="true"
+        description="Students you invite appear here once they accept." />
+    } @else {
+      <ul class="divide-y divide-slate-100">
+        @for (s of students(); track s.id) {
+          <li class="flex items-center gap-3 px-5 py-3.5 sm:px-6">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">{{ initials(s.firstName, s.lastName) }}</span>
+            <div class="min-w-0 flex-1">
+              <p class="truncate text-sm font-medium text-slate-900">{{ s.firstName }} {{ s.lastName }}</p>
+              <p class="truncate text-xs text-slate-500">{{ s.program }} · {{ s.block || 'No class' }} · hired by {{ s.sFirstName }} {{ s.sLastName }}</p>
+            </div>
+            <button type="button" class="btn btn-danger-ghost btn-sm" (click)="removeStudent(s)">Remove</button>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+}

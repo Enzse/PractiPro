@@ -7,7 +7,7 @@ import { TimePipe } from '../../../../shared/pipes/time.pipe';
 import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
 import { FilterChipsComponent, FilterOption } from '../../../../shared/ui/filter-chips/filter-chips.component';
 import { ToastService } from '../../../../shared/ui/toast/toast.service';
-import { ReviewActionsComponent } from '../review-actions.component';
+import { ReviewActionsComponent } from '../../../../shared/ui/review-actions/review-actions.component';
 import { StudentReviewContextService } from '../student-review-context.service';
 
 /** Daily time records. The supervisor normally approves these; coordinators can too. */

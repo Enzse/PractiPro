@@ -56,7 +56,7 @@ export class LoginComponent {
               this.router.navigate(['/coordinator/classes']);
               break;
             case 'supervisor':
-              this.router.navigate(['/supervisor/dashboard']);
+              this.router.navigate(['/supervisor']);
               break;
             default:
               alert("User's role is unhandled.")

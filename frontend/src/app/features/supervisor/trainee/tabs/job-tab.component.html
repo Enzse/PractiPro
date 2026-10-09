@@ -1,0 +1,87 @@
+<div class="grid gap-6 lg:grid-cols-2">
+  <!-- Job -->
+  <form class="card card-pad" [formGroup]="jobForm" (ngSubmit)="saveJob()" novalidate>
+    <h2 class="section-title">Job</h2>
+    <p class="mt-1 text-sm text-slate-500">What the trainee does at your company. They see this on their dashboard.</p>
+
+    <div class="mt-5 space-y-4">
+      <div>
+        <label class="label" for="job-title">Job title</label>
+        <input id="job-title" type="text" class="input" placeholder="e.g. Junior web developer" formControlName="job_title" />
+        @if (invalid('job_title')) {
+          <p class="field-error">Give the job a title.</p>
+        }
+      </div>
+      <div>
+        <label class="label" for="job-description">Description</label>
+        <textarea id="job-description" rows="4" class="input" placeholder="Main tasks and responsibilities" formControlName="job_description"></textarea>
+        @if (invalid('job_description')) {
+          <p class="field-error">Describe the job briefly.</p>
+        }
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="label" for="job-start">Start</label>
+          <input id="job-start" type="date" class="input" formControlName="start_date" />
+        </div>
+        <div>
+          <label class="label" for="job-end">End</label>
+          <input id="job-end" type="date" class="input" formControlName="end_date" />
+        </div>
+      </div>
+      @if (jobForm.hasError('dateRangeInvalid')) {
+        <p class="field-error">The end date has to be after the start date.</p>
+      } @else if (invalid('start_date') || invalid('end_date')) {
+        <p class="field-error">Choose both dates.</p>
+      }
+    </div>
+
+    <div class="mt-6 flex justify-end">
+      <button type="submit" class="btn btn-primary" [disabled]="savingJob()">
+        @if (savingJob()) {
+          <app-icon name="circle-notch" [size]="16" class="animate-spin" />
+        }
+        Save job
+      </button>
+    </div>
+  </form>
+
+  <!-- Schedule -->
+  <section class="card card-pad">
+    <h2 class="section-title">Weekly schedule</h2>
+    <p class="mt-1 text-sm text-slate-500">The days and hours the trainee is expected at work.</p>
+
+    <ul class="mt-5 space-y-2">
+      @for (row of days(); track row.day) {
+        <li class="flex items-center gap-3 rounded-lg px-3 py-2 ring-1 ring-inset transition"
+          [class]="row.works ? 'bg-white ring-slate-200' : 'bg-slate-50 ring-transparent'">
+          <label class="flex w-32 shrink-0 cursor-pointer items-center gap-2.5">
+            <input type="checkbox" class="h-4 w-4 rounded border-slate-300 text-brand-700 focus:ring-brand-600" [checked]="row.works" (change)="toggleDay(row)" />
+            <span class="text-sm font-medium" [class]="row.works ? 'text-slate-900' : 'text-slate-400'">{{ row.day }}</span>
+          </label>
+          @if (row.works) {
+            <input type="time" class="input h-9 flex-1" [value]="row.start" [attr.aria-label]="row.day + ' start'" (change)="setTime(row, 'start', $any($event.target).value)" />
+            <span class="text-slate-400">–</span>
+            <input type="time" class="input h-9 flex-1" [value]="row.end" [attr.aria-label]="row.day + ' end'" (change)="setTime(row, 'end', $any($event.target).value)" />
+          } @else {
+            <span class="text-sm text-slate-400">Off</span>
+          }
+        </li>
+      }
+    </ul>
+
+    <div class="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-between">
+      @if (hasSchedule()) {
+        <button type="button" class="btn btn-danger-ghost" (click)="clearSchedule()">Clear schedule</button>
+      } @else {
+        <span></span>
+      }
+      <button type="button" class="btn btn-primary" [disabled]="savingSchedule()" (click)="saveSchedule()">
+        @if (savingSchedule()) {
+          <app-icon name="circle-notch" [size]="16" class="animate-spin" />
+        }
+        Save schedule
+      </button>
+    </div>
+  </section>
+</div>
