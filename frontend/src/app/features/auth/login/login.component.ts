@@ -47,16 +47,16 @@ export class LoginComponent {
           switch (this.session.role()) {
             case 'admin':
             case 'superadmin':
-              this.router.navigate(['admin-users']);
+              this.router.navigate(['/admin/users']);
               break;
             case 'student':
-              this.router.navigate(['student-dashboard']);
+              this.router.navigate(['/student/dashboard']);
               break;
             case 'advisor':
-              this.router.navigate(['coord-dashboard']);
+              this.router.navigate(['/coordinator/dashboard']);
               break;
             case 'supervisor':
-              this.router.navigate(['supervisor-dashboard']);
+              this.router.navigate(['/supervisor/dashboard']);
               break;
             default:
               alert("User's role is unhandled.")

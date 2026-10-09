@@ -23,7 +23,7 @@ export const studentHoursWorkedGuard: CanActivateFn = (childRoute: ActivatedRout
           text: "Only students who have met 200 total hours of training can access this page.",
           icon: 'warning',
         })
-        router.navigate(['student-dashboard']);
+        router.navigate(['/student/dashboard']);
         return false;
       }
     })

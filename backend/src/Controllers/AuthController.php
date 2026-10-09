@@ -105,7 +105,7 @@ final class AuthController extends Controller
             );
             $this->completeProfile($request, $role, $email);
 
-            $link = $this->config->frontendUrl . '/activateaccount?token=' . $activationToken;
+            $link = $this->config->frontendUrl . '/activate-account?token=' . $activationToken;
             $this->sendMail($email, 'Account Activation', "Click <a href=\"$link\">here</a> to activate your account.");
         });
 
@@ -172,7 +172,7 @@ final class AuthController extends Controller
 
         $this->db->transaction(function () use ($email, $token, $tokenHash, $expiresAt) {
             $this->users->setResetToken($email, $tokenHash, $expiresAt);
-            $link = $this->config->frontendUrl . '/resetpassword?token=' . $token;
+            $link = $this->config->frontendUrl . '/reset-password?token=' . $token;
             $this->sendMail($email, 'Password Reset', "Click <a href=\"$link\">here</a> to reset your password.");
         });
 

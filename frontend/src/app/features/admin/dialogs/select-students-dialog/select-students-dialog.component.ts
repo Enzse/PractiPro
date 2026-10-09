@@ -10,10 +10,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { OrdinalPipe } from '../../../../shared/pipes/ordinal.pipe';
 import { StudentService } from '../../../../core/api/student.service';
 import { ClassService } from '../../../../core/api/class.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-select-students-dialog',
-    imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, OrdinalPipe],
+    imports: [RouterLink, ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, OrdinalPipe],
     templateUrl: './select-students-dialog.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './select-students-dialog.component.css'

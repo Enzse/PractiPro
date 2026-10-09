@@ -55,7 +55,7 @@ export class JoinClassesComponent implements OnInit, OnDestroy {
       ).subscribe((student: any) => {
         this.student = student;
         if (student.block) {
-          this.router.navigate(['student-dashboard']);
+          this.router.navigate(['/student/dashboard']);
         }
         this.loadClasses();
       }));

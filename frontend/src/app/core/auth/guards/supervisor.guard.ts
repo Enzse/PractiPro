@@ -12,12 +12,12 @@ export const supervisorGuard: CanActivateChildFn = (childRoute: ActivatedRouteSn
       return true;
     }
     else {
-      router.navigate(['login']);
+      router.navigate(['/login']);
       alert("You don't have access to this page.");
       return false;
     }
   } else {
-    router.navigate(['login']);
+    router.navigate(['/login']);
     alert("Unauthorized Access. (Really? Did you seriously think that would work?)");
     return false;
   }

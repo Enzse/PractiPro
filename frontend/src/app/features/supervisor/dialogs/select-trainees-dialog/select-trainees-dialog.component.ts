@@ -68,7 +68,7 @@ export class SelectTraineesDialogComponent implements OnInit, OnDestroy {
   }
 
   hireStudents() {
-    this.router.navigate(['supervisor-hirestudents']);
+    this.router.navigate(['/supervisor/hire-students']);
     this.dialog.close();
   }
 

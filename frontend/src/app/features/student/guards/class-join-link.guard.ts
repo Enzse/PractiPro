@@ -13,7 +13,7 @@ export const classJoinLinkGuard: CanActivateFn = (childRoute: ActivatedRouteSnap
             return true;
         }
         else {
-            router.navigate(['login']);
+            router.navigate(['/login']);
             alert("This page is for students only.");
             return false;
         }

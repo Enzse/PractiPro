@@ -212,6 +212,6 @@ final class ClassJoinController extends Controller
 
     private function linkUrl(string $token): string
     {
-        return $this->config->frontendUrl . '/joinclassbylink?token=' . $token;
+        return $this->config->frontendUrl . '/join-class?token=' . $token;
     }
 }

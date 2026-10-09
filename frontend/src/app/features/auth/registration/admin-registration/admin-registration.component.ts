@@ -55,7 +55,7 @@ export class AdminRegistrationComponent implements OnInit {
     if (this.registerform.valid) {
       this.authApi.register(this.registerform.getRawValue()).subscribe(
         () => {
-          this.router.navigate(['login']);
+          this.router.navigate(['/login']);
           Swal.fire({
             title: 'Registration Successful!',
             text: 'Please wait for super-admin activation.',

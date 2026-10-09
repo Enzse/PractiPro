@@ -71,7 +71,7 @@ export class SentInvitesDialogComponent {
 
   goToInvites() {
     this.dialogRef.close();
-    this.router.navigate(['coord-invitestudents/invite-by-studentid'])
+    this.router.navigate(['/coordinator/invite-students/by-student-id'])
   }
 
   cancelInvitation(id: any) {

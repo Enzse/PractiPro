@@ -24,7 +24,7 @@ export const studentClassGuard: CanActivateFn = (childRoute: ActivatedRouteSnaps
                     // icon: 'warning'
                     // footer: "(You can join classes via <b>class invitation</b> or <b>class join requests</b>.)"
                 })
-                router.navigate(['student-join-classes']);
+                router.navigate(['/student/join-classes']);
                 return false;
             }
         })

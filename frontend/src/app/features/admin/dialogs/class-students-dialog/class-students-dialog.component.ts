@@ -53,7 +53,7 @@ export class ClassStudentsDialogComponent {
   }
 
   redirect() {
-    this.router.navigate(['admin-students'])
+    this.router.navigate(['/admin/students'])
     this.dialog.close();
   }
 }

@@ -43,7 +43,7 @@ export class StudentRegistrationComponent implements OnInit {
   proceedregistration() {
     if (this.registerform.valid) {
       this.authApi.register(this.registerform.getRawValue()).subscribe(() => {
-        this.router.navigate(['login']);
+        this.router.navigate(['/login']);
         Swal.fire({
           title: "Email Confirmation Sent!",
           text: "Please check your email for account activation.",

@@ -60,7 +60,7 @@ export class SupervisorRegistrationComponent implements OnInit {
     if (this.registerform.valid) {
       this.authApi.register(this.registerform.getRawValue()).subscribe(
         () => {
-          this.router.navigate(['login']);
+          this.router.navigate(['/login']);
           Swal.fire({
             title: 'Email Confirmation Sent!',
             text: 'Please check your email for account activation. An administrator will also need to approve your account before you can log in.',

@@ -23,7 +23,7 @@ export const studentRequirementsGuard: CanActivateFn = (childRoute: ActivatedRou
           text: "Please clear your registration status first to access this page.",
           icon: 'warning',
         })
-        router.navigate(['student-dashboard']);
+        router.navigate(['/student/dashboard']);
         return false;
       }
     })

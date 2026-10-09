@@ -55,7 +55,7 @@ export class ResetPasswordComponent implements OnInit {
   proceedReset() {
     if (this.passwordForm.valid) {
       this.authApi.resetPassword(this.passwordForm.getRawValue()).subscribe(() => {
-        this.router.navigate(['login']);
+        this.router.navigate(['/login']);
         Swal.fire({
           title: "Password Reset Successful!",
           text: "Be sure to remember your new password.",

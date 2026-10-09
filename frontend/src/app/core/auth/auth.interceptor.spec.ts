@@ -15,7 +15,7 @@ describe('authInterceptor', () => {
     beforeEach(() => {
         router = {
             navigate: vi.fn().mockName("Router.navigate"),
-            url: '/student-dashboard'
+            url: '/student/dashboard'
         };
         TestBed.configureTestingModule({
             providers: [
@@ -60,7 +60,7 @@ describe('authInterceptor', () => {
         });
 
         expect(sessionStorage.getItem('token')).toBeNull();
-        expect(router.navigate).toHaveBeenCalledWith(['login'], { queryParams: { returnUrl: '/student-dashboard' } });
+        expect(router.navigate).toHaveBeenCalledWith(['/login'], { queryParams: { returnUrl: '/student/dashboard' } });
     });
 
     it('leaves other 401s, like an expired join link, to the page', () => {

@@ -48,7 +48,7 @@ export class ClassInvitationsDialogComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.studentApi.joinClass(invitation.student_id, invitationData.getRawValue()).subscribe((res) => {
         this.dialogref.close();
-        this.router.navigate(['student-dashboard']);
+        this.router.navigate(['/student/dashboard']);
         Swal.fire({
           title: `Successfully joined ${invitation.class}!`,
           text: "You are now able with proceed to your registration process.",

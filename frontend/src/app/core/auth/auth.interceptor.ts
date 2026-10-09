@@ -25,7 +25,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       // 401s, such as an expired join link, are left for the page to handle.
       if (isApiRequest && error.status === 401 && error.headers.get('WWW-Authenticate')) {
         session.clear();
-        router.navigate(['login'], { queryParams: { returnUrl: router.url } });
+        router.navigate(['/login'], { queryParams: { returnUrl: router.url } });
       }
       return throwError(() => error);
     }),

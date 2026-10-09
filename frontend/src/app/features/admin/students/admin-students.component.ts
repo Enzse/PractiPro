@@ -77,7 +77,7 @@ export class AdminStudentsComponent implements OnInit, OnDestroy {
         this.studentlist = this.studentlist.filter((user: any) => user.program === 'BSEMC');
         break;
       case 'classes':
-        this.router.navigate(["admin-classes"]);
+        this.router.navigate(["/admin/classes"]);
         break;
     }
   }
