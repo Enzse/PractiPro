@@ -11,7 +11,7 @@ export const ADMIN_ROUTES: Routes = [
       { path: 'admin-users', loadComponent: () => import('./users/admin-users.component').then(m => m.AdminUsersComponent), title: 'Users' },
       { path: 'admin-admins', loadComponent: () => import('./admins/admin-admins.component').then(m => m.AdminAdminsComponent), title: 'Admins' },
       { path: 'admin-students', loadComponent: () => import('./students/admin-students.component').then(m => m.AdminStudentsComponent), title: 'Students' },
-      { path: 'admin-coordinators', loadComponent: () => import('./coordinators/admin-coordinators.component').then(m => m.AdminCoordinatorsComponent), title: 'Advisors' },
+      { path: 'admin-coordinators', loadComponent: () => import('./coordinators/admin-coordinators.component').then(m => m.AdminCoordinatorsComponent), title: 'Coordinators' },
       { path: 'admin-classes', loadComponent: () => import('./classes/admin-classes.component').then(m => m.AdminClassesComponent), title: 'Classes' },
     ],
   },

@@ -2,6 +2,7 @@ import { DayPipe } from './day.pipe';
 import { FilterPipe } from './filter.pipe';
 import { OrdinalPipe } from './ordinal.pipe';
 import { TimePipe } from './time.pipe';
+import { RoleLabelPipe } from './role-label.pipe';
 
 describe('DayPipe', () => {
   const pipe = new DayPipe();
@@ -57,5 +58,15 @@ describe('TimePipe', () => {
 
   it('shows "No work" for a day without hours', () => {
     expect(pipe.transform('00:00:00', '00:00:00')).toBe('No work');
+  });
+});
+
+describe('RoleLabelPipe', () => {
+  const pipe = new RoleLabelPipe();
+
+  it('shows the advisor role as Coordinator', () => {
+    expect(pipe.transform('advisor')).toBe('Coordinator');
+    expect(pipe.transform('superadmin')).toBe('Super Admin');
+    expect(pipe.transform(null)).toBe('');
   });
 });

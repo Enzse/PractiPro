@@ -13,11 +13,12 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SessionService } from '../../../core/auth/session.service';
 import { UserService } from '../../../core/api/user.service';
 import { Role } from '../../../core/models/user';
+import { RoleLabelPipe } from '../../../shared/pipes/role-label.pipe';
 
 
 @Component({
     selector: 'app-admin-admins',
-    imports: [CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, NgxPaginationModule],
+    imports: [RoleLabelPipe, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, NgxPaginationModule],
     templateUrl: './admin-admins.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-admins.component.css'

@@ -14,10 +14,11 @@ import { Subscription } from 'rxjs';
 import { SessionService } from '../../../core/auth/session.service';
 import { UserService } from '../../../core/api/user.service';
 import { Role } from '../../../core/models/user';
+import { RoleLabelPipe } from '../../../shared/pipes/role-label.pipe';
 
 @Component({
     selector: 'app-admin-users',
-    imports: [MatMenuModule, MatButtonModule, MatTooltipModule, CommonModule, FormsModule, FilterPipe, NgxPaginationModule],
+    imports: [RoleLabelPipe, MatMenuModule, MatButtonModule, MatTooltipModule, CommonModule, FormsModule, FilterPipe, NgxPaginationModule],
     templateUrl: './admin-users.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-users.component.css'

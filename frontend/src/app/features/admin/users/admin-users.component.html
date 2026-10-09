@@ -42,7 +42,7 @@
                     </li>
                     <li>
                       <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
-                      (click)="setFilter('advisor')">All Advisors</button>
+                      (click)="setFilter('advisor')">All Coordinators</button>
                     </li>
                     <li>
                       <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
@@ -119,7 +119,7 @@
                     }
                   </td>
                   <td class="px-6 py-4">
-                    {{ user.role }}
+                    {{ user.role | roleLabel }}
                   </td>
                   <td class="px-6 py-4 flex justify-center gap-2">
                     @if (!user.approved_at) {

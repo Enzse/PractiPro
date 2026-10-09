@@ -116,7 +116,7 @@ export class JoinClassesComponent implements OnInit, OnDestroy {
           this.classJoinApi.requestToJoin(this.joinRequest.value).subscribe((res) => {
             Swal.fire({
               title: 'Request to Join Sent!',
-              text: 'Please wait for the class advisor to accept you into the class',
+              text: 'Please wait for the class coordinator to accept you into the class',
               icon: 'success',
             });
             this.loadExistingRequest();

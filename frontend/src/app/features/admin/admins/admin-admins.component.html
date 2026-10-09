@@ -71,7 +71,7 @@
                     }
                   </td>
                   <td class="px-6 py-4">
-                    {{ user.role }}
+                    {{ user.role | roleLabel }}
                   </td>
                   <td class="px-6 py-4">
                     <a (click)="Updateuser(user.id)" [ngClass]="{'disabled': !isUpdateButtonVisible(user.role)}"

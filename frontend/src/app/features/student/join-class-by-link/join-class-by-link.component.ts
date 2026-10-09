@@ -70,7 +70,7 @@ export class JoinClassByLinkComponent implements OnInit, OnDestroy {
                 if (error.status === 401) {
                   Swal.fire({
                     title: 'Token expired!',
-                    text: 'Please ask your advisor for a fresh new token.',
+                    text: 'Please ask your coordinator for a fresh new token.',
                     icon: 'warning',
                   })
                 }

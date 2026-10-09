@@ -121,7 +121,7 @@ export class FinalReportComponent implements OnInit, OnDestroy {
           this.reportApi.createFinalReport(this.exitPollForm.value).subscribe((res) => {
             Swal.fire({
               title: `Successfully submitted record`,
-              text: `Please wait for your advisor's feedback.`,
+              text: `Please wait for your coordinator's feedback.`,
               icon: "success",
               timer: 3000,
               timerProgressBar: true,
