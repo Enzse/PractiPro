@@ -22,11 +22,11 @@ export class CoordSidebarComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog, private blockService: BlockService) { }
 
   selectedBlock: any;
-  coordinatorId: any;
+  coordinatorId: number | undefined;
   private subscriptions = new Subscription();
 
   ngOnInit(): void {
-    this.coordinatorId = this.session.userId();
+    this.coordinatorId = this.session.requireUserId();
     this.openClassesPopup();
   }
 

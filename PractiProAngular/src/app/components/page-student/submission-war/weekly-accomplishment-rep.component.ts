@@ -14,6 +14,7 @@ import { TimePipe } from '../../../pipes/time.pipe';
 import { SessionService } from '../../../services/session.service';
 import { SubmissionService } from '../../../services/api/submission.service';
 import { WarService } from '../../../services/api/war.service';
+import { WarRecord } from '../../../models/records';
 
 
 @Component({
@@ -28,13 +29,21 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   private readonly submissionApi = inject(SubmissionService);
   private readonly warApi = inject(WarService);
   searchweek: any;
-  userId: any;
+  userId: number;
   datalist: any[] = [];
   origlist: any;
   searchtext: any;
   tabWeekNumbers: number[] = [1];
   selectedTabWeek: number = 1;
-  selectedRecord: any;
+  selectedRecord: WarRecord | undefined;
+
+  /** The id of the weekly report being edited. */
+  private get selectedRecordId(): number {
+    if (!this.selectedRecord) {
+      throw new Error('No weekly report is selected.');
+    }
+    return this.selectedRecordId;
+  }
   selectedRecordActivities: any[] = [];
   initialRecordActivities: any[] = [];
   private subscriptions = new Subscription();
@@ -44,7 +53,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
 
 
   constructor(private dialog: MatDialog) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
   }
 
   ngOnDestroy(): void {
@@ -127,7 +136,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       ...activity,
       war_id: this.selectedRecord?.id
     }));
-    this.warApi.clearActivities(this.selectedRecord.id).subscribe(res => {
+    this.warApi.clearActivities(this.selectedRecordId).subscribe(res => {
       this.selectedRecordActivities.forEach(activity => {
         this.warApi.addActivity(activity).subscribe((res) => {
         }
@@ -178,7 +187,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       if (result.isConfirmed) {
         const recordSubmitted = {
           isSubmitted: 1,
-          id: this.selectedRecord.id,
+          id: this.selectedRecordId,
           status: 'Pending'
         };
         this.subscriptions.add(
@@ -279,7 +288,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   unsubmitWarRecord() {
     const recordSubmitted = {
       isSubmitted: 0,
-      id: this.selectedRecord.id,
+      id: this.selectedRecordId,
       status: null
     }
     this.subscriptions.add(

@@ -20,7 +20,7 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
   private readonly session = inject(SessionService);
   private readonly submissionApi = inject(SubmissionService);
   private readonly reportApi = inject(ReportService);
-  userId: any;
+  userId: number;
   datalist: any[] = [];
   existingEvaluation: any;
   evaluationForm: any;
@@ -32,7 +32,7 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogref: MatDialogRef<SpvEvaluationpopupComponent>,
     private el: ElementRef) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
 
     this.evaluationForm = this.builder.group({
       supervisor_id: this.userId,

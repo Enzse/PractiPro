@@ -10,6 +10,7 @@ import { SessionService } from '../../../services/session.service';
 import { StudentService } from '../../../services/api/student.service';
 import { CompanyService } from '../../../services/api/company.service';
 import { MediaService } from '../../../services/api/media.service';
+import { Supervisor } from '../../../models/company';
 
 @Component({
     selector: 'app-supervisor-evaluation',
@@ -23,15 +24,15 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
   private readonly studentApi = inject(StudentService);
   private readonly companyApi = inject(CompanyService);
   private readonly mediaApi = inject(MediaService);
-  userId: any;
-  user: any;
+  userId: number;
+  user: Supervisor | undefined;
   traineesList: any[] = [];
   avatarUrl?: SafeUrl;
   searchtext: any;
   private subscriptions = new Subscription();
 
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
     this.subscriptions.add(
       this.companyApi.supervisor(this.userId).subscribe((res) => {
         this.user = res.payload[0];

@@ -15,7 +15,7 @@ import { ClassJoinService } from '../../../../services/api/class-join.service';
 })
 export class InvitestudentsByLinkComponent implements OnInit, OnDestroy {
   private readonly classJoinApi = inject(ClassJoinService);
-  link: any;
+  link: string | undefined;
   private subscriptions = new Subscription();
   constructor(
     private builder: NonNullableFormBuilder,

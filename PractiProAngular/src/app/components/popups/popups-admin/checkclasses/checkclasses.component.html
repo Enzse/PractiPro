@@ -1,6 +1,6 @@
 <div class="p-3 rounded-md shadow-xl">
   <h1 class="mb-2 text-orange-500 font-bold ml-1">Classes handled by: {{currentuser?.first_name}} {{currentuser?.last_name}}</h1>
-  @if (datalist?.length > 0) {
+  @if (datalist && datalist.length > 0) {
     <div
       class="overflow-auto max-h-96 shadow-md shadow-slate-400 sm:rounded-lg">
       <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">

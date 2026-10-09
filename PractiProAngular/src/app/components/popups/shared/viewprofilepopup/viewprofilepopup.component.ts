@@ -8,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { StudentService } from '../../../../services/api/student.service';
 import { CompanyService } from '../../../../services/api/company.service';
 import { MediaService } from '../../../../services/api/media.service';
+import { StudentOjtStatus } from '../../../../models/student';
+import { WithAvatar } from '../../../../models/display';
 
 @Component({
     selector: 'app-viewprofilepopup',
@@ -20,7 +22,7 @@ export class ViewprofilepopupComponent implements OnInit, OnDestroy {
   private readonly studentApi = inject(StudentService);
   private readonly companyApi = inject(CompanyService);
   private readonly mediaApi = inject(MediaService);
-  studentProfile: any;
+  studentProfile: WithAvatar<StudentOjtStatus> | undefined;
   avatarUrl?: SafeUrl;
   private subscriptions = new Subscription();
   companyView = false;
@@ -40,16 +42,16 @@ export class ViewprofilepopupComponent implements OnInit, OnDestroy {
   loadInfo() {
     this.subscriptions.add(
       this.studentApi.ojtStatus(this.data.student_id).subscribe((res) => {
-          this.studentProfile = res.payload[0];
-          this.studentProfile.avatar = '';
-          this.mediaApi.avatar(this.studentProfile.id).subscribe((avatarRes: any) => {
+          const profile: WithAvatar<StudentOjtStatus> = { ...res.payload[0], avatar: '' };
+          this.studentProfile = profile;
+          this.mediaApi.avatar(profile.id).subscribe((avatarRes) => {
             if (avatarRes.size > 0) {
               const url = URL.createObjectURL(avatarRes);
-              this.studentProfile.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+              profile.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
             }
           });
-          if (this.studentProfile.company_id) {
-            this.loadCompany(this.studentProfile.company_id);
+          if (profile.company_id) {
+            this.loadCompany(profile.company_id);
           }
         }));
   }

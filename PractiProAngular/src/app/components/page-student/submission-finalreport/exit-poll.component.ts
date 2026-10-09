@@ -24,14 +24,14 @@ import { ReportService } from '../../../services/api/report.service';
 export class ExitPollComponent implements OnInit, OnDestroy {
   private readonly session = inject(SessionService);
   private readonly reportApi = inject(ReportService);
-  userId: any;
+  userId: number;
   existingReport: any;
   p: number = 1;
   private subscriptions = new Subscription();
   exitPollForm: any;
 
   constructor(private el: ElementRef, private builder: NonNullableFormBuilder, private dialog: MatDialog) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
     this.exitPollForm = this.builder.group({
       user_id: this.userId,
       p1q1: ['', Validators.required],

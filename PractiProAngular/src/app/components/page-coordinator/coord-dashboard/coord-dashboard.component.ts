@@ -15,6 +15,8 @@ import { SessionService } from '../../../services/session.service';
 import { ClassService } from '../../../services/api/class.service';
 import { ClassJoinService } from '../../../services/api/class-join.service';
 import { ReportService } from '../../../services/api/report.service';
+import { ClassProfile } from '../../../models/class';
+import { ClassPendingSubmissions, StudentPendingSubmissions } from '../../../models/student';
 
 
 @Component({
@@ -29,14 +31,14 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   private readonly classApi = inject(ClassService);
   private readonly classJoinApi = inject(ClassJoinService);
   private readonly reportApi = inject(ReportService);
-  userId: any;
+  userId: number;
   private subscriptions = new Subscription();
-  blockData: any;
+  blockData: ClassProfile | undefined;
   requestCount: any;
   invitationCount: any = 0;
   currentBlock: any;
-  pendingSubmissions: any;
-  pendingSubmissionsTotal: any;
+  pendingSubmissions: StudentPendingSubmissions[] | undefined;
+  pendingSubmissionsTotal: ClassPendingSubmissions | undefined;
 
   /* percentage data */
   registered: any;
@@ -51,7 +53,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   options2: any;
 
   constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, @Inject(PLATFORM_ID) private platformId: Object, private blockService: BlockService) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
 
     this.options = {
       plugins: {

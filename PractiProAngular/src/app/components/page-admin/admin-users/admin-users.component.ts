@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 import { SessionService } from '../../../services/session.service';
 import { UserService } from '../../../services/api/user.service';
+import { Role } from '../../../models/user';
 
 @Component({
     selector: 'app-admin-users',
@@ -25,14 +26,14 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   private readonly session = inject(SessionService);
   private readonly userApi = inject(UserService);
   private subscription = new Subscription();
-  userId: any;
+  userId: number;
   searchtext: any; //FOR SEARCH FILTER
   userlist: any; //ARRAY OF ALL USERS FETCHED FROM DATABASE
   origlist: any;
-  userrole: any; //ROLE OF USER THE IS LOGGED IN (to check if admin / superadmin)
+  userrole: Role | null | undefined; //ROLE OF USER THE IS LOGGED IN (to check if admin / superadmin)
   p: number = 1; /* starting no. of the list */
   constructor(private dialog: MatDialog) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
   }
 
 

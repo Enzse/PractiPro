@@ -8,6 +8,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SessionService } from '../../../services/session.service';
 import { StudentService } from '../../../services/api/student.service';
 import { CompanyService } from '../../../services/api/company.service';
+import { StudentOjtStatus } from '../../../models/student';
+import { Job } from '../../../models/company';
 
 @Component({
     selector: 'app-dashboard',
@@ -22,14 +24,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private readonly companyApi = inject(CompanyService);
 
   constructor(private dialog: MatDialog) { }
-  registrationStatus: any;
+  registrationStatus: number | null | undefined;
   studentRequirements: any[] = [];
-  student: any;
-  studentjob: any;
+  student: StudentOjtStatus | undefined;
+  studentjob: Job | undefined;
   hiringRequests: any[] = [];
   isCompleted: boolean = false;
   private subscriptions = new Subscription();
-  userId: any = this.session.userId();
+  userId: any = this.session.requireUserId();
   schedules = [
     { day_of_week: 'Monday', start_time: '', end_time: '' },
     { day_of_week: 'Tuesday', start_time: '', end_time: '' },
@@ -63,12 +65,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.subscriptions.add(
         this.studentApi.ojtStatus(this.userId).subscribe((res) => {
             this.registrationStatus = res.payload[0].registration_status;
-            this.student = res.payload[0];
+            const student = res.payload[0];
+            this.student = student;
 
-            if (this.student.TotalHoursWorked >= 200 &&
-              this.student.TotalSeminarHours >= 50 &&
-              this.student.evaluation_status === 'Completed!' &&
-              this.student.exitpoll_status === 'Completed!') {
+            if (Number(student.TotalHoursWorked) >= 200 &&
+              Number(student.TotalSeminarHours) >= 50 &&
+              student.evaluation_status === 'Completed!' &&
+              student.exitpoll_status === 'Completed!') {
               this.isCompleted = true;
             }
 

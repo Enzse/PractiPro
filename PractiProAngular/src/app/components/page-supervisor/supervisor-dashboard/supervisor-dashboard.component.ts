@@ -13,6 +13,7 @@ import { SessionService } from '../../../services/session.service';
 import { StudentService } from '../../../services/api/student.service';
 import { CompanyService } from '../../../services/api/company.service';
 import { MediaService } from '../../../services/api/media.service';
+import { Supervisor } from '../../../models/company';
 
 @Component({
     selector: 'app-supervisor-dashboard',
@@ -26,15 +27,15 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   private readonly studentApi = inject(StudentService);
   private readonly companyApi = inject(CompanyService);
   private readonly mediaApi = inject(MediaService);
-  userId: any;
-  user: any;
+  userId: number;
+  user: Supervisor | undefined;
   traineesList: any[] = [];
   avatarUrl?: SafeUrl;
   searchtext: any;
   private subscriptions = new Subscription();
 
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
     this.subscriptions.add(
       this.companyApi.supervisor(this.userId).subscribe((res) => {
         this.user = res.payload[0];
@@ -85,7 +86,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
       exitAnimationDuration: "500ms",
       width: '90%',
       data: {
-        company_id: this.user.company_id,
+        company_id: this.user?.company_id,
         supervisor_id: this.userId
       }
     });

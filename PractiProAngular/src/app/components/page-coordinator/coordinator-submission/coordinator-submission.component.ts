@@ -14,6 +14,7 @@ import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 import { StudentService } from '../../../services/api/student.service';
+import { StudentOjtStatus } from '../../../models/student';
 
 
 @Component({
@@ -28,7 +29,7 @@ export class CoordinatorSubmissionComponent implements OnInit, OnDestroy {
 
   constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, private blockService: BlockService) { }
   students: any;
-  studentlist: any;
+  studentlist: StudentOjtStatus[] | undefined;
   searchtext: any;
   currentBlock: any;
   private subscriptions = new Subscription();

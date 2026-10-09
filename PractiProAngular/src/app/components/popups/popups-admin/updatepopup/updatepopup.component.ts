@@ -4,6 +4,7 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { UserService } from '../../../../services/api/user.service';
+import { RoleOption, User } from '../../../../models/user';
 
 @Component({
     selector: 'app-updatepopup',
@@ -17,8 +18,8 @@ export class UpdatepopupComponent implements OnInit {
   constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<UpdatepopupComponent>) { }
 
-  rolelist: any;
-  editdata: any;
+  rolelist: RoleOption[] | undefined;
+  editdata: User | undefined;
   userrole: any;
 
 
@@ -38,13 +39,12 @@ export class UpdatepopupComponent implements OnInit {
       this.userApi.get(this.data.usercode).subscribe((res) => {
         this.editdata = res.payload[0]; // Access data from the payload property
         this.updateform.setValue({
-          id: this.editdata.id,
+          id: String(this.editdata.id),
           firstName: this.editdata.firstName,
           lastName: this.editdata.lastName,
           email: this.editdata.email,
-          password: this.editdata.password,
           role: this.editdata.role,
-          isActive: this.editdata.isActive
+          isActive: this.editdata.isActive === 1
         });
 
       })
@@ -61,7 +61,6 @@ export class UpdatepopupComponent implements OnInit {
     firstName: this.builder.control(''),
     lastName: this.builder.control(''),
     email: this.builder.control(''),
-    password: this.builder.control(''),
     role: this.builder.control('', Validators.required),
     isActive: this.builder.control(false)
   });

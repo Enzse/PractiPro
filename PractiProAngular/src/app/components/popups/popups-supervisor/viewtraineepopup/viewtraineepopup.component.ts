@@ -8,6 +8,7 @@ import { TimePipe } from '../../../../pipes/time.pipe';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { CompanyService } from '../../../../services/api/company.service';
+import { Job } from '../../../../models/company';
 
 @Component({
     selector: 'app-viewtraineepopup',
@@ -18,7 +19,7 @@ import { CompanyService } from '../../../../services/api/company.service';
 })
 export class ViewtraineepopupComponent implements OnInit, OnDestroy {
   private readonly companyApi = inject(CompanyService);
-  studentjob: any
+  studentjob: Job | undefined
   changeDetected: any;
   schedules = [
     { day_of_week: 'Monday', start_time: '', end_time: '' },

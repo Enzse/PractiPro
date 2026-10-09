@@ -22,11 +22,11 @@ export class ProfileComponent implements OnInit {
   private readonly studentApi = inject(StudentService);
   private readonly mediaApi = inject(MediaService);
   studentProfile: any[] = [];
-  userId = this.session.userId();
+  userId = this.session.requireUserId();
   avatarUrl?: SafeUrl;
 
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.session.userId();    
+    this.userId = this.session.requireUserId();    
   }
 
 

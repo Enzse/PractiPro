@@ -19,7 +19,7 @@ import { SeminarService } from '../../../../services/api/seminar.service';
 export class AddcertificatepopupComponent {
   private readonly session = inject(SessionService);
   private readonly seminarApi = inject(SeminarService);
-  userId: any
+  userId: number
   file: any;
   pdfPreview?: SafeResourceUrl;
   constructor(
@@ -27,7 +27,7 @@ export class AddcertificatepopupComponent {
     private dialogRef: MatDialogRef<AddcertificatepopupComponent>,
     private changeDetection: ChangeDetectionService,
     private sanitizer: DomSanitizer) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
   }
 
   onFileChange(event: any) {

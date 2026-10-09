@@ -32,7 +32,7 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
   private readonly studentApi = inject(StudentService);
   private readonly submissionApi = inject(SubmissionService);
   private readonly seminarApi = inject(SeminarService);
-  userId: any;
+  userId: number;
   user$: Observable<any>;
   datalist: any[] = [];
   origlist: any;
@@ -40,7 +40,7 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
     this.user$ = this.studentApi.ojtStatus(this.userId).pipe(
       map((res: any) => res.payload[0])
     );

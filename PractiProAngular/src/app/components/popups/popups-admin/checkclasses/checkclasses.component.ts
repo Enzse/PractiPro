@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
 import { ClassService } from '../../../../services/api/class.service';
+import { ClassProfile, Coordinator } from '../../../../models/class';
 
 @Component({
     selector: 'app-checkclasses',
@@ -23,8 +24,8 @@ export class CheckclassesComponent {
   constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CheckclassesComponent>) { }
 
-  datalist: any;
-  currentuser: any;
+  datalist: ClassProfile[] | undefined;
+  currentuser: Coordinator | undefined;
 
   ngOnInit(): void {
     if (this.data.usercode != null && this.data.usercode != '') {

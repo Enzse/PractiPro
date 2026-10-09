@@ -21,12 +21,12 @@ export class SupervisorWarComponent {
   private readonly session = inject(SessionService);
   private readonly studentApi = inject(StudentService);
   private readonly mediaApi = inject(MediaService);
-  userId: any;
+  userId: number;
   traineesList$: Observable<any[]>;
   searchtext: any;
 
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
     this.traineesList$ = this.loadTraineesWithAvatars()
 
     this.traineesList$.subscribe(trainees => {

@@ -7,6 +7,8 @@ import Swal from 'sweetalert2';
 import { SessionService } from '../../../services/session.service';
 import { StudentService } from '../../../services/api/student.service';
 import { ClassJoinService } from '../../../services/api/class-join.service';
+import { JoinLink } from '../../../models/class';
+import { Student } from '../../../models/student';
 
 @Component({
     selector: 'app-joinclasses-by-link',
@@ -22,9 +24,9 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   token: any;
   status: any;
-  userID: any = this.session.userId();
-  tokenData: any;
-  student: any;
+  userID: any = this.session.requireUserId();
+  tokenData: JoinLink | undefined;
+  student: Student | undefined;
 
   constructor(
     private builder: NonNullableFormBuilder,
@@ -58,7 +60,7 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
                   }).subscribe((res) => {
                     this.status = 'valid';
                     Swal.fire({
-                      title: `Successfully joined ${this.tokenData.class}!`,
+                      title: `Successfully joined ${this.tokenData?.class}!`,
                       icon: 'success',
                     })
                   }));

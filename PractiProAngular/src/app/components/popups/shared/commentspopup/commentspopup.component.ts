@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { SessionService } from '../../../../services/session.service';
 import { UserService } from '../../../../services/api/user.service';
 import { CommentService } from '../../../../services/api/comment.service';
+import { Comment } from '../../../../models/records';
+import { User } from '../../../../models/user';
 
 @Component({
     selector: 'app-commentspopup',
@@ -21,9 +23,9 @@ export class CommentspopupComponent implements OnInit {
 
   fileID: number;
   fileName: string;
-  commentsList: any;
-  user: any;
-  userName: any;
+  commentsList: Comment[] | undefined;
+  user: User | undefined;
+  userName: string | undefined;
 
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private builder: NonNullableFormBuilder, private dialog: MatDialogRef<CommentspopupComponent>) {

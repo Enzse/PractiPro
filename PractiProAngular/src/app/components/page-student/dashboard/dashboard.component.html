@@ -15,7 +15,7 @@
         class="bg-slate-50 rounded-lg w-full p-5 mb-10 shadow-md font-secondary text-center border border-gray-200">
         <div>
           <h1 class="text-blue-900 font-bold font-primary text-center text-3xl mb-5">
-            Congratulations, <span class="text-orange-500">{{student.firstName}}</span>!
+            Congratulations, <span class="text-orange-500">{{student?.firstName}}</span>!
           </h1>
           <div class="border-b border-gray-300"></div>
           <div class="flex-col max-sm:gap-2 pt-5 pb-3 px-5">
@@ -245,20 +245,20 @@
         </div>
         <div class="flex flex-col md:flex-row justify-evenly">
           <div class="flex flex-col justify-center p-10 m-5 shadow-md hover:shadow-xl rounded-xl bg-white">
-            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalHoursWorked || '0.00'}}<span
+            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student?.TotalHoursWorked || '0.00'}}<span
             class="text-sm">hrs</span></h1>
             <h2 matTooltip="You must meet a total of 200+ hours to be completed in Training Hours."
             class="font-primary text-sm">Total Training Hours Accumulated</h2>
           </div>
           <div class="flex flex-col justify-center p-10 m-5 shadow-md hover:shadow-xl  rounded-xl bg-white">
-            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student.TotalSeminarHours || '0.00'}}<span
+            <h1 class="font-primary font-bold text-blue-800 text-5xl">{{student?.TotalSeminarHours || '0.00'}}<span
             class="text-sm">hrs</span></h1>
             <h2 matTooltip="You must meet a total of 50+ hours to be completed in Seminar Hours."
             class="font-primary text-sm">Total Seminar Hours Accumulated</h2>
           </div>
         </div>
         <!-- IF STUDENT IS HIRED -->
-        @if (student.company_id) {
+        @if (student?.company_id) {
           <div class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
             <div class="grid grid-cols-5 max-sm:grid-cols-1 gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
               <div class="col-span-3">
@@ -375,7 +375,7 @@
         </div>
       }
       <!-- IF STUDENT IS NOT HIRED -->
-      @if (!student.company_id) {
+      @if (!student?.company_id) {
         <div class=" gap-4 pt-2 pl-4 pr-4 text-xs mb-3">
           <!-- First column content here -->
           <div class="w-full bg-white shadow-md p-3">
@@ -388,7 +388,7 @@
               </div>
             }
             @if (hiringRequests.length > 0) {
-              <div (click)="viewHiringRequests(student.id)" class="cursor-pointer">
+              <div (click)="viewHiringRequests(student!.id)" class="cursor-pointer">
                 <div class="flex justify-center">
                   <img class="h-40 mb-3 opacity-80" src="../../../../assets/mail1.png">
                 </div>

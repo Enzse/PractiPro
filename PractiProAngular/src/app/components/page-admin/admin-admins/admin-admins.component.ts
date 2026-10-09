@@ -12,6 +12,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SessionService } from '../../../services/session.service';
 import { UserService } from '../../../services/api/user.service';
+import { Role } from '../../../models/user';
 
 
 @Component({
@@ -27,12 +28,12 @@ export class AdminAdminsComponent implements OnInit, OnDestroy {
   userlist: any;
   origlist:any;
   searchtext: any;
-  userId:any;
-  userrole: any;
+  userId:number;
+  userrole: Role | null | undefined;
   private subscriptions = new Subscription();
   p: number = 1; /* starting no. of the list */
   constructor(private dialog: MatDialog) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
   }
   
   ngOnInit(): void {

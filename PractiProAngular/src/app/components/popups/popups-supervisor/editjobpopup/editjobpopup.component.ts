@@ -8,6 +8,7 @@ import { dateRangeValidator } from '../../../../validators/date-range.validator'
 import { SessionService } from '../../../../services/session.service';
 import { CompanyService } from '../../../../services/api/company.service';
 import { JobAssignment } from '../../../../models/company';
+import { Job } from '../../../../models/company';
 
 @Component({
     selector: 'app-editjobpopup',
@@ -19,9 +20,9 @@ import { JobAssignment } from '../../../../models/company';
 export class EditjobpopupComponent {
   private readonly session = inject(SessionService);
   private readonly companyApi = inject(CompanyService);
-  existingdata?: any;
+  existingdata?: Job | undefined;
   changeDetected: any;
-  userId: any = this.session.userId();
+  userId: any = this.session.requireUserId();
 
   constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditjobpopupComponent>, private changeDetection: ChangeDetectionService) {

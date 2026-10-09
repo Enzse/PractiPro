@@ -9,6 +9,7 @@ import { NonNullableFormBuilder } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { Router } from '@angular/router';
 import { ClassJoinService } from '../../../../services/api/class-join.service';
+import { ClassInvitation } from '../../../../models/class';
 
 @Component({
     selector: 'app-view-sent-invites',
@@ -19,7 +20,7 @@ import { ClassJoinService } from '../../../../services/api/class-join.service';
 })
 export class ViewSentInvitesComponent {
   private readonly classJoinApi = inject(ClassJoinService);
-  datalist: any;
+  datalist: ClassInvitation[] | undefined;
   currentuser: any;
   isLoading: boolean = true;
   private subscriptions = new Subscription();

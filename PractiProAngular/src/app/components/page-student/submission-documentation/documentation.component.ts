@@ -27,7 +27,7 @@ import { SubmissionService } from '../../../services/api/submission.service';
 export class DocumentationComponent implements OnInit, OnDestroy {
   private readonly session = inject(SessionService);
   private readonly submissionApi = inject(SubmissionService);
-  userId: any;
+  userId: number;
   datalist: any[] = [];
   origlist: any
   searchtext: any;
@@ -39,7 +39,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   isUploading = false;
 
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
   }
 
 

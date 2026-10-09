@@ -13,6 +13,7 @@ import { SessionService } from '../../../services/session.service';
 import { StudentService } from '../../../services/api/student.service';
 import { ClassService } from '../../../services/api/class.service';
 import { ClassJoinService } from '../../../services/api/class-join.service';
+import { ClassProfile } from '../../../models/class';
 
 @Component({
     selector: 'app-joinclasses',
@@ -26,9 +27,9 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
   private readonly studentApi = inject(StudentService);
   private readonly classApi = inject(ClassService);
   private readonly classJoinApi = inject(ClassJoinService);
-  userId: any;
+  userId: number;
   student: any;
-  classeslist: any;
+  classeslist: ClassProfile[] | undefined;
   searchtext: any;
   existingRequest: any;
   invitationCount: any;
@@ -36,7 +37,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: NonNullableFormBuilder, private dialog: MatDialog) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
 
     this.joinRequest = this.builder.group({
       student_id: [this.userId],

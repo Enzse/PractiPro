@@ -119,7 +119,7 @@
                               <li>
                                 <!-- Exit Poll -->
                                 <a routerLink="student-exit-poll" routerLinkActive="active" class="button"
-                                  [class.disabled]="registrationStatus === 0 || student?.TotalHoursWorked <= 200"
+                                  [class.disabled]="registrationStatus === 0 || hoursWorked <= 200"
                                   matTooltip="This section is only available for students with 200+ total training hours.">
                                   <svg class="w-6 h-6 text-white dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" fill="none" viewBox="0 0 24 24">

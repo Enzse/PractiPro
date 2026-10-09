@@ -19,4 +19,4 @@ export type DateString = string;
 export type TimeString = string;
 
 /** Approval states used across submissions. */
-export type ApprovalStatus = 'Pending' | 'Approved' | 'Rejected' | 'Unsubmitted' | null;
+export type ApprovalStatus = 'Pending' | 'Approved' | 'Unapproved' | null;

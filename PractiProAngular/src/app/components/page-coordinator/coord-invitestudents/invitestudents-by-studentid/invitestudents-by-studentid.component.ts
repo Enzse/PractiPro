@@ -12,6 +12,7 @@ import { SessionService } from '../../../../services/session.service';
 import { StudentService } from '../../../../services/api/student.service';
 import { ClassJoinService } from '../../../../services/api/class-join.service';
 import { MediaService } from '../../../../services/api/media.service';
+import { ClassInvitation } from '../../../../models/class';
 
 @Component({
     selector: 'app-invitestudents-by-studentid',
@@ -28,7 +29,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
   matchingStudent: any;
   user: any;
   userID = this.session.requireUserId();
-  invitations: any;
+  invitations: ClassInvitation[] | undefined;
   existingInvitations: any = 0;
   currentBlock: any;
   searchForm = this.builder.group({

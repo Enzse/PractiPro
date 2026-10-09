@@ -29,7 +29,7 @@ export class DtrComponent implements OnInit, OnDestroy {
   searchtext: any;
   public time$: Observable<Date>;
   public dateToday$: Observable<string>;
-  userId: any
+  userId: number
   datalist: any[] = [];
   origlist: any;
   private subscriptions = new Subscription();
@@ -39,7 +39,7 @@ export class DtrComponent implements OnInit, OnDestroy {
 
 
   constructor(private dialog: MatDialog) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
     this.time$ = timer(0, 1000).pipe(
       map(() => new Date()),
       shareReplay(1)

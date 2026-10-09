@@ -5,6 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
 import { ClassService } from '../../../services/api/class.service';
+import { ClassProfile, Coordinator } from '../../../models/class';
 
 @Component({
     selector: 'app-coord-classes',
@@ -17,8 +18,8 @@ export class CoordClassesComponent {
   private readonly classApi = inject(ClassService);
   constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CoordClassesComponent>) { }
 
-  datalist: any;
-  currentuser: any;
+  datalist: ClassProfile[] | undefined;
+  currentuser: Coordinator | undefined;
   isLoading: boolean = true;
 
 

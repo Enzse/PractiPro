@@ -23,7 +23,7 @@ export class SupervisorDtrComponent implements OnInit {
   private readonly session = inject(SessionService);
   private readonly studentApi = inject(StudentService);
   private readonly mediaApi = inject(MediaService);
-  userId: any;
+  userId: number;
   traineesList$: Observable<any[]>;
   searchtext: any;
   private subscriptions = new Subscription();
@@ -33,7 +33,7 @@ export class SupervisorDtrComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private changeDetection: ChangeDetectionService
   ) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
     this.traineesList$ = this.loadTraineesWithAvatars();
   }
 

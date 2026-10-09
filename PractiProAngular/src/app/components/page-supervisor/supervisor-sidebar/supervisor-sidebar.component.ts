@@ -16,10 +16,10 @@ export class SupervisorSidebarComponent {
   constructor() { }
 
   selectedStudent: any;
-  supervisorId: any;
+  supervisorId: number | undefined;
 
   ngOnInit(): void {
-    this.supervisorId = this.session.userId();
+    this.supervisorId = this.session.requireUserId();
     console.log("ID: " + this.supervisorId);
   }
   

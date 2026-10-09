@@ -29,7 +29,7 @@ import { SubmissionService } from '../../../services/api/submission.service';
 export class SubmissionComponent implements OnInit, OnDestroy {
   private readonly session = inject(SessionService);
   private readonly submissionApi = inject(SubmissionService);
-  userId: any;
+  userId: number;
   searchtext: any;
   students: any;
   datalist: any[] = [];
@@ -42,7 +42,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   selectedTabLabel: string = 'Resume';
   p: number = 1;
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
   }
 
 

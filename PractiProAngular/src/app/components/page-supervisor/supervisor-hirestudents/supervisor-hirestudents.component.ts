@@ -7,6 +7,7 @@ import { SessionService } from '../../../services/session.service';
 import { StudentService } from '../../../services/api/student.service';
 import { CompanyService } from '../../../services/api/company.service';
 import { MediaService } from '../../../services/api/media.service';
+import { Supervisor } from '../../../models/company';
 
 @Component({
     selector: 'app-supervisor-hirestudents',
@@ -22,9 +23,9 @@ export class SupervisorHirestudentsComponent implements OnInit {
   private readonly mediaApi = inject(MediaService);
     searchtext: any;
     matchingStudent: any;
-    user: any;
-    userID: any;
-    existingConfirmations: any;
+    user: Supervisor | undefined;
+    userID: number;
+    existingConfirmations: number | undefined;
     searchForm: FormGroup;
     companyForm: FormGroup;
 
@@ -32,7 +33,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
         private builder: NonNullableFormBuilder,
         private sanitizer: DomSanitizer
     ) {
-        this.userID = this.session.userId();
+        this.userID = this.session.requireUserId();
         this.searchForm = this.builder.group({
             studentId: ['', Validators.required]
         });
@@ -71,10 +72,11 @@ export class SupervisorHirestudentsComponent implements OnInit {
                             this.matchingStudent.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
                         }
                     });
-                    this.companyApi.assignmentCount('company_hiring_requests', 'company_id', 'student_id', this.user.company_id, this.matchingStudent.id).subscribe((res) => {
-                        this.existingConfirmations = res.payload[0].assignment_count
-                        console.log(this.existingConfirmations)
-                    });
+                    if (this.user?.company_id) {
+                        this.companyApi.assignmentCount('company_hiring_requests', 'company_id', 'student_id', this.user.company_id, this.matchingStudent.id).subscribe((res) => {
+                            this.existingConfirmations = res.payload[0].assignment_count;
+                        });
+                    }
                 }
             }, error => {
                 if (error.status === 403) {

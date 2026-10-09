@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
 import { ClassService } from '../../../../services/api/class.service';
+import { ClassBlock, Coordinator } from '../../../../models/class';
+import { ApiResponse } from '../../../../models/api';
 
 @Component({
     selector: 'app-assigncoordpopup',
@@ -19,8 +21,8 @@ import { ClassService } from '../../../../services/api/class.service';
 })
 export class AssigncoordpopupComponent {
   private readonly classApi = inject(ClassService);
-  classlist: any;
-  coordlist: any;
+  classlist: ClassBlock[] | undefined;
+  coordlist: ApiResponse<Coordinator[]> | undefined;
 
   constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<AssigncoordpopupComponent>) {

@@ -19,7 +19,7 @@ import { SeminarService } from '../../../../services/api/seminar.service';
 export class AddseminarpopupComponent {
   private readonly session = inject(SessionService);
   private readonly seminarApi = inject(SeminarService);
-  userId: any;
+  userId: number;
   seminarRecordForm: FormGroup;
   isUploading = false;
 
@@ -33,7 +33,7 @@ export class AddseminarpopupComponent {
     private changeDetection: ChangeDetectionService,
     private sanitizer: DomSanitizer) {
 
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
 
     this.seminarRecordForm = this.builder.group({
       event_name: this.builder.control('', Validators.required),

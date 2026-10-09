@@ -13,6 +13,8 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { SelectstudentspopupComponent } from '../selectstudentspopup/selectstudentspopup.component';
 import { StudentService } from '../../../../services/api/student.service';
 import { ClassService } from '../../../../services/api/class.service';
+import { ClassBlock } from '../../../../models/class';
+import { Student } from '../../../../models/student';
 
 @Component({
     selector: 'app-assignstudentpopup',
@@ -24,8 +26,8 @@ import { ClassService } from '../../../../services/api/class.service';
 export class AssignstudentpopupComponent {
   private readonly studentApi = inject(StudentService);
   private readonly classApi = inject(ClassService);
-  classlist: any;
-  studentlist: any;
+  classlist: ClassBlock[] | undefined;
+  studentlist: Student[] | undefined;
   selection: any[] = [];
   selectedlist: any[] = [];
   searchtext: any;

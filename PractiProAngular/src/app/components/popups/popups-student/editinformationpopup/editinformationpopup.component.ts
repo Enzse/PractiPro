@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { SessionService } from '../../../../services/session.service';
 import { StudentService } from '../../../../services/api/student.service';
 import { StudentProfileUpdate } from '../../../../models/student';
+import { Student } from '../../../../models/student';
 
 
 @Component({
@@ -26,21 +27,21 @@ export class EditinformationpopupComponent implements OnInit {
 
 
   //This dynamically displays the data according to changes.
-  editdata?: any;
+  editdata?: Student | undefined;
   ngOnInit(): void {
-    const userId = this.session.userId();
+    const userId = this.session.requireUserId();
     if (userId) {
       this.studentApi.get(userId).subscribe((res) => {
         this.editdata = res.payload[0];
         this.editForm.setValue({
           firstName: this.editdata.firstName,
           lastName: this.editdata.lastName,
-          studentId: this.editdata.studentId,
-          program: this.editdata.program,
-          year: this.editdata.year,
-          phoneNumber: this.editdata.phoneNumber,
-          address: this.editdata.address,
-          dateOfBirth: this.editdata.dateOfBirth
+          studentId: String(this.editdata.studentId ?? ''),
+          program: this.editdata.program ?? '',
+          year: String(this.editdata.year ?? ''),
+          phoneNumber: this.editdata.phoneNumber ?? '',
+          address: this.editdata.address ?? '',
+          dateOfBirth: this.editdata.dateOfBirth ?? ''
         });
 
       })

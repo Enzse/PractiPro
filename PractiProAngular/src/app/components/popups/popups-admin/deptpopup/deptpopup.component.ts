@@ -9,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { UserService } from '../../../../services/api/user.service';
 import { ClassService } from '../../../../services/api/class.service';
+import { ApiResponse } from '../../../../models/api';
+import { Department } from '../../../../models/user';
 
 @Component({
     selector: 'app-deptpopup',
@@ -23,7 +25,7 @@ export class DeptpopupComponent implements OnInit {
   constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DeptpopupComponent>) { }
 
-  deptlist: any;  
+  deptlist: ApiResponse<Department[]> | undefined;  
   editdata: any;
 
   ngOnInit(): void {    

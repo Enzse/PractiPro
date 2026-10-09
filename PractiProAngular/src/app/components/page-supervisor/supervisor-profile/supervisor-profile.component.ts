@@ -10,6 +10,8 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
 import { SessionService } from '../../../services/session.service';
 import { CompanyService } from '../../../services/api/company.service';
 import { MediaService } from '../../../services/api/media.service';
+import { Supervisor } from '../../../models/company';
+import { WithAvatar } from '../../../models/display';
 
 @Component({
     selector: 'app-supervisor-profile',
@@ -23,20 +25,20 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
   private readonly companyApi = inject(CompanyService);
   private readonly mediaApi = inject(MediaService);
   company: any;
-  userId: any;
-  user: any;
+  userId: number;
+  user: WithAvatar<Supervisor> | undefined;
   file: any;
   subscriptions: Subscription = new Subscription();
 
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
-    this.userId = this.session.userId();
+    this.userId = this.session.requireUserId();
   }
 
   ngOnInit(): void {
     this.loadData();
     this.subscriptions.add(
       this.changeDetection.changeDetected$.subscribe(changeDetected => {
-        if (changeDetected) {
+        if (changeDetected && this.user?.company_id) {
           this.loadCompany(this.user.company_id);
         }
       })
@@ -98,19 +100,21 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
   private loadSupervisor() {
     this.subscriptions.add(
       this.companyApi.supervisor(this.userId).subscribe((res) => {
-        this.user = res.payload[0];
-        this.user.avatar = '';
+        const supervisor: WithAvatar<Supervisor> = { ...res.payload[0], avatar: '' };
+        this.user = supervisor;
 
         this.subscriptions.add(
-          this.mediaApi.avatar(this.user.id).subscribe((avatarRes: any) => {
+          this.mediaApi.avatar(supervisor.id).subscribe((avatarRes) => {
             if (avatarRes.size > 0) {
               const url = URL.createObjectURL(avatarRes);
-              this.user.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+              supervisor.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
             }
           })
         );
 
-        this.loadCompany(this.user.company_id);
+        if (supervisor.company_id) {
+          this.loadCompany(supervisor.company_id);
+        }
       })
     );
   }

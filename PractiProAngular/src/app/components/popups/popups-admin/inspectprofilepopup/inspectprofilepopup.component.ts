@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { StudentService } from '../../../../services/api/student.service';
 import { MediaService } from '../../../../services/api/media.service';
+import { StudentLookup } from '../../../../models/student';
+import { WithAvatar } from '../../../../models/display';
 @Component({
     selector: 'app-inspectprofilepopup',
     imports: [CommonModule],
@@ -17,7 +19,7 @@ export class InspectprofilepopupComponent {
   private readonly studentApi = inject(StudentService);
   private readonly mediaApi = inject(MediaService);
 
-  studentProfile: any;
+  studentProfile: WithAvatar<StudentLookup> | undefined;
   avatarUrl?: SafeUrl;
 
   constructor(private builder: NonNullableFormBuilder,
@@ -34,15 +36,13 @@ export class InspectprofilepopupComponent {
 
   loadInfo() {
     this.studentApi.byStudentNumber(this.data.studentId).subscribe((res) => {
-        this.studentProfile = res.payload[0];
-        this.studentProfile.avatar = '';
-                
-        console.log(this.studentProfile);
-        
-        this.mediaApi.avatar(this.studentProfile.id).subscribe((avatarRes: any) => {
+        const profile: WithAvatar<StudentLookup> = { ...res.payload[0], avatar: '' };
+        this.studentProfile = profile;
+
+        this.mediaApi.avatar(profile.id).subscribe((avatarRes) => {
             if (avatarRes.size > 0) {
                 const url = URL.createObjectURL(avatarRes);
-                this.studentProfile.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+                profile.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
             }
         });
       }
