@@ -1,10 +1,8 @@
-import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import Swal from 'sweetalert2';
-import { isPlatformBrowser } from '@angular/common';
-import { initFlowbite } from 'flowbite';
 import { MatDialog } from '@angular/material/dialog';
 import { ChooseRolePopupComponent } from '../popups/popups-registration/choose-role-popup/choose-role-popup.component';
 import { ForgotpasswordComponent } from '../popups/popups-registration/forgotpassword/forgotpassword.component';
@@ -23,14 +21,11 @@ export class LoginComponent {
   private readonly session = inject(SessionService);
   private readonly authApi = inject(AuthService);
   returnUrl: any
-  constructor(private route: ActivatedRoute, private builder: FormBuilder, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog) {
+  constructor(private route: ActivatedRoute, private builder: FormBuilder, private router: Router, private dialog: MatDialog) {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
     this.session.clear();
   }
 
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) initFlowbite();
-  }
 
 
   //FormBuilder

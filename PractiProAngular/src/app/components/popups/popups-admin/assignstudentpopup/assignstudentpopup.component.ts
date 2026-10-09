@@ -1,6 +1,5 @@
-import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { isPlatformBrowser } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,7 +9,6 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
 import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { OrdinalPipe } from '../../../../pipes/ordinal.pipe';
-import { initFlowbite } from 'flowbite';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SelectstudentspopupComponent } from '../selectstudentspopup/selectstudentspopup.component';
 import { StudentService } from '../../../../services/api/student.service';
@@ -33,7 +31,7 @@ export class AssignstudentpopupComponent {
   searchtext: any;
 
   constructor(private builder: FormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any, @Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialogRef<AssignstudentpopupComponent>, private dialog2: MatDialog) {
+    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<AssignstudentpopupComponent>, private dialog2: MatDialog) {
     this.classApi.all().subscribe(res => {
       this.classlist = res.payload;
     });
@@ -46,7 +44,6 @@ export class AssignstudentpopupComponent {
   }
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) initFlowbite();
     this.loadData();
 
   }

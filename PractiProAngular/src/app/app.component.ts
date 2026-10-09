@@ -1,10 +1,8 @@
-import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { OnInit } from '@angular/core';
-import { initFlowbite } from 'flowbite';
 import { LoginComponent } from './components/login/login.component';
 import { Router } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
 
 
 @Component({
@@ -14,16 +12,12 @@ import { isPlatformBrowser } from '@angular/common';
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'PractiProAngular';
-  constructor(private router: Router, 
-    @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private router: Router) {
 
   }
 
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) initFlowbite();
-  }
 
 
 

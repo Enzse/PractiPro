@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CoordClassesComponent } from '../coord-classes/coord-classes.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BlockService } from '../../../services/block.service';
 import { Subscription } from 'rxjs';
 import { SessionService } from '../../../services/session.service';
+import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-coord-sidebarmain',
@@ -14,6 +15,7 @@ import { SessionService } from '../../../services/session.service';
     styleUrl: './coord-sidebarmain.component.css'
 })
 export class CoordSidebarmainComponent {
+  protected readonly sidebarState = inject(SidebarService);
   private readonly session = inject(SessionService);
   constructor(private dialog: MatDialog, private blockService: BlockService) { }
 

@@ -3,7 +3,6 @@ import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component'
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 
 import { OnInit } from '@angular/core';
-import { initFlowbite } from 'flowbite';
 import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/updatepopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';

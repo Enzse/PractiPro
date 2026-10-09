@@ -1,12 +1,11 @@
-import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { initFlowbite } from 'flowbite';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 import { SessionService } from '../../../services/session.service';
 import { StudentService } from '../../../services/api/student.service';
+import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-sidebar',
@@ -16,6 +15,7 @@ import { StudentService } from '../../../services/api/student.service';
     styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent implements OnInit, OnDestroy {
+  protected readonly sidebarState = inject(SidebarService);
   private readonly session = inject(SessionService);
   private readonly studentApi = inject(StudentService);
   studentId: any;
@@ -26,14 +26,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   constructor(
-    @Inject(PLATFORM_ID) private platformId: Object,
     private changeDetection: ChangeDetectionService
   ) {
     this.studentId = this.session.userId();
   }
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) initFlowbite();
     this.loadData();
 
 

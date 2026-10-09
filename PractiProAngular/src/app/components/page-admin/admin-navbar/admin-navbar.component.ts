@@ -1,9 +1,8 @@
-import { Component, Inject, OnInit, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
-import { isPlatformBrowser } from '@angular/common';
-import { initFlowbite } from 'flowbite';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SessionService } from '../../../services/session.service';
+import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-admin-navbar',
@@ -12,15 +11,15 @@ import { SessionService } from '../../../services/session.service';
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-navbar.component.css'
 })
-export class AdminNavbarComponent implements OnInit {
+export class AdminNavbarComponent {
+  protected readonly sidebarState = inject(SidebarService);
+  /** The account menu under the user's name (opens on hover, or on tap). */
+  protected readonly userMenuOpen = signal(false);
   private readonly session = inject(SessionService);
 
   data: any;
-  constructor( @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor() {
     this.data = this.session.userName();    
-  }
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) initFlowbite();
   }
 
 

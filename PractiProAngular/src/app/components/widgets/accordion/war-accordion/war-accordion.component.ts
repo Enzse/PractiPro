@@ -1,6 +1,5 @@
 
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { initAccordions } from 'flowbite';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 
 @Component({
@@ -10,7 +9,7 @@ import { initAccordions } from 'flowbite';
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './war-accordion.component.css'
 })
-export class WarAccordionComponent implements OnInit {
+export class WarAccordionComponent {
   @Input() headerText: string = '';
   @Input() addText1: string = '';
   isAccordionOpen = false;
@@ -19,8 +18,5 @@ export class WarAccordionComponent implements OnInit {
     this.isAccordionOpen = !this.isAccordionOpen;
   }
 
-  ngOnInit(): void {
-    initAccordions()
-  }
 }
 

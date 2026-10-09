@@ -1,9 +1,8 @@
-import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, signal } from '@angular/core';
 import { SupervisorSidebarComponent } from '../supervisor-sidebar/supervisor-sidebar.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
-import { initFlowbite } from 'flowbite';
 import { SessionService } from '../../../services/session.service';
+import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-supervisor-navbar',
@@ -13,12 +12,12 @@ import { SessionService } from '../../../services/session.service';
     styleUrl: './supervisor-navbar.component.css'
 })
 export class SupervisorNavbarComponent {
+  protected readonly sidebarState = inject(SidebarService);
+  /** The account menu under the user's name (opens on hover, or on tap). */
+  protected readonly userMenuOpen = signal(false);
   private readonly session = inject(SessionService);
   data: any;
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor() {
     this.data = this.session.userName();
-  }
-  ngOnInit(): void {
-    if (isPlatformBrowser(this.platformId)) initFlowbite();
   }
 }

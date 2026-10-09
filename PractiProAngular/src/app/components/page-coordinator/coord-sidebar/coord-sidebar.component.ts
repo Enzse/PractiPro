@@ -6,6 +6,7 @@ import { BlockService } from '../../../services/block.service';
 import { Subscription } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SessionService } from '../../../services/session.service';
+import { SidebarService } from '../../../services/sidebar.service';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { SessionService } from '../../../services/session.service';
     styleUrl: './coord-sidebar.component.css'
 })
 export class CoordSidebarComponent implements OnInit, OnDestroy {
+  protected readonly sidebarState = inject(SidebarService);
   private readonly session = inject(SessionService);
   constructor(private dialog: MatDialog, private blockService: BlockService) { }
 

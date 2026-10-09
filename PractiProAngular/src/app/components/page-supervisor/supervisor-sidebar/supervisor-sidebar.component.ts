@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { SessionService } from '../../../services/session.service';
+import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-supervisor-sidebar',
@@ -10,6 +11,7 @@ import { SessionService } from '../../../services/session.service';
     styleUrl: './supervisor-sidebar.component.css'
 })
 export class SupervisorSidebarComponent {
+  protected readonly sidebarState = inject(SidebarService);
   private readonly session = inject(SessionService);
   constructor() { }
 

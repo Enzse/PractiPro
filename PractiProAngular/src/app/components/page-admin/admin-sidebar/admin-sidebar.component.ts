@@ -1,5 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { SidebarService } from '../../../services/sidebar.service';
 
 @Component({
     selector: 'app-admin-sidebar',
@@ -9,5 +10,6 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     styleUrls: ['./admin-sidebar.component.css']
 })
 export class AdminSidebarComponent {
+  protected readonly sidebarState = inject(SidebarService);
 
 }
