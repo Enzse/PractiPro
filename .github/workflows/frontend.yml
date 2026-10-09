@@ -2,16 +2,16 @@ name: Frontend
 
 on:
   push:
-    paths: ['PractiProAngular/**', '.github/workflows/frontend.yml']
+    paths: ['frontend/**', '.github/workflows/frontend.yml']
   pull_request:
-    paths: ['PractiProAngular/**', '.github/workflows/frontend.yml']
+    paths: ['frontend/**', '.github/workflows/frontend.yml']
 
 jobs:
   test:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: PractiProAngular
+        working-directory: frontend
 
     steps:
       - uses: actions/checkout@v4
@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: 24
           cache: npm
-          cache-dependency-path: PractiProAngular/package-lock.json
+          cache-dependency-path: frontend/package-lock.json
 
       - run: npm ci
 

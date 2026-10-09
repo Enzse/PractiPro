@@ -4,7 +4,7 @@ A practicum (OJT) management system for students, coordinators, industry supervi
 
 | Part | Stack | Location |
 |---|---|---|
-| Frontend | Angular 22, Angular Material, Tailwind CSS | [PractiProAngular/](PractiProAngular/) |
+| Frontend | Angular 22, Angular Material, Tailwind CSS | [frontend/](frontend/) |
 | API | PHP 8.2, PDO (no framework) | [backend/](backend/) |
 | Database | MySQL / MariaDB 10.4+ | [backend/database/](backend/database/) |
 
@@ -45,7 +45,7 @@ Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB
 4. **Start the frontend:**
 
    ```sh
-   cd PractiProAngular
+   cd frontend
    npm install
    npm start
    ```
@@ -55,7 +55,7 @@ Requirements: [XAMPP](https://www.apachefriends.org/) (Apache, PHP 8.2+, MariaDB
 ## Configuration
 
 - **API:** `backend/.env`, which is never committed. [`.env.example`](backend/.env.example) lists every setting.
-- **Frontend:** the API URL is in [`src/environments/`](PractiProAngular/src/environments/). `ng serve` uses `environment.development.ts`, and `ng build` uses `environment.ts`.
+- **Frontend:** the API URL is in [`src/environments/`](frontend/src/environments/). `ng serve` uses `environment.development.ts`, and `ng build` uses `environment.ts`.
 
 ## Tests
 
@@ -64,7 +64,7 @@ cd backend
 composer test      # API tests (needs MySQL; uses its own `practipro_test` database)
 composer analyse   # static analysis
 
-cd PractiProAngular
+cd frontend
 npm test
 ```
 
