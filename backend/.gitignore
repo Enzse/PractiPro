@@ -8,6 +8,9 @@
 !/database/*.sql
 !/database/migrations/*.sql
 
+# Uploaded files and local backups
+/storage/
+
 # Tool caches
 /.phpunit.cache/
 /.phpunit.result.cache

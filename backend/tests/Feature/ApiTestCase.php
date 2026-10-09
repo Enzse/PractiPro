@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace PractiPro\Tests\Feature;
 
+use FilesystemIterator;
 use PDO;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use PHPUnit\Framework\TestCase;
 use PractiPro\App;
 use PractiPro\Auth\Jwt;
@@ -15,6 +18,7 @@ use PractiPro\Database\SqlFile;
 use PractiPro\Http\Request;
 use PractiPro\Http\Response;
 use PractiPro\Repositories\UserRepository;
+use PractiPro\Support\FileStorage;
 use PractiPro\Support\Mailer;
 use PractiPro\Tests\Support\FakeMailer;
 
@@ -30,6 +34,7 @@ abstract class ApiTestCase extends TestCase
     protected const PASSWORD = 'Password1';
 
     private static ?Database $db = null;
+    private static ?string $storageDir = null;
 
     protected App $app;
     protected FakeMailer $mailer;
@@ -44,6 +49,7 @@ abstract class ApiTestCase extends TestCase
         $this->app = App::create($config);
         $this->app->container()->bind(Database::class, fn () => $db);
         $this->app->container()->bind(Mailer::class, fn () => $this->mailer);
+        $this->app->container()->bind(FileStorage::class, fn () => self::storage());
     }
 
     protected function tearDown(): void
@@ -134,6 +140,37 @@ abstract class ApiTestCase extends TestCase
         return $decoded['payload'];
     }
 
+    /**
+     * Uploaded files go to a temporary folder that is deleted after the run.
+     */
+    protected static function storage(): FileStorage
+    {
+        if (self::$storageDir === null) {
+            self::$storageDir = sys_get_temp_dir() . '/practipro-test-storage-' . bin2hex(random_bytes(4));
+            mkdir(self::$storageDir);
+            $dir = self::$storageDir;
+            register_shutdown_function(static function () use ($dir) {
+                $items = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($dir, FilesystemIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST);
+                foreach ($items as $item) {
+                    $item->isDir() ? rmdir($item->getPathname()) : unlink($item->getPathname());
+                }
+                rmdir($dir);
+            });
+        }
+
+        return new FileStorage(self::$storageDir);
+    }
+
+    /**
+     * Where FileStorage keeps a stored path, for asserting on files directly.
+     */
+    protected static function storedFile(string $path): string
+    {
+        self::storage();
+
+        return self::$storageDir . '/' . $path;
+    }
+
     protected static function config(): Config
     {
         return new Config(
@@ -162,7 +199,7 @@ abstract class ApiTestCase extends TestCase
 
             self::$db = Database::connect($config);
             SqlFile::run(self::$db->pdo(), __DIR__ . '/../../database/schema.sql');
-            (new Migrator(self::$db->pdo(), __DIR__ . '/../../database/migrations'))->migrate();
+            (new Migrator(self::$db->pdo(), __DIR__ . '/../../database/migrations', self::storage()))->migrate();
         }
 
         return self::$db;

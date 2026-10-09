@@ -24,6 +24,8 @@ final class Config
         public readonly string $mailPassword = '',
         public readonly string $mailFromAddress = '',
         public readonly string $mailFromName = 'PractiPro',
+        /** Where uploaded files are kept. Must not be web-accessible. */
+        public readonly string $storagePath = __DIR__ . '/../storage/uploads',
     ) {
     }
 
@@ -47,6 +49,7 @@ final class Config
             mailPassword: $env['MAIL_PASSWORD'] ?? '',
             mailFromAddress: $env['MAIL_FROM_ADDRESS'] ?? '',
             mailFromName: $env['MAIL_FROM_NAME'] ?? 'PractiPro',
+            storagePath: ($env['STORAGE_PATH'] ?? '') !== '' ? $env['STORAGE_PATH'] : __DIR__ . '/../storage/uploads',
         );
     }
 }

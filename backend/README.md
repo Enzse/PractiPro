@@ -15,10 +15,11 @@ backend/
 │   ├── Auth/            JWT encoding/verification, roles, the current user.
 │   ├── Controllers/     One per feature area. Validate input, check access, call repositories.
 │   ├── Repositories/    The only classes that contain SQL.
-│   ├── Database/        PDO wrapper with transactions, and a .sql file loader.
-│   └── Support/         Mail, passwords and upload handling.
+│   ├── Database/        PDO wrapper with transactions, .sql loader, migration runner.
+│   └── Support/         Mail, passwords, uploads and file storage.
 ├── bin/migrate.php  Applies new database migrations (composer migrate).
 ├── database/        schema.sql (base structure), migrations/ (later changes), seed.sql (dev data).
+├── storage/         Uploaded files (git-ignored, never web-accessible). Back it up with the database.
 └── tests/           PHPUnit: Unit/ for single classes, Feature/ for full requests.
 ```
 
@@ -72,7 +73,12 @@ With `MAIL_USERNAME` empty, emails (activation and reset links) are written to A
 
 Don't edit `schema.sql`. Add a new file to `database/migrations/` named so it sorts after the existing ones (for example `2026_11_02_01_add_x.sql`), then run `composer migrate`. The tests apply migrations automatically.
 
-## Known limitations
+A migration can also be a `.php` file that returns `function (PDO $pdo, FileStorage $storage): void`, for changes SQL can't make on its own (see `2026_10_09_05_move_files_to_storage.php`).
 
-- Uploaded files are stored in the database as BLOBs. Moving them to disk or object storage would make the database much smaller.
-- Some business rules live in MySQL triggers (for example, creating the student, coordinator or supervisor row when a `user` is inserted). See `database/schema.sql`.
+### Uploaded files
+
+Files are saved by `Support/FileStorage` under `storage/uploads/` (or `STORAGE_PATH`); the database stores only each file's path, and files are only ever served through the API after an access check. **Back up the storage folder together with the database.**
+
+## Where the rules live
+
+All business rules are in PHP; the database has no triggers. Profile rows for each role (`UserRepository`), comment counts (`CommentRepository`) and seminar certification (`SeminarRepository`) are handled in the repositories, inside the same transaction as the change that needs them.

@@ -11,6 +11,7 @@ use PractiPro\Http\Response;
 use PractiPro\Repositories\CoordinatorRepository;
 use PractiPro\Repositories\LookupRepository;
 use PractiPro\Repositories\OwnershipRepository;
+use PractiPro\Repositories\SubmissionRepository;
 use PractiPro\Repositories\UserRepository;
 
 /**
@@ -23,6 +24,7 @@ final class UserController extends Controller
         private readonly UserRepository $users,
         private readonly CoordinatorRepository $coordinators,
         private readonly LookupRepository $lookups,
+        private readonly SubmissionRepository $submissions,
     ) {
         parent::__construct($ownership);
     }
@@ -90,9 +92,13 @@ final class UserController extends Controller
         if ($this->users->roleOf($id) === Role::SUPERADMIN && !$request->user()->is(Role::SUPERADMIN)) {
             throw HttpException::forbidden('Only a superadmin can delete superadmin accounts.');
         }
+        // The database removes the account's file rows with it (ON DELETE CASCADE);
+        // remove the stored files once that has succeeded.
+        $files = $this->submissions->filePathsOfUser($id);
         if ($this->users->delete($id) === 0) {
             throw HttpException::notFound('User not found.');
         }
+        $this->submissions->deleteFiles(...$files);
 
         return $this->done('Successfully deleted record');
     }

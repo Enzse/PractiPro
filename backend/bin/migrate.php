@@ -9,13 +9,14 @@ declare(strict_types=1);
 use PractiPro\Config;
 use PractiPro\Database\Database;
 use PractiPro\Database\Migrator;
+use PractiPro\Support\FileStorage;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 Dotenv\Dotenv::createImmutable(dirname(__DIR__))->load();
 $config = Config::fromEnv($_ENV);
 
-$ran = (new Migrator(Database::connect($config)->pdo(), __DIR__ . '/../database/migrations'))->migrate();
+$ran = (new Migrator(Database::connect($config)->pdo(), __DIR__ . '/../database/migrations', new FileStorage($config->storagePath)))->migrate();
 
 echo $ran === []
     ? "Database '{$config->dbName}' is up to date.\n"

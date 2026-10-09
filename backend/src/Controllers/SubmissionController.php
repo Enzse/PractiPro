@@ -61,7 +61,7 @@ final class SubmissionController extends Controller
 
         $file = $this->submissions->download($table, $id) ?? throw HttpException::notFound('File not found.');
 
-        return Response::file($file['file_data'], Uploads::mimeType($file['file_data']), $file['file_name']);
+        return Response::file($file['contents'], Uploads::mimeType($file['contents']), $file['name']);
     }
 
     public function delete(Request $request): Response

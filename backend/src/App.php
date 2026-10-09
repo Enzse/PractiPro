@@ -14,6 +14,7 @@ use PractiPro\Http\Request;
 use PractiPro\Http\Response;
 use PractiPro\Http\Router;
 use PractiPro\Http\UnauthenticatedException;
+use PractiPro\Support\FileStorage;
 use PractiPro\Support\LogMailer;
 use PractiPro\Support\Mailer;
 use PractiPro\Support\SmtpMailer;
@@ -42,6 +43,7 @@ final class App
         $container->bind(Config::class, fn () => $config);
         $container->bind(Database::class, fn () => Database::connect($config));
         $container->bind(Jwt::class, fn () => new Jwt($config->secretKey, $config->tokenTtlSeconds));
+        $container->bind(FileStorage::class, fn () => new FileStorage($config->storagePath));
         $container->bind(Mailer::class, fn (Container $c) => $config->mailUsername === ''
             ? new LogMailer()
             : $c->get(SmtpMailer::class));

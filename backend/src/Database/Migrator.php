@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace PractiPro\Database;
 
 use PDO;
+use PractiPro\Support\FileStorage;
 
 /**
- * Applies database/migrations/*.sql in filename order, once each.
+ * Applies database/migrations/*.sql and *.php in filename order, once each.
+ *
+ * A .php migration returns a function that receives the PDO connection and
+ * the file storage, for changes SQL alone can't make (such as moving data
+ * out of the database onto disk).
  *
  * schema.sql is the starting point; every later schema change is a new
  * migration file rather than an edit to schema.sql, so existing databases can
@@ -15,8 +20,11 @@ use PDO;
  */
 final class Migrator
 {
-    public function __construct(private readonly PDO $pdo, private readonly string $directory)
-    {
+    public function __construct(
+        private readonly PDO $pdo,
+        private readonly string $directory,
+        private readonly ?FileStorage $storage = null,
+    ) {
     }
 
     /**
@@ -36,7 +44,12 @@ final class Migrator
 
         $ran = [];
         foreach ($this->pending($applied) as $version => $path) {
-            SqlFile::run($this->pdo, $path);
+            if (str_ends_with($path, '.php')) {
+                $migration = require $path;
+                $migration($this->pdo, $this->storage ?? throw new \LogicException("$version needs file storage."));
+            } else {
+                SqlFile::run($this->pdo, $path);
+            }
             $this->pdo->prepare('INSERT INTO schema_migrations (version) VALUES (?)')->execute([$version]);
             $ran[] = $version;
         }
@@ -50,12 +63,12 @@ final class Migrator
      */
     private function pending(array $applied): array
     {
-        $files = glob($this->directory . '/*.sql') ?: [];
+        $files = array_merge(glob($this->directory . '/*.sql') ?: [], glob($this->directory . '/*.php') ?: []);
         sort($files);
 
         $pending = [];
         foreach ($files as $path) {
-            $version = basename($path, '.sql');
+            $version = pathinfo($path, PATHINFO_FILENAME);
             if (!in_array($version, $applied, true)) {
                 $pending[$version] = $path;
             }
