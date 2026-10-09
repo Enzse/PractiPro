@@ -20,12 +20,14 @@ const ICONS = [
   'note-pencil', 'notebook', 'paper-plane-tilt', 'pencil-simple', 'phone', 'plus', 'seal-check',
   'sign-in', 'sign-out', 'squares-four', 'timer', 'trash', 'user', 'user-circle', 'users-three',
   'warning', 'warning-circle', 'x', 'x-circle', 'upload-simple', 'file-arrow-up', 'play', 'stop',
-  'image', 'chats-circle', 'hand-waving', 'link',
+  'image', 'chats-circle', 'hand-waving', 'link', 'chart-bar', 'caret-up-down', 'copy', 'user-plus',
+  'tray', 'arrow-clockwise', 'student', 'clock-countdown',
   // Larger illustrations for empty states.
   'buildings:duotone', 'chalkboard-teacher:duotone', 'clipboard-text:duotone', 'clock:duotone',
   'confetti:duotone', 'envelope-simple:duotone', 'files:duotone', 'lock-simple:duotone',
   'note-pencil:duotone', 'notebook:duotone', 'users-three:duotone', 'chat-circle-text:duotone',
-  'seal-check:duotone', 'link-break:duotone',
+  'seal-check:duotone', 'link-break:duotone', 'chart-bar:duotone', 'tray:duotone', 'student:duotone',
+  'user-plus:duotone',
 ];
 
 const root = dirname(dirname(fileURLToPath(import.meta.url)));

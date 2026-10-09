@@ -1,0 +1,78 @@
+<a routerLink="../students" class="mb-4 inline-flex items-center gap-1.5 text-sm text-slate-500 transition hover:text-slate-900">
+  <app-icon name="arrow-left" [size]="16" /> All students
+</a>
+
+@if (review.student(); as s) {
+  <section class="card overflow-hidden">
+    <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center sm:p-6">
+      <span class="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-brand-50 font-display text-xl font-semibold text-brand-700">{{ initials() }}</span>
+      <div class="min-w-0 flex-1">
+        <h1 class="font-display text-2xl font-semibold tracking-[-0.02em] text-slate-900">{{ s.firstName }} {{ s.lastName }}</h1>
+        <p class="mt-0.5 flex flex-wrap gap-x-3 gap-y-1 text-sm text-slate-500">
+          <span>{{ s.studentId || 'No student ID' }}</span>
+          @if (s.program) {
+            <span>{{ s.program }}@if (s.year) { · {{ s.year | ordinal }} year }</span>
+          }
+          <a class="link" [href]="'mailto:' + s.email">{{ s.email }}</a>
+          @if (s.phoneNumber) {
+            <span>{{ s.phoneNumber }}</span>
+          }
+        </p>
+      </div>
+      <dl class="grid grid-cols-3 gap-3 text-center sm:gap-6">
+        <div>
+          <dt class="text-[11px] text-slate-500">Training</dt>
+          <dd class="font-display text-lg font-semibold text-slate-900">{{ hours(s.TotalHoursWorked) | number: '1.0-0' }}<span class="text-xs font-normal text-slate-400">/{{ trainingHours }}</span></dd>
+        </div>
+        <div>
+          <dt class="text-[11px] text-slate-500">Seminars</dt>
+          <dd class="font-display text-lg font-semibold text-slate-900">{{ hours(s.TotalSeminarHours) | number: '1.0-0' }}<span class="text-xs font-normal text-slate-400">/{{ seminarHours }}</span></dd>
+        </div>
+        <div>
+          <dt class="text-[11px] text-slate-500">Today</dt>
+          <dd class="mt-1">
+            @if (s.clock_status === 'Clocked In') {
+              <span class="badge badge-success"><span class="h-1.5 w-1.5 animate-pulse rounded-full bg-current"></span>On duty</span>
+            } @else {
+              <span class="badge badge-neutral">Off duty</span>
+            }
+          </dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-slate-100 bg-slate-50/60 px-5 py-3 text-sm sm:px-6">
+      <span class="flex items-center gap-2 text-slate-600">
+        <app-icon name="buildings" [size]="16" class="text-slate-400" />
+        {{ s.company_name ?? 'Not placed at a company yet' }}
+        @if (s.job_title) {
+          <span class="text-slate-400">· {{ s.job_title }}</span>
+        }
+      </span>
+      <span class="flex items-center gap-2 text-slate-600">
+        <app-icon name="clipboard-text" [size]="16" class="text-slate-400" />
+        {{ s.registration_status === 1 ? 'Requirements approved' : 'Still registering' }}
+      </span>
+    </div>
+
+    <!-- Tabs -->
+    <nav class="flex gap-1 overflow-x-auto border-t border-slate-100 px-3" aria-label="Submissions">
+      @for (tab of tabs(); track tab.path) {
+        <a [routerLink]="tab.path" routerLinkActive="tab-active" ariaCurrentWhenActive="page"
+          class="-mb-px flex shrink-0 items-center gap-2 border-b-2 border-transparent px-3 py-3 text-sm font-medium text-slate-500 transition hover:text-slate-900 [&.tab-active]:border-brand-800 [&.tab-active]:text-slate-900">
+          <app-icon [name]="tab.icon" [size]="16" />
+          {{ tab.label }}
+          @if (tab.count > 0) {
+            <span class="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-coral-500 px-1.5 text-[11px] font-semibold text-white">{{ tab.count }}</span>
+          }
+        </a>
+      }
+    </nav>
+  </section>
+
+  <div class="mt-6">
+    <router-outlet />
+  </div>
+} @else {
+  <div class="skeleton h-48 rounded-2xl"></div>
+}

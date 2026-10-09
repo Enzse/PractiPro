@@ -10,7 +10,7 @@ import { StatusBadgeComponent } from '../../../shared/ui/status-badge/status-bad
 import { ToastService } from '../../../shared/ui/toast/toast.service';
 import { ConfirmService } from '../../../shared/ui/confirm/confirm.service';
 import { StudentStatusService } from '../student-status.service';
-import { CRITERIA, EXTENTS, OBJECTIVES, RATINGS } from './final-report-questions';
+import { CRITERIA, EXTENTS, OBJECTIVES, RATINGS } from '../../../shared/practicum/final-report-questions';
 
 @Component({
   selector: 'app-final-report',

@@ -1,0 +1,92 @@
+<app-page-header eyebrow="Class overview" [title]="context.block()"
+  [description]="context.profile() ? context.profile()!.course + ' · ' + (context.profile()!.year_level | ordinal) + ' year' + (context.profile()!.department ? ' · ' + context.profile()!.department : '') : ''">
+  <a pageActions routerLink="../enrollment" class="btn btn-secondary"><app-icon name="user-plus" [size]="16" /> Invite students</a>
+  <a pageActions routerLink="../students" class="btn btn-primary"><app-icon name="users-three" [size]="16" /> Students</a>
+</app-page-header>
+
+<!-- At a glance -->
+<div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+  <a routerLink="../students" class="card p-5 transition hover:shadow-raised">
+    <p class="text-sm text-slate-500">Students</p>
+    <p class="mt-2 font-display text-3xl font-semibold text-slate-900">{{ context.profile()?.students_handled ?? '–' }}</p>
+  </a>
+  <a routerLink="../students" [queryParams]="{ show: 'needs-review' }" class="card p-5 transition hover:shadow-raised">
+    <p class="text-sm text-slate-500">Waiting for review</p>
+    <p class="mt-2 flex items-center gap-2 font-display text-3xl font-semibold text-slate-900">
+      {{ context.pendingTotal() }}
+      @if (context.pendingTotal() > 0) {
+        <span class="h-2 w-2 rounded-full bg-coral-500"></span>
+      }
+    </p>
+  </a>
+  <a routerLink="../enrollment" class="card p-5 transition hover:shadow-raised">
+    <p class="text-sm text-slate-500">Join requests</p>
+    <p class="mt-2 flex items-center gap-2 font-display text-3xl font-semibold text-slate-900">
+      {{ requestCount() }}
+      @if (requestCount() > 0) {
+        <span class="h-2 w-2 rounded-full bg-coral-500"></span>
+      }
+    </p>
+  </a>
+  <a routerLink="../enrollment" class="card p-5 transition hover:shadow-raised">
+    <p class="text-sm text-slate-500">Invitations sent</p>
+    <p class="mt-2 font-display text-3xl font-semibold text-slate-900">{{ invitationCount() }}</p>
+  </a>
+</div>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-3">
+  <!-- Progress through the practicum -->
+  <section class="card card-pad lg:col-span-2">
+    <h2 class="section-title">Practicum progress</h2>
+    <p class="mt-1 text-sm text-slate-500">How many of your students have reached each stage. Select a stage to see who.</p>
+
+    <ul class="mt-6 space-y-1">
+      @for (stage of stages(); track stage.value) {
+        <li>
+          <a routerLink="../students" [queryParams]="{ show: stage.value }"
+            class="group grid grid-cols-[minmax(0,11rem)_1fr_auto] items-center gap-4 rounded-lg px-2 py-2.5 transition hover:bg-slate-50"
+            [matTooltip]="stage.count + ' of ' + stage.total + ' students (' + stage.percent + '%)'">
+            <span class="truncate text-sm text-slate-700 group-hover:text-slate-900">{{ stage.label }}</span>
+            <span class="h-3 overflow-hidden rounded-r bg-data-track" role="meter" [attr.aria-valuenow]="stage.count" aria-valuemin="0"
+              [attr.aria-valuemax]="stage.total" [attr.aria-label]="stage.label">
+              <span class="block h-full rounded-r bg-data-blue transition-[width] duration-700" [style.width.%]="stage.percent"></span>
+            </span>
+            <span class="w-24 text-right text-sm text-slate-500">
+              <span class="font-semibold text-slate-900">{{ stage.count }}</span> of {{ stage.total }}
+            </span>
+          </a>
+        </li>
+      } @empty {
+        @for (row of [1, 2, 3, 4, 5]; track row) {
+          <li class="skeleton my-3 h-6"></li>
+        }
+      }
+    </ul>
+  </section>
+
+  <!-- What's waiting -->
+  <section class="card self-start p-2">
+    <h2 class="section-title px-4 pb-2 pt-4">Needs your review</h2>
+    <ul>
+      @for (review of reviews(); track review.key) {
+        <li>
+          @if (review.count > 0) {
+            <a routerLink="../students" [queryParams]="{ show: 'needs-review', kind: review.key }"
+              class="flex items-center justify-between gap-3 rounded-lg px-4 py-3 transition hover:bg-slate-50">
+              <span class="text-sm font-medium text-slate-900">{{ review.label }}</span>
+              <span class="flex items-center gap-2">
+                <span class="badge badge-warning">{{ review.count }} pending</span>
+                <app-icon name="caret-right" [size]="14" class="text-slate-300" />
+              </span>
+            </a>
+          } @else {
+            <div class="flex items-center justify-between gap-3 px-4 py-3">
+              <span class="text-sm text-slate-500">{{ review.label }}</span>
+              <app-icon name="check" [size]="16" class="text-emerald-500" label="Nothing pending" />
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  </section>
+</div>

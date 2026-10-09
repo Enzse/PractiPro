@@ -1,0 +1,118 @@
+<app-page-header title="Students" [description]="'Everyone in ' + context.block() + '. Students with work waiting for you are listed first.'">
+  <a pageActions routerLink="../enrollment" class="btn btn-secondary"><app-icon name="user-plus" [size]="16" /> Invite students</a>
+</app-page-header>
+
+<section class="card overflow-hidden">
+  <div class="flex flex-col gap-4 border-b border-slate-100 p-5 sm:p-6">
+    <div class="w-full sm:w-80">
+      <app-search-field [(value)]="search" placeholder="Search name, ID or company" (valueChange)="page = 1" />
+    </div>
+    <app-filter-chips [options]="filterOptions()" [value]="show()" (valueChange)="setFilter($event)" label="Filter students" />
+    @if (kind(); as kind) {
+      <div class="flex items-center gap-2 text-sm text-slate-600">
+        Only students with pending <span class="font-medium text-slate-900">{{ kind.label.toLowerCase() }}</span>
+        <button type="button" class="btn btn-ghost btn-sm" (click)="clearKind()"><app-icon name="x" [size]="14" /> Clear</button>
+      </div>
+    }
+  </div>
+
+  @if (students() === null) {
+    <div class="space-y-3 p-6">
+      @for (row of [1, 2, 3, 4]; track row) {
+        <div class="skeleton h-12"></div>
+      }
+    </div>
+  } @else if (visible().length === 0) {
+    @if (students()!.length === 0) {
+      <app-empty-state icon="student:duotone" title="No students in this class yet"
+        description="Invite students by their student ID or share a join link.">
+        <a routerLink="../enrollment" class="btn btn-primary">Invite students</a>
+      </app-empty-state>
+    } @else {
+      <app-empty-state icon="student:duotone" title="No students match" description="Try another filter or search." [compact]="true" />
+    }
+  } @else {
+    <!-- Phones -->
+    <ul class="divide-y divide-slate-100 md:hidden">
+      @for (s of visible() | paginate: { itemsPerPage: pageSize, currentPage: page }; track s.id) {
+        <li>
+          <a [routerLink]="linkFor(s)" class="flex items-center gap-3 px-5 py-3.5">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">{{ initials(s) }}</span>
+            <span class="min-w-0 flex-1">
+              <span class="block truncate text-sm font-medium text-slate-900">{{ s.lastName }}, {{ s.firstName }}</span>
+              <span class="block text-xs text-slate-500">{{ hours(s.TotalHoursWorked) | number: '1.0-0' }} / {{ trainingHours }} h · {{ stage(s).label }}</span>
+            </span>
+            @if (pending(s) > 0) {
+              <span class="badge badge-warning">{{ pending(s) }}</span>
+            }
+            <app-icon name="caret-right" [size]="16" class="text-slate-300" />
+          </a>
+        </li>
+      }
+    </ul>
+
+    <!-- Larger screens -->
+    <div class="hidden overflow-x-auto md:block">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Status</th>
+            <th>Training hours</th>
+            <th>Seminar hours</th>
+            <th>To review</th>
+            <th><span class="sr-only">Open</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (s of visible() | paginate: { itemsPerPage: pageSize, currentPage: page }; track s.id) {
+            <tr class="group cursor-pointer" [routerLink]="linkFor(s)">
+              <td>
+                <div class="flex items-center gap-3">
+                  <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">{{ initials(s) }}</span>
+                  <div class="min-w-0">
+                    <p class="truncate font-medium text-slate-900">{{ s.lastName }}, {{ s.firstName }}</p>
+                    <p class="text-xs text-slate-500">{{ s.studentId || 'No student ID' }}</p>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="flex flex-col items-start gap-1">
+                  <span class="badge" [class]="stage(s).badge">{{ stage(s).label }}</span>
+                  @if (s.company_name) {
+                    <span class="max-w-[12rem] truncate text-xs text-slate-500">{{ s.company_name }}</span>
+                  }
+                </div>
+              </td>
+              <td class="w-44">
+                <div class="flex items-center gap-2">
+                  <span class="h-1.5 flex-1 overflow-hidden rounded-full bg-data-track">
+                    <span class="block h-full rounded-full bg-data-blue" [style.width.%]="(hours(s.TotalHoursWorked) / trainingHours) * 100"></span>
+                  </span>
+                  <span class="w-14 text-right text-xs tabular-nums text-slate-600">{{ hours(s.TotalHoursWorked) | number: '1.0-0' }}/{{ trainingHours }}</span>
+                </div>
+              </td>
+              <td class="tabular-nums text-slate-600">{{ hours(s.TotalSeminarHours) | number: '1.0-0' }}/{{ seminarHours }}</td>
+              <td>
+                @if (pending(s) > 0) {
+                  <span class="badge badge-warning">{{ pending(s) }} pending</span>
+                } @else {
+                  <span class="text-xs text-slate-400">Up to date</span>
+                }
+              </td>
+              <td class="text-right">
+                <app-icon name="caret-right" [size]="16" class="text-slate-300 transition group-hover:translate-x-0.5 group-hover:text-brand-700" />
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (visible().length > pageSize) {
+      <div class="border-t border-slate-100 px-4 py-3">
+        <pagination-controls [responsive]="true" previousLabel="" nextLabel="" (pageChange)="page = $event" />
+      </div>
+    }
+  }
+</section>

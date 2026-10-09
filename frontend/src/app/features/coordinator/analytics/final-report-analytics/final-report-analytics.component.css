@@ -1,5 +1,0 @@
-.comment-form-sticky {
-    position: sticky;
-    z-index: 1000; /* Ensure it appears above other content */
-    bottom: 0; /* Stick it to the bottom */
-}

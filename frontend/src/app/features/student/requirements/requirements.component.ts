@@ -20,7 +20,7 @@ import { FilterChipsComponent, FilterOption } from '../../../shared/ui/filter-ch
 import { ToastService } from '../../../shared/ui/toast/toast.service';
 import { ConfirmService } from '../../../shared/ui/confirm/confirm.service';
 import { StudentStatusService } from '../student-status.service';
-import { REQUIREMENT_TYPES, RequirementType, requirementLabel } from './requirement-types';
+import { REQUIREMENT_TYPES, RequirementType, requirementLabel } from '../../../shared/practicum/requirement-types';
 
 type StatusFilter = 'all' | 'Pending' | 'Approved' | 'Unapproved';
 

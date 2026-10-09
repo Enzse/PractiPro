@@ -53,7 +53,7 @@ export class LoginComponent {
               this.router.navigate(['/student/dashboard']);
               break;
             case 'advisor':
-              this.router.navigate(['/coordinator/dashboard']);
+              this.router.navigate(['/coordinator/classes']);
               break;
             case 'supervisor':
               this.router.navigate(['/supervisor/dashboard']);

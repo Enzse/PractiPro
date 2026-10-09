@@ -32,6 +32,14 @@ module.exports = {
           900: "#742d1f",
         },
         canvas: "#f5f6f9",
+        // Chart colours, checked with the dataviz palette validator. The brand navy
+        // is too grey to carry data, so charts use this blue (and orange as the
+        // second series, e.g. Yes/No).
+        data: {
+          blue: "#2a78d6",
+          track: "#dce9fa",
+          orange: "#eb6834",
+        },
 
         // Legacy names, still used by pages that have not been redesigned yet.
         neon: "#51abcb",

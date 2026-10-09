@@ -1,0 +1,128 @@
+<app-page-header title="Enrollment" [description]="'Bring students into ' + context.block() + ': accept their requests, invite them by student ID, or share a join link.'" />
+
+<!-- Join requests -->
+<section class="card overflow-hidden">
+  <header class="flex items-center justify-between border-b border-slate-100 p-5 sm:px-6">
+    <h2 class="section-title">Join requests</h2>
+    @if (requests()?.length) {
+      <span class="badge badge-warning">{{ requests()!.length }} waiting</span>
+    }
+  </header>
+  @if (requests() === null) {
+    <div class="p-6"><div class="skeleton h-10"></div></div>
+  } @else if (requests()!.length === 0) {
+    <app-empty-state icon="tray:duotone" title="No requests right now" [compact]="true"
+      description="Students who ask to join this class show up here." />
+  } @else {
+    <ul class="divide-y divide-slate-100">
+      @for (request of requests(); track request.id) {
+        <li class="flex flex-col gap-3 px-5 py-3.5 sm:flex-row sm:items-center sm:px-6">
+          <div class="flex min-w-0 flex-1 items-center gap-3">
+            <span class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-xs font-semibold text-brand-700">
+              {{ request.studentFirstName.charAt(0) }}{{ request.studentLastName.charAt(0) }}
+            </span>
+            <div class="min-w-0">
+              <p class="truncate text-sm font-medium text-slate-900">{{ request.studentFirstName }} {{ request.studentLastName }}</p>
+              <p class="text-xs text-slate-500">{{ request.studentId || 'No student ID' }} · asked {{ request.created_at | date: 'MMM d' }}</p>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" class="btn btn-ghost btn-sm" [disabled]="busyId() !== null" (click)="decline(request)">Decline</button>
+            <button type="button" class="btn btn-primary btn-sm" [disabled]="busyId() !== null" (click)="accept(request)">
+              @if (busyId() === request.id) {
+                <app-icon name="circle-notch" [size]="14" class="animate-spin" />
+              }
+              Accept
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</section>
+
+<div class="mt-6 grid gap-6 lg:grid-cols-2">
+  <!-- Invite by student ID -->
+  <section class="card card-pad">
+    <h2 class="section-title">Invite by student ID</h2>
+    <p class="mt-1 text-sm text-slate-500">The student sees the invitation when they sign in and joins with one click.</p>
+
+    <form class="mt-4 flex gap-2" [formGroup]="searchForm" (ngSubmit)="search()" novalidate>
+      <label class="sr-only" for="student-number">Student ID</label>
+      <input id="student-number" type="text" inputmode="numeric" class="input flex-1" placeholder="e.g. 202211557" formControlName="studentId" />
+      <button type="submit" class="btn btn-secondary" [disabled]="searching()">
+        <app-icon [name]="searching() ? 'circle-notch' : 'magnifying-glass'" [size]="16" [class.animate-spin]="searching()" /> Find
+      </button>
+    </form>
+    @if (searchForm.controls.studentId.invalid && searchForm.controls.studentId.touched) {
+      <p class="field-error">Enter the student’s ID number.</p>
+    }
+
+    @if (notFound()) {
+      <p class="mt-4 rounded-lg bg-slate-50 px-4 py-3 text-sm text-slate-600">No registered student has that ID. Check the number, or ask the student to sign up first.</p>
+    }
+
+    @if (found(); as student) {
+      <div class="mt-4 flex flex-col gap-3 rounded-xl p-4 ring-1 ring-slate-200 sm:flex-row sm:items-center">
+        <div class="min-w-0 flex-1">
+          <p class="font-medium text-slate-900">{{ student.firstName }} {{ student.lastName }}</p>
+          <p class="text-xs text-slate-500">
+            {{ student.program || 'No program' }}@if (student.year) { · year {{ student.year }} }
+            · {{ student.block ? 'In ' + student.block : 'Not in a class' }}
+          </p>
+        </div>
+        @if (student.block) {
+          <span class="text-sm text-slate-500">Already in a class</span>
+        } @else if (alreadyInvited()) {
+          <span class="badge badge-brand">Invited</span>
+        } @else {
+          <button type="button" class="btn btn-primary btn-sm" [disabled]="busyId() !== null" (click)="invite(student)">
+            <app-icon name="paper-plane-tilt" [size]="14" /> Send invitation
+          </button>
+        }
+      </div>
+    }
+  </section>
+
+  <!-- Join link -->
+  <section class="card card-pad">
+    <h2 class="section-title">Share a join link</h2>
+    <p class="mt-1 text-sm text-slate-500">Anyone signed in as a student who opens it joins {{ context.block() }}. Links expire 30 minutes after they’re made.</p>
+
+    @if (link(); as link) {
+      <div class="mt-4 flex gap-2">
+        <input type="text" class="input flex-1 font-mono text-xs" [value]="link" readonly aria-label="Join link" (focus)="$any($event.target).select()" />
+        <button type="button" class="btn btn-primary" (click)="copyLink(link)"><app-icon name="copy" [size]="16" /> Copy</button>
+      </div>
+    } @else {
+      <button type="button" class="btn btn-secondary mt-4" [disabled]="creatingLink()" (click)="createLink()">
+        <app-icon [name]="creatingLink() ? 'circle-notch' : 'link'" [size]="16" [class.animate-spin]="creatingLink()" /> Get a join link
+      </button>
+    }
+  </section>
+</div>
+
+<!-- Sent invitations -->
+<section class="card mt-6 overflow-hidden">
+  <header class="border-b border-slate-100 p-5 sm:px-6">
+    <h2 class="section-title">Invitations sent</h2>
+  </header>
+  @if (invitations() === null) {
+    <div class="p-6"><div class="skeleton h-10"></div></div>
+  } @else if (invitations()!.length === 0) {
+    <app-empty-state icon="envelope-simple:duotone" title="No open invitations" [compact]="true"
+      description="Invitations you send stay here until the student accepts or you cancel them." />
+  } @else {
+    <ul class="divide-y divide-slate-100">
+      @for (invitation of invitations(); track invitation.id) {
+        <li class="flex items-center gap-3 px-5 py-3.5 sm:px-6">
+          <div class="min-w-0 flex-1">
+            <p class="truncate text-sm font-medium text-slate-900">{{ invitation.studentFirstName }} {{ invitation.studentLastName }}</p>
+            <p class="text-xs text-slate-500">{{ invitation.studentId }} · sent {{ invitation.created_at | date: 'MMM d, y' }}</p>
+          </div>
+          <button type="button" class="btn btn-danger-ghost btn-sm" (click)="cancelInvitation(invitation)">Cancel</button>
+        </li>
+      }
+    </ul>
+  }
+</section>

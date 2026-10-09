@@ -1,51 +1,37 @@
-<div class="sm:ml-56">
-  <!-- <app-coordinator-sidebar></app-coordinator-sidebar> -->
-
-  <div class="flex bg-white shadow-md border border-gray-200 justify-between w-full h-auto py-5 pl-3">
-    <button (click)="sidebarState.toggle()" [attr.aria-expanded]="sidebarState.isOpen()" aria-controls="logo-sidebar"
-      type="button"
-      class="inline-flex items-center p-2 ms-3 text-sm text-gray-500 sm:hidden hover:ring-1 hover:ring-black focus:outline-none focus:ring-2 rounded-lg focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-      <span class="sr-only">Open sidebar</span>
-      <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg">
-        <path clip-rule="evenodd" fill-rule="evenodd"
-          d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
-        </path>
-      </svg>
+<app-shell [navGroups]="nav()" roleLabel="Coordinator">
+  <div shellSidebarHeader>
+    <button type="button" [matMenuTriggerFor]="classMenu"
+      class="flex w-full items-center gap-3 rounded-xl bg-slate-50 px-3 py-2.5 text-left ring-1 ring-slate-900/5 transition hover:bg-slate-100">
+      <span class="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-white text-brand-700 shadow-card ring-1 ring-slate-900/5">
+        <app-icon name="users-three" [size]="16" />
+      </span>
+      <span class="min-w-0 flex-1">
+        <span class="block text-[11px] text-slate-500">Class</span>
+        <span class="block truncate text-sm font-semibold text-slate-900">{{ block() ?? 'Choose a class' }}</span>
+      </span>
+      <app-icon name="caret-up-down" [size]="16" class="text-slate-400" />
     </button>
-    <div>
-      <h1 class="font-bold text-gray-800 sm:text-xl pl-4 mb-auto mt-1 font-primary">
-        Student Practicum Submission Platform
-      </h1>
-    </div>
-
-
-
-
-    <div class="relative" (mouseenter)="userMenuOpen.set(true)" (mouseleave)="userMenuOpen.set(false)">
-      <button id="dropdownHoverButton" (click)="userMenuOpen.set(!userMenuOpen())" [attr.aria-expanded]="userMenuOpen()" aria-haspopup="menu"
-        class="text-gray-800 bg-white hover:ring-black hover:ring-1 hover:rounded-3xl focus:ring-1 focus:rounded-3xl focus:ring-black font-medium text-sm px-5 py-2.5 mr-4 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-        type="button">
-        {{ data.firstName }} {{ data.lastName
-        }}<svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-          viewBox="0 0 10 6">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="m1 1 4 4 4-4" />
-        </svg>
-      </button>
-
-      <div id="dropdownHover" [class.hidden]="!userMenuOpen()" (click)="userMenuOpen.set(false)"
-        class="absolute right-0 z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
-          <li>
-            <a routerLink="/login" routerLinkActive="active"
-              class="block px-4 py-2 text-red-500 hover:bg-gray-100 dark:hover:bg-gray-100 dark:hover:text-white">Sign
-              out</a>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <mat-menu #classMenu="matMenu">
+      @for (item of classes.classes() ?? []; track item.block_name) {
+        <button mat-menu-item type="button" (click)="switchTo(item.block_name)">
+          <span class="flex items-center justify-between gap-6">
+            <span class="font-medium">{{ item.block_name }}</span>
+            @if (item.block_name === block()) {
+              <app-icon name="check" [size]="16" class="text-brand-700" />
+            } @else {
+              <span class="text-xs text-slate-400">{{ item.students_handled }} students</span>
+            }
+          </span>
+        </button>
+      } @empty {
+        <p class="px-4 py-2 text-sm text-slate-500">No classes yet</p>
+      }
+      <div class="my-1 h-px bg-slate-100"></div>
+      <a mat-menu-item routerLink="/coordinator/classes">
+        <span class="flex items-center gap-2 text-slate-600"><app-icon name="squares-four" [size]="16" /> All classes</span>
+      </a>
+    </mat-menu>
   </div>
-</div>
 
-<router-outlet></router-outlet>
+  <router-outlet />
+</app-shell>

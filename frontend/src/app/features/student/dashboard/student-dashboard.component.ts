@@ -14,7 +14,7 @@ import { IconComponent } from '../../../shared/ui/icon/icon.component';
 import { ProgressRingComponent } from '../../../shared/ui/progress-ring/progress-ring.component';
 import { EmptyStateComponent } from '../../../shared/ui/empty-state/empty-state.component';
 import { HiringRequestsDialogComponent } from '../dialogs/hiring-requests-dialog/hiring-requests-dialog.component';
-import { REQUIREMENT_TYPES } from '../requirements/requirement-types';
+import { REQUIREMENT_TYPES } from '../../../shared/practicum/requirement-types';
 import { REQUIRED_SEMINAR_HOURS, REQUIRED_TRAINING_HOURS, StudentStatusService } from '../student-status.service';
 
 interface Step {

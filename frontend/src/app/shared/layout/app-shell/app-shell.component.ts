@@ -13,6 +13,8 @@ export interface NavItem {
   link: string;
   /** Why the page isn't available yet; the item is shown greyed out with this as its tooltip. */
   locked?: string | null;
+  /** Only highlight on this exact URL, not on pages below it. */
+  exact?: boolean;
 }
 
 export interface NavGroup {
@@ -31,8 +33,8 @@ export interface MenuLink {
  * the account menu, and the page itself (projected content). Each role's
  * layout passes in its own navigation.
  *
- * Extra slots: [shellTopbar] (left side of the top bar) and
- * [shellSidebarFooter] (bottom of the sidebar).
+ * Extra slots: [shellTopbar] (left side of the top bar), [shellSidebarHeader]
+ * (above the navigation) and [shellSidebarFooter] (bottom of the sidebar).
  */
 @Component({
   selector: 'app-shell',

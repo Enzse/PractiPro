@@ -18,6 +18,10 @@
     </button>
   </div>
 
+  <div class="shrink-0 px-3 pt-2 empty:hidden">
+    <ng-content select="[shellSidebarHeader]" />
+  </div>
+
   <nav class="flex-1 space-y-6 overflow-y-auto px-3 pb-4 pt-3">
     @for (group of navGroups(); track $index) {
       <div>
@@ -35,7 +39,7 @@
                   <app-icon name="lock-simple" [size]="14" />
                 </span>
               } @else {
-                <a class="nav-item" [routerLink]="item.link" routerLinkActive="nav-active" ariaCurrentWhenActive="page">
+                <a class="nav-item" [routerLink]="item.link" routerLinkActive="nav-active" [routerLinkActiveOptions]="{ exact: !!item.exact }" ariaCurrentWhenActive="page">
                   <app-icon [name]="item.icon" [size]="18" class="text-slate-400" />
                   <span class="flex-1 truncate">{{ item.label }}</span>
                 </a>
