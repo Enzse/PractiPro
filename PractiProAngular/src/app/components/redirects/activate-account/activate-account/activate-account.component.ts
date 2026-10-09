@@ -47,13 +47,12 @@ export class ActivateAccountComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.authApi.checkActivationToken(this.token).subscribe(
-        (res: any) => {
+      this.authApi.checkActivationToken(this.token).subscribe((res) => {
           const activationForm = this.builder.group({
             token: this.token,
           })
           this.subscriptions.add(
-            this.authApi.activate(activationForm.getRawValue()).subscribe((res: any) => {
+            this.authApi.activate(activationForm.getRawValue()).subscribe((res) => {
               this.status = 'valid';
               Swal.fire({
                 title: 'Account Activated',

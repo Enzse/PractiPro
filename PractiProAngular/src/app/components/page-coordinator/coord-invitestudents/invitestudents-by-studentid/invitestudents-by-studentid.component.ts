@@ -60,7 +60,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
   searchForStudentID() {
     if (this.searchForm.valid) {
       this.subscriptions.add(
-        this.studentApi.byStudentNumber(String(this.searchForm.value.studentId)).subscribe((res: any) => {
+        this.studentApi.byStudentNumber(String(this.searchForm.value.studentId)).subscribe((res) => {
           if (res.payload.length === 0) {
             Swal.fire({
               title: "No registered student found for this student ID.",
@@ -102,7 +102,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
 
   checkExistingInvitationForStudent() {
     this.subscriptions.add(
-      this.classJoinApi.invitationCount(this.matchingStudent.id, this.currentBlock).subscribe((res: any) => {
+      this.classJoinApi.invitationCount(this.matchingStudent.id, this.currentBlock).subscribe((res) => {
         this.existingInvitations = res.payload[0].invitationCount;
       }));
   }
@@ -110,8 +110,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
   loadInvitations(): void {
     if (this.currentBlock) {
       this.subscriptions.add(
-        this.classJoinApi.invitationsForClass(this.currentBlock).subscribe(
-          (res: any) => {
+        this.classJoinApi.invitationsForClass(this.currentBlock).subscribe((res) => {
             this.invitations = res.payload;
           },
           error => {
@@ -133,7 +132,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.classJoinApi.cancelInvitation(id).subscribe((res: any) => {
+          this.classJoinApi.cancelInvitation(id).subscribe((res) => {
             this.loadInvitations();
             Swal.fire({
               toast: true,
@@ -171,7 +170,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
 
   sendClassInvite(student_id: any) {
     this.subscriptions.add(
-      this.classJoinApi.invite({ student_id: Number(student_id), advisor_id: this.userID, class: this.currentBlock }).subscribe((res: any) => {
+      this.classJoinApi.invite({ student_id: Number(student_id), advisor_id: this.userID, class: this.currentBlock }).subscribe((res) => {
         this.loadInvitations();
         this.matchingStudent = null;
         this.searchForm.patchValue({
@@ -196,7 +195,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.classJoinApi.cancelInvitationsOfStudent(student_id).subscribe((res: any) => {
+          this.classJoinApi.cancelInvitationsOfStudent(student_id).subscribe((res) => {
             this.loadInvitations();
             this.matchingStudent = null;
             Swal.fire({

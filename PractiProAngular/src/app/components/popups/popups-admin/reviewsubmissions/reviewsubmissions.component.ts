@@ -25,8 +25,7 @@ export class ReviewsubmissionsComponent implements OnInit {
 
   loadData() {
     console.log(`ID: ${this.data.usercode}`);
-    this.submissionApi.list('submissions', this.data.usercode).subscribe(
-      (res: any) => {
+    this.submissionApi.list('submissions', this.data.usercode).subscribe((res) => {
         this.studentSubmissions = res.payload;
         console.log(this.studentSubmissions);
       },

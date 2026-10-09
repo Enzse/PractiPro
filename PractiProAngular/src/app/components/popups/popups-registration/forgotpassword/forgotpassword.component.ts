@@ -22,7 +22,7 @@ export class ForgotpasswordComponent {
 
   submitForm() {
     if (this.emailForm.valid) {
-      this.authApi.requestPasswordReset(this.emailForm.getRawValue()).subscribe((res: any) => {
+      this.authApi.requestPasswordReset(this.emailForm.getRawValue()).subscribe((res) => {
         Swal.fire({
           title: "Request Sent!",
           icon: "success"

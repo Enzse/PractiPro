@@ -52,7 +52,7 @@ export class DtrpopupcomponentComponent {
 
   loadData() {
     this.subscriptions.add(
-      this.dtrApi.forStudent(this.data.student.id).subscribe((res: any) => {
+      this.dtrApi.forStudent(this.data.student.id).subscribe((res) => {
         this.datalist = res.payload;
         this.datalist = this.addWeekNumberToRecords(res.payload, this.data.student.hire_date);
         this.origlist = this.datalist;

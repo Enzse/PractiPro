@@ -48,7 +48,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   //This block fetches ALL users from the database:
   loadUsers() {
-    this.userApi.all().subscribe((res: any) => {
+    this.userApi.all().subscribe((res) => {
       //The "res" variable automatically contains an object that contains the payload(payload contains fetched data).
       this.userlist = res.payload
       .filter((user: any) => user.id !== this.userId && user.role !== "admin" && user.role !== "superadmin")

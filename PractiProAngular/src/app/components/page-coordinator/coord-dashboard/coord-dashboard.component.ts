@@ -88,7 +88,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.blockService.selectedBlock$.pipe(
         map((res: any) => res)
-      ).subscribe((res: any) => {
+      ).subscribe((res) => {
         this.currentBlock = res;
         this.loadClass(this.currentBlock);
         this.loadPendingSubmissionsTotal(this.currentBlock);
@@ -108,7 +108,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
   loadPendingSubmissions(block: any) {
     this.subscriptions.add(
-      this.reportApi.pendingSubmissions(block).subscribe((res: any) => {
+      this.reportApi.pendingSubmissions(block).subscribe((res) => {
         this.pendingSubmissions = res.payload;
       })
     )
@@ -116,7 +116,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
   loadPendingSubmissionsTotal(block: any) {
     this.subscriptions.add(
-      this.reportApi.pendingSubmissionTotals(block).subscribe((res: any) => {
+      this.reportApi.pendingSubmissionTotals(block).subscribe((res) => {
         console.log(res);
         this.pendingSubmissionsTotal = res.payload[0];
       })
@@ -125,7 +125,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
   loadClass(block: any) {
     this.subscriptions.add(
-      this.classApi.profile(block).subscribe((res: any) => {
+      this.classApi.profile(block).subscribe((res) => {
         this.blockData = res.payload[0];
         this.processChartData(res.payload);
         if (this.blockData) {

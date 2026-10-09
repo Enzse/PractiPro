@@ -91,7 +91,7 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
 
   loadEvaluation() {
     this.subscriptions.add(
-      this.reportApi.evaluationOf(this.data.student.id).subscribe((res: any) => {
+      this.reportApi.evaluationOf(this.data.student.id).subscribe((res) => {
         this.existingEvaluation = res.payload[0];
         console.log(this.existingEvaluation);
         this.evaluationForm.patchValue(this.existingEvaluation);
@@ -129,7 +129,7 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.reportApi.createEvaluation(this.evaluationForm.value).subscribe((res: any) => {
+          this.reportApi.createEvaluation(this.evaluationForm.value).subscribe((res) => {
             Swal.fire({
               title: `Successfully submitted evaluation for ${this.data.student.firstName} ${this.data.student.lastName}`,
               icon: "success",
@@ -156,7 +156,7 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.submissionApi.delete('supervisor_student_evaluations', submissionId).subscribe((res: any) => {
+        this.submissionApi.delete('supervisor_student_evaluations', submissionId).subscribe((res) => {
           Swal.fire({
             title: "Your submission has been deleted",
             icon: "success"

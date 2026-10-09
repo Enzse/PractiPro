@@ -61,7 +61,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
 
   loadWarRecord() {
     this.subscriptions.add(
-      this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+      this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res) => {
         this.selectedRecord = res.payload[0]
         this.loadWarActivities();
       })
@@ -71,7 +71,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   loadWarActivities() {
     if (this.selectedRecord) {
       this.subscriptions.add(
-        this.warApi.activities(this.selectedRecord.id).subscribe((res: any) => {
+        this.warApi.activities(this.selectedRecord.id).subscribe((res) => {
           this.selectedRecordActivities = res.payload
           this.initialRecordActivities = JSON.parse(JSON.stringify(res.payload));
           this.checkForUnsaved = true;
@@ -84,7 +84,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   }
   saveChanges() {
     this.subscriptions.add(
-      this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+      this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res) => {
         if (res.payload.length === 0) {
           if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description === '') {
             Swal.fire({
@@ -99,9 +99,9 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
             week: this.selectedTabWeek
           }
           this.subscriptions.add(
-            this.warApi.create(newRecord).subscribe((res: any) => {
+            this.warApi.create(newRecord).subscribe((res) => {
               this.subscriptions.add(
-                this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+                this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res) => {
                   this.selectedRecord = res.payload[0]
                   this.saveIteration();
                   Swal.fire({
@@ -129,7 +129,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
     }));
     this.warApi.clearActivities(this.selectedRecord.id).subscribe(res => {
       this.selectedRecordActivities.forEach(activity => {
-        this.warApi.addActivity(activity).subscribe((res: any) => {
+        this.warApi.addActivity(activity).subscribe((res) => {
         }
         )
       })
@@ -182,7 +182,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
           status: 'Pending'
         };
         this.subscriptions.add(
-          this.warApi.setSubmitted(recordSubmitted).subscribe((res: any) => {
+          this.warApi.setSubmitted(recordSubmitted).subscribe((res) => {
             this.loadWarRecord();
             Swal.fire({
               toast: true,
@@ -283,7 +283,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       status: null
     }
     this.subscriptions.add(
-      this.warApi.setSubmitted(recordSubmitted).subscribe((res: any) => {
+      this.warApi.setSubmitted(recordSubmitted).subscribe((res) => {
         this.loadWarRecord();
         Swal.fire({
           toast: true,

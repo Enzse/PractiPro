@@ -33,8 +33,7 @@ export class InspectprofilepopupComponent {
 
 
   loadInfo() {
-    this.studentApi.byStudentNumber(this.data.studentId).subscribe(
-      (res: any) => {
+    this.studentApi.byStudentNumber(this.data.studentId).subscribe((res) => {
         this.studentProfile = res.payload[0];
         this.studentProfile.avatar = '';
                 

@@ -39,8 +39,7 @@ export class ViewprofilepopupComponent implements OnInit, OnDestroy {
 
   loadInfo() {
     this.subscriptions.add(
-      this.studentApi.ojtStatus(this.data.student_id).subscribe(
-        (res: any) => {
+      this.studentApi.ojtStatus(this.data.student_id).subscribe((res) => {
           this.studentProfile = res.payload[0];
           this.studentProfile.avatar = '';
           this.mediaApi.avatar(this.studentProfile.id).subscribe((avatarRes: any) => {
@@ -57,9 +56,9 @@ export class ViewprofilepopupComponent implements OnInit, OnDestroy {
 
   private loadCompany(companyId: any) {
     this.subscriptions.add(
-      this.companyApi.get(companyId).subscribe((res: any) => {
+      this.companyApi.get(companyId).subscribe((res) => {
         this.company = res.payload[0];
-        const itEquipmentArray: string[] = JSON.parse(res.payload[0].it_equipment);
+        const itEquipmentArray: string[] = JSON.parse(res.payload[0].it_equipment ?? '[]');
         this.company.it_equipment = itEquipmentArray
 
         // this.company.logo = '';

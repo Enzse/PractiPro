@@ -45,7 +45,7 @@ export class AddseminarpopupComponent {
 
   submitRecord() {
     if (this.seminarRecordForm.valid) {
-      this.seminarApi.create(this.data.id, this.seminarRecordForm.value).subscribe((res: any) => {
+      this.seminarApi.create(this.data.id, this.seminarRecordForm.value).subscribe((res) => {
 
         this.isUploading = true;
         const fileInputs = document.querySelectorAll('input[type="file"]');

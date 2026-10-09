@@ -91,10 +91,10 @@ export class SupervisorWarComponent {
 
   checkForPending(trainees: any[]) {
     trainees.forEach((trainee: any) => {
-      this.studentApi.pendingSubmissions(trainee.id).subscribe((res: any) => {
-        // Check if payload exists and access pending_war_count
+      this.studentApi.pendingSubmissions(trainee.id).subscribe((res) => {
+        // Weekly reports awaiting this supervisor's approval
         if (res.payload && res.payload.length > 0) {
-          const pendingCount = res.payload[0].pending_war_count;
+          const pendingCount = res.payload[0].pending_war_count_supervisor;
           console.log(`Student ID: ${trainee.id}, Pending WAR Count: ${pendingCount}`);
           // You can also perform further actions based on the pending count here
         } else {

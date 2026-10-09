@@ -51,13 +51,13 @@ export class SelecttraineespopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.studentApi.atCompany(this.data.company_id).subscribe((res: any) => {
+      this.studentApi.atCompany(this.data.company_id).subscribe((res) => {
         this.traineesList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
         this.traineesList.forEach((student: any) => {
           this.subscriptions.add(
-            this.mediaApi.avatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -78,7 +78,7 @@ export class SelecttraineespopupComponent implements OnInit, OnDestroy {
       supervisor_id: this.data.supervisor_id
     });
     this.subscriptions.add(
-      this.companyApi.assignToSupervisor(this.selectionForm.value).subscribe((res: any) => {
+      this.companyApi.assignToSupervisor(this.selectionForm.value).subscribe((res) => {
         this.changeDetected = true;
         this.dialog.close(this.changeDetected);
       }, error => {
@@ -110,7 +110,7 @@ export class SelecttraineespopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.companyApi.removeStudent(this.data.company_id, id).subscribe((res: any) => {
+          this.companyApi.removeStudent(this.data.company_id, id).subscribe((res) => {
             this.changeDetection.notifyChange(true);
             Swal.fire({
               title: "Student Removed!",

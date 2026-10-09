@@ -44,7 +44,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.reportApi.finalReportOf(this.data.student.id).subscribe((res: any) => {
+      this.reportApi.finalReportOf(this.data.student.id).subscribe((res) => {
         this.submittedReport = res.payload[0];
         this.isLoading = false;
         console.log(this.submittedReport);
@@ -95,7 +95,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.submissionApi.delete('finalreports', submissionId).subscribe((res: any) => {
+          this.submissionApi.delete('finalreports', submissionId).subscribe((res) => {
             Swal.fire({
               title: "The submission has been deleted",
               icon: "success"

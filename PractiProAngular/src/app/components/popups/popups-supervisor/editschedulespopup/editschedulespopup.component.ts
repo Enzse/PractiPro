@@ -99,7 +99,7 @@ export class EditschedulespopupComponent {
       confirmButtonText: "Confirm"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.companyApi.clearSchedules(this.data.student.id).subscribe((res: any) => {
+        this.companyApi.clearSchedules(this.data.student.id).subscribe((res) => {
           Swal.fire({
             title: "Schedule deleted",
             icon: "success"

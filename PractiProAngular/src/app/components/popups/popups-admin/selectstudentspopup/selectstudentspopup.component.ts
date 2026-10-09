@@ -30,9 +30,8 @@ export class SelectstudentspopupComponent {
 
   ngOnInit(): void {
     console.log(this.data.chosenblock)
-    this.classApi.get(this.data.chosenblock).subscribe((res: any) => {
-      this.studentApi.byCourseAndYear(res.payload[0].course, res.payload[0].year_level).subscribe(
-        (res: any) => {
+    this.classApi.get(this.data.chosenblock).subscribe((res) => {
+      this.studentApi.byCourseAndYear(res.payload[0].course, res.payload[0].year_level).subscribe((res) => {
           this.datalist = res.payload;
           console.log(this.datalist);
         },

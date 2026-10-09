@@ -186,7 +186,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.submissionApi.delete('documentations', submissionId).subscribe((res: any) => {
+          this.submissionApi.delete('documentations', submissionId).subscribe((res) => {
             Swal.fire({
               title: "Your submission has been deleted",
               icon: "success"

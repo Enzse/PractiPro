@@ -38,8 +38,7 @@ export class CheckclassesComponent {
   }
 
   loadData() {
-    this.classApi.ofCoordinator(this.data.usercode).subscribe(
-      (res: any) => {
+    this.classApi.ofCoordinator(this.data.usercode).subscribe((res) => {
         this.datalist = res?.payload;
         console.log(this.datalist);
       },

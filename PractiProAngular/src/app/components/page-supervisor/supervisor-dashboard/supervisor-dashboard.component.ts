@@ -36,7 +36,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
     this.userId = this.session.userId();
     this.subscriptions.add(
-      this.companyApi.supervisor(this.userId).subscribe((res: any) => {
+      this.companyApi.supervisor(this.userId).subscribe((res) => {
         this.user = res.payload[0];
       })
     );
@@ -61,13 +61,13 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   loadData() {
     console.log("Loading Data...");
     this.subscriptions.add(
-      this.studentApi.ofSupervisor(this.userId).subscribe((res: any) => {
+      this.studentApi.ofSupervisor(this.userId).subscribe((res) => {
         this.traineesList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
         this.traineesList.forEach((student: any) => {
           this.subscriptions.add(
-            this.mediaApi.avatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -112,7 +112,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   }
 
   removeStudentFromSelection(id: number, firstName: string) {
-    this.companyApi.unassignFromSupervisor(id, this.userId).subscribe((res: any) => {
+    this.companyApi.unassignFromSupervisor(id, this.userId).subscribe((res) => {
       this.loadData();
       Swal.fire({
         toast: true,

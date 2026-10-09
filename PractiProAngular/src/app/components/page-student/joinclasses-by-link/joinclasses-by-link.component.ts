@@ -41,7 +41,7 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.subscriptions.add(
-      this.studentApi.get(this.userID).subscribe((res: any) => {
+      this.studentApi.get(this.userID).subscribe((res) => {
         this.student = res.payload[0];
 
         if (this.student.block) {
@@ -49,14 +49,13 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
         }
         else {
           this.subscriptions.add(
-            this.classJoinApi.checkLink(this.token).subscribe(
-              (res: any) => {
+            this.classJoinApi.checkLink(this.token).subscribe((res) => {
                 this.tokenData = res.payload;
                 this.subscriptions.add(
                   this.studentApi.joinClass(this.userID, {
                     block_name: this.tokenData.class,
                     token: this.token, // proves the student was given the link
-                  }).subscribe((res: any) => {
+                  }).subscribe((res) => {
                     this.status = 'valid';
                     Swal.fire({
                       title: `Successfully joined ${this.tokenData.class}!`,

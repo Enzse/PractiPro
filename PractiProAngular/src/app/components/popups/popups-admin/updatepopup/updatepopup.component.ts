@@ -25,7 +25,7 @@ export class UpdatepopupComponent implements OnInit {
   ngOnInit(): void {
     this.userrole = this.data.userrole;
     console.log(this.userrole)
-    this.userApi.roles().subscribe((res: any) => {
+    this.userApi.roles().subscribe((res) => {
       if(this.userrole !== 'superadmin'){
         this.rolelist = res.payload.filter((role: any) => !role.code.includes('admin'));
       }else{
@@ -35,7 +35,7 @@ export class UpdatepopupComponent implements OnInit {
 
 
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.userApi.get(this.data.usercode).subscribe((res: any) => {
+      this.userApi.get(this.data.usercode).subscribe((res) => {
         this.editdata = res.payload[0]; // Access data from the payload property
         this.updateform.setValue({
           id: this.editdata.id,

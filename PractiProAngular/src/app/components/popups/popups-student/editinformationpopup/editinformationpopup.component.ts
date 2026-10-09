@@ -30,7 +30,7 @@ export class EditinformationpopupComponent implements OnInit {
   ngOnInit(): void {
     const userId = this.session.userId();
     if (userId) {
-      this.studentApi.get(userId).subscribe((res: any) => {
+      this.studentApi.get(userId).subscribe((res) => {
         this.editdata = res.payload[0];
         this.editForm.setValue({
           firstName: this.editdata.firstName,

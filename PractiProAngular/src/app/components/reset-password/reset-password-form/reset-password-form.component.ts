@@ -33,7 +33,7 @@ export class ResetPasswordFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authApi.checkResetToken(this.token).subscribe((res: any) => {
+    this.authApi.checkResetToken(this.token).subscribe((res) => {
       this.status = 'valid';
       this.passwordForm.patchValue({
         token: this.token

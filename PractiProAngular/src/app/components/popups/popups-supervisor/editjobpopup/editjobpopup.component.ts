@@ -30,7 +30,7 @@ export class EditjobpopupComponent {
 
 
   ngOnInit(): void {
-    this.companyApi.jobOf(this.data.student.id).subscribe((res: any) => {
+    this.companyApi.jobOf(this.data.student.id).subscribe((res) => {
       this.existingdata = res.payload[0];
       if (this.existingdata) {
         this.jobForm.patchValue({

@@ -36,7 +36,7 @@ export class LoginComponent {
 
   onLogin2() {
 
-    this.authApi.login(this.loginform.getRawValue()).subscribe((res: any) => {
+    this.authApi.login(this.loginform.getRawValue()).subscribe((res) => {
       if (res.token) {
         this.session.saveToken(res.token);
 

@@ -46,8 +46,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.studentApi.ojtStatus(this.studentId).subscribe(
-        (res: any) => {
+      this.studentApi.ojtStatus(this.studentId).subscribe((res) => {
           this.student = res.payload[0];
           this.registrationStatus = res.payload[0].registration_status;
           this.company_id = res.payload[0].company_id;

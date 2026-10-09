@@ -83,7 +83,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
   loadClasses(): void {
     if (this.student) {
       this.subscriptions.add(
-        this.classApi.byCourseAndYear(this.student.program, this.student.year).subscribe((res: any) => {
+        this.classApi.byCourseAndYear(this.student.program, this.student.year).subscribe((res) => {
           this.classeslist = res.payload;
         }));
     }
@@ -112,7 +112,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
 
       if (this.joinRequest.valid) {
         this.subscriptions.add(
-          this.classJoinApi.requestToJoin(this.joinRequest.value).subscribe((res: any) => {
+          this.classJoinApi.requestToJoin(this.joinRequest.value).subscribe((res) => {
             Swal.fire({
               title: 'Request to Join Sent!',
               text: 'Please wait for the class advisor to accept you into the class',
@@ -162,7 +162,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.classJoinApi.cancelRequest(this.existingRequest.student_id).subscribe((res: any) => {
+          this.classJoinApi.cancelRequest(this.existingRequest.student_id).subscribe((res) => {
             this.existingRequest = null;
             Swal.fire({
               toast: true,

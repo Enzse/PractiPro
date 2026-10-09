@@ -104,8 +104,7 @@ export class ProfileComponent implements OnInit {
 
   loadInfo() {
     if (this.userId) {
-      this.studentApi.get(this.userId).subscribe(
-        (res: any) => {
+      this.studentApi.get(this.userId).subscribe((res) => {
           this.studentProfile = res.payload;
         },
         (error: any) => {

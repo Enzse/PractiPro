@@ -46,8 +46,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.submissionApi.list('submissions', this.data.student.id).subscribe(
-        (res: any) => {
+      this.submissionApi.list('submissions', this.data.student.id).subscribe((res) => {
           this.studentSubmissions = res.payload.sort((a: any, b: any) => {
             return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
           });
@@ -150,7 +149,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.submissionApi.delete('submissions', submissionId).subscribe((res: any) => {
+          this.submissionApi.delete('submissions', submissionId).subscribe((res) => {
             Swal.fire({
               title: "The submission has been deleted",
               icon: "success"

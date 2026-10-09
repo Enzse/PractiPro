@@ -41,8 +41,7 @@ export class ViewSentInvitesComponent {
   loadData() {
     this.isLoading = true;
     this.subscriptions.add(
-      this.classJoinApi.invitationsForClass(this.data.block).subscribe(
-        (res: any) => {
+      this.classJoinApi.invitationsForClass(this.data.block).subscribe((res) => {
           this.datalist = res.payload;
           this.isLoading = false;
         },
@@ -85,7 +84,7 @@ export class ViewSentInvitesComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.classJoinApi.cancelInvitation(id).subscribe((res: any) => {
+          this.classJoinApi.cancelInvitation(id).subscribe((res) => {
             this.loadData();
             Swal.fire({
               toast: true,

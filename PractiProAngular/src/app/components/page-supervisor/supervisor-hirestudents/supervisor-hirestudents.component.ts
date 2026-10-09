@@ -45,7 +45,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.companyApi.supervisor(this.userID).subscribe((res: any) => {
+        this.companyApi.supervisor(this.userID).subscribe((res) => {
             this.user = res.payload[0];
             this.companyForm.patchValue({
                 supervisor_id: this.user.id,
@@ -56,7 +56,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
 
     searchForStudentID() {
         if (this.searchForm.valid) {
-            this.studentApi.byStudentNumber(this.searchForm.value.studentId).subscribe((res: any) => {
+            this.studentApi.byStudentNumber(this.searchForm.value.studentId).subscribe((res) => {
                 if (res.payload.length === 0) {
                     Swal.fire({
                         title: "No student found for this student ID.",
@@ -71,7 +71,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
                             this.matchingStudent.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
                         }
                     });
-                    this.companyApi.assignmentCount('company_hiring_requests', 'company_id', 'student_id', this.user.company_id, this.matchingStudent.id).subscribe((res: any) => {
+                    this.companyApi.assignmentCount('company_hiring_requests', 'company_id', 'student_id', this.user.company_id, this.matchingStudent.id).subscribe((res) => {
                         this.existingConfirmations = res.payload[0].assignment_count
                         console.log(this.existingConfirmations)
                     });
@@ -103,7 +103,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
             student_id: student.id,
         });
         if (this.companyForm.valid) {
-            this.companyApi.sendHiringRequest(this.companyForm.value).subscribe((res: any) => {
+            this.companyApi.sendHiringRequest(this.companyForm.value).subscribe((res) => {
                 Swal.fire({
                     title: "Invitation Sent",
                     text: "Please wait until the student confirms it in their inbox.",

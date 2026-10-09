@@ -46,7 +46,7 @@ export class ClassinvitationsComponent implements OnInit, OnDestroy {
       block_name: [invitation.class]
     })
     this.subscriptions.add(
-      this.studentApi.joinClass(invitation.student_id, invitationData.getRawValue()).subscribe((res: any) => {
+      this.studentApi.joinClass(invitation.student_id, invitationData.getRawValue()).subscribe((res) => {
         this.dialogref.close();
         this.router.navigate(['student-dashboard']);
         Swal.fire({
@@ -70,7 +70,7 @@ export class ClassinvitationsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.classJoinApi.cancelInvitationsOfStudent(id).subscribe((res: any) => {
+          this.classJoinApi.cancelInvitationsOfStudent(id).subscribe((res) => {
             Swal.fire({
               toast: true,
               position: "top-end",

@@ -31,7 +31,7 @@ export class DeptpopupComponent implements OnInit {
       this.deptlist = res;
     });
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.classApi.coordinator(this.data.usercode).subscribe((res: any) => {
+      this.classApi.coordinator(this.data.usercode).subscribe((res) => {
         console.log(this.data.usercode);
         console.log(res.payload);
 
@@ -42,7 +42,7 @@ export class DeptpopupComponent implements OnInit {
         });
       })
 
-      this.userApi.get(this.data.usercode).subscribe((res: any) => {
+      this.userApi.get(this.data.usercode).subscribe((res) => {
         this.editdata = res.payload[0]; // Access data from the payload property
         console.log('user:' + this.editdata);
       })

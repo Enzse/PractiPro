@@ -81,7 +81,7 @@ export class ExitPollComponent implements OnInit, OnDestroy {
 
   loadReport() {
     this.subscriptions.add(
-      this.reportApi.finalReportOf(this.userId).subscribe((res: any) => {
+      this.reportApi.finalReportOf(this.userId).subscribe((res) => {
         this.existingReport = res.payload[0];
         console.log(this.existingReport);
       })
@@ -118,7 +118,7 @@ export class ExitPollComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.reportApi.createFinalReport(this.exitPollForm.value).subscribe((res: any) => {
+          this.reportApi.createFinalReport(this.exitPollForm.value).subscribe((res) => {
             Swal.fire({
               title: `Successfully submitted record`,
               text: `Please wait for your advisor's feedback.`,

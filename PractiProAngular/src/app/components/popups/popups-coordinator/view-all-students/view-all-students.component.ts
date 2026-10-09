@@ -46,7 +46,7 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
   loadData() {
 
     this.subscriptions.add(
-      this.studentApi.inClass(this.data.block).subscribe((res: any) => {
+      this.studentApi.inClass(this.data.block).subscribe((res) => {
         this.studentList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
@@ -87,7 +87,7 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
 
         this.studentList.forEach((student: any) => {
           this.subscriptions.add(
-            this.mediaApi.avatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -109,7 +109,7 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.companyApi.removeStudent(this.data.company_id, id).subscribe((res: any) => {
+          this.companyApi.removeStudent(this.data.company_id, id).subscribe((res) => {
             this.changeDetection.notifyChange(true);
             Swal.fire({
               title: "Student Removed!",

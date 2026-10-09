@@ -40,7 +40,7 @@ export class InvitestudentsByLinkComponent implements OnInit, OnDestroy {
       class: block
     })
     this.subscriptions.add(
-      this.classJoinApi.createLink(classForm.getRawValue()).subscribe((res: any) => {
+      this.classJoinApi.createLink(classForm.getRawValue()).subscribe((res) => {
         this.link = res.payload;
       }))
   }

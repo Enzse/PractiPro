@@ -34,13 +34,13 @@ export class ViewhiringrequestsComponent implements OnInit {
 
   loadData() {
     this.subscriptions.add(
-      this.companyApi.hiringRequestsOf(this.data.student_id).subscribe((res: any) => {
+      this.companyApi.hiringRequestsOf(this.data.student_id).subscribe((res) => {
         this.datalist = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
         this.subscriptions.add(
           this.datalist.forEach((company: any) => {
-            this.mediaApi.logo(company.company_id).subscribe((res: any) => {
+            this.mediaApi.logo(company.company_id).subscribe((res) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 company.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -62,11 +62,11 @@ export class ViewhiringrequestsComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.companyApi.addStudent(request).subscribe((res: any) => {
+          this.companyApi.addStudent(request).subscribe((res) => {
             this.changeDetection.notifyChange(true);
             Swal.fire("Success", "You have successfully joined the company", "success");
             this.subscriptions.add(
-              this.companyApi.deleteHiringRequest(request.id).subscribe((res: any) => {
+              this.companyApi.deleteHiringRequest(request.id).subscribe((res) => {
                 this.dialog.close();
               }));
           }, error => {
@@ -87,7 +87,7 @@ export class ViewhiringrequestsComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.companyApi.deleteHiringRequest(id).subscribe((res: any) => {
+          this.companyApi.deleteHiringRequest(id).subscribe((res) => {
             this.loadData();
           }));
       }

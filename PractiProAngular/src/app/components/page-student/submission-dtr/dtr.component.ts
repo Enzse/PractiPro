@@ -66,9 +66,9 @@ export class DtrComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.dtrApi.forStudent(this.userId).subscribe((res: any) => {
+      this.dtrApi.forStudent(this.userId).subscribe((res) => {
         this.datalist = res.payload;
-        this.studentApi.ojtStatus(this.userId).subscribe((res: any) => {
+        this.studentApi.ojtStatus(this.userId).subscribe((res) => {
           const hireDate = res.payload[0].hire_date
           this.datalist = this.addWeekNumberToRecords(this.datalist, hireDate);
           this.origlist = this.datalist;
@@ -79,7 +79,11 @@ export class DtrComponent implements OnInit, OnDestroy {
       ));
   }
 
-  addWeekNumberToRecords(records: any[], hireDate: string): any[] {
+  /** Week 1 starts on the hire date; before the student is hired there are no week numbers. */
+  addWeekNumberToRecords(records: any[], hireDate: string | null): any[] {
+    if (!hireDate) {
+      return records.map(record => ({ ...record, weekNumber: null }));
+    }
     const hireDateObj = new Date(hireDate);
     return records.map(record => {
       const recordDate = new Date(record.date);
@@ -115,7 +119,7 @@ export class DtrComponent implements OnInit, OnDestroy {
 
   clockIn() {
     this.subscriptions.add(
-      this.dtrApi.clockIn(this.userId).subscribe((res: any) => {
+      this.dtrApi.clockIn(this.userId).subscribe((res) => {
         this.loadData();
         Swal.fire({
           title: "Successfully clocked in for today!",
@@ -135,9 +139,9 @@ export class DtrComponent implements OnInit, OnDestroy {
 
   clockOut() {
     this.subscriptions.add(
-      this.dtrApi.clockOut(this.userId).subscribe((res: any) => {
+      this.dtrApi.clockOut(this.userId).subscribe((res) => {
         this.subscriptions.add(
-          this.dtrApi.clearShortRecords(this.userId).subscribe((res: any) => {
+          this.dtrApi.clearShortRecords(this.userId).subscribe((res) => {
             console.log(res);
             if (res.status.message.includes("Successfully deleted")) {
               Swal.fire({

@@ -38,7 +38,7 @@ export class CommentspopupComponent implements OnInit {
     this.loadData();
 
     const currentUser = this.session.requireUserId();
-    this.userApi.get(currentUser).subscribe((res: any) => {
+    this.userApi.get(currentUser).subscribe((res) => {
       this.user = res.payload[0];
       this.userName = `${this.user.firstName} ${this.user.lastName}`;
       this.commentForm.patchValue({
@@ -48,7 +48,7 @@ export class CommentspopupComponent implements OnInit {
   }
 
   loadData() {
-    this.commentApi.list(this.data.table, this.fileID).subscribe((res: any) => {
+    this.commentApi.list(this.data.table, this.fileID).subscribe((res) => {
       this.commentsList = res.payload.sort((a: any, b: any) => {
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       });
@@ -62,7 +62,7 @@ export class CommentspopupComponent implements OnInit {
 
   submitComment() {
     if (this.commentForm.valid) {
-      this.commentApi.add(this.data.table, this.fileID, this.commentForm.getRawValue()).subscribe((res: any) => {
+      this.commentApi.add(this.data.table, this.fileID, this.commentForm.getRawValue()).subscribe((res) => {
         Swal.fire({
           title: "Comment Submitted!",
           icon: "success"

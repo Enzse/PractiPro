@@ -33,8 +33,7 @@ export class CoordClassesComponent {
 
   loadData() {
     this.isLoading = true;
-    this.classApi.ofCoordinator(this.data.coordinatorId).subscribe(
-      (res: any) => {
+    this.classApi.ofCoordinator(this.data.coordinatorId).subscribe((res) => {
         this.datalist = res?.payload;
         this.isLoading = false;
       },

@@ -108,7 +108,7 @@ export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.blockService.selectedBlock$.pipe(
         map((res: any) => res)
-      ).subscribe((res: any) => {
+      ).subscribe((res) => {
         this.currentBlock = res;
         this.getFinalReportsAnalytics(this.currentBlock);
       })
@@ -120,7 +120,7 @@ export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
 
   getFinalReportsAnalytics(block: any) {
     this.subscriptions.add(
-      this.reportApi.finalReportAnalytics(block).subscribe((res: any) => {
+      this.reportApi.finalReportAnalytics(block).subscribe((res) => {
         this.responseData = res.payload[0];
         console.log(this.responseData)
 

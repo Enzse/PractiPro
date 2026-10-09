@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   loadSchedules() {
     this.subscriptions.add(
-      this.companyApi.schedulesOf(this.userId).subscribe((res: any) => {
+      this.companyApi.schedulesOf(this.userId).subscribe((res) => {
         this.schedules = res.payload
       }));
   }
@@ -61,8 +61,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     if (this.userId) {
       this.subscriptions.add(
-        this.studentApi.ojtStatus(this.userId).subscribe(
-          (res: any) => {
+        this.studentApi.ojtStatus(this.userId).subscribe((res) => {
             this.registrationStatus = res.payload[0].registration_status;
             this.student = res.payload[0];
 
@@ -75,8 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
             if (!this.registrationStatus)
               this.subscriptions.add(
-                this.studentApi.requirements(this.userId).subscribe(
-                  (res: any) => {
+                this.studentApi.requirements(this.userId).subscribe((res) => {
                     this.studentRequirements = res.payload;
                   },
                   (error: any) => {
@@ -85,15 +83,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 ));
             if (this.registrationStatus && !this.student.company_id)
               this.subscriptions.add(
-                this.companyApi.hiringRequestsOf(this.userId).subscribe(
-                  (res: any) => {
+                this.companyApi.hiringRequestsOf(this.userId).subscribe((res) => {
                     this.hiringRequests = res.payload;
                   }
                 ));
             if (this.registrationStatus && this.student.company_id)
               console.log(this.userId);
             this.subscriptions.add(
-              this.companyApi.jobOf(this.userId).subscribe((res: any) => {
+              this.companyApi.jobOf(this.userId).subscribe((res) => {
                 this.studentjob = res.payload[0];
               }
               ));

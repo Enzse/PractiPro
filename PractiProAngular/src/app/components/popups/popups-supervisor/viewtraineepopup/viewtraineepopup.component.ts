@@ -49,7 +49,7 @@ export class ViewtraineepopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.companyApi.jobOf(this.data.student.id).subscribe((res: any) => {
+      this.companyApi.jobOf(this.data.student.id).subscribe((res) => {
         this.studentjob = res.payload[0];
         console.log(this.studentjob);
       }));
@@ -57,7 +57,7 @@ export class ViewtraineepopupComponent implements OnInit, OnDestroy {
 
   loadSchedules() {
     this.subscriptions.add(
-      this.companyApi.schedulesOf(this.data.student.id).subscribe((res: any) => {
+      this.companyApi.schedulesOf(this.data.student.id).subscribe((res) => {
         this.schedules = res.payload
         console.log(this.schedules)
       }));

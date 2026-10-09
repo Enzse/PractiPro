@@ -54,7 +54,7 @@ export class SeminarspopupComponent {
 
   loadData() {
     this.subscriptions.add(
-      this.seminarApi.forStudent(this.data.student.id).subscribe((res: any) => {
+      this.seminarApi.forStudent(this.data.student.id).subscribe((res) => {
         this.datalist = res.payload.sort((a: any, b: any) => {
           return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
         })
@@ -155,7 +155,7 @@ export class SeminarspopupComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.seminarApi.delete(id).subscribe((res: any) => {
+          this.seminarApi.delete(id).subscribe((res) => {
             Swal.fire({
               title: "Successfully deleted record!",
               icon: "success"

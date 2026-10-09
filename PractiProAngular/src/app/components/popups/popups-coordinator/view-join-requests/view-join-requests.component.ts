@@ -43,8 +43,7 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
   loadData() {
     this.isLoading = true;
     this.subscriptions.add(
-      this.classJoinApi.requestsForClass(this.data.block).subscribe(
-        (res: any) => {
+      this.classJoinApi.requestsForClass(this.data.block).subscribe((res) => {
           this.datalist = res.payload;
           this.isLoading = false;
         },
@@ -76,7 +75,7 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
       block_name: [request.class]
     })
     this.subscriptions.add(
-      this.studentApi.joinClass(request.student_id, invitationData.getRawValue()).subscribe((res: any) => {
+      this.studentApi.joinClass(request.student_id, invitationData.getRawValue()).subscribe((res) => {
         this.datalist = this.datalist.filter((requests: any) => requests.id !== request.id);
         this.changeDetection.notifyChange(true);
         Swal.fire({
@@ -104,7 +103,7 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.classJoinApi.rejectRequest(requestId).subscribe((res: any) => {
+          this.classJoinApi.rejectRequest(requestId).subscribe((res) => {
             this.datalist = this.datalist.filter((request: any) => request.id !== requestId);
             this.changeDetection.notifyChange(true);
             Swal.fire({

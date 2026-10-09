@@ -58,14 +58,14 @@ export class ViewStudentsPendingsubmissionsComponent implements OnInit, OnDestro
 
   loadData() {
     this.subscriptions.add(
-      this.reportApi.studentsWithPendingSubmissions(this.data.block, this.data.condition).subscribe((res: any) => {
+      this.reportApi.studentsWithPendingSubmissions(this.data.block, this.data.condition).subscribe((res) => {
         this.studentList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
 
         this.studentList.forEach((student: any) => {
           this.subscriptions.add(
-            this.mediaApi.avatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);

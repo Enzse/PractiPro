@@ -49,7 +49,7 @@ export class SpvDtrpopupComponent implements OnInit, OnDestroy {
   loadData() {
     console.log(this.data.student.id)
     this.subscriptions.add(
-      this.dtrApi.forStudent(this.data.student.id).subscribe((res: any) => {
+      this.dtrApi.forStudent(this.data.student.id).subscribe((res) => {
         console.log(res)
         this.datalist = res.payload;
         this.datalist = this.addWeekNumberToRecords(res.payload, this.data.student.hire_date);

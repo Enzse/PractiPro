@@ -97,7 +97,7 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
 
   private loadSupervisor() {
     this.subscriptions.add(
-      this.companyApi.supervisor(this.userId).subscribe((res: any) => {
+      this.companyApi.supervisor(this.userId).subscribe((res) => {
         this.user = res.payload[0];
         this.user.avatar = '';
 
@@ -117,9 +117,9 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
 
   private loadCompany(companyId: any) {
     this.subscriptions.add(
-      this.companyApi.get(companyId).subscribe((res: any) => {
+      this.companyApi.get(companyId).subscribe((res) => {
         this.company = res.payload[0];
-        const itEquipmentArray: string[] = JSON.parse(res.payload[0].it_equipment);
+        const itEquipmentArray: string[] = JSON.parse(res.payload[0].it_equipment ?? '[]');
         this.company.it_equipment = itEquipmentArray
         this.company.logo = '';
 

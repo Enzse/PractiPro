@@ -33,7 +33,7 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
   constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
     this.userId = this.session.userId();
     this.subscriptions.add(
-      this.companyApi.supervisor(this.userId).subscribe((res: any) => {
+      this.companyApi.supervisor(this.userId).subscribe((res) => {
         this.user = res.payload[0];
       })
     );
@@ -50,14 +50,14 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.studentApi.ofSupervisor(this.userId).subscribe((res: any) => {
+      this.studentApi.ofSupervisor(this.userId).subscribe((res) => {
         this.traineesList = res.payload.map((student: any) => {
           return { ...student, avatar: '' };
         });
         this.traineesList = this.traineesList.filter((student: any) => student.TotalHoursWorked >= 200);
         this.traineesList.forEach((student: any) => {
           this.subscriptions.add(
-            this.mediaApi.avatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);

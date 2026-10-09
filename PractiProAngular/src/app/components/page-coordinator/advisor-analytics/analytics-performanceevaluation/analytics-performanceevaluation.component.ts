@@ -127,7 +127,7 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
     this.subscriptions.add(
       this.blockService.selectedBlock$.pipe(
         map((res: any) => res)
-      ).subscribe((res: any) => {
+      ).subscribe((res) => {
         this.currentBlock = res;
         this.getPerformanceEvaluationAnalytics(this.currentBlock);
       })
@@ -139,7 +139,7 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
 
   getPerformanceEvaluationAnalytics(block: any) {
     this.subscriptions.add(
-      this.reportApi.evaluationAnalytics(block).subscribe((res: any) => {
+      this.reportApi.evaluationAnalytics(block).subscribe((res) => {
         this.responseData = res.payload[0];
         console.log(this.responseData)
 

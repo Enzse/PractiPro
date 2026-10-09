@@ -82,7 +82,7 @@ export class AssignstudentpopupComponent {
           chosenblock: this.inputform.value.block_name
         }
       })
-      popup.afterClosed().subscribe((res: any) => {
+      popup.afterClosed().subscribe((res) => {
         this.selection = res;
         console.log(`Current Selected: ${this.selection}`)
         this.loadData();
@@ -100,7 +100,7 @@ export class AssignstudentpopupComponent {
   loadData() {
     if (this.selection) {
       this.selection.forEach(data => {
-        this.studentApi.get(data).subscribe((res: any) => {
+        this.studentApi.get(data).subscribe((res) => {
           this.selectedlist.push(res.payload[0]);
         })
       });
@@ -121,7 +121,7 @@ export class AssignstudentpopupComponent {
   proceedAssign() {
     if (this.inputform.valid) {
       this.selectedlist.forEach(item => {
-        this.studentApi.joinClass(item.id, this.inputform.getRawValue()).subscribe((res: any) => {
+        this.studentApi.joinClass(item.id, this.inputform.getRawValue()).subscribe((res) => {
         })
       });
     }
