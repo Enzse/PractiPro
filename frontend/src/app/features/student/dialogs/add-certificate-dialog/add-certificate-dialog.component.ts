@@ -1,83 +1,58 @@
-import { Component, Inject, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
-import { CommentsDialogComponent } from '../../../../shared/dialogs/comments-dialog/comments-dialog.component';
-import { PdfViewerDialogComponent } from '../../../../shared/dialogs/pdf-viewer-dialog/pdf-viewer-dialog.component';
-import { DataRefreshService } from '../../../../core/data-refresh.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { SessionService } from '../../../../core/auth/session.service';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SeminarService } from '../../../../core/api/seminar.service';
+import { DataRefreshService } from '../../../../core/data-refresh.service';
+import { DialogShellComponent } from '../../../../shared/ui/dialog-shell/dialog-shell.component';
+import { FileDropComponent } from '../../../../shared/ui/file-drop/file-drop.component';
+import { IconComponent } from '../../../../shared/ui/icon/icon.component';
+import { ToastService } from '../../../../shared/ui/toast/toast.service';
 
+/** Attaches a certificate to a seminar record. Closes with true when uploaded. */
 @Component({
-    selector: 'app-add-certificate-dialog',
-    imports: [CommonModule],
-    templateUrl: './add-certificate-dialog.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './add-certificate-dialog.component.css'
+  selector: 'app-add-certificate-dialog',
+  imports: [DialogShellComponent, FileDropComponent, IconComponent],
+  template: `
+    <app-dialog-shell title="Add a certificate" [description]="data.name ?? 'Attach the certificate you received, as a PDF.'" icon="certificate">
+      <app-file-drop [(file)]="file" />
+      <footer dialogFooter class="dialog-footer">
+        <button type="button" class="btn btn-secondary" (click)="dialogRef.close(false)">Cancel</button>
+        <button type="button" class="btn btn-primary" [disabled]="!file() || uploading()" (click)="upload()">
+          @if (uploading()) {
+            <app-icon name="circle-notch" [size]="16" class="animate-spin" />
+          }
+          Upload certificate
+        </button>
+      </footer>
+    </app-dialog-shell>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddCertificateDialogComponent {
-  private readonly session = inject(SessionService);
+  protected readonly data = inject<{ id: number; name?: string }>(MAT_DIALOG_DATA);
+  protected readonly dialogRef = inject<MatDialogRef<AddCertificateDialogComponent, boolean>>(MatDialogRef);
   private readonly seminarApi = inject(SeminarService);
-  userId: number
-  file: any;
-  pdfPreview?: SafeResourceUrl;
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private dialogRef: MatDialogRef<AddCertificateDialogComponent>,
-    private changeDetection: DataRefreshService,
-    private sanitizer: DomSanitizer) {
-    this.userId = this.session.requireUserId();
-  }
+  private readonly refresh = inject(DataRefreshService);
+  private readonly toast = inject(ToastService);
 
-  onFileChange(event: any) {
-    const files = event.target.files as FileList;
-    if (files.length > 0) {
-      this.file = files[0];
-      this.previewPDF();
+  protected readonly file = signal<File | null>(null);
+  protected readonly uploading = signal(false);
+
+  protected upload(): void {
+    const file = this.file();
+    if (!file) {
+      return;
     }
-  }
-
-  previewPDF() {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const fileURL = e.target?.result as string;
-      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-    };
-    reader.readAsDataURL(this.file);
-  }
-
-  submitFiles() {
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-    fileInputs.forEach((fileInput: any) => {
-      const file = fileInput.files[0];
-      if (file) {
-        this.seminarApi.uploadCertificate(this.data.id, file).subscribe(
-          response => {
-            this.changeDetection.notifyChange(true);
-            Swal.fire({
-              title: "Uploaded Successfully!",
-              text: "You can view your uploaded evaluations for this student in the table below",
-              icon: "success"
-            });
-            this.dialogRef.close();
-          },
-          error => {
-            console.error('Error uploading file:', error);
-          }
-        );
-      }
-      else if (file == null) {
-        Swal.fire({
-          title: "No File to Upload",
-          text: "Please select a file to upload first.",
-          icon: "error"
-        });
-      }
+    this.uploading.set(true);
+    this.seminarApi.uploadCertificate(this.data.id, file).subscribe({
+      next: () => {
+        this.refresh.notifyChange(true);
+        this.toast.success('Certificate added');
+        this.dialogRef.close(true);
+      },
+      error: () => {
+        this.uploading.set(false);
+        this.toast.error('Upload failed', 'Please try again.');
+      },
     });
-  }
-
-  closePopup() {
-    this.dialogRef.close()
   }
 }

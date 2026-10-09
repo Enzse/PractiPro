@@ -1,188 +1,136 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FilterPipe } from '../../../shared/pipes/filter.pipe';
-import { NonNullableFormBuilder, FormGroup, FormsModule } from '@angular/forms';
-import { map } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import Swal from 'sweetalert2';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DatePipe } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ClassInvitationsDialogComponent } from '../dialogs/class-invitations-dialog/class-invitations-dialog.component';
-import { DataRefreshService } from '../../../core/data-refresh.service';
-import { Router } from '@angular/router';
-import { SessionService } from '../../../core/auth/session.service';
+import { filter } from 'rxjs';
 import { StudentService } from '../../../core/api/student.service';
 import { ClassService } from '../../../core/api/class.service';
 import { ClassJoinService } from '../../../core/api/class-join.service';
-import { ClassProfile } from '../../../core/models/class';
+import { ClassProfile, JoinRequest } from '../../../core/models/class';
+import { StudentOjtStatus } from '../../../core/models/student';
+import { DataRefreshService } from '../../../core/data-refresh.service';
+import { matchesSearch } from '../../../shared/utils/search';
+import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
+import { IconComponent } from '../../../shared/ui/icon/icon.component';
+import { EmptyStateComponent } from '../../../shared/ui/empty-state/empty-state.component';
+import { SearchFieldComponent } from '../../../shared/ui/search-field/search-field.component';
+import { ToastService } from '../../../shared/ui/toast/toast.service';
+import { ConfirmService } from '../../../shared/ui/confirm/confirm.service';
+import { ClassInvitationsDialogComponent } from '../dialogs/class-invitations-dialog/class-invitations-dialog.component';
+import { StudentStatusService } from '../student-status.service';
 
 @Component({
-    selector: 'app-join-classes',
-    imports: [CommonModule, FilterPipe, FormsModule],
-    templateUrl: './join-classes.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrls: ['./join-classes.component.css'] // Corrected to styleUrls
+  selector: 'app-join-classes',
+  imports: [DatePipe, RouterLink, PageHeaderComponent, IconComponent, EmptyStateComponent, SearchFieldComponent],
+  templateUrl: './join-classes.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class JoinClassesComponent implements OnInit, OnDestroy {
-  private readonly session = inject(SessionService);
+export class JoinClassesComponent implements OnInit {
+  private readonly status = inject(StudentStatusService);
   private readonly studentApi = inject(StudentService);
   private readonly classApi = inject(ClassService);
   private readonly classJoinApi = inject(ClassJoinService);
-  userId: number;
-  student: any;
-  classeslist: ClassProfile[] | undefined;
-  searchtext: any;
-  existingRequest: any;
-  invitationCount: any;
-  joinRequest: FormGroup;
-  private subscriptions = new Subscription();
+  private readonly dialog = inject(MatDialog);
+  private readonly router = inject(Router);
+  private readonly toast = inject(ToastService);
+  private readonly confirm = inject(ConfirmService);
+  private readonly refresh = inject(DataRefreshService);
+  private readonly destroyRef = inject(DestroyRef);
 
-  constructor(private router: Router, private changeDetection: DataRefreshService, private builder: NonNullableFormBuilder, private dialog: MatDialog) {
-    this.userId = this.session.requireUserId();
+  protected readonly student = signal<StudentOjtStatus | null>(null);
+  protected readonly classes = signal<ClassProfile[] | null>(null);
+  protected readonly request = signal<JoinRequest | null>(null);
+  protected readonly invitationCount = signal(0);
+  protected readonly search = signal('');
+  protected readonly busy = signal<string | null>(null);
 
-    this.joinRequest = this.builder.group({
-      student_id: [this.userId],
-      class: [''],
-    });
-  }
+  protected readonly profileIncomplete = computed(() => {
+    const student = this.student();
+    return !!student && (!student.program || !student.year);
+  });
+  protected readonly visible = computed(() => (this.classes() ?? []).filter((c) => matchesSearch(c, this.search())));
 
   ngOnInit(): void {
-    this.loadExistingRequest();
-    this.getInvitationsCount();
-
-    this.subscriptions.add(
-      this.studentApi.ojtStatus(this.userId).pipe(
-        map((res: any) => res.payload[0])
-      ).subscribe((student: any) => {
-        this.student = student;
-        if (student.block) {
-          this.router.navigate(['/student/dashboard']);
-        }
-        this.loadClasses();
-      }));
-
-    this.subscriptions.add(
-      this.changeDetection.changeDetected$.subscribe(changeDetected => {
-        if (changeDetected) {
-          this.getInvitationsCount();
-        }
-      })
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
-
-  loadExistingRequest() {
-    this.subscriptions.add(
-      this.classJoinApi.requestsOfStudent(this.userId).pipe(
-        map((res: any) => res.payload[0])
-      ).subscribe((request: any) => {
-        this.existingRequest = request;
-      }));
-  }
-  loadClasses(): void {
-    if (this.student) {
-      this.subscriptions.add(
-        this.classApi.byCourseAndYear(this.student.program, this.student.year).subscribe((res) => {
-          this.classeslist = res.payload;
-        }));
-    }
-  }
-  getInvitationsCount() {
-    this.subscriptions.add(
-      this.classJoinApi.invitationCountOfStudent(this.userId).pipe(
-        map((res: any) => res.payload[0].invitationCount)
-      ).subscribe((count: any) => {
-        this.invitationCount = count;
-      }));
-  }
-
-  requestToJoin(block: string) {
-    if (this.invitationCount) {
-      Swal.fire({
-        title: 'You have an Invitation!',
-        text: 'It is advisable to check your unread class invitations first before issuing a request.',
-        icon: 'warning'
-      });
-    }
-    else {
-      this.joinRequest.patchValue({
-        class: block
-      });
-
-      if (this.joinRequest.valid) {
-        this.subscriptions.add(
-          this.classJoinApi.requestToJoin(this.joinRequest.value).subscribe((res) => {
-            Swal.fire({
-              title: 'Request to Join Sent!',
-              text: 'Please wait for the class coordinator to accept you into the class',
-              icon: 'success',
-            });
-            this.loadExistingRequest();
-          }, error => {
-            if (error.status === 409) {
-              Swal.fire({
-                title: 'Request Pending',
-                text: 'You already have a pending request for joining a class.'
-              });
-            }
-          })
-        );
-      } else {
-        Swal.fire({
-          title: 'Error',
-          text: 'Invalid Data',
-          icon: 'error'
+    this.studentApi.ojtStatus(this.status.studentId).subscribe((res) => {
+      const student = res.payload[0] ?? null;
+      this.student.set(student);
+      if (student?.block) {
+        this.router.navigate(['/student/dashboard']);
+        return;
+      }
+      if (student?.program && student.year) {
+        this.classApi.byCourseAndYear(student.program, student.year).subscribe({
+          next: (classes) => this.classes.set(classes.payload),
+          error: () => this.classes.set([]),
         });
-      }
-    }
-  }
-
-
-  viewInvitations() {
-    const popup = this.dialog.open(ClassInvitationsDialogComponent, {
-      enterAnimationDuration: "500ms",
-      exitAnimationDuration: "500ms",
-      width: "auto",
-      data: {
-        userId: this.userId
-      }
-    })
-  }
-
-  cancelRequest() {
-    Swal.fire({
-      title: "Are you sure you want to cancel this join request?",
-      text: "You will be taken back to the class selection.",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#233876",
-      confirmButtonText: "Confirm"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.subscriptions.add(
-          this.classJoinApi.cancelRequest(this.existingRequest.student_id).subscribe((res) => {
-            this.existingRequest = null;
-            Swal.fire({
-              toast: true,
-              position: "top-end",
-              backdrop: false,
-              title: `Successfully cancelled request.`,
-              icon: "success",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false,
-            });
-          }, error => {
-            Swal.fire({
-              title: "Delete failed",
-              text: "There seemed to be a database error. Please try again later.",
-              icon: "error"
-            });
-          }));
+      } else {
+        this.classes.set([]);
       }
     });
+    this.loadRequest();
+    this.loadInvitationCount();
+
+    // Declining an invitation in the dialog changes the count.
+    this.refresh.changeDetected$
+      .pipe(filter(Boolean), takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.loadInvitationCount());
+  }
+
+  private loadRequest(): void {
+    this.classJoinApi.requestsOfStudent(this.status.studentId).subscribe((res) => this.request.set(res.payload[0] ?? null));
+  }
+
+  private loadInvitationCount(): void {
+    this.classJoinApi.invitationCountOfStudent(this.status.studentId).subscribe((res) => {
+      this.invitationCount.set(Number(res.payload[0]?.invitationCount ?? 0));
+    });
+  }
+
+  protected openInvitations(): void {
+    this.dialog.open(ClassInvitationsDialogComponent, {
+      data: { userId: this.status.studentId },
+      panelClass: 'app-dialog',
+      width: '480px',
+    });
+  }
+
+  protected requestToJoin(block: string): void {
+    if (this.invitationCount() > 0) {
+      this.toast.info('You have an invitation waiting', 'Check your class invitation before sending a request.');
+      this.openInvitations();
+      return;
+    }
+    this.busy.set(block);
+    this.classJoinApi.requestToJoin({ student_id: this.status.studentId, class: block }).subscribe({
+      next: () => {
+        this.busy.set(null);
+        this.toast.success(`Request sent to ${block}`, 'You’ll get in once the class coordinator accepts it.');
+        this.loadRequest();
+      },
+      error: (error) => {
+        this.busy.set(null);
+        error.status === 409
+          ? this.toast.warning('You already have a pending request', 'Cancel it first to ask a different class.')
+          : this.toast.error('Couldn’t send the request', 'Please try again.');
+      },
+    });
+  }
+
+  protected cancelRequest(request: JoinRequest): void {
+    this.confirm
+      .ask({ title: `Cancel your request to join ${request.class}?`, confirmText: 'Cancel request', cancelText: 'Keep it', tone: 'danger' })
+      .subscribe((yes) => {
+        if (!yes) {
+          return;
+        }
+        this.classJoinApi.cancelRequest(request.student_id).subscribe({
+          next: () => {
+            this.request.set(null);
+            this.toast.info('Request cancelled');
+          },
+          error: () => this.toast.error('Couldn’t cancel the request', 'Please try again.'),
+        });
+      });
   }
 }

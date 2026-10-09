@@ -1,24 +1,14 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
+import { ToastHostComponent } from './shared/ui/toast/toast-host.component';
 
 @Component({
-    selector: 'app-root',
-    imports: [RouterOutlet],
-    templateUrl: './app.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './app.component.css'
+  selector: 'app-root',
+  imports: [RouterOutlet, ToastHostComponent],
+  template: `
+    <router-outlet />
+    <app-toast-host />
+  `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class AppComponent {
-  title = 'PractiProAngular';
-  constructor(private router: Router) {
-
-  }
-
-
-
-
-
-}
+export class AppComponent {}

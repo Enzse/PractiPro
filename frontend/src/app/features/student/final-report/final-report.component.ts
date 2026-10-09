@@ -1,150 +1,135 @@
-import { Component, ElementRef, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
-import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
-import { CommentsDialogComponent } from '../../../shared/dialogs/comments-dialog/comments-dialog.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { Subscription } from 'rxjs';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
-import { SessionService } from '../../../core/auth/session.service';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { DatePipe } from '@angular/common';
+import { FormControl, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ReportService } from '../../../core/api/report.service';
-
+import { FinalReport } from '../../../core/models/records';
+import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
+import { IconComponent } from '../../../shared/ui/icon/icon.component';
+import { StatusBadgeComponent } from '../../../shared/ui/status-badge/status-badge.component';
+import { ToastService } from '../../../shared/ui/toast/toast.service';
+import { ConfirmService } from '../../../shared/ui/confirm/confirm.service';
+import { StudentStatusService } from '../student-status.service';
+import { CRITERIA, EXTENTS, OBJECTIVES, RATINGS } from './final-report-questions';
 
 @Component({
-    selector: 'app-final-report',
-    imports: [MatTabsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
-    templateUrl: './final-report.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './final-report.component.css'
+  selector: 'app-final-report',
+  imports: [DatePipe, ReactiveFormsModule, PageHeaderComponent, IconComponent, StatusBadgeComponent],
+  templateUrl: './final-report.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FinalReportComponent implements OnInit, OnDestroy {
-  private readonly session = inject(SessionService);
+export class FinalReportComponent implements OnInit {
+  private readonly status = inject(StudentStatusService);
   private readonly reportApi = inject(ReportService);
-  userId: number;
-  existingReport: any;
-  p: number = 1;
-  private subscriptions = new Subscription();
-  exitPollForm: any;
+  private readonly toast = inject(ToastService);
+  private readonly confirm = inject(ConfirmService);
+  private readonly el = inject(ElementRef<HTMLElement>);
+  private readonly fb = inject(NonNullableFormBuilder);
 
-  constructor(private el: ElementRef, private builder: NonNullableFormBuilder, private dialog: MatDialog) {
-    this.userId = this.session.requireUserId();
-    this.exitPollForm = this.builder.group({
-      user_id: this.userId,
-      p1q1: ['', Validators.required],
-      p1q2: ['', Validators.required],
-      p1q3: ['', Validators.required],
-      p1q4: ['', Validators.required],
-      p1q5: ['', Validators.required],
-      p1q6: ['', Validators.required],
-      p1q7: ['', Validators.required],
-      // Nullable on purpose: answering "no" to p1q7 resets these to null, which the
-      // final-report analytics count as "None".
-      p1q7x1: new FormControl<string | null>(''),
-      p1q7x2: new FormControl<string | null>(''),
+  protected readonly criteria = CRITERIA;
+  protected readonly objectives = OBJECTIVES;
+  protected readonly extents = EXTENTS;
+  protected readonly ratings = RATINGS;
 
-      p2q1: ['', Validators.required],
-      p2q1x1: ['', Validators.required],
-      p2q2: ['', Validators.required],
-      p2q2x1: ['', Validators.required],
-      p2q3: ['', Validators.required],
-      p2q3x1: ['', Validators.required],
-      p2q4: ['', Validators.required],
-      p2q4x1: ['', Validators.required],
-      p2q5: ['', Validators.required],
-      p2q5x1: ['', Validators.required],
+  protected readonly report = signal<FinalReport | null>(null);
+  protected readonly loading = signal(true);
+  protected readonly submitting = signal(false);
+  /** Set on the first submit attempt, so unanswered questions are only flagged after that. */
+  protected readonly attempted = signal(false);
 
-      p3q1: ['', Validators.required],
+  protected readonly form = this.fb.group({
+    user_id: this.status.studentId,
+    p1q1: ['', Validators.required],
+    p1q2: ['', Validators.required],
+    p1q3: ['', Validators.required],
+    p1q4: ['', Validators.required],
+    p1q5: ['', Validators.required],
+    p1q6: ['', Validators.required],
+    p1q7: ['', Validators.required],
+    // Nullable on purpose: answering "no" to p1q7 resets these to null, which the
+    // final-report analytics count as "None".
+    p1q7x1: new FormControl<string | null>(''),
+    p1q7x2: new FormControl<string | null>(''),
 
-      p4q1: ['', Validators.required],
-    })
+    p2q1: ['', Validators.required],
+    p2q1x1: ['', Validators.required],
+    p2q2: ['', Validators.required],
+    p2q2x1: ['', Validators.required],
+    p2q3: ['', Validators.required],
+    p2q3x1: ['', Validators.required],
+    p2q4: ['', Validators.required],
+    p2q4x1: ['', Validators.required],
+    p2q5: ['', Validators.required],
+    p2q5x1: ['', Validators.required],
 
-  }
+    p3q1: ['', Validators.required],
+    p4q1: ['', Validators.required],
+  });
 
-  ngOnInit(): void {
-    this.loadReport();
-    this.subscriptions.add(
-      this.exitPollForm.get('p1q7')?.valueChanges.subscribe((value: any) => {
-        if (value === 'no') {
-          this.exitPollForm.get('p1q7x1')?.reset();
-          this.exitPollForm.get('p1q7x2')?.reset();
-        }
-      }));
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
-
-  loadReport() {
-    this.subscriptions.add(
-      this.reportApi.finalReportOf(this.userId).subscribe((res) => {
-        this.existingReport = res.payload[0];
-        console.log(this.existingReport);
-      })
-    )
-  }
-
-  scrollToFirstInvalidControl() {
-    const firstInvalidControl: HTMLElement = this.el.nativeElement.querySelector('form .ng-invalid');
-    if (firstInvalidControl) {
-      firstInvalidControl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      firstInvalidControl.focus();
-    }
-  }
-
-  submitReport() {
-    if (!this.exitPollForm.valid) {
-      this.scrollToFirstInvalidControl();
-      Swal.fire({
-        title: "It seems you might've missed some questions.",
-        text: "Please answer all the questions first before submitting the report.",
-        confirmButtonColor: '#233876',
-        icon: 'warning'
-      })
-      return;
-    }
-    Swal.fire({
-      title: 'Are you sure you want to submit this report?',
-      text: "You will not be able to edit the report once you have submitted it. Please make sure you've answered it carefully.",
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Confirm',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: '#233876',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.subscriptions.add(
-          this.reportApi.createFinalReport(this.exitPollForm.value).subscribe((res) => {
-            Swal.fire({
-              title: `Successfully submitted record`,
-              text: `Please wait for your coordinator's feedback.`,
-              icon: "success",
-              timer: 3000,
-              timerProgressBar: true,
-              confirmButtonColor: '#233876',
-            });
-            this.loadReport();
-          })
-        );
+  constructor() {
+    this.form.controls.p1q7.valueChanges.pipe(takeUntilDestroyed()).subscribe((value) => {
+      if (value === 'no') {
+        this.form.controls.p1q7x1.reset(null);
+        this.form.controls.p1q7x2.reset(null);
       }
     });
   }
 
-  viewComments(submissionId: number, fileName: string) {
-    const popup = this.dialog.open(CommentsDialogComponent, {
-      enterAnimationDuration: "500ms",
-      exitAnimationDuration: "500ms",
-      width: "80%",
-      data: {
-        submissionID: submissionId,
-        fileName: fileName,
-        table: 'comments_finalreports'
-      }
-    })
+  ngOnInit(): void {
+    this.load();
   }
 
+  private load(): void {
+    this.reportApi.finalReportOf(this.status.studentId).subscribe({
+      next: (res) => {
+        this.report.set(res.payload[0] ?? null);
+        this.loading.set(false);
+      },
+      error: () => this.loading.set(false),
+    });
+  }
+
+  /** Whether a question should be flagged as unanswered. */
+  protected missing(key: string): boolean {
+    return this.attempted() && this.form.get(key)!.invalid;
+  }
+
+  protected answer(key: string): string {
+    const value = this.report()?.[key];
+    return value === null || value === undefined || value === '' ? '—' : String(value);
+  }
+
+  protected submit(): void {
+    this.attempted.set(true);
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.toast.warning('A few questions are unanswered', 'They’re highlighted below.');
+      setTimeout(() => this.el.nativeElement.querySelector('[data-missing="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' }));
+      return;
+    }
+    this.confirm
+      .ask({
+        title: 'Submit your final report?',
+        message: 'You can’t change your answers after submitting, so check them first.',
+        confirmText: 'Submit report',
+      })
+      .subscribe((yes) => {
+        if (!yes) {
+          return;
+        }
+        this.submitting.set(true);
+        this.reportApi.createFinalReport(this.form.getRawValue()).subscribe({
+          next: () => {
+            this.toast.success('Final report submitted', 'Your coordinator will review it.');
+            this.submitting.set(false);
+            this.load();
+            this.status.refresh();
+          },
+          error: () => {
+            this.submitting.set(false);
+            this.toast.error('Couldn’t submit the report', 'Please try again.');
+          },
+        });
+      });
+  }
 }

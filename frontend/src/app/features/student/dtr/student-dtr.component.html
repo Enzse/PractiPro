@@ -1,181 +1,159 @@
-<div class="p-2 sm:ml-56 font-secondary">
-  <div class="pt-5 xl:p-10">
-    <div>
-      <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-xl mb-3">
-        <svg class="w-6 h-6 text-orange-500 inline dark:text-white" aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-          </svg>
-          Daily OJT Attendance
-        </h1>
-        <div class="border-b border-gray-300"></div>
-        <br />
+<app-page-header title="Attendance"
+  description="Clock in when you arrive and clock out when you leave. Your supervisor approves each day’s record." />
+
+<div class="grid gap-6 lg:grid-cols-5">
+  <!-- Today: the live clock and the one action that matters right now. -->
+  <section class="relative overflow-hidden rounded-2xl bg-brand-900 p-6 text-white shadow-raised sm:p-8 lg:col-span-3">
+    <div class="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-brand-600/40 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-32 left-10 h-64 w-64 rounded-full bg-coral-500/20 blur-3xl"></div>
+
+    <div class="relative">
+      <p class="text-sm text-brand-200">{{ now() | date: 'EEEE, MMMM d, y' }}</p>
+      <p class="mt-2 font-display text-5xl font-semibold tabular-nums tracking-[-0.03em] sm:text-6xl">
+        {{ now() | date: 'h:mm' }}<span class="text-brand-300">{{ now() | date: ':ss' }}</span>
+        <span class="ml-1 text-2xl font-medium text-brand-200 sm:text-3xl">{{ now() | date: 'a' }}</span>
+      </p>
+
+      <div class="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div class="flex items-center gap-2.5 text-sm">
+          @if (clockedIn()) {
+            <span class="relative flex h-2.5 w-2.5">
+              <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60"></span>
+              <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
+            </span>
+            <span class="text-brand-100">Clocked in since <span class="font-semibold text-white">{{ today()!.startTime | time: today()!.startTime }}</span></span>
+          } @else if (today(); as day) {
+            <app-icon name="check-circle" [size]="18" class="text-emerald-400" />
+            <span class="text-brand-100">
+              Done for today: {{ day.startTime | time: day.startTime }} – {{ day.endTime! | time: day.endTime! }}
+              <span class="font-semibold text-white">({{ day.totalHours | number: '1.0-2' }} h)</span>
+            </span>
+          } @else {
+            <span class="h-2.5 w-2.5 rounded-full bg-brand-400"></span>
+            <span class="text-brand-100">You haven’t clocked in today.</span>
+          }
+        </div>
+
+        @if (clockedIn()) {
+          <button type="button" class="btn btn-lg bg-white text-brand-900 hover:bg-brand-50" [disabled]="busy()" (click)="clockOut()">
+            <app-icon [name]="busy() ? 'circle-notch' : 'stop'" [size]="18" [class.animate-spin]="busy()" /> Clock out
+          </button>
+        } @else {
+          <button type="button" class="btn btn-accent btn-lg" [disabled]="busy()" (click)="clockIn()">
+            <app-icon [name]="busy() ? 'circle-notch' : 'play'" [size]="18" [class.animate-spin]="busy()" /> Clock in
+          </button>
+        }
       </div>
+    </div>
+  </section>
 
+  <!-- Totals. -->
+  <section class="card card-pad grid grid-cols-2 content-start gap-5 lg:col-span-2">
+    <div class="col-span-2">
+      <div class="flex items-baseline justify-between">
+        <p class="text-sm font-medium text-slate-600">Approved hours</p>
+        <p class="text-sm tabular-nums text-slate-500">
+          <span class="font-display text-2xl font-semibold text-slate-900">{{ status.trainingHours() | number: '1.0-1' }}</span> / {{ requiredHours }}
+        </p>
+      </div>
+      <div class="progress mt-3"><span [style.width.%]="(status.trainingHours() / requiredHours) * 100"></span></div>
+    </div>
+    <div class="rounded-xl bg-slate-50 p-4">
+      <p class="text-xs text-slate-500">This week</p>
+      <p class="mt-1 font-display text-xl font-semibold tabular-nums text-slate-900">{{ weekHours() | number: '1.0-1' }} h</p>
+    </div>
+    <div class="rounded-xl bg-slate-50 p-4">
+      <p class="text-xs text-slate-500">Awaiting approval</p>
+      <p class="mt-1 font-display text-xl font-semibold tabular-nums text-slate-900">{{ pendingCount() }} {{ pendingCount() === 1 ? 'day' : 'days' }}</p>
+    </div>
+  </section>
+</div>
 
-      <!-- whole div -->
-      <div
-        class="p-5 w-11/12 mx-auto overflow-x-auto rounded-md max-lg:bg-slate-50 max-lg:shadow-md max-lg:border-2 max-lg:border-slate-100">
-        <div class="flex flex-row w-full max-lg:flex-col justify-center max-lg:space-x-0 space-x-3">
+<!-- History. -->
+<section class="card mt-8 overflow-hidden">
+  <div class="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+    <h2 class="section-title">Time records</h2>
+    <app-filter-chips [options]="filterOptions()" [(value)]="statusFilter" label="Filter by status" (valueChange)="page = 1" />
+  </div>
 
-          <div class="w-full p-3 shadow-md bg-slate-50 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
-            <!-- CONTENT -->
-            <div class="flow-root mt-3">
-              <!-- DATE TODAY -->
-              <h1 class="mb-2 text-lg mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center">
-                {{ dateToday$ | async }}
-              </h1>
-              <!-- TIME -->
-              <h1 class="mb-2 text-4xl mt-2 lg:text-5xl font-bold text-gray-900 font-primary text-center">
-                {{ time$ | async | date: 'hh:mm:ss a' }}
-              </h1>
-
-              <div class="flex pt-10 p-4 justify-evenly max-lg:p-2">
-                <button (click)="clockIn()"
-                  class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-orange-500 rounded-lg focus:ring-4 focus:ring-orange-200 dark:focus:ring-orange-700 hover:bg-orange-600">
-                  <svg class="w-4 h-4 mr-1 text-gray-800 dark:text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd"
-                      d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
-                      clip-rule="evenodd" />
-                    </svg>
-                    Clock In
-                  </button>
-                  <button (click)="clockOut()"
-                    class="inline-flex font-primary items-center py-3 px-4 text-xs font-medium text-center text-white bg-blue-900 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-                    <svg class="w-4 h-4 mr-1 text-gray-800 dark:text-white" aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                      <path fill-rule="evenodd"
-                        d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
-                        clip-rule="evenodd" />
-                      </svg>
-                      Clock Out
-                    </button>
-                  </div>
-                </div>
-
-
-
-              </div>
-            </div>
-
-
-            <!-- <div class="flex items-center mb-3">
-            <div class="form-outline flex-grow">
-              <input
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                type="search" [(ngModel)]="searchtext" id="form1"
-                class=" bg-gray-50 border border-gray-300 rounded-s-md text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search submissions for any text..." aria-label="search" />
-              </div>
-              <div class="flex justify-center space-x-4">
-                <div>
-                  <div>
-                    <button [matMenuTriggerFor]="filtermenu" matTooltip="Filter"
-                      class="bg-blue-900 border border-blue-900 font-primary rounded-e-md text-white px-3 py-2  hover:bg-blue-800 "
-                      type="button">
-                      <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                        <path
-                          d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
-                        </svg>
-                      </button>
-                      <mat-menu #filtermenu="matMenu">
-                        <ul class="px-2 space-y-1 font-primary">
-                          <li class="flex justify-center">
-                            <button class="rounded-md ms-2 text-orange-500 bg-slate-200 hover:bg-slate-300 px-5"
-                            (click)="setFilter('all')">Show All</button>
-                          </li>
-                          <h1 class="font-primary">By Approval:</h1>
-                          <li class="m-0.5 flex">
-                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                            (click)="setFilter('approved')">Approved</button>
-                          </li>
-                          <li class="m-0.5">
-                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                            (click)="setFilter('unapproved')">Unapproved</button>
-                          </li>
-                          <li class="m-0.5">
-                            <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                            (click)="setFilter('pending')">Pending</button>
-                          </li>
-                        </ul>
-                      </mat-menu>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
-              <!-- TABLE -->
-              @if (datalist.length > 0) {
-                <div
-                  class="flow-root bg-slate-50 px-5 pt-5 justify-center mt-10 text-center overflow-auto shadow-md shadow-slate-200 border border-gray-200 sm:rounded-lg">
-                  <table
-                    class="w-full border-2 border-slate-600  text-sm text-center rtl:text-right text-gray-900 dark:text-gray-400 font-secondary">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                      <tr class="bg-slate-100 border-b dark:bg-gray-800 dark:border-gray-700 uppercase">
-                        <th class="table-data">Week</th>
-                        <th class="table-data">Date</th>
-                        <th class="table-data">Clock In</th>
-                        <th class="table-data">Clock Out</th>
-                        <th class="table-data">Total Hours</th>
-                        <th scope="col" class="px-6 py-3 font-secondary">Approval
-                          <svg class="w-5 h-5 inline -mt-0.5 text-gray-500 dark:text-white" aria-hidden="true"
-                            matTooltip="This submission is to be approved by your SUPERVISOR." xmlns="http://www.w3.org/2000/svg"
-                            width="24" height="24" fill="none" viewBox="0 0 24 24">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                            </svg>
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @for (record of datalist | filter : searchtext | paginate: { itemsPerPage: itemsPerPage, currentPage: p  }; track record) {
-                          <tr
-                            class="bg-white hover:bg-slate-50 dark:bg-gray-800 dark:border-gray-700">
-                            <td class="table-data border-2 border-slate-600">{{ record.weekNumber}}</td>
-                            <td class="table-data border-2 border-slate-600">{{ record.date | date : "mediumDate" }}</td>
-                            <td class="table-data border-2 border-slate-600">{{ record.startTime ? (record.startTime |
-                            time:record.startTime) : "Not set" }}</td>
-                            <td class="table-data border-2 border-slate-600">{{ record.endTime ? (record.endTime |
-                            time:record.endTime) : "Not set" }}</td>
-                            <td class="table-data border-2 border-slate-600">{{record.totalHours || "Not set"}}</td>
-                            <td class="table-data border-2 border-slate-600">
-                <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
-                    'text-red-500': record.status === 'Unapproved',
-                    'text-green-500': record.status === 'Approved'
-                  }">{{record.status ? record.status : "Not Clocked-out"}}</p>
-                            </td>
-                          </tr>
-                        }
-                      </tbody>
-                    </table>
-                    <div class="w-full mt-3 flex justify-center">
-                      <!-- pagination control -->
-                      <pagination-controls [responsive]="true" class="my-pagination"
-                      (pageChange)="p = $event"></pagination-controls>
-                    </div>
-                  </div>
-                }
-                <!-- TABLE -->
-
-                @if (datalist.length === 0) {
-                  <div class="mt-20 flex flex-col items-center">
-                    <div>
-                      <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
-                    </div>
-                    <div>
-                      <h1 class="opacity-40 text-center text-3xl font-primary mt-5">
-                        No daily time records found.
-                      </h1>
-                      <h2 class="opacity-40 text-center text-md font-primary mt-5">
-                        You can clock-in and clock-out in the section above.
-                      </h2>
-                    </div>
-                  </div>
-                }
-
-
-              </div>
-            </div>
+  @if (loading()) {
+    <div class="space-y-3 p-6">
+      @for (row of [1, 2, 3, 4]; track row) {
+        <div class="skeleton h-9"></div>
+      }
+    </div>
+  } @else if (visible().length === 0) {
+    <app-empty-state icon="clock:duotone"
+      [title]="records().length === 0 ? 'No time records yet' : 'No matching records'"
+      [description]="records().length === 0 ? 'Clock in on your first day at work and it will show up here.' : 'Try another filter.'" />
+  } @else {
+    <!-- Phones: a stacked list, so the status stays in view. -->
+    <ul class="divide-y divide-slate-100 sm:hidden">
+      @for (record of visible() | paginate: { itemsPerPage: 10, currentPage: page }; track record.id) {
+        <li class="flex items-center justify-between gap-3 px-5 py-3.5">
+          <div class="min-w-0">
+            <p class="text-sm font-medium text-slate-900">
+              {{ record.date | date: 'EEE, MMM d' }}
+              @if (record.week) {
+                <span class="font-normal text-slate-400">· Week {{ record.week }}</span>
+              }
+            </p>
+            <p class="text-xs tabular-nums text-slate-500">
+              {{ record.startTime | time: record.startTime }} – {{ record.endTime ? (record.endTime | time: record.endTime) : 'now' }}
+            </p>
           </div>
+          <div class="flex shrink-0 flex-col items-end gap-1">
+            <span class="text-sm font-medium tabular-nums text-slate-900">{{ record.totalHours ? (record.totalHours | number: '1.0-2') + ' h' : '—' }}</span>
+            @if (!record.endTime) {
+              <span class="badge badge-brand"><span class="h-1.5 w-1.5 animate-pulse rounded-full bg-current"></span>In progress</span>
+            } @else {
+              <app-status-badge [status]="record.status" />
+            }
+          </div>
+        </li>
+      }
+    </ul>
+
+    <div class="hidden overflow-x-auto sm:block">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Week</th>
+            <th>Clock in</th>
+            <th>Clock out</th>
+            <th class="text-right">Hours</th>
+            <th>
+              <span class="inline-flex items-center gap-1">Status
+                <app-icon name="info" [size]="14" class="text-slate-400" matTooltip="Your supervisor approves time records." />
+              </span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (record of visible() | paginate: { itemsPerPage: 10, currentPage: page }; track record.id) {
+            <tr>
+              <td class="whitespace-nowrap font-medium text-slate-900">{{ record.date | date: 'EEE, MMM d' }}</td>
+              <td class="tabular-nums text-slate-500">{{ record.week ?? '—' }}</td>
+              <td class="whitespace-nowrap tabular-nums">{{ record.startTime | time: record.startTime }}</td>
+              <td class="whitespace-nowrap tabular-nums">{{ record.endTime ? (record.endTime | time: record.endTime) : '—' }}</td>
+              <td class="text-right tabular-nums font-medium text-slate-900">{{ record.totalHours ? (record.totalHours | number: '1.0-2') : '—' }}</td>
+              <td>
+                @if (!record.endTime) {
+                  <span class="badge badge-brand"><span class="h-1.5 w-1.5 animate-pulse rounded-full bg-current"></span>In progress</span>
+                } @else {
+                  <app-status-badge [status]="record.status" />
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    @if (visible().length > 10) {
+      <div class="border-t border-slate-100 px-4 py-3">
+        <pagination-controls [responsive]="true" previousLabel="" nextLabel="" (pageChange)="page = $event" />
+      </div>
+    }
+  }
+</section>

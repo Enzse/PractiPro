@@ -1,450 +1,154 @@
-<!-- <app-student-layout></app-student-layout> -->
-<div class="p-2 sm:ml-60">
-  <div class="pt-5 xl:p-10">
-    <div>
-      <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-xl mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="w-6 h-6 inline text-orange-500">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
-          </svg>
-          Requirements
-        </h1>
-        <div class="border-b border-gray-300"></div>
-        <br />
-      </div>
+<app-page-header title="Requirements"
+  description="Upload each document as a PDF. Your coordinator reviews them, and the practicum pages open once all of them are approved." />
 
-      <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
-        Upload clear documents of all your <b>Requirement Documents</b> here. All
-        documents should be in <b>Portable Document Format(.pdf).</b>
-      </p>
-      <br />
+<div class="grid gap-6 lg:grid-cols-[19rem_minmax(0,1fr)]">
+  <!-- The checklist: pick a requirement to upload it. -->
+  <section class="card self-start p-2">
+    <div class="flex items-center justify-between px-3 pb-2 pt-3">
+      <h2 class="text-sm font-semibold text-slate-900">Checklist</h2>
+      <span class="text-xs tabular-nums text-slate-500">{{ approvedCount() }} of {{ types.length }} approved</span>
+    </div>
+    <div class="progress mx-3 mb-2 h-1.5 w-auto"><span [style.width.%]="(approvedCount() / types.length) * 100"></span></div>
 
-      <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
-        <mat-tab-group #tabGroup (selectedTabChange)="onTabChange($event)">
-
-          <mat-tab label="Resume">
-            <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-              <input type="file" id="resumeFile" name="resumeFile" accept="application/pdf"
-                (change)="onFileChange($event)" />
-              </form>
-              @if (pdfPreview) {
-                <embed [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-                  class="object-cover object-center w-full h-96 rounded-md" />
+    <ul class="space-y-0.5">
+      @for (type of types; track type.code) {
+        @let state = typeStatus().get(type.code);
+        <li>
+          <button type="button" (click)="select(type)" [attr.aria-pressed]="selected().code === type.code"
+            class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition"
+            [class]="selected().code === type.code ? 'bg-brand-50 text-brand-900' : 'text-slate-700 hover:bg-slate-50'">
+            @switch (state) {
+              @case ('Approved') {
+                <span class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"><app-icon name="check" [size]="12" /></span>
               }
-              <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
-                <button type="button" [disabled]="isUploading" (click)="submitFiles()"
-                  class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                    <path d="m18 9-6-6-6 6" />
-                    <path d="M12 3v14" />
-                    <path d="M5 21h14" />
-                  </svg>
-                  Submit File
-                </button>
-              </div>
-            </mat-tab>
+              @case ('Pending') {
+                <span class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600"><app-icon name="hourglass" [size]="12" /></span>
+              }
+              @case ('Unapproved') {
+                <span class="inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600"><app-icon name="x" [size]="12" /></span>
+              }
+              @default {
+                <span class="h-5 w-5 shrink-0 rounded-full border border-dashed border-slate-300"></span>
+              }
+            }
+            <span class="flex-1 font-medium">{{ type.label }}</span>
+            <app-icon name="caret-right" [size]="14" class="text-slate-300" />
+          </button>
+        </li>
+      }
+    </ul>
+  </section>
 
-            <mat-tab label="Application Letter">
-              <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-                <input type="file" id="applicationLetterFile" name="applicationLetterFile" accept="application/pdf"
-                  (change)="onFileChange($event)" />
-                </form>
-                @if (pdfPreview) {
-                  <embed [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-                    class="object-cover object-center w-full h-96 rounded-md" />
-                }
-                <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs gap-3 pt-3">
-                  <button type="button" (click)="viewFile('Application_Letter.docx')"
-                    class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      class="inline -mt-0.5 lucide lucide-file-search">
-                      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                      <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
-                      <path d="m9 18-1.5-1.5" />
-                      <circle cx="5" cy="14" r="3" />
-                    </svg>
-                    View Template
+  <!-- Upload the selected requirement. -->
+  <section class="card card-pad">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+      <div>
+        <p class="text-xs text-slate-500">Upload</p>
+        <h2 class="section-title">{{ selected().label }}</h2>
+      </div>
+      <app-status-badge [status]="typeStatus().get(selected().code)" />
+    </div>
+
+    @if (selected().template; as template) {
+      <div class="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl bg-slate-50 px-4 py-3 ring-1 ring-inset ring-slate-900/5">
+        <p class="text-sm text-slate-600">Use the college’s template for this document.</p>
+        <a class="btn btn-secondary btn-sm" [href]="'assets/pdfTemplates/' + template" download>
+          <app-icon name="download-simple" [size]="16" /> Download template
+        </a>
+      </div>
+    }
+
+    <div class="mt-5">
+      <app-file-drop [(file)]="file" />
+    </div>
+
+    <div class="mt-5 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <p class="text-xs text-slate-500">Uploading again adds a new version; your coordinator sees all of them.</p>
+      <button type="button" class="btn btn-primary" [disabled]="!file() || uploading()" (click)="upload()">
+        @if (uploading()) {
+          <app-icon name="circle-notch" [size]="16" class="animate-spin" /> Uploading…
+        } @else {
+          <app-icon name="upload-simple" [size]="16" /> Submit {{ selected().label.toLowerCase() }}
+        }
+      </button>
+    </div>
+  </section>
+</div>
+
+<!-- Everything submitted so far. -->
+<section class="card mt-8 overflow-hidden">
+  <div class="flex flex-col gap-4 border-b border-slate-100 p-5 sm:p-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <h2 class="section-title">Your submissions</h2>
+      <div class="w-full sm:w-72">
+        <app-search-field [(value)]="search" placeholder="Search submissions" (valueChange)="page = 1" />
+      </div>
+    </div>
+    <app-filter-chips [options]="filterOptions()" [(value)]="statusFilter" label="Filter by status" (valueChange)="page = 1" />
+  </div>
+
+  @if (loading()) {
+    <div class="space-y-3 p-6">
+      @for (row of [1, 2, 3]; track row) {
+        <div class="skeleton h-10"></div>
+      }
+    </div>
+  } @else if (visible().length === 0) {
+    @if (submissions().length === 0) {
+      <app-empty-state icon="clipboard-text:duotone" title="Nothing uploaded yet"
+        description="Pick a requirement from the checklist and upload it as a PDF." />
+    } @else {
+      <app-empty-state icon="files:duotone" title="No matching submissions" description="Try another search or filter." [compact]="true" />
+    }
+  } @else {
+    <div class="overflow-x-auto">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Document</th>
+            <th class="hidden md:table-cell">Uploaded</th>
+            <th>
+              <span class="inline-flex items-center gap-1">Status
+                <app-icon name="info" [size]="14" class="text-slate-400" matTooltip="Your coordinator approves requirements." />
+              </span>
+            </th>
+            <th class="text-right"><span class="sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (submission of visible() | paginate: { itemsPerPage: 8, currentPage: page }; track submission.id) {
+            <tr>
+              <td class="max-w-[18rem]">
+                <p class="font-medium text-slate-900">{{ label(submission.submission_name) }}</p>
+                <p class="truncate text-xs text-slate-500">{{ submission.file_name }}</p>
+                <p class="text-xs text-slate-400 md:hidden">{{ submission.created_at | date: 'MMM d, y' }}</p>
+              </td>
+              <td class="hidden whitespace-nowrap text-slate-500 md:table-cell">{{ submission.created_at | date: 'MMM d, y · h:mm a' }}</td>
+              <td><app-status-badge [status]="submission.advisor_approval" /></td>
+              <td>
+                <div class="flex items-center justify-end gap-1">
+                  <button type="button" class="btn btn-ghost btn-sm" (click)="openComments(submission)">
+                    <app-icon name="chat-circle-text" [size]="16" />
+                    <span class="tabular-nums">{{ submission.comments ?? 0 }}</span>
+                    <span class="sr-only">comments</span>
                   </button>
-                  <button type="button" (click)="submitFiles()"
-                    class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                      <path d="m18 9-6-6-6 6" />
-                      <path d="M12 3v14" />
-                      <path d="M5 21h14" />
-                    </svg>
-                    Submit File
+                  <button type="button" class="icon-btn" matTooltip="Download" (click)="download(submission)">
+                    <app-icon name="download-simple" [size]="18" label="Download" />
+                  </button>
+                  <button type="button" class="icon-btn hover:bg-red-50 hover:text-red-600" matTooltip="Delete" (click)="remove(submission)">
+                    <app-icon name="trash" [size]="18" label="Delete" />
                   </button>
                 </div>
-              </mat-tab>
-
-              <mat-tab label="Acceptance Letter">
-                <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-                  <input type="file" id="acceptanceLetterFile" name="acceptanceLetterFile" (change)="onFileChange($event)" />
-                </form>
-                @if (pdfPreview) {
-                  <embed [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-                    class="object-cover object-center w-full h-96 rounded-md" />
-                }
-                <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs gap-3 pt-3">
-                  <button type="button" (click)="viewFile('Acceptance_Letter.docx')"
-                    class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      class="inline -mt-0.5 lucide lucide-file-search">
-                      <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                      <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
-                      <path d="m9 18-1.5-1.5" />
-                      <circle cx="5" cy="14" r="3" />
-                    </svg>
-                    View Template
-                  </button>
-                  <button type="button" (click)="submitFiles()"
-                    class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                      class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                      <path d="m18 9-6-6-6 6" />
-                      <path d="M12 3v14" />
-                      <path d="M5 21h14" />
-                    </svg>
-                    Submit File
-                  </button>
-                </div>
-              </mat-tab>
-
-              <mat-tab label="Endorsement Letter">
-                <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-                  <input type="file" id="endorsementLetterFile" name="endorsementLetterFile" accept="application/pdf"
-                    (change)="onFileChange($event)" />
-                  </form>
-                  @if (pdfPreview) {
-                    <embed [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-                      class="object-cover object-center w-full h-96 rounded-md" />
-                  }
-                  <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
-                    <button type="button" (click)="submitFiles()"
-                      class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                        <path d="m18 9-6-6-6 6" />
-                        <path d="M12 3v14" />
-                        <path d="M5 21h14" />
-                      </svg>
-                      Submit File
-                    </button>
-                  </div>
-                </mat-tab>
-
-                <mat-tab label="Parent's/Guardian's Waiver">
-                  <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-                    <input type="file" id="pgWaiverFile" name="pgWaiverFile" accept="application/pdf"
-                      (change)="onFileChange($event)" />
-                    </form>
-                    @if (pdfPreview) {
-                      <embed [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-                        class="object-cover object-center w-full h-96 rounded-md" />
-                    }
-                    <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs gap-3 pt-3">
-                      <button type="button" (click)="viewFile('Parents_Waiver.docx')"
-                        class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          class="inline -mt-0.5 lucide lucide-file-search">
-                          <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                          <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
-                          <path d="m9 18-1.5-1.5" />
-                          <circle cx="5" cy="14" r="3" />
-                        </svg>
-                        View Template
-                      </button>
-                      <button type="button" (click)="submitFiles()"
-                        class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                          class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                          <path d="m18 9-6-6-6 6" />
-                          <path d="M12 3v14" />
-                          <path d="M5 21h14" />
-                        </svg>
-                        Submit File
-                      </button>
-                    </div>
-                  </mat-tab>
-
-                  <mat-tab label="Vaccination Card">
-                    <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-                      <input type="file" id="vaccinationCardFile" name="vaccinationCardFile" accept="application/pdf"
-                        (change)="onFileChange($event)" />
-                      </form>
-                      @if (pdfPreview) {
-                        <embed [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-                          class="object-cover object-center w-full h-96 rounded-md" />
-                      }
-                      <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
-                        <button type="button" (click)="submitFiles()"
-                          class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                            <path d="m18 9-6-6-6 6" />
-                            <path d="M12 3v14" />
-                            <path d="M5 21h14" />
-                          </svg>
-                          Submit File
-                        </button>
-                      </div>
-                    </mat-tab>
-
-                    <mat-tab label="Barangay Clearance">
-                      <form [ngClass]="{'hidden': pdfPreview }" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-                        <input type="file" id="brgyClearanceFile" name="brgyClearanceFile" accept="application/pdf"
-                          (change)="onFileChange($event)" />
-                        </form>
-                        @if (pdfPreview) {
-                          <embed [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-                            class="object-cover object-center w-full h-96 rounded-md" />
-                        }
-                        <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
-                          <button type="button" (click)="submitFiles()"
-                            class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                              class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                              <path d="m18 9-6-6-6 6" />
-                              <path d="M12 3v14" />
-                              <path d="M5 21h14" />
-                            </svg>
-                            Submit File
-                          </button>
-                        </div>
-                      </mat-tab>
-
-                      <mat-tab label="Medical Certificate">
-                        <form [ngClass]="{'hidden': pdfPreview }" class="rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-                          <input type="file" id="medCertFile" name="medCertFile" accept="application/pdf"
-                            (change)="onFileChange($event)" />
-                          </form>
-                          @if (pdfPreview) {
-                            <embed [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-                              class="object-cover object-center w-full h-96 rounded-md" />
-                          }
-                          <div class="flex justify-end max-sm:justify-center items-center max-sm:text-xs pt-3">
-                            <button type="button" (click)="submitFiles()"
-                              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                                <path d="m18 9-6-6-6 6" />
-                                <path d="M12 3v14" />
-                                <path d="M5 21h14" />
-                              </svg>
-                              Submit File
-                            </button>
-                          </div>
-                        </mat-tab>
-
-                      </mat-tab-group>
-                    </div>
-
-
-                    <div class="mt-20">
-                      <div class="border-b border-gray-300"></div>
-                      <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4 font-primary">
-                        Your Submitted Requirements:
-                      </h1>
-                      <br />
-                    </div>
-
-                    <div class="flex items-center mb-3">
-                      <div class="form-outline flex-grow">
-                        <input
-                          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          type="search" [(ngModel)]="searchtext" id="form1"
-                          class=" bg-gray-50 border border-gray-300 rounded-s-md text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                          placeholder="Search submissions for any text..." aria-label="search" />
-                        </div>
-                        <div class="flex justify-center space-x-4">
-                          <div>
-                            <div>
-                              <button [matMenuTriggerFor]="filtermenu" matTooltip="Filter"
-                                class="bg-blue-900 border border-blue-900 font-primary rounded-e-md text-white px-3 py-2  hover:bg-blue-800 "
-                                type="button">
-                                <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true"
-                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                                  <path
-                                    d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
-                                  </svg>
-                                </button>
-                                <mat-menu #filtermenu="matMenu">
-                                  <ul class="px-2 space-y-1 font-primary">
-                                    <li class="flex justify-center">
-                                      <button class="rounded-md ms-2 text-orange-500 bg-slate-200 hover:bg-slate-300 px-5"
-                                      (click)="setFilter('all')">Show All</button>
-                                    </li>
-                                    <h1 class="font-primary">By Category:</h1>
-                                    <li>
-                                      <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
-                                      (click)="setFilter('resume')">Resumes</button>
-                                    </li>
-                                    <li>
-                                      <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
-                                      (click)="setFilter('application')">Application Letters</button>
-                                    </li>
-                                    <li>
-                                      <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
-                                      (click)="setFilter('acceptance')">Acceptance Letters</button>
-                                    </li>
-                                    <li>
-                                      <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
-                                      (click)="setFilter('endorsement')">Endorsement Letters</button>
-                                    </li>
-                                    <li>
-                                      <button class="rounded-md ms-2 truncate text-sm bg-slate-200 hover:bg-slate-300 px-5"
-                                      (click)="setFilter('parents')">Parents'/Guardians' Waivers</button>
-                                    </li>
-                                    <li>
-                                      <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
-                                      (click)="setFilter('vaccination')">Vaccination Cards</button>
-                                    </li>
-                                    <li>
-                                      <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
-                                      (click)="setFilter('barangay')">Baranggay Clearances</button>
-                                    </li>
-                                    <li>
-                                      <button class="rounded-md ms-2 bg-slate-200 hover:bg-slate-300 px-5"
-                                      (click)="setFilter('medcert')">Medical Certificates</button>
-                                    </li>
-                                    <h1 class="font-primary">By Approval:</h1>
-                                    <li class="m-0.5 flex">
-                                      <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                                      (click)="setFilter('approved')">Approved</button>
-                                    </li>
-                                    <li class="m-0.5">
-                                      <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                                      (click)="setFilter('unapproved')">Unapproved</button>
-                                    </li>
-                                    <li class="m-0.5">
-                                      <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                                      (click)="setFilter('pending')">Pending</button>
-                                    </li>
-                                  </ul>
-                                </mat-menu>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        @if (datalist.length > 0) {
-                          <div
-                            class="relative overflow-x-auto shadow-md shadow-slate-200 border border-gray-200 sm:rounded-lg">
-                            <table mat-table
-                              class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400 font-secondary">
-                              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                  <th scope="col" class="px-6 py-3 font-secondary">Requirement</th>
-                                  <th scope="col" class="px-6 py-3 font-secondary">File name</th>
-                                  <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
-                                  <th scope="col" class="px-6 py-3 font-secondary">Approval
-                                    <svg class="w-5 h-5 inline -mt-0.5 text-gray-500 dark:text-white" aria-hidden="true"
-                                      matTooltip="This submission is to be approved by your COORDINATOR." xmlns="http://www.w3.org/2000/svg"
-                                      width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9.529 9.988a2.502 2.502 0 1 1 5 .191A2.441 2.441 0 0 1 12 12.582V14m-.01 3.008H12M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                      </svg>
-                                    </th>
-                                    <th scope="col" class="px-6 py-3 font-secondary">Comments</th>
-                                    <th scope="col" class="px-6 py-3 font-secondary">Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  @for (data of datalist | filter : searchtext | paginate: { itemsPerPage: 5, currentPage: p  }; track data) {
-                                    <tr
-                                      class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                      <td class="px-6 py-4">
-                                        {{ data.submission_name }}
-                                      </td>
-                                      <td class="px-6 py-4">
-                                        {{ data.file_name }}
-                                      </td>
-                                      <td class="px-6 py-4">
-                                        {{ data.created_at | date: "medium"}}
-                                      </td>
-                                      <td class="px-6 py-4">
-              <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
-                  'text-red-500': data.advisor_approval === 'Unapproved',
-                  'text-green-500': data.advisor_approval === 'Approved'
-                }">{{data.advisor_approval}}</p>
-                                      </td>
-                                      <td class="px-6 py-4">
-                                        <button (click)="viewComments(data.id, data.file_name)"
-                                          class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
-                                          <svg class="w-5 h-5 text-gray-800 dark:text-white inline" aria-hidden="true"
-                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                                            <path fill-rule="evenodd"
-                                              d="M3.559 4.544c.355-.35.834-.544 1.33-.544H19.11c.496 0 .975.194 1.33.544.356.35.559.829.559 1.331v9.25c0 .502-.203.981-.559 1.331-.355.35-.834.544-1.33.544H15.5l-2.7 3.6a1 1 0 0 1-1.6 0L8.5 17H4.889c-.496 0-.975-.194-1.33-.544A1.868 1.868 0 0 1 3 15.125v-9.25c0-.502.203-.981.559-1.331ZM7.556 7.5a1 1 0 1 0 0 2h8a1 1 0 0 0 0-2h-8Zm0 3.5a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2H7.556Z"
-                                              clip-rule="evenodd" />
-                                            </svg>
-                                            <span class="ml-1">{{data.comments}}</span>
-                                          </button>
-                                        </td>
-                                        <td class="px-6 py-4">
-                                          <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
-                                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                              width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                              <path stroke="currentColor" stroke-linecap="round" stroke-width="4"
-                                                d="M12 6h.01M12 12h.01M12 18h.01" />
-                                              </svg>
-                                            </button>
-                                            <mat-menu #menu="matMenu">
-                                              <li class="space-x-3 px-3">
-                                                <button (click)="downloadFile(data.id, data.file_name)"
-                                                  class="text-white inline-flex items-center bg-green-500 hover:bg-green-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
-                                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                  class="lucide lucide-download">
-                                                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                                  <polyline points="7 10 12 15 17 10" />
-                                                  <line x1="12" x2="12" y1="15" y2="3" />
-                                                </svg></button>
-                                                <button
-                                                  class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"
-                                                  (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
-                                                  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                                                  viewBox="0 0 24 24">
-                                                  <path fill-rule="evenodd"
-                                                    d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                                    clip-rule="evenodd" />
-                                                  </svg>
-                                                </button>
-                                              </li>
-                                            </mat-menu>
-                                          </td>
-                                        </tr>
-                                      }
-                                    </tbody>
-                                  </table>
-                                  <div class="w-full mt-3 flex justify-center">
-                                    <!-- pagination control -->
-                                    <pagination-controls [responsive]="true" class="my-pagination" (pageChange)="p = $event"></pagination-controls>
-                                  </div>
-                                </div>
-                              } @else {
-                                <div class="flex justify-center">
-                                  <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
-                                </div>
-                                <div class="text-center">
-                                  <h1 class="opacity-40 text-center text-lg font-primary">
-                                    No submissions found.
-                                  </h1>
-                                </div>
-                              }
-                            </div>
-
-                          </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    @if (visible().length > 8) {
+      <div class="border-t border-slate-100 px-4 py-3">
+        <pagination-controls [responsive]="true" previousLabel="" nextLabel="" (pageChange)="page = $event" />
+      </div>
+    }
+  }
+</section>

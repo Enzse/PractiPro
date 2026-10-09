@@ -1,47 +1,418 @@
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.button {
-  display: flex;
+/*
+ * Design tokens. Colours, type and shadows live in tailwind.config.js; this file
+ * holds the base styles, the shared component classes (.btn, .card, .input, ...)
+ * and the overrides that make Angular Material and ngx-pagination match them.
+ */
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-canvas font-sans text-[14px] leading-6 text-slate-700;
+  }
+
+  h1, h2, h3, h4 {
+    @apply text-slate-900;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-white;
+  }
+
+  ::selection {
+    @apply bg-coral-200 text-slate-900;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme("colors.slate.300") transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: theme("colors.slate.300");
+    border: 3px solid transparent;
+    border-radius: 999px;
+    background-clip: content-box;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 1ms !important;
+      transition-duration: 1ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Type */
+  .page-title {
+    @apply font-display text-[1.75rem] font-semibold leading-tight tracking-[-0.02em] text-slate-900 sm:text-[2rem];
+  }
+
+  .section-title {
+    @apply font-display text-lg font-semibold tracking-[-0.01em] text-slate-900;
+  }
+
+  .eyebrow {
+    @apply text-xs font-medium uppercase tracking-[0.08em] text-slate-500;
+  }
+
+  .muted {
+    @apply text-slate-500;
+  }
+
+  .link {
+    @apply font-medium text-brand-700 underline-offset-4 transition-colors hover:text-brand-900 hover:underline;
+  }
+
+  /* Surfaces */
+  .card {
+    @apply rounded-2xl bg-white shadow-card ring-1 ring-slate-900/[0.06];
+  }
+
+  .card-pad {
+    @apply p-5 sm:p-6;
+  }
+
+  .divider {
+    @apply h-px w-full bg-slate-100;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex h-10 select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg px-4 text-sm font-medium
+      transition duration-150 ease-out active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
+  }
+
+  .btn-primary {
+    @apply bg-brand-800 text-white shadow-sm hover:bg-brand-700;
+  }
+
+  .btn-accent {
+    @apply bg-coral-500 text-white shadow-sm hover:bg-coral-600;
+  }
+
+  .btn-secondary {
+    @apply bg-white text-slate-700 shadow-sm ring-1 ring-inset ring-slate-200 hover:bg-slate-50 hover:text-slate-900;
+  }
+
+  .btn-ghost {
+    @apply text-slate-600 hover:bg-slate-100 hover:text-slate-900;
+  }
+
+  .btn-danger {
+    @apply bg-red-600 text-white shadow-sm hover:bg-red-700;
+  }
+
+  .btn-danger-ghost {
+    @apply text-red-600 hover:bg-red-50 hover:text-red-700;
+  }
+
+  .btn-sm {
+    @apply h-8 gap-1.5 px-3 text-[13px];
+  }
+
+  .btn-lg {
+    @apply h-11 px-5 text-[15px];
+  }
+
+  .icon-btn {
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg text-slate-500 transition duration-150
+      hover:bg-slate-100 hover:text-slate-900 active:scale-95 disabled:pointer-events-none disabled:opacity-40;
+  }
+
+  /* Form controls */
+  .label {
+    @apply mb-1.5 block text-[13px] font-medium text-slate-700;
+  }
+
+  .hint {
+    @apply mt-1.5 text-xs text-slate-500;
+  }
+
+  .field-error {
+    @apply mt-1.5 text-xs font-medium text-red-600;
+  }
+
+  .input {
+    @apply block h-10 w-full rounded-lg border-0 bg-white px-3 text-sm text-slate-900 shadow-sm ring-1 ring-inset ring-slate-200
+      transition placeholder:text-slate-400 hover:ring-slate-300 focus:ring-2 focus:ring-inset focus:ring-brand-600
+      disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-500;
+  }
+
+  .input.ng-invalid.ng-touched {
+    @apply ring-red-300 focus:ring-red-500;
+  }
+
+  textarea.input {
+    @apply h-auto py-2.5 leading-6;
+  }
+
+  select.input {
+    @apply pr-9;
+  }
+
+  .radio-card {
+    @apply flex cursor-pointer items-center gap-2.5 rounded-lg bg-white px-3 py-2.5 text-sm text-slate-700 ring-1 ring-inset ring-slate-200
+      transition hover:bg-slate-50 has-[:checked]:bg-brand-50 has-[:checked]:text-brand-900 has-[:checked]:ring-brand-600;
+  }
+
+  .radio-card input[type="radio"] {
+    @apply h-4 w-4 border-slate-300 text-brand-700 focus:ring-brand-600;
+  }
+
+  /* Segmented control: a row of radio buttons styled as one control. */
+  .segmented {
+    @apply inline-flex flex-wrap gap-0.5 rounded-lg bg-slate-100 p-1;
+  }
+
+  .segmented label {
+    @apply cursor-pointer select-none rounded-md px-3.5 py-1.5 text-sm font-medium text-slate-600 transition
+      hover:text-slate-900 has-[:checked]:bg-white has-[:checked]:text-slate-900 has-[:checked]:shadow-sm
+      has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-brand-500;
+  }
+
+  /* Badges */
+  .badge {
+    @apply inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset;
+  }
+
+  .badge-success {
+    @apply bg-emerald-50 text-emerald-700 ring-emerald-600/20;
+  }
+
+  .badge-warning {
+    @apply bg-amber-50 text-amber-800 ring-amber-600/25;
+  }
+
+  .badge-danger {
+    @apply bg-red-50 text-red-700 ring-red-600/20;
+  }
+
+  .badge-neutral {
+    @apply bg-slate-50 text-slate-600 ring-slate-500/20;
+  }
+
+  .badge-brand {
+    @apply bg-brand-50 text-brand-700 ring-brand-600/20;
+  }
+
+  /* Filter chips */
+  .chip {
+    @apply inline-flex h-8 items-center gap-1.5 whitespace-nowrap rounded-full bg-white px-3 text-[13px] font-medium text-slate-600
+      ring-1 ring-inset ring-slate-200 transition hover:bg-slate-50 hover:text-slate-900;
+  }
+
+  .chip-active {
+    @apply bg-brand-800 text-white ring-brand-800 hover:bg-brand-800 hover:text-white;
+  }
+
+  /* Tables */
+  .table {
+    @apply w-full border-separate border-spacing-0 text-left text-sm;
+  }
+
+  .table th {
+    @apply whitespace-nowrap border-b border-slate-200 bg-slate-50/70 px-4 py-2.5 text-xs font-medium text-slate-500;
+  }
+
+  .table td {
+    @apply border-b border-slate-100 px-4 py-3 align-middle text-slate-700;
+  }
+
+  .table tbody tr {
+    @apply transition-colors hover:bg-slate-50/60;
+  }
+
+  .table tbody tr:last-child td {
+    @apply border-b-0;
+  }
+
+  /* Progress */
+  .progress {
+    @apply h-2 w-full overflow-hidden rounded-full bg-slate-100;
+  }
+
+  .progress > span {
+    @apply block h-full rounded-full bg-coral-500 transition-[width] duration-700 ease-out;
+  }
+
+  .skeleton {
+    @apply animate-pulse rounded-md bg-slate-200/70;
+  }
+
+  /* Dialogs */
+  .dialog-footer {
+    @apply flex flex-col-reverse gap-2 border-t border-slate-100 bg-slate-50/70 px-6 py-4 sm:flex-row sm:justify-end;
+  }
+
+  /* Sidebar navigation */
+  .nav-item {
+    @apply relative flex h-9 items-center gap-3 rounded-lg px-3 text-sm font-medium text-slate-600 transition-colors
+      hover:bg-slate-100 hover:text-slate-900;
+  }
+
+  .nav-item.nav-active {
+    @apply bg-brand-50 text-brand-900;
+  }
+
+  .nav-item.nav-active::before {
+    content: "";
+    @apply absolute -left-3 top-1.5 bottom-1.5 w-[3px] rounded-r-full bg-coral-500;
+  }
+
+  .nav-item.nav-active app-icon {
+    @apply text-brand-700;
+  }
+
+  .nav-locked {
+    @apply cursor-not-allowed text-slate-400 hover:bg-transparent hover:text-slate-400;
+  }
+
+  /* Legacy sidebar link style, still used by the roles not yet redesigned. */
+  .button {
+    display: flex;
+    align-items: center;
+    padding: 0.3rem;
+    color: white;
+    border-radius: 0.5rem;
+  }
+
+  .button:hover {
+    background-color: #312e81;
+  }
+}
+
+/*
+ * Angular Material: use the app's typeface, colours and radii.
+ */
+html {
+  --mat-dialog-container-shape: 18px;
+  --mat-dialog-container-color: #fff;
+  --mat-dialog-container-elevation-shadow: theme("boxShadow.overlay");
+  --mat-dialog-container-max-width: min(92vw, 640px);
+  --mat-menu-container-shape: 12px;
+  --mat-menu-container-color: #fff;
+  --mat-menu-container-elevation-shadow: theme("boxShadow.overlay");
+  --mat-menu-item-label-text-size: 14px;
+  --mat-menu-item-label-text-color: theme("colors.slate.700");
+  --mat-tooltip-container-color: theme("colors.brand.950");
+  --mat-tooltip-container-shape: 8px;
+  --mat-tooltip-supporting-text-size: 12px;
+  --mat-tooltip-supporting-text-line-height: 1.4;
+  --mat-tab-active-indicator-color: theme("colors.brand.800");
+  --mat-tab-active-focus-indicator-color: theme("colors.brand.800");
+  --mat-tab-active-hover-indicator-color: theme("colors.brand.800");
+  --mat-tab-active-label-text-color: theme("colors.slate.900");
+  --mat-tab-active-focus-label-text-color: theme("colors.slate.900");
+  --mat-tab-active-hover-label-text-color: theme("colors.slate.900");
+  --mat-tab-inactive-label-text-color: theme("colors.slate.500");
+  --mat-tab-label-text-weight: 500;
+
+  --mat-badge-text-font: inherit;
+  --mat-button-filled-label-text-font: inherit;
+  --mat-button-outlined-label-text-font: inherit;
+  --mat-button-protected-label-text-font: inherit;
+  --mat-button-text-label-text-font: inherit;
+  --mat-button-toggle-label-text-font: inherit;
+  --mat-checkbox-label-text-font: inherit;
+  --mat-chip-label-text-font: inherit;
+  --mat-datepicker-calendar-text-font: inherit;
+  --mat-dialog-subhead-font: inherit;
+  --mat-dialog-supporting-text-font: inherit;
+  --mat-expansion-container-text-font: inherit;
+  --mat-expansion-header-text-font: inherit;
+  --mat-form-field-container-text-font: inherit;
+  --mat-form-field-outlined-label-text-font: inherit;
+  --mat-form-field-subscript-text-font: inherit;
+  --mat-menu-item-label-text-font: inherit;
+  --mat-option-label-text-font: inherit;
+  --mat-select-trigger-text-font: inherit;
+  --mat-tab-label-text-font: inherit;
+  --mat-table-header-headline-font: inherit;
+  --mat-table-row-item-label-text-font: inherit;
+  --mat-tooltip-supporting-text-font: inherit;
+}
+
+.cdk-overlay-dark-backdrop {
+  background: rgb(15 23 41 / 0.45);
+  backdrop-filter: blur(2px);
+}
+
+/* Dialogs built with <app-dialog-shell> handle their own padding and scrolling. */
+.app-dialog .mat-mdc-dialog-surface {
+  overflow: hidden;
+}
+
+/*
+ * ngx-pagination
+ */
+.ngx-pagination {
+  display: flex !important;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 0.3rem;
-  color: white;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 0 !important;
+  font-size: 13px;
+}
+
+.ngx-pagination li {
+  margin: 0 !important;
   border-radius: 0.5rem;
 }
 
-.button:hover {
-  background-color: #312e81;
-}
-/* "flex items-center p-2 text-white rounded-lg  hover:bg-hover-side" */
-html,
-body {
-  height: 100%;
-}
-
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--secondary) var(--primary);
-}
-
-/* Chrome, Edge, and Safari */
-*::-webkit-scrollbar {
-  width: 15px;
+/* No !important on display: ngx-pagination hides page numbers on small screens. */
+.ngx-pagination a,
+.ngx-pagination button,
+.ngx-pagination .current,
+.ngx-pagination .disabled,
+.ngx-pagination .small-screen {
+  display: inline-flex;
+  min-width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.6rem !important;
+  border-radius: 0.5rem;
+  color: theme("colors.slate.600");
+  font-weight: 500;
 }
 
-*::-webkit-scrollbar-track {
-  background: var(--primary);
-  border-radius: 5px;
+.ngx-pagination a:hover,
+.ngx-pagination button:hover {
+  background: theme("colors.slate.100") !important;
+  color: theme("colors.slate.900");
 }
 
-*::-webkit-scrollbar-thumb {
-  background-color: var(--secondary);
-  border-radius: 14px;
-  border: 3px solid var(--primary);
+.ngx-pagination .current {
+  background: theme("colors.brand.800") !important;
+  color: #fff !important;
+}
+
+.ngx-pagination .disabled {
+  color: theme("colors.slate.300");
 }

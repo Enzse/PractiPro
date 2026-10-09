@@ -1,0 +1,99 @@
+<a href="#main-content"
+  class="sr-only z-toast rounded-lg bg-white px-4 py-2 text-sm font-medium text-brand-800 shadow-overlay focus:not-sr-only focus:fixed focus:left-4 focus:top-4">
+  Skip to content
+</a>
+
+<!-- Sidebar: always visible on large screens, a drawer on smaller ones. -->
+<aside id="app-sidebar"
+  class="fixed inset-y-0 left-0 z-sidebar flex w-64 flex-col border-r border-slate-200/80 bg-white transition-transform duration-300 ease-out lg:translate-x-0"
+  [class.-translate-x-full]="!sidebar.isOpen()" aria-label="Main navigation">
+  <div class="flex h-16 shrink-0 items-center gap-3 px-5">
+    <img src="assets/logo.png" alt="" class="h-9 w-9 rounded-full ring-1 ring-slate-900/5" />
+    <div class="leading-tight">
+      <p class="font-display text-[17px] font-semibold tracking-[-0.01em] text-slate-900">PractiPro</p>
+      <p class="text-xs text-slate-500">{{ roleLabel() }}</p>
+    </div>
+    <button type="button" class="icon-btn ml-auto lg:hidden" (click)="sidebar.close()">
+      <app-icon name="x" [size]="18" label="Close menu" />
+    </button>
+  </div>
+
+  <nav class="flex-1 space-y-6 overflow-y-auto px-3 pb-4 pt-3">
+    @for (group of navGroups(); track $index) {
+      <div>
+        @if (group.label) {
+          <p class="mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400">{{ group.label }}</p>
+        }
+        <ul class="space-y-0.5">
+          @for (item of group.items; track item.link) {
+            <li>
+              @if (item.locked) {
+                <span class="nav-item nav-locked" tabindex="0" [matTooltip]="item.locked" matTooltipPosition="right"
+                  [attr.aria-label]="item.label + ' (locked): ' + item.locked">
+                  <app-icon [name]="item.icon" [size]="18" />
+                  <span class="flex-1 truncate">{{ item.label }}</span>
+                  <app-icon name="lock-simple" [size]="14" />
+                </span>
+              } @else {
+                <a class="nav-item" [routerLink]="item.link" routerLinkActive="nav-active" ariaCurrentWhenActive="page">
+                  <app-icon [name]="item.icon" [size]="18" class="text-slate-400" />
+                  <span class="flex-1 truncate">{{ item.label }}</span>
+                </a>
+              }
+            </li>
+          }
+        </ul>
+      </div>
+    }
+  </nav>
+
+  <div class="shrink-0 px-3 pb-4 empty:hidden">
+    <ng-content select="[shellSidebarFooter]" />
+  </div>
+</aside>
+
+@if (sidebar.isOpen()) {
+  <div class="fixed inset-0 z-backdrop bg-brand-950/40 backdrop-blur-[2px] lg:hidden" (click)="sidebar.close()" aria-hidden="true"></div>
+}
+
+<div class="flex min-h-dvh flex-col lg:pl-64">
+  <header class="sticky top-0 z-topbar flex h-16 shrink-0 items-center gap-3 border-b border-slate-200/70 bg-canvas/80 px-4 backdrop-blur-md sm:px-6 lg:px-8">
+    <button type="button" class="icon-btn -ml-1.5 lg:hidden" (click)="sidebar.toggle()"
+      [attr.aria-expanded]="sidebar.isOpen()" aria-controls="app-sidebar">
+      <app-icon name="list" [size]="20" label="Open menu" />
+    </button>
+
+    <div class="flex min-w-0 flex-1 items-center gap-2">
+      <ng-content select="[shellTopbar]" />
+    </div>
+
+    <button type="button" class="flex items-center gap-2.5 rounded-full py-1 pl-1 pr-2 transition hover:bg-slate-900/5"
+      [matMenuTriggerFor]="accountMenu" aria-label="Account menu">
+      <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-800 text-xs font-semibold tracking-wide text-white">
+        {{ initials }}
+      </span>
+      <span class="hidden text-sm font-medium text-slate-700 sm:inline">{{ fullName }}</span>
+      <app-icon name="caret-down" [size]="14" class="hidden text-slate-400 sm:inline-flex" />
+    </button>
+
+    <mat-menu #accountMenu="matMenu" xPosition="before">
+      <div class="px-4 pb-2 pt-1">
+        <p class="text-sm font-medium text-slate-900">{{ fullName }}</p>
+        <p class="text-xs text-slate-500">{{ roleLabel() }}</p>
+      </div>
+      <div class="my-1 h-px bg-slate-100"></div>
+      @for (link of menuLinks(); track link.link) {
+        <a mat-menu-item [routerLink]="link.link">
+          <span class="flex items-center gap-3"><app-icon [name]="link.icon" [size]="18" class="text-slate-400" />{{ link.label }}</span>
+        </a>
+      }
+      <button mat-menu-item type="button" (click)="signOut()">
+        <span class="flex items-center gap-3 text-red-600"><app-icon name="sign-out" [size]="18" />Sign out</span>
+      </button>
+    </mat-menu>
+  </header>
+
+  <main id="main-content" tabindex="-1" class="mx-auto w-full max-w-6xl flex-1 px-4 pb-16 pt-6 outline-none sm:px-6 sm:pt-8 lg:px-8">
+    <ng-content />
+  </main>
+</div>

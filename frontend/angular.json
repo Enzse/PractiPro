@@ -26,6 +26,8 @@
               "src/web.config"
             ],
             "styles": [
+              "@fontsource-variable/geist/index.css",
+              "@fontsource-variable/bricolage-grotesque/index.css",
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
@@ -39,7 +41,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "850kb",
+                  "maximumWarning": "900kb",
                   "maximumError": "1mb"
                 },
                 {

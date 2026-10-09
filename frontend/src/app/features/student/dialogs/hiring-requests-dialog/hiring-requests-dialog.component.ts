@@ -1,98 +1,123 @@
-import { Component, Inject, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, OnInit, inject, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { CommonModule } from '@angular/common';
-import { DomSanitizer } from '@angular/platform-browser';
-import Swal from 'sweetalert2';
-import { Subscription } from 'rxjs';
-import { DataRefreshService } from '../../../../core/data-refresh.service';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { switchMap } from 'rxjs';
 import { CompanyService } from '../../../../core/api/company.service';
 import { MediaService } from '../../../../core/api/media.service';
+import { HiringRequest } from '../../../../core/models/company';
+import { DataRefreshService } from '../../../../core/data-refresh.service';
+import { DialogShellComponent } from '../../../../shared/ui/dialog-shell/dialog-shell.component';
+import { IconComponent } from '../../../../shared/ui/icon/icon.component';
+import { EmptyStateComponent } from '../../../../shared/ui/empty-state/empty-state.component';
+import { ToastService } from '../../../../shared/ui/toast/toast.service';
+import { ConfirmService } from '../../../../shared/ui/confirm/confirm.service';
 
+type Invitation = HiringRequest & { logo: SafeUrl | null };
+
+/** Invitations from companies; accepting one places the student there. */
 @Component({
-    selector: 'app-hiring-requests-dialog',
-    imports: [CommonModule],
-    templateUrl: './hiring-requests-dialog.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './hiring-requests-dialog.component.css'
+  selector: 'app-hiring-requests-dialog',
+  imports: [DatePipe, DialogShellComponent, IconComponent, EmptyStateComponent],
+  templateUrl: './hiring-requests-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HiringRequestsDialogComponent implements OnInit {
+  private readonly data = inject<{ student_id: number }>(MAT_DIALOG_DATA);
+  private readonly dialogRef = inject(MatDialogRef<HiringRequestsDialogComponent>);
   private readonly companyApi = inject(CompanyService);
   private readonly mediaApi = inject(MediaService);
-  datalist: any[] = []
-  private subscriptions = new Subscription();
-  constructor(private changeDetection: DataRefreshService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<HiringRequestsDialogComponent>, private sanitizer: DomSanitizer) {
+  private readonly sanitizer = inject(DomSanitizer);
+  private readonly refresh = inject(DataRefreshService);
+  private readonly toast = inject(ToastService);
+  private readonly confirm = inject(ConfirmService);
 
+  protected readonly invitations = signal<Invitation[]>([]);
+  protected readonly loading = signal(true);
+  protected readonly busyId = signal<number | null>(null);
+  private readonly objectUrls: string[] = [];
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => this.objectUrls.forEach((url) => URL.revokeObjectURL(url)));
   }
 
   ngOnInit(): void {
-    this.loadData();
+    this.load();
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
-
-  loadData() {
-    this.subscriptions.add(
-      this.companyApi.hiringRequestsOf(this.data.student_id).subscribe((res) => {
-        this.datalist = res.payload.map((user) => {
-          return { ...user, avatar: '' };
-        });
-        this.subscriptions.add(
-          this.datalist.forEach((company) => {
-            this.mediaApi.logo(company.company_id).subscribe((res) => {
-              if (res.size > 0) {
-                const url = URL.createObjectURL(res);
-                company.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
+  private load(): void {
+    this.companyApi.hiringRequestsOf(this.data.student_id).subscribe({
+      next: (res) => {
+        this.invitations.set(res.payload.map((request) => ({ ...request, logo: null })));
+        this.loading.set(false);
+        for (const request of res.payload) {
+          this.mediaApi.logo(request.company_id).subscribe({
+            next: (blob) => {
+              if (blob.size === 0) {
+                return;
               }
-            })
-          }));
-      }))
-  }
-
-  JoinCompany(request: any) {
-
-    Swal.fire({
-      title: `Are you sure you want to work under '${request.company_name}'?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#253d75",
-      cancelButtonColor: "#858c94",
-      confirmButtonText: "Confirm"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.subscriptions.add(
-          this.companyApi.addStudent(request).subscribe((res) => {
-            this.changeDetection.notifyChange(true);
-            Swal.fire("Success", "You have successfully joined the company", "success");
-            this.subscriptions.add(
-              this.companyApi.deleteHiringRequest(request.id).subscribe((res) => {
-                this.dialog.close();
-              }));
-          }, error => {
-            Swal.fire({ title: "Error", text: "You may not have permission to join this company", icon: "error" });
-          }));
-      }
+              const url = URL.createObjectURL(blob);
+              this.objectUrls.push(url);
+              const logo = this.sanitizer.bypassSecurityTrustUrl(url);
+              this.invitations.update((list) => list.map((item) => (item.id === request.id ? { ...item, logo } : item)));
+            },
+            error: () => undefined,
+          });
+        }
+      },
+      error: () => this.loading.set(false),
     });
   }
 
-  declineRequest(id: any) {
-    Swal.fire({
-      title: `Are you sure you want to decline this invitation?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#858c94",
-      confirmButtonText: "Confirm"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.subscriptions.add(
-          this.companyApi.deleteHiringRequest(id).subscribe((res) => {
-            this.loadData();
-          }));
-      }
-    });
+  protected accept(invitation: Invitation): void {
+    this.confirm
+      .ask({
+        title: `Do your practicum at ${invitation.company_name}?`,
+        message: 'You’ll be placed with this company, and its supervisor will see your attendance and reports.',
+        confirmText: 'Accept invitation',
+      })
+      .subscribe((yes) => {
+        if (!yes) {
+          return;
+        }
+        this.busyId.set(invitation.id);
+        const { company_id, student_id, supervisor_id } = invitation;
+        this.companyApi
+          .addStudent({ company_id, student_id, supervisor_id })
+          .pipe(switchMap(() => this.companyApi.deleteHiringRequest(invitation.id)))
+          .subscribe({
+            next: () => {
+              this.refresh.notifyChange(true);
+              this.toast.success(`You’re now with ${invitation.company_name}`, 'Your practicum pages are open. Good luck!');
+              this.dialogRef.close(true);
+            },
+            error: () => {
+              this.busyId.set(null);
+              this.toast.error('Couldn’t accept the invitation', 'Please try again.');
+            },
+          });
+      });
   }
 
-
+  protected decline(invitation: Invitation): void {
+    this.confirm
+      .ask({ title: `Decline ${invitation.company_name}’s invitation?`, confirmText: 'Decline', tone: 'danger' })
+      .subscribe((yes) => {
+        if (!yes) {
+          return;
+        }
+        this.busyId.set(invitation.id);
+        this.companyApi.deleteHiringRequest(invitation.id).subscribe({
+          next: () => {
+            this.busyId.set(null);
+            this.toast.info('Invitation declined');
+            this.load();
+          },
+          error: () => {
+            this.busyId.set(null);
+            this.toast.error('Couldn’t decline the invitation', 'Please try again.');
+          },
+        });
+      });
+  }
 }

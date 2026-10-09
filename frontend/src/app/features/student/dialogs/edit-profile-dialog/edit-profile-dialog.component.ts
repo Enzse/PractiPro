@@ -1,82 +1,80 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
+import { MatDialogRef } from '@angular/material/dialog';
 import { SessionService } from '../../../../core/auth/session.service';
 import { StudentService } from '../../../../core/api/student.service';
-import { StudentProfileUpdate } from '../../../../core/models/student';
-import { Student } from '../../../../core/models/student';
+import { DialogShellComponent } from '../../../../shared/ui/dialog-shell/dialog-shell.component';
+import { IconComponent } from '../../../../shared/ui/icon/icon.component';
+import { ToastService } from '../../../../shared/ui/toast/toast.service';
 
-
+/** Edits the signed-in student's profile. Closes with true when saved. */
 @Component({
-    selector: 'app-edit-profile-dialog',
-    imports: [ReactiveFormsModule],
-    templateUrl: './edit-profile-dialog.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './edit-profile-dialog.component.css'
+  selector: 'app-edit-profile-dialog',
+  imports: [ReactiveFormsModule, DialogShellComponent, IconComponent],
+  templateUrl: './edit-profile-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditProfileDialogComponent implements OnInit {
   private readonly session = inject(SessionService);
   private readonly studentApi = inject(StudentService);
+  private readonly toast = inject(ToastService);
+  private readonly dialogRef = inject<MatDialogRef<EditProfileDialogComponent, boolean>>(MatDialogRef);
 
-  //Constructor
-  constructor(private builder: NonNullableFormBuilder,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditProfileDialogComponent>) { }
+  protected readonly programs = ['BSCS', 'BSEMC', 'BSIT'];
+  protected readonly years = [1, 2, 3, 4];
+  protected readonly saving = signal(false);
 
-
-
-  //This dynamically displays the data according to changes.
-  editdata?: Student | undefined;
-  ngOnInit(): void {
-    const userId = this.session.requireUserId();
-    if (userId) {
-      this.studentApi.get(userId).subscribe((res) => {
-        this.editdata = res.payload[0];
-        this.editForm.setValue({
-          firstName: this.editdata.firstName,
-          lastName: this.editdata.lastName,
-          studentId: String(this.editdata.studentId ?? ''),
-          program: this.editdata.program ?? '',
-          year: String(this.editdata.year ?? ''),
-          phoneNumber: this.editdata.phoneNumber ?? '',
-          address: this.editdata.address ?? '',
-          dateOfBirth: this.editdata.dateOfBirth ?? ''
-        });
-
-      })
-    }
-  }
-
-  //This serves as a placeholder for the student data.
-  editForm = this.builder.group({
-    firstName: this.builder.control(''),
-    lastName: this.builder.control(''),
-    studentId: this.builder.control('', [Validators.maxLength(9), Validators.minLength(9)]),
-    program: this.builder.control(''),
-    year: this.builder.control(''),
-    phoneNumber: this.builder.control('', [Validators.maxLength(11)]),
-    address: this.builder.control(''),
-    dateOfBirth: this.builder.control('')
+  protected readonly form = inject(NonNullableFormBuilder).group({
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    studentId: ['', [Validators.pattern(/^\d{9}$/)]],
+    program: [''],
+    year: [''],
+    phoneNumber: ['', [Validators.pattern(/^\d{11}$/)]],
+    address: [''],
+    dateOfBirth: [''],
   });
 
-  //This is for the Submit button functionality.
-  editInformation() {
-    if (this.editForm.valid) {
-      this.studentApi.update(this.session.requireUserId(), this.editForm.getRawValue()).subscribe(res => {
-        console.log("Updated successfully.");
-        this.dialog.close();
-      })
-    } else {
-      Swal.fire({
-        title: "Invalid Input",
-        text: "Double-check your information to see any forms you've mistakenly entered.",
-        icon: "error"
+  ngOnInit(): void {
+    this.studentApi.get(this.session.requireUserId()).subscribe((res) => {
+      const student = res.payload[0];
+      this.form.setValue({
+        firstName: student.firstName,
+        lastName: student.lastName,
+        studentId: String(student.studentId ?? ''),
+        program: student.program ?? '',
+        year: String(student.year ?? ''),
+        phoneNumber: student.phoneNumber ?? '',
+        address: student.address ?? '',
+        dateOfBirth: student.dateOfBirth ?? '',
       });
-    }
+    });
   }
 
-  closePopup() {
-    this.dialog.close();
+  protected invalid(name: keyof typeof this.form.controls): boolean {
+    const control = this.form.controls[name];
+    return control.invalid && (control.touched || control.dirty);
+  }
+
+  protected save(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    this.saving.set(true);
+    this.studentApi.update(this.session.requireUserId(), this.form.getRawValue()).subscribe({
+      next: () => {
+        this.toast.success('Profile updated');
+        this.dialogRef.close(true);
+      },
+      error: () => {
+        this.saving.set(false);
+        this.toast.error('Couldn’t save your profile', 'Please try again.');
+      },
+    });
+  }
+
+  protected cancel(): void {
+    this.dialogRef.close(false);
   }
 }

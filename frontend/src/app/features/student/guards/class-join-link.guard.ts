@@ -1,31 +1,21 @@
-import { Router, RouterStateSnapshot, ActivatedRouteSnapshot, CanActivateFn } from '@angular/router';
 import { inject } from '@angular/core';
-import Swal from 'sweetalert2';
+import { CanActivateFn, Router } from '@angular/router';
 import { SessionService } from '../../../core/auth/session.service';
+import { ToastService } from '../../../shared/ui/toast/toast.service';
 
-export const classJoinLinkGuard: CanActivateFn = (childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+/** The join-class link page: students only, signed in first (they come back here afterwards). */
+export const classJoinLinkGuard: CanActivateFn = (_route, state) => {
   const session = inject(SessionService);
+  const router = inject(Router);
+  const toast = inject(ToastService);
 
-    const router: Router = inject(Router);
-
-    if (session.isLoggedIn()) {
-        if (session.role() === 'student') {
-            return true;
-        }
-        else {
-            router.navigate(['/login']);
-            alert("This page is for students only.");
-            return false;
-        }
-    } else {
-        router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-        Swal.fire({
-            title: 'Login Required',
-            text: 'Please log into your student account first in order to join the class through this link.',
-            icon: 'warning'
-        })
-        return false;
-    }
-
-
+  if (!session.isLoggedIn()) {
+    toast.info('Sign in to join the class', 'Use your student account; you will come back to this link afterwards.');
+    return router.createUrlTree(['/login'], { queryParams: { returnUrl: state.url } });
+  }
+  if (session.role() !== 'student') {
+    toast.error('This link is for students', 'Sign in with a student account to join a class.');
+    return router.createUrlTree(['/login']);
+  }
+  return true;
 };

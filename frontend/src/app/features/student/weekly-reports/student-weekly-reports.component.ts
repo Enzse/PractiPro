@@ -1,377 +1,320 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { CommonModule } from '@angular/common';
-import { MatDialog } from '@angular/material/dialog';
-import Swal from 'sweetalert2';
-import { CommentsDialogComponent } from '../../../shared/dialogs/comments-dialog/comments-dialog.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { TimePipe } from '../../../shared/pipes/time.pipe';
-import { SessionService } from '../../../core/auth/session.service';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Observable, concatMap, forkJoin, map, of, switchMap } from 'rxjs';
 import { SubmissionService } from '../../../core/api/submission.service';
 import { WarService } from '../../../core/api/war.service';
-import { WarRecord } from '../../../core/models/records';
+import { WarActivity, WarRecord } from '../../../core/models/records';
+import { CommentsDialogComponent } from '../../../shared/dialogs/comments-dialog/comments-dialog.component';
+import { TimePipe } from '../../../shared/pipes/time.pipe';
+import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
+import { IconComponent } from '../../../shared/ui/icon/icon.component';
+import { StatusBadgeComponent } from '../../../shared/ui/status-badge/status-badge.component';
+import { ToastService } from '../../../shared/ui/toast/toast.service';
+import { ConfirmService } from '../../../shared/ui/confirm/confirm.service';
+import { StudentStatusService } from '../student-status.service';
 
+/** An activity row being edited. `key` only identifies the row on screen. */
+interface DraftRow {
+  key: number;
+  description: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+}
+
+type WeekState = 'empty' | 'draft' | 'submitted' | 'approved' | 'returned';
+
+const STATE_LOOK: Record<WeekState, { label: string; colour: string }> = {
+  empty: { label: 'Not started', colour: 'text-slate-400' },
+  draft: { label: 'Draft', colour: 'text-slate-500' },
+  submitted: { label: 'In review', colour: 'text-amber-700' },
+  approved: { label: 'Approved', colour: 'text-emerald-700' },
+  returned: { label: 'Returned', colour: 'text-red-600' },
+};
 
 @Component({
-    selector: 'app-student-weekly-reports',
-    imports: [CommonModule, FormsModule, TimePipe, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, NgxPaginationModule],
-    templateUrl: './student-weekly-reports.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './student-weekly-reports.component.css'
+  selector: 'app-student-weekly-reports',
+  imports: [DatePipe, DecimalPipe, FormsModule, MatTooltipModule, TimePipe, PageHeaderComponent, IconComponent, StatusBadgeComponent],
+  templateUrl: './student-weekly-reports.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StudentWeeklyReportsComponent implements OnInit, OnDestroy {
-  private readonly session = inject(SessionService);
-  private readonly submissionApi = inject(SubmissionService);
+export class StudentWeeklyReportsComponent implements OnInit {
+  private readonly status = inject(StudentStatusService);
   private readonly warApi = inject(WarService);
-  searchweek: any;
-  userId: number;
-  datalist: any[] = [];
-  origlist: any;
-  searchtext: any;
-  tabWeekNumbers: number[] = [1];
-  selectedTabWeek: number = 1;
-  selectedRecord: WarRecord | undefined;
+  private readonly submissionApi = inject(SubmissionService);
+  private readonly dialog = inject(MatDialog);
+  private readonly toast = inject(ToastService);
+  private readonly confirm = inject(ConfirmService);
 
-  /** The id of the weekly report being edited. */
-  private get selectedRecordId(): number {
-    if (!this.selectedRecord) {
-      throw new Error('No weekly report is selected.');
+  protected readonly stateLook = STATE_LOOK;
+  protected readonly records = signal<WarRecord[]>([]);
+  private readonly extraWeeks = signal<number[]>([1]);
+  protected readonly selectedWeek = signal(1);
+
+  /** Rows of the selected week: editable when it is a draft, read-only once submitted. */
+  protected readonly rows = signal<DraftRow[]>([]);
+  protected readonly savedActivities = signal<WarActivity[]>([]);
+  private readonly snapshot = signal('[]');
+  protected readonly loadingWeek = signal(true);
+  protected readonly saving = signal(false);
+  private nextKey = 1;
+
+  protected readonly weeks = computed(() =>
+    [...new Set([...this.extraWeeks(), ...this.records().map((record) => record.week)])].sort((a, b) => a - b),
+  );
+  protected readonly record = computed(() => this.records().find((record) => record.week === this.selectedWeek()) ?? null);
+  protected readonly submitted = computed(() => this.record()?.isSubmitted === 1);
+  protected readonly locked = computed(() => this.record()?.supervisor_approval === 'Approved');
+  protected readonly totalHours = computed(() =>
+    this.savedActivities().reduce((sum, activity) => sum + Number(activity.TotalHours ?? 0), 0),
+  );
+
+  ngOnInit(): void {
+    this.loadRecords(() => {
+      const latest = this.weeks()[this.weeks().length - 1] ?? 1;
+      this.openWeek(latest);
+    });
+    this.submissionApi.weekNumbers('student_war_records', this.status.studentId).subscribe((weeks) => {
+      if (weeks.length > 0) {
+        this.extraWeeks.update((existing) => [...new Set([...existing, ...weeks])]);
+      }
+    });
+  }
+
+  protected weekState(week: number): WeekState {
+    const record = this.records().find((r) => r.week === week);
+    if (!record) {
+      return 'empty';
     }
-    return this.selectedRecordId;
-  }
-  selectedRecordActivities: any[] = [];
-  initialRecordActivities: any[] = [];
-  private subscriptions = new Subscription();
-  p: number = 1;
-  selectedIndex: number = 0;
-  disableTabChangeEvent: boolean = false;
-
-
-  constructor(private dialog: MatDialog) {
-    this.userId = this.session.requireUserId();
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
-
-  ngOnInit() {
-    this.loadWarRecord();
-    this.loadMaxWeeks();
-    if (this.selectedRecordActivities.length === 0) {
-      this.addRow()
+    if (record.isSubmitted !== 1) {
+      return 'draft';
     }
+    if (record.supervisor_approval === 'Unapproved' || record.advisor_approval === 'Unapproved') {
+      return 'returned';
+    }
+    return record.supervisor_approval === 'Approved' && record.advisor_approval === 'Approved' ? 'approved' : 'submitted';
   }
 
-  loadWarRecord() {
-    this.subscriptions.add(
-      this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res) => {
-        this.selectedRecord = res.payload[0]
-        this.loadWarActivities();
+  protected isDirty(): boolean {
+    return !this.submitted() && JSON.stringify(this.comparable(this.rows())) !== this.snapshot();
+  }
+
+  protected selectWeek(week: number): void {
+    if (week === this.selectedWeek()) {
+      return;
+    }
+    if (!this.isDirty()) {
+      this.openWeek(week);
+      return;
+    }
+    this.confirm
+      .ask({
+        title: 'Discard your changes?',
+        message: `Week ${this.selectedWeek()} has changes you haven’t saved.`,
+        confirmText: 'Discard',
+        cancelText: 'Keep editing',
+        tone: 'danger',
       })
-    )
+      .subscribe((yes) => yes && this.openWeek(week));
   }
 
-  loadWarActivities() {
-    if (this.selectedRecord) {
-      this.subscriptions.add(
-        this.warApi.activities(this.selectedRecord.id).subscribe((res) => {
-          this.selectedRecordActivities = res.payload
-          this.initialRecordActivities = JSON.parse(JSON.stringify(res.payload));
-          this.checkForUnsaved = true;
-          if (this.selectedRecordActivities.length === 0) {
-            this.addRow()
-          }
-        })
+  protected addWeek(): void {
+    const next = Math.max(0, ...this.weeks()) + 1;
+    this.extraWeeks.update((weeks) => [...weeks, next]);
+    this.selectWeek(next);
+  }
+
+  protected addRow(): void {
+    this.rows.update((rows) => [...rows, this.blankRow()]);
+  }
+
+  protected removeRow(row: DraftRow): void {
+    this.rows.update((rows) => {
+      const remaining = rows.filter((r) => r.key !== row.key);
+      return remaining.length > 0 ? remaining : [this.blankRow()];
+    });
+  }
+
+  protected saveDraft(): void {
+    if (!this.validate(false)) {
+      return;
+    }
+    this.save().subscribe({
+      next: () => this.toast.success('Draft saved', `Week ${this.selectedWeek()} is saved. Submit it when the week is done.`),
+      error: () => this.failed('Couldn’t save the draft'),
+    });
+  }
+
+  protected submit(): void {
+    if (!this.validate(true)) {
+      return;
+    }
+    const week = this.selectedWeek();
+    this.confirm
+      .ask({
+        title: `Submit your week ${week} report?`,
+        message: 'Your supervisor and coordinator will review it. You can still edit it until your supervisor approves it.',
+        confirmText: 'Submit report',
+      })
+      .pipe(
+        switchMap((yes) => (yes ? this.save().pipe(concatMap((id) => this.warApi.setSubmitted({ id, isSubmitted: 1 })), map(() => true)) : of(false))),
       )
-    }
-  }
-  saveChanges() {
-    this.subscriptions.add(
-      this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res) => {
-        if (res.payload.length === 0) {
-          if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description === '') {
-            Swal.fire({
-              title: `You haven't entered anything.`,
-              text: `Please fill up a row with details first.`,
-              icon: `question`
-            })
-            return
+      .subscribe({
+        next: (done) => {
+          if (done) {
+            this.toast.success(`Week ${week} report submitted`, 'Your supervisor will review it next.');
+            this.loadRecords(() => this.openWeek(week));
           }
-          const newRecord = {
-            student_id: this.userId,
-            week: this.selectedTabWeek
-          }
-          this.subscriptions.add(
-            this.warApi.create(newRecord).subscribe((res) => {
-              this.subscriptions.add(
-                this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res) => {
-                  this.selectedRecord = res.payload[0]
-                  this.saveIteration();
-                  Swal.fire({
-                    title: 'Changes Saved Successfully!',
-                    icon: 'success',
-                    confirmButtonColor: '#233876',
-                  })
-                })
-              )
-            }))
-        } else {
-          Swal.fire({
-            title: 'Changes Saved Successfully!',
-            icon: 'success',
-            confirmButtonColor: '#233876',
-          })
-          this.saveIteration();
-        }
-      }))
-  }
-  saveIteration() {
-    this.selectedRecordActivities = this.selectedRecordActivities.map(activity => ({
-      ...activity,
-      war_id: this.selectedRecord?.id
-    }));
-    this.warApi.clearActivities(this.selectedRecordId).subscribe(res => {
-      this.selectedRecordActivities.forEach(activity => {
-        this.warApi.addActivity(activity).subscribe((res) => {
-        }
-        )
-      })
-      this.initialRecordActivities = JSON.parse(JSON.stringify(this.selectedRecordActivities));
-    })
-  }
-  submitWarRecord() {
-
-    // Validation: Check if all selectedRecordActivities are valid
-    const allValid = this.selectedRecordActivities.every(activity => {
-      return activity.description.trim() !== '' &&
-        activity.date !== '0000-00-00' &&
-        activity.startTime.trim() !== '' &&
-        activity.endTime.trim() !== '';
-    });
-
-    if (!allValid) {
-      Swal.fire({
-        title: 'Invalid Activities',
-        text: 'Please ensure all activities have a description, date, start time, and end time.',
-        icon: 'warning',
-      });
-      return;
-    }
-
-    // Check if at least one valid activity exists
-    if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description.trim() === '') {
-      Swal.fire({
-        title: `You haven't entered anything.`,
-        text: `Please fill up a row with details first.`,
-        icon: `question`,
-      });
-      return;
-    }
-    this.saveIteration();
-
-    // Confirmation dialog
-    Swal.fire({
-      title: 'Are you sure you want to submit this report?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonText: 'Confirm',
-      cancelButtonText: 'Cancel',
-      confirmButtonColor: '#233876',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const recordSubmitted = {
-          isSubmitted: 1,
-          id: this.selectedRecordId,
-          status: 'Pending'
-        };
-        this.subscriptions.add(
-          this.warApi.setSubmitted(recordSubmitted).subscribe((res) => {
-            this.loadWarRecord();
-            Swal.fire({
-              toast: true,
-              position: "top-end",
-              title: `Successfully submitted record`,
-              text: `This record can now be evaluated by your supervisor`,
-              icon: "success",
-              timer: 3000,
-              timerProgressBar: true,
-              showConfirmButton: false,
-              showCloseButton: true,
-            });
-          })
-        );
-      }
-    });
-  }
-
-  onTabChange(event: MatTabChangeEvent) {
-    if (this.disableTabChangeEvent) {
-      return;
-    }
-    const currentIndex = this.tabWeekNumbers.indexOf(this.selectedTabWeek);
-    const newIndex = event.index;
-    const newTabWeek = parseInt(event.tab.textLabel.replace('Week ', ''), 10);
-
-    if (this.hasUnsavedChanges()) {
-      this.selectTabIndex(currentIndex);
-      Swal.fire({
-        title: 'Unsaved Changes',
-        text: 'You have unsaved changes. Do you want to leave without saving?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#233876',
-        confirmButtonText: 'Yes, leave',
-        cancelButtonText: 'No, stay'
-      }).then((result) => {
-        this.disableTabChangeEvent = false;
-        if (result.isConfirmed) {
-          this.performTabChange(newIndex, newTabWeek);
-        } else {
-          this.selectTabIndex(currentIndex);
-        }
-      });
-    } else {
-      this.performTabChange(newIndex, newTabWeek);
-    }
-  }
-
-  selectTabIndex(index: number) {
-    this.disableTabChangeEvent = true;
-    this.selectedIndex = index;
-    setTimeout(() => {
-      this.disableTabChangeEvent = false;
-    }, 1);
-  }
-
-  checkForUnsaved = true;
-  performTabChange(newIndex: number, newTabWeek: number) {
-    this.disableTabChangeEvent = true;
-    this.selectedIndex = newIndex;
-    this.checkForUnsaved = false;
-    this.selectedRecordActivities = [];
-    this.selectedTabWeek = newTabWeek;
-    this.loadWarRecord();
-    this.addRow();
-    this.initialRecordActivities = JSON.parse(JSON.stringify(this.selectedRecordActivities));
-    setTimeout(() => {
-      this.disableTabChangeEvent = false;
-    }, 1);
-  }
-
-
-  addRow() {
-    const latestId = this.selectedRecordActivities.reduce((max, activity) => {
-      return activity.id > max ? activity.id : max;
-    }, 0);
-    const newActivity = {
-      id: latestId + 1,
-      description: '',
-      date: '',
-      startTime: '09:00',
-      endTime: '17:00',
-    };
-    this.selectedRecordActivities.push(newActivity);
-  }
-
-
-
-  hasUnsavedChanges(): boolean {
-    return JSON.stringify(this.selectedRecordActivities) !== JSON.stringify(this.initialRecordActivities);
-  }
-
-  unsubmitWarRecord() {
-    const recordSubmitted = {
-      isSubmitted: 0,
-      id: this.selectedRecordId,
-      status: null
-    }
-    this.subscriptions.add(
-      this.warApi.setSubmitted(recordSubmitted).subscribe((res) => {
-        this.loadWarRecord();
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          title: `Successfully unsubmitted record`,
-          icon: "success",
-          timer: 3000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          showCloseButton: true,
-        });
-      })
-    )
-  }
-
-  loadMaxWeeks() {
-    this.subscriptions.add(
-      this.submissionApi.weekNumbers('student_war_records', this.userId).subscribe(
-        res => {
-          this.tabWeekNumbers = res;
-          // this.selectTabIndex(this.tabWeekNumbers.length);
         },
-        error => {
-          console.error('Error fetching week numbers:', error);
+        error: () => this.failed('Couldn’t submit the report'),
+      });
+  }
+
+  /** Moves a submitted report back to draft so it can be changed. */
+  protected edit(): void {
+    const record = this.record();
+    if (!record) {
+      return;
+    }
+    this.confirm
+      .ask({
+        title: 'Edit this report?',
+        message: 'It will be withdrawn from review, and its approvals reset, until you submit it again.',
+        confirmText: 'Edit report',
+      })
+      .subscribe((yes) => {
+        if (!yes) {
+          return;
         }
-      ));
-  }
-
-
-  addNewTab() {
-    const nextWeekNumber = this.tabWeekNumbers[this.tabWeekNumbers.length - 1] + 1;
-    this.tabWeekNumbers.push(nextWeekNumber);
-  }
-
-  deleteRow(activityId: number) {
-    console.log(this.selectedRecordActivities);
-    Swal.fire({
-      title: "Are you sure you want to delete this row?",
-      icon: "question",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.selectedRecordActivities = this.selectedRecordActivities.filter((activity) => activity.id !== activityId);
-        Swal.fire({
-          toast: true,
-          position: "top-end",
-          title: `Row successfully deleted.`,
-          text: `Please don't forget to save your changes.`,
-          icon: "success",
-          timer: 3000,
-          timerProgressBar: true,
-          showConfirmButton: false,
-          showCloseButton: true,
+        this.warApi.setSubmitted({ id: record.id, isSubmitted: 0, status: null }).subscribe({
+          next: () => {
+            this.toast.info('Report moved back to draft', 'Make your changes, then submit it again.');
+            this.loadRecords(() => this.openWeek(record.week));
+          },
+          error: () => this.failed('Couldn’t reopen the report'),
         });
-        if (this.selectedRecordActivities.length === 0) {
-          this.addRow();
-        }
-      }
+      });
+  }
+
+  protected openComments(): void {
+    const record = this.record();
+    if (!record) {
+      return;
+    }
+    this.dialog
+      .open(CommentsDialogComponent, {
+        data: { submissionID: record.id, fileName: `Week ${record.week} report`, table: 'comments_war' },
+        panelClass: 'app-dialog',
+        width: '600px',
+      })
+      .afterClosed()
+      .subscribe(() => this.loadRecords());
+  }
+
+  private openWeek(week: number): void {
+    this.selectedWeek.set(week);
+    this.loadingWeek.set(true);
+    const record = this.records().find((r) => r.week === week);
+    if (!record) {
+      this.showActivities([]);
+      return;
+    }
+    this.warApi.activities(record.id).subscribe({
+      next: (res) => this.showActivities(res.payload),
+      error: () => this.showActivities([]),
     });
   }
 
-  viewComments(submissionId: number, fileName: string) {
-    const popup = this.dialog.open(CommentsDialogComponent, {
-      enterAnimationDuration: "500ms",
-      exitAnimationDuration: "500ms",
-      width: "80%",
-      data: {
-        submissionID: submissionId,
-        fileName: fileName,
-        table: 'comments_war'
-      }
-    })
-    // this.subscriptions.add(
-    //   popup.afterClosed().subscribe(res => {
-
-    //   }));
+  private showActivities(activities: WarActivity[]): void {
+    this.savedActivities.set(activities);
+    const rows = activities.map((activity) => ({
+      key: this.nextKey++,
+      description: activity.description ?? '',
+      date: activity.date && activity.date !== '0000-00-00' ? activity.date : '',
+      startTime: (activity.startTime ?? '').slice(0, 5),
+      endTime: (activity.endTime ?? '').slice(0, 5),
+    }));
+    // An empty week starts with one blank row, which doesn't count as an unsaved change.
+    const shown = rows.length > 0 ? rows : [this.blankRow()];
+    this.rows.set(shown);
+    this.snapshot.set(JSON.stringify(this.comparable(shown)));
+    this.loadingWeek.set(false);
   }
 
+  private loadRecords(then?: () => void): void {
+    this.warApi.records(this.status.studentId).subscribe((res) => {
+      this.records.set(res.payload);
+      then?.();
+    });
+  }
+
+  /** Saves the rows as the week's activities (creating the week's record if needed); emits the record id. */
+  private save(): Observable<number> {
+    this.saving.set(true);
+    const week = this.selectedWeek();
+    const rows = this.filledRows();
+    const existing = this.record();
+    const recordId$ = existing
+      ? of(existing.id)
+      : this.warApi.create({ student_id: this.status.studentId, week }).pipe(
+          switchMap(() => this.warApi.records(this.status.studentId, week)),
+          map((res) => res.payload[0].id),
+        );
+
+    return recordId$.pipe(
+      concatMap((id) =>
+        this.warApi.clearActivities(id).pipe(
+          concatMap(() =>
+            rows.length === 0
+              ? of([])
+              : forkJoin(rows.map((row) => this.warApi.addActivity({ war_id: id, date: row.date, description: row.description.trim(), startTime: row.startTime, endTime: row.endTime }))),
+          ),
+          map(() => id),
+        ),
+      ),
+      map((id) => {
+        this.saving.set(false);
+        this.loadRecords(() => this.openWeek(week));
+        return id;
+      }),
+    );
+  }
+
+  private validate(submitting: boolean): boolean {
+    const rows = this.filledRows();
+    if (submitting && rows.length === 0) {
+      this.toast.warning('Nothing to submit yet', 'Describe at least one thing you did this week.');
+      return false;
+    }
+    if (rows.some((row) => !row.date || !row.startTime || !row.endTime)) {
+      this.toast.warning('Some activities are incomplete', 'Give every activity a date, a start time and an end time.');
+      return false;
+    }
+    if (rows.some((row) => row.endTime <= row.startTime)) {
+      this.toast.warning('Check your times', 'Each activity has to end after it starts.');
+      return false;
+    }
+    return true;
+  }
+
+  /** Rows with a description; blank ones are ignored. */
+  private filledRows(): DraftRow[] {
+    return this.rows().filter((row) => row.description.trim() !== '');
+  }
+
+  private comparable(rows: DraftRow[]) {
+    return rows.map(({ description, date, startTime, endTime }) => ({ description, date, startTime, endTime }));
+  }
+
+  private blankRow(): DraftRow {
+    return { key: this.nextKey++, description: '', date: '', startTime: '09:00', endTime: '17:00' };
+  }
+
+  private failed(title: string): void {
+    this.saving.set(false);
+    this.toast.error(title, 'Please check your connection and try again.');
+  }
 }

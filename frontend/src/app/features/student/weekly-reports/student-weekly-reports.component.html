@@ -1,437 +1,167 @@
-<!-- <app-student-layout></app-student-layout> -->
-<div class="p-2 sm:ml-60">
-  <div class="pt-5 xl:p-10">
+<app-page-header title="Weekly reports"
+  description="Log what you worked on each week. Your supervisor reviews the report first, then your coordinator." />
 
-    <div>
-      <h1 class="text-orange-500 ml-5 font-bold font-primary text-center text-xl mb-3">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-          class="w-6 h-6 text-orange-500 inline">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 0 1-2.25 2.25M16.5 7.5V18a2.25 2.25 0 0 0 2.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 0 0 2.25 2.25h13.5M6 7.5h3v3H6v-3Z" />
-          </svg>
-          Weekly Accomplishment Reports
-        </h1>
-        <div class="border-b border-gray-300"></div>
-        <br />
+<!-- Weeks, on phones: a row of chips. -->
+<div class="-mx-4 mb-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:-mx-6 sm:px-6 lg:hidden" role="group" aria-label="Weeks">
+  @for (week of weeks(); track week) {
+    <button type="button" class="chip shrink-0" [class.chip-active]="selectedWeek() === week" [attr.aria-pressed]="selectedWeek() === week"
+      (click)="selectWeek(week)">
+      <span class="h-1.5 w-1.5 rounded-full bg-current" [class]="selectedWeek() === week ? 'text-white' : stateLook[weekState(week)].colour"></span>
+      Week {{ week }}
+    </button>
+  }
+  <button type="button" class="chip shrink-0 border-dashed" (click)="addWeek()"><app-icon name="plus" [size]="14" /> Add</button>
+</div>
+
+<div class="grid gap-6 lg:grid-cols-[17rem_minmax(0,1fr)]">
+  <!-- Weeks -->
+  <section class="card hidden self-start p-2 lg:block">
+    <h2 class="px-3 pb-2 pt-3 text-sm font-semibold text-slate-900">Weeks</h2>
+    <ul class="max-h-[26rem] space-y-0.5 overflow-y-auto">
+      @for (week of weeks(); track week) {
+        @let state = weekState(week);
+        <li>
+          <button type="button" (click)="selectWeek(week)" [attr.aria-pressed]="selectedWeek() === week"
+            class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm transition"
+            [class]="selectedWeek() === week ? 'bg-brand-50 text-brand-900' : 'text-slate-700 hover:bg-slate-50'">
+            <span class="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-white text-xs font-semibold tabular-nums text-slate-600 ring-1 ring-slate-200">{{ week }}</span>
+            <span class="flex-1 font-medium">Week {{ week }}</span>
+            <span class="flex items-center gap-1.5 text-xs" [class]="stateLook[state].colour">
+              <span class="h-1.5 w-1.5 rounded-full bg-current"></span>
+              {{ stateLook[state].label }}
+            </span>
+          </button>
+        </li>
+      }
+    </ul>
+    <button type="button" class="btn btn-ghost btn-sm mx-1 mb-1 mt-2 w-[calc(100%-0.5rem)]" (click)="addWeek()">
+      <app-icon name="plus" [size]="16" /> Add week {{ weeks()[weeks().length - 1] + 1 }}
+    </button>
+  </section>
+
+  <!-- The selected week -->
+  <section class="card overflow-hidden">
+    <header class="flex flex-wrap items-start justify-between gap-4 border-b border-slate-100 p-5 sm:p-6">
+      <div>
+        <p class="text-xs text-slate-500">Accomplishment report</p>
+        <h2 class="section-title">Week {{ selectedWeek() }}</h2>
+      </div>
+      @if (submitted()) {
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" class="btn btn-ghost btn-sm" (click)="openComments()">
+            <app-icon name="chat-circle-text" [size]="16" /> Comments
+            @if (record()?.comments) {
+              <span class="tabular-nums text-slate-400">{{ record()?.comments }}</span>
+            }
+          </button>
+          <span [matTooltip]="locked() ? 'Your supervisor has approved this report, so it can no longer be changed.' : ''">
+            <button type="button" class="btn btn-secondary btn-sm" [disabled]="locked()" (click)="edit()">
+              <app-icon name="pencil-simple" [size]="16" /> Edit
+            </button>
+          </span>
+        </div>
+      }
+    </header>
+
+    @if (submitted()) {
+      <div class="grid gap-3 border-b border-slate-100 bg-slate-50/60 px-5 py-4 sm:grid-cols-2 sm:px-6">
+        <div class="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2.5 ring-1 ring-slate-900/5">
+          <span class="text-sm text-slate-600">Supervisor</span>
+          <app-status-badge [status]="record()?.supervisor_approval" />
+        </div>
+        <div class="flex items-center justify-between gap-3 rounded-lg bg-white px-3 py-2.5 ring-1 ring-slate-900/5">
+          <span class="text-sm text-slate-600">Coordinator</span>
+          <app-status-badge [status]="record()?.advisor_approval" />
+        </div>
+      </div>
+    }
+
+    @if (loadingWeek()) {
+      <div class="space-y-3 p-6">
+        <div class="skeleton h-24"></div>
+        <div class="skeleton h-24"></div>
+      </div>
+    } @else if (submitted()) {
+      <!-- Read-only once submitted -->
+      <ol class="divide-y divide-slate-100">
+        @for (activity of savedActivities(); track $index) {
+          <li class="flex flex-col gap-2 px-5 py-4 sm:flex-row sm:gap-6 sm:px-6">
+            <div class="shrink-0 sm:w-36">
+              <p class="text-sm font-medium text-slate-900">{{ activity.date | date: 'EEE, MMM d' }}</p>
+              <p class="text-xs tabular-nums text-slate-500">
+                {{ activity.startTime | time: activity.startTime }} – {{ activity.endTime | time: activity.endTime }}
+              </p>
+            </div>
+            <p class="flex-1 whitespace-pre-line text-sm leading-6 text-slate-700">{{ activity.description }}</p>
+            @if (activity.TotalHours) {
+              <p class="shrink-0 text-sm font-medium tabular-nums text-slate-900">{{ activity.TotalHours | number: '1.0-2' }} h</p>
+            }
+          </li>
+        }
+      </ol>
+      <footer class="flex items-center justify-between border-t border-slate-100 bg-slate-50/60 px-5 py-3.5 text-sm sm:px-6">
+        <span class="text-slate-500">Submitted {{ record()?.dateSubmitted | date: 'MMM d, y' }}</span>
+        <span class="font-medium tabular-nums text-slate-900">{{ totalHours() | number: '1.0-2' }} hours</span>
+      </footer>
+    } @else {
+      <!-- Draft: editable -->
+      <div class="space-y-3 p-5 sm:p-6">
+        @for (row of rows(); track row.key; let i = $index) {
+          <div class="rounded-xl bg-white p-4 ring-1 ring-slate-200 transition focus-within:ring-2 focus-within:ring-brand-600/40">
+            <div class="mb-3 flex items-center justify-between">
+              <span class="text-xs font-medium text-slate-500">Activity {{ i + 1 }}</span>
+              <button type="button" class="icon-btn -my-1 -mr-1 h-8 w-8 hover:bg-red-50 hover:text-red-600" (click)="removeRow(row)">
+                <app-icon name="trash" [size]="16" label="Remove activity" />
+              </button>
+            </div>
+            <label class="sr-only" [for]="'desc-' + row.key">What you did</label>
+            <textarea [id]="'desc-' + row.key" rows="3" class="input" placeholder="What did you work on?"
+              [(ngModel)]="row.description"></textarea>
+            <div class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              <div class="col-span-2 sm:col-span-1">
+                <label class="label" [for]="'date-' + row.key">Date</label>
+                <input [id]="'date-' + row.key" type="date" class="input" [(ngModel)]="row.date" />
+              </div>
+              <div>
+                <label class="label" [for]="'start-' + row.key">Start</label>
+                <input [id]="'start-' + row.key" type="time" class="input" [(ngModel)]="row.startTime" />
+              </div>
+              <div>
+                <label class="label" [for]="'end-' + row.key">End</label>
+                <input [id]="'end-' + row.key" type="time" class="input" [(ngModel)]="row.endTime" />
+              </div>
+            </div>
+          </div>
+        }
+        <button type="button" class="btn btn-ghost w-full border border-dashed border-slate-300 text-slate-600" (click)="addRow()">
+          <app-icon name="plus" [size]="16" /> Add activity
+        </button>
       </div>
 
-      <p class="text-gray-800 max-sm:text-xs text-center font-secondary">
-        This is where you submit your <b>Weekly Accomplishment Reports</b>.
-        Please answer the all the forms first before submitting.
-      </p>
-      <br />
-
-
-      <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
-        <mat-tab-group [(selectedIndex)]="selectedIndex" (selectedTabChange)="onTabChange($event)">
-          @for (weekNumber of tabWeekNumbers; track weekNumber) {
-            <mat-tab [label]="'Week ' + weekNumber">
-              @if (!selectedRecord || selectedRecord?.isSubmitted === 0) {
-                <div class="pb-2.5 w-full">
-                  <div class="relative overflow-x-auto shadow-md sm:rounded-lg border border-gray-300">
-                    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                      <thead
-                        class="text-xs font-secondary text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                        <tr>
-                          <th scope="col" class="px-6 py-3 text-center">
-                            DESCRIPTION OF ACTIVITIES
-                          </th>
-                          <th scope="col" class="px-6 py-3 text-center">DATE</th>
-                          <th scope="col" class="px-6 py-3 text-center">START TIME</th>
-                          <th scope="col" class="px-6 py-3 text-center">END TIME</th>
-                          <th scope="col" class="px-6 py-3 text-center">ACTIONS</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @for (activity of selectedRecordActivities; track activity) {
-                          <tr class="bg-white font-primary w-full border-b">
-                            <td class="p-2.5 w-[40%]">
-                              <textarea rows="4" [(ngModel)]="activity.description"
-                                class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              placeholder="(Write your accomplishment...)"></textarea>
-                            </td>
-                            <td scope="row" class="p-2.5 text-gray-900 whitespace-pre-wrap dark:text-white">
-                              <input type="date" [(ngModel)]="activity.date"
-                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md block w-full p-2.5" />
-                              </td>
-                              <td class="p-2.5">
-                                <input [(ngModel)]="activity.startTime" type="time"
-                                  class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                                  min="09:00" max="18:00" value="00:00" required />
-                                </td>
-                                <td class="p-2.5">
-                                  <input [(ngModel)]="activity.endTime" type="time"
-                                    class="bg-gray-50 border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
-                                    min="09:00" max="18:00" value="00:00" required />
-                                  </td>
-                                  <td class="p-2.5">
-                                    <div class="flex justify-center">
-                                      <button (click)="deleteRow(activity.id)"
-                                        class="text-white items-center bg-gray-500 hover:bg-red-500 opacity-50 hover:opacity-100 hover:shadow-md rounded-full p-1.5">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                          class="lucide text-white lucide-x">
-                                          <path d="M18 6 6 18" />
-                                          <path d="m6 6 12 12" />
-                                        </svg>
-                                      </button>
-                                    </div>
-                                  </td>
-                                </tr>
-                              }
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    }
-                    @if (selectedRecord?.isSubmitted === 1) {
-                      <div class="pb-2.5 w-full">
-                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg border border-gray-300">
-                          @for (activity of selectedRecordActivities; track activity) {
-                            <div
-                              class="px-10 py-3 gap-5 border-b font-secondary text-gray-900 grid grid-cols-5 bg-white">
-                              <div class="col-span-3 max-sm:col-span-5">
-                                <p class="p-2.5 text-xl h-full break-words text-gray-900 rounded-lg border border-gray-300">
-                                  {{activity.description}}
-                                </p>
-                              </div>
-                              <div class="col-span-2 max-sm:col-span-5 my-auto text-center">
-                                <p class="text-base"><b>{{activity.date | date : "longDate"}}</b></p>
-                                <p class="text-lg">Time of Work: <b>{{activity.startTime | time: activity.startTime}}</b> -
-                                <b>{{activity.endTime | time: activity.endTime}}</b>
-                              </p>
-                              <p class="font-primary text-blue-900 font-bold text-4xl max-sm:text-xl">{{activity.TotalHours ?
-                              activity.TotalHours + ' Total Hours' : 0}}</p>
-                            </div>
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  }
-                </mat-tab>
-              }
-            </mat-tab-group>
-
-
-            <div class="flex justify-between text-nowrap max-sm:flex-col">
-              <div class="flex justify-center max-sm:text-xs pt-3">
-                <button type="button" (click)="addNewTab()"
-                  class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 font-medium rounded-md max-sm:mb-1">
-                  <svg class="w-5 h-5 -mt-1 text-gray-800 dark:text-white inline" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                    </svg>
-
-                    Add New Week
-                  </button>
-                </div>
-
-
-
-                @if (!selectedRecord || selectedRecord?.isSubmitted === 0) {
-                  <div
-                    class="flex justify-center gap-1 flex-wrap items-center max-sm:text-xs pt-3">
-                    <button type="button" (click)="addRow()"
-                      class="text-white p-2 px-3 bg-orange-500 hover:bg-orange-600 font-medium rounded-md ">
-                      <svg class="w-5 h-5 -mt-0.5 text-gray-800 dark:text-white inline" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                        <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                        </svg>
-                        Add New Row
-                      </button>
-                      <button type="button" (click)="saveChanges()"
-                        class="text-white relative p-2 px-3 bg-blue-500 hover:bg-blue-600 font-medium rounded-md ">
-                        @if (hasUnsavedChanges() && checkForUnsaved) {
-                          <div
-                            class="absolute -mt-4 top-0 right-0 font-secondary text-blue-500 text-xs">
-                            You have unsaved changes!
-                          </div>
-                        }
-                        <svg class="w-5 h-5 -mt-0.5 text-white dark:text-white inline" aria-hidden="true"
-                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                          <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
-                            d="M4 5a1 1 0 0 1 1-1h11.586a1 1 0 0 1 .707.293l2.414 2.414a1 1 0 0 1 .293.707V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5Z" />
-                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
-                              d="M8 4h8v4H8V4Zm7 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                            Save Changes
-                          </button>
-                          <button (click)="submitWarRecord()" type="button"
-                            class="text-white p-2 px-3 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                              class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                              <path d="m18 9-6-6-6 6" />
-                              <path d="M12 3v14" />
-                              <path d="M5 21h14" />
-                            </svg>
-                            Submit Report
-                          </button>
-                        </div>
-                      }
-
-                      @if (selectedRecord?.isSubmitted === 1) {
-                        <div class="flex justify-center gap-x-5 gap-y-1 flex-wrap items-center max-sm:text-xs pt-3"
-                          >
-                          <div class="font-primary flex justify-center text-center text-sm flex-col">
-                            <div>
-              <p class="rounded-lg" [ngClass]="{
-                'text-red-500': selectedRecord.supervisor_approval === 'Unapproved',
-                'text-green-500': selectedRecord.supervisor_approval === 'Approved'
-              }"><span class='font-semibold'>Supervisor Approval: </span>{{selectedRecord.supervisor_approval}}</p>
-                              </div>
-                              <div>
-              <p class="rounded-lg" [ngClass]="{
-                'text-red-500': selectedRecord.advisor_approval === 'Unapproved',
-                'text-green-500': selectedRecord.advisor_approval === 'Approved'
-              }"><span class='font-semibold'>Coordinator Approval: </span>{{selectedRecord.advisor_approval}}</p>
-                                </div>
-                              </div>
-                              <button type="button" (click)="unsubmitWarRecord()"
-                                [ngClass]="{'disabled' : selectedRecord.supervisor_approval === 'Approved'}"
-                                class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md max-sm:mb-1">
-                                <svg class="w-5 h-5 -mt-0.5 text-white dark:text-white inline" aria-hidden="true"
-                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
-                                  </svg>
-                                  Edit Report
-                                </button>
-                              </div>
-                            }
-                          </div>
-                        </div>
-
-
-                      </div>
-
-                      <ng-template #noDataMessage>
-                        <div class="flex justify-center">
-                          <img class="opacity-40 h-44 w-44" src="../../../../assets/empty1.png">
-                        </div>
-                        <div class="text-center">
-                          <h1 class="opacity-40 text-center text-lg font-primary">
-                            You have not submitted any reports yet.
-                          </h1>
-                        </div>
-                      </ng-template>
-                    </div>
-
-                    <!-- <div class="bg-slate-50 rounded-lg w-auto p-5 shadow-md border border-gray-200">
-                    <mat-tab-group (selectedTabChange)="onTabChange($event)">
-                      <mat-tab *ngFor="let weekNumber of tabWeekNumbers" [label]="'Week ' + weekNumber">
-                        <form [ngClass]="{'hidden':pdfPreview}" class=" rounded-lg w-auto flex justify-center py-48 max-sm:py-20">
-                          <input type="file" [id]="'week' + weekNumber" [name]="'week' + weekNumber" (change)="onFileChange($event)"  />
-                        </form>
-                        <embed *ngIf="pdfPreview" [src]="pdfPreview" type="application/pdf" width="100%" height="600px"
-                          class="object-cover object-center w-full h-96 rounded-md" />
-                        </mat-tab>
-                      </mat-tab-group>
-                      <div class="flex justify-between items-center pt-3">
-                        <button type="button" (click)="viewFile()"
-                          class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800 font-medium rounded-md ">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="inline -mt-0.5 lucide lucide-file-search">
-                            <path d="M14 2v4a2 2 0 0 0 2 2h4" />
-                            <path d="M4.268 21a2 2 0 0 0 1.727 1H18a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v3" />
-                            <path d="m9 18-1.5-1.5" />
-                            <circle cx="5" cy="14" r="3" />
-                          </svg>
-                          View Worksheet <b>(Answerable)</b>
-                        </button>
-                        <div>
-                          <button type="button" (click)="addNewTab()"
-                            class="text-white p-2 px-5 bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:ring-orange-300 font-medium rounded-md focus:outline-none mr-5">
-                            <svg class="w-5 h-5 -mt-1 text-gray-800 dark:text-white inline" aria-hidden="true"
-                              xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-                              <path stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 7.757v8.486M7.757 12h8.486M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                              </svg>
-
-                              Add New Week
-                            </button>
-                            <button type="button" (click)="submitFiles()"
-                              class="text-white p-2 px-5 bg-blue-900 hover:bg-blue-800  font-medium rounded-md ">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                class="inline -mt-0.5 text-white lucide lucide-arrow-up-from-line">
-                                <path d="m18 9-6-6-6 6" />
-                                <path d="M12 3v14" />
-                                <path d="M5 21h14" />
-                              </svg>
-                              Submit File
-                            </button>
-                          </div>
-                        </div>
-                      </div> -->
-
-                      <!-- <div class="mt-20">
-                      <div class="border-b border-gray-300"></div>
-                      <h1 class="text-orange-500 ml-5 font-bold text-lg mb-1 mt-4 font-primary">
-                        Your Submitted Reports:
-                      </h1>
-
-                      <br />
-                    </div> -->
-
-                    <!-- <div class="flex items-center mb-3">
-                    <div class="form-outline flex-grow">
-                      <input
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        type="search" [(ngModel)]="searchtext" id="form1"
-                        class=" bg-gray-50 border border-gray-300 rounded-s-md text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Search submissions for any text..." aria-label="search" />
-                      </div>
-                      <div class="flex justify-center space-x-4">
-                        <div>
-                          <div>
-                            <button [matMenuTriggerFor]="filtermenu" matTooltip="Filter"
-                              class="bg-blue-900 border border-blue-900 font-primary rounded-e-md text-white px-3 py-2  hover:bg-blue-800 "
-                              type="button">
-                              <svg class="w-6 h-6 inline text-gray-800 dark:text-white" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                                <path
-                                  d="M5.05 3C3.291 3 2.352 5.024 3.51 6.317l5.422 6.059v4.874c0 .472.227.917.613 1.2l3.069 2.25c1.01.742 2.454.036 2.454-1.2v-7.124l5.422-6.059C21.647 5.024 20.708 3 18.95 3H5.05Z" />
-                                </svg>
-                              </button>
-                              <mat-menu #filtermenu="matMenu">
-                                <ul class="px-2 space-y-1 font-primary">
-                                  <li class="flex justify-center">
-                                    <button class="rounded-md ms-2 text-orange-500 bg-slate-200 hover:bg-slate-300 px-5"
-                                    (click)="setFilter('all')">Show All</button>
-                                  </li>
-                                  <h1 class="font-primary">By Supervisor Approval:</h1>
-                                  <li class="m-0.5 flex">
-                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                                    (click)="setFilter('s-approved')">Approved</button>
-                                  </li>
-                                  <li class="m-0.5">
-                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                                    (click)="setFilter('s-unapproved')">Unapproved</button>
-                                  </li>
-                                  <li class="m-0.5">
-                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                                    (click)="setFilter('s-pending')">Pending</button>
-                                  </li>
-                                  <h1 class="font-primary">By Coordinator Approval:</h1>
-                                  <li class="m-0.5 flex">
-                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                                    (click)="setFilter('a-approved')">Approved</button>
-                                  </li>
-                                  <li class="m-0.5">
-                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                                    (click)="setFilter('a-unapproved')">Unapproved</button>
-                                  </li>
-                                  <li class="m-0.5">
-                                    <button class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2"
-                                    (click)="setFilter('a-pending')">Pending</button>
-                                  </li>
-                                  <h1 class="font-primary">By Week:</h1>
-                                  <div>
-                                    <button *ngFor="let weeks of tabWeekNumbers"
-                                      class="rounded-md ms-2 max-sm:text-sm bg-slate-200 hover:bg-slate-300 px-2 mb-0.5"
-                                    (click)="setFilterWeek(weeks)">Week {{weeks}}</button>
-                                  </div>
-
-                                </ul>
-                              </mat-menu>
-                            </div>
-                          </div>
-                        </div>
-                      </div> -->
-
-                      <!-- <div *ngIf="datalist.length > 0; else noDataMessage"
-                      class="relative overflow-x-auto shadow-md border border-gray-300 sm:rounded-lg">
-                      <table mat-table class="w-full text-sm text-center rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                          <tr>
-                            <th scope="col" class="px-6 py-3 font-secondary">Week</th>
-                            <th scope="col" class="px-6 py-3 font-secondary">File name</th>
-                            <th scope="col" class="px-6 py-3 font-secondary">Date Uploaded</th>
-                            <th scope="col" class="px-6 py-3 font-secondary">Supervisor<br> Approval</th>
-                            <th scope="col" class="px-6 py-3 font-secondary">Supervisor<br> Approval</th>
-                            <th scope="col" class="px-6 py-3 font-secondary">Comments</th>
-                            <th scope="col" class="px-6 py-3 font-secondary">Actions</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let data of datalist | paginate: { itemsPerPage: 5, currentPage: p  }"
-                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td class="px-6 py-4">Week {{ data.week }}</td>
-                            <td class="px-6 py-4">
-                              {{ data.file_name }}
-                            </td>
-                            <td class="px-6 py-4">
-                              {{ data.created_at | date: "medium" }}
-                            </td>
-                            <td class="px-6 py-4">
-              <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
-                  'text-red-500': data.supervisor_approval === 'Unapproved',
-                  'text-green-500': data.supervisor_approval === 'Approved'
-                }">{{data.supervisor_approval}}</p>
-                            </td>
-                            <td class="px-6 py-4">
-              <p class="rounded-lg text-base px-4 py-2" [ngClass]="{
-                  'text-red-500': data.advisor_approval === 'Unapproved',
-                  'text-green-500': data.advisor_approval === 'Approved'
-                }">{{data.advisor_approval}}</p>
-                            </td>
-                            <td class="px-6 py-4">
-                              <button (click)="viewComments(data.id, data.file_name)"
-                                class="text-white inline-flex items-center bg-blue-900 hover:bg-blue-800 focus:outline-non font-medium rounded-lg text-sm px-3 py-2.5 text-center">
-                                <svg class="w-5 h-5 text-gray-800 dark:text-white inline" aria-hidden="true"
-                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white" viewBox="0 0 24 24">
-                                  <path fill-rule="evenodd"
-                                    d="M3.559 4.544c.355-.35.834-.544 1.33-.544H19.11c.496 0 .975.194 1.33.544.356.35.559.829.559 1.331v9.25c0 .502-.203.981-.559 1.331-.355.35-.834.544-1.33.544H15.5l-2.7 3.6a1 1 0 0 1-1.6 0L8.5 17H4.889c-.496 0-.975-.194-1.33-.544A1.868 1.868 0 0 1 3 15.125v-9.25c0-.502.203-.981.559-1.331ZM7.556 7.5a1 1 0 1 0 0 2h8a1 1 0 0 0 0-2h-8Zm0 3.5a1 1 0 1 0 0 2H12a1 1 0 1 0 0-2H7.556Z"
-                                    clip-rule="evenodd" />
-                                  </svg>
-                                  <span class="ml-1">{{data.comments}}</span>
-                                </button>
-                              </td>
-                              <td class="px-6 py-4">
-                                <button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
-                                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                    width="24" height="24" fill="none" viewBox="0 0 24 24">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-width="4"
-                                      d="M12 6h.01M12 12h.01M12 18h.01" />
-                                    </svg>
-
-
-                                  </button>
-                                  <mat-menu #menu="matMenu">
-                                    <li class="space-x-3 px-3">
-                                      <button (click)="downloadFile(data.id, data.file_name)"
-                                        class="text-white inline-flex items-center bg-green-500 hover:bg-green-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"><svg
-                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="lucide lucide-download">
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                        <polyline points="7 10 12 15 17 10" />
-                                        <line x1="12" x2="12" y1="15" y2="3" />
-                                      </svg></button>
-                                      <button
-                                        class="text-white inline-flex items-center bg-red-500 hover:bg-red-800 focus:outline-non font-medium rounded-full text-sm px-3 py-2.5 text-center"
-                                        (click)="deleteSubmission(data.id)"><svg class="w-6 h-6 text-gray-800 dark:text-white"
-                                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="white"
-                                        viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd"
-                                          d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z"
-                                          clip-rule="evenodd" />
-                                        </svg>
-                                      </button>
-
-                                    </li>
-                                  </mat-menu>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-
-                          <div class="w-full mt-3 flex justify-center">
-                            <pagination-controls [responsive]="true" class="my-pagination" (pageChange)="p = $event"></pagination-controls>
-                          </div>
-
-                        </div> -->
+      <footer class="sticky bottom-0 flex flex-col gap-3 border-t border-slate-100 bg-white/95 px-5 py-4 backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:px-6">
+        <span class="flex items-center gap-2 text-sm">
+          @if (isDirty()) {
+            <span class="h-2 w-2 rounded-full bg-amber-500"></span><span class="text-slate-600">Unsaved changes</span>
+          } @else if (record()) {
+            <app-icon name="check" [size]="16" class="text-emerald-600" /><span class="text-slate-500">Draft saved</span>
+          } @else {
+            <span class="text-slate-500">Not started</span>
+          }
+        </span>
+        <div class="flex gap-2">
+          <button type="button" class="btn btn-secondary flex-1 sm:flex-none" [disabled]="saving()" (click)="saveDraft()">
+            <app-icon name="floppy-disk" [size]="16" /> Save draft
+          </button>
+          <button type="button" class="btn btn-primary flex-1 sm:flex-none" [disabled]="saving()" (click)="submit()">
+            @if (saving()) {
+              <app-icon name="circle-notch" [size]="16" class="animate-spin" />
+            } @else {
+              <app-icon name="paper-plane-tilt" [size]="16" />
+            }
+            Submit report
+          </button>
+        </div>
+      </footer>
+    }
+  </section>
+</div>

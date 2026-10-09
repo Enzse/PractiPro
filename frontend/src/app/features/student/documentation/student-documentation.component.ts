@@ -1,223 +1,164 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatTabChangeEvent } from '@angular/material/tabs';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, OnInit, computed, inject, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { saveAs } from '../../../shared/utils/save-file';
-import Swal from 'sweetalert2';
-import { CommentsDialogComponent } from '../../../shared/dialogs/comments-dialog/comments-dialog.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { Subscription } from 'rxjs';
-import { FormsModule } from '@angular/forms';
-import { FilterPipe } from '../../../shared/pipes/filter.pipe';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { SessionService } from '../../../core/auth/session.service';
 import { SubmissionService } from '../../../core/api/submission.service';
+import { SubmittedFile } from '../../../core/models/records';
+import { CommentsDialogComponent } from '../../../shared/dialogs/comments-dialog/comments-dialog.component';
+import { saveAs } from '../../../shared/utils/save-file';
+import { matchesSearch } from '../../../shared/utils/search';
+import { PageHeaderComponent } from '../../../shared/ui/page-header/page-header.component';
+import { IconComponent } from '../../../shared/ui/icon/icon.component';
+import { FileDropComponent } from '../../../shared/ui/file-drop/file-drop.component';
+import { StatusBadgeComponent } from '../../../shared/ui/status-badge/status-badge.component';
+import { EmptyStateComponent } from '../../../shared/ui/empty-state/empty-state.component';
+import { SearchFieldComponent } from '../../../shared/ui/search-field/search-field.component';
+import { FilterChipsComponent, FilterOption } from '../../../shared/ui/filter-chips/filter-chips.component';
+import { ToastService } from '../../../shared/ui/toast/toast.service';
+import { ConfirmService } from '../../../shared/ui/confirm/confirm.service';
+import { StudentStatusService } from '../student-status.service';
 
 @Component({
-    selector: 'app-student-documentation',
-    imports: [MatTabsModule, FilterPipe, FormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
-    templateUrl: './student-documentation.component.html',
-    changeDetection: ChangeDetectionStrategy.Eager,
-    styleUrl: './student-documentation.component.css'
+  selector: 'app-student-documentation',
+  imports: [
+    DatePipe, MatTooltipModule, NgxPaginationModule, PageHeaderComponent, IconComponent, FileDropComponent,
+    StatusBadgeComponent, EmptyStateComponent, SearchFieldComponent, FilterChipsComponent,
+  ],
+  templateUrl: './student-documentation.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class StudentDocumentationComponent implements OnInit, OnDestroy {
-  private readonly session = inject(SessionService);
+export class StudentDocumentationComponent implements OnInit {
+  private readonly status = inject(StudentStatusService);
   private readonly submissionApi = inject(SubmissionService);
-  userId: number;
-  datalist: any[] = [];
-  origlist: any
-  searchtext: any;
-  pdfPreview?: SafeResourceUrl;
-  file: any;
-  tabWeekNumbers: number[] = [1];
-  p: number = 1;
-  private subscriptions = new Subscription();
-  isUploading = false;
+  private readonly dialog = inject(MatDialog);
+  private readonly toast = inject(ToastService);
+  private readonly confirm = inject(ConfirmService);
 
-  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.session.requireUserId();
-  }
+  protected readonly documents = signal<SubmittedFile[]>([]);
+  protected readonly weeks = signal<number[]>([1]);
+  protected readonly loading = signal(true);
 
+  protected readonly selectedWeek = signal(1);
+  protected readonly file = signal<File | null>(null);
+  protected readonly uploading = signal(false);
 
-  ngOnInit() {
-    this.loadData();
-    this.subscriptions.add(
-      this.submissionApi.weekNumbers('documentations', this.userId).subscribe(
-        res => {
-          this.tabWeekNumbers = res;
-        },
-        error => {
-          console.error('Error fetching week numbers:', error);
-        }
-      ));
-  }
+  protected readonly search = signal('');
+  protected readonly statusFilter = signal('all');
+  protected page = 1;
 
-  ngOnDestroy(): void {
-    this.subscriptions.unsubscribe();
-  }
-
-  loadData() {
-    this.subscriptions.add(
-      this.submissionApi.list('documentations', this.userId).subscribe(res => {
-        this.datalist = res.payload.sort((a: any, b: any) => {
-          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
-        });
-        this.origlist = this.datalist;
-      }));
-  }
-
-  onFileChange(event: any) {
-    const files = event.target.files as FileList;
-    if (files.length > 0) {
-      this.file = files[0];
-      this.previewPDF();
+  /** Per week: how many files, and the status of the latest one. */
+  protected readonly weekSummary = computed(() => {
+    const summary = new Map<number, { count: number; status: string | null }>();
+    for (const week of this.weeks()) {
+      const files = this.documents().filter((doc) => doc.week === week);
+      summary.set(week, { count: files.length, status: files[0]?.advisor_approval ?? null });
     }
-  }
+    return summary;
+  });
 
-  previewPDF() {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const fileURL = e.target?.result as string;
-      this.pdfPreview = this.sanitizer.bypassSecurityTrustResourceUrl(fileURL);
-    };
-    reader.readAsDataURL(this.file);
-  }
+  protected readonly filterOptions = computed<FilterOption[]>(() => {
+    const count = (status: string) => this.documents().filter((doc) => doc.advisor_approval === status).length;
+    return [
+      { value: 'all', label: 'All', count: this.documents().length },
+      { value: 'Pending', label: 'Pending', count: count('Pending') },
+      { value: 'Approved', label: 'Approved', count: count('Approved') },
+      { value: 'Unapproved', label: 'Not approved', count: count('Unapproved') },
+    ];
+  });
 
-  //SUBMISSION LOGIC
-  addNewTab() {
-    const nextWeekNumber = this.tabWeekNumbers[this.tabWeekNumbers.length - 1] + 1;
-    this.tabWeekNumbers.push(nextWeekNumber);
-  }
+  protected readonly visible = computed(() => {
+    const filter = this.statusFilter();
+    const text = this.search();
+    return this.documents().filter((doc) =>
+      (filter === 'all' || doc.advisor_approval === filter) && matchesSearch({ ...doc, weekLabel: `week ${doc.week}` }, text),
+    );
+  });
 
-  selectedTabLabel: number = 1;
-  onTabChange(event: MatTabChangeEvent) {
-    this.selectedTabLabel = parseInt(event.tab.textLabel.replace('Week ', ''), 10);
-    this.pdfPreview = undefined;
-  }
-
-  submitFiles() {
-    const fileInputs = document.querySelectorAll('input[type="file"]');
-
-    this.isUploading = true;
-    fileInputs.forEach((fileInput: any) => {
-      const file = fileInput.files[0];
-      if (file) {
-        this.subscriptions.add(
-          this.submissionApi.upload('documentations', this.userId, file, this.selectedTabLabel).subscribe(
-            response => {
-              console.log('File uploaded successfully:', response);
-              Swal.fire({
-                title: "Uploaded Successfully!",
-                text: "Please wait for your coordinator's approval.",
-                icon: "success"
-              });
-              this.loadData();
-              this.pdfPreview = undefined;
-              fileInput.value = '';
-              this.isUploading = false;
-            },
-            error => {
-              console.error('Error uploading file:', error);
-              this.isUploading = false;
-            }
-          ));
-      }
-      else if (file == null) {
-        Swal.fire({
-          title: "No File to Upload",
-          text: "Please select a file to upload first.",
-          icon: "error"
-        });
-        this.isUploading = false;
+  ngOnInit(): void {
+    this.load();
+    this.submissionApi.weekNumbers('documentations', this.status.studentId).subscribe((weeks) => {
+      if (weeks.length > 0) {
+        this.weeks.set(weeks);
+        this.selectedWeek.set(weeks[weeks.length - 1]);
       }
     });
   }
 
-  setFilter(filter: string) {
-    this.p = 1;
-    this.datalist = this.origlist;
-    switch (filter) {
-      case 'all':
-        this.datalist = this.origlist;
-        break;
-      case 'approved':
-        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
-        break;
-      case 'unapproved':
-        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Unapproved');
-        break;
-      case 'pending':
-        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
-        break;
+  private load(): void {
+    this.submissionApi.list('documentations', this.status.studentId).subscribe({
+      next: (res) => {
+        this.documents.set([...res.payload].sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at)));
+        this.loading.set(false);
+      },
+      error: () => this.loading.set(false),
+    });
+  }
+
+  protected selectWeek(week: number): void {
+    this.selectedWeek.set(week);
+    this.file.set(null);
+  }
+
+  protected addWeek(): void {
+    const next = Math.max(0, ...this.weeks()) + 1;
+    this.weeks.update((weeks) => [...weeks, next]);
+    this.selectWeek(next);
+  }
+
+  protected upload(): void {
+    const file = this.file();
+    const week = this.selectedWeek();
+    if (!file) {
+      return;
     }
+    this.uploading.set(true);
+    this.submissionApi.upload('documentations', this.status.studentId, file, week).subscribe({
+      next: () => {
+        this.uploading.set(false);
+        this.file.set(null);
+        this.toast.success(`Week ${week} documentation uploaded`, 'Your coordinator will review it.');
+        this.load();
+      },
+      error: () => {
+        this.uploading.set(false);
+        this.toast.error('Upload failed', 'Please check your connection and try again.');
+      },
+    });
   }
 
-  setFilterWeek(week: any) {
-    this.datalist = this.origlist;
-    this.datalist = this.datalist.filter((user: any) => user.week === week);
-
+  protected download(doc: SubmittedFile): void {
+    this.submissionApi.download('documentations', doc.id).subscribe({
+      next: (data) => saveAs(data, doc.file_name),
+      error: () => this.toast.error('Download failed', 'Please try again.'),
+    });
   }
 
-  downloadFile(submissionId: number, fileName: string) {
-    this.subscriptions.add(
-      this.submissionApi.download('documentations', submissionId).subscribe(
-        (data: any) => {
-          saveAs(data, fileName);
-        },
-        (error: any) => {
-          console.error('Error downloading submission:', error);
+  protected remove(doc: SubmittedFile): void {
+    this.confirm
+      .ask({ title: 'Delete this file?', message: `“${doc.file_name}” will be removed permanently.`, confirmText: 'Delete', tone: 'danger' })
+      .subscribe((yes) => {
+        if (!yes) {
+          return;
         }
-      ));
+        this.submissionApi.delete('documentations', doc.id).subscribe({
+          next: () => {
+            this.toast.success('File deleted');
+            this.load();
+          },
+          error: () => this.toast.error('Couldn’t delete the file', 'You may not have permission to delete it.'),
+        });
+      });
   }
 
-  deleteSubmission(submissionId: number) {
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.subscriptions.add(
-          this.submissionApi.delete('documentations', submissionId).subscribe((res) => {
-            Swal.fire({
-              title: "Your submission has been deleted",
-              icon: "success"
-            });
-            this.loadData();
-          }, error => {
-            Swal.fire({
-              title: "Delete failed",
-              text: "You may not have permission to delete this file.",
-              icon: "error"
-            });
-          }));
-      }
-    });
+  protected openComments(doc: SubmittedFile): void {
+    this.dialog
+      .open(CommentsDialogComponent, {
+        data: { submissionID: doc.id, fileName: doc.file_name, table: 'comments_documentation' },
+        panelClass: 'app-dialog',
+        width: '600px',
+      })
+      .afterClosed()
+      .subscribe(() => this.load());
   }
-
-
-  viewComments(submissionId: number, fileName: string) {
-    const popup = this.dialog.open(CommentsDialogComponent, {
-      enterAnimationDuration: "500ms",
-      exitAnimationDuration: "500ms",
-      width: "80%",
-      data: {
-        submissionID: submissionId,
-        fileName: fileName,
-        table: 'comments_documentation'
-      }
-    })
-    popup.afterClosed().subscribe(res => {
-      this.loadData()
-    });
-  }
-
 }

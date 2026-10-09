@@ -1,191 +1,106 @@
-<!-- <app-student-layout></app-student-layout> -->
-<div class="p-2 sm:ml-56 font-secondary">
-  <div class="p-1 xl:p-10">
-    <div>
-      <h1 class="indent-3 text-orange-500 ml-5 font-bold font-primary text-lg mb-3">
-        Profile
-      </h1>
-      <div class="border-b border-gray-300"></div>
-      <br />
-    </div>
+<app-page-header title="Profile" description="Your details as your coordinator and supervisor see them." />
 
-
-    <!-- whole div -->
-
-
-    <!-- information container -->
-    <div class="flex flex-row w-full max-lg:flex-col justify-center max-lg:space-x-0 space-x-3">
-
-      <!-- first container-->
-      <div class="w-full p-3 shadow-md bg-slate-50 border-2 border-slate-100 max-lg:shadow-none max-lg:border-0">
-
-        <!-- image -->
-        <div class="avatar-container mx-auto">
-          @if (avatarUrl) {
-            <img [src]="avatarUrl" class="image-container" alt="Avatar" />
-          } @else {
-            <div class="image-container avatar-placeholder">
-              <!-- Placeholder content -->
-            </div>
-          }
-
-          <label for="avatar-input-file">
-            <div class="icon-wrapper">
-              <mat-icon class="icon" fontIcon="edit"></mat-icon>
-              <input type="file" id="avatar-input-file" accept="image/*" (change)="onFileChange($event)" />
-            </div>
+@if (student(); as student) {
+  <section class="card overflow-hidden">
+    <!-- Identity -->
+    <div class="relative">
+      <div class="h-28 bg-gradient-to-br from-brand-800 via-brand-700 to-brand-900 sm:h-32">
+        <div class="h-full w-full bg-[radial-gradient(circle_at_85%_20%,rgba(226,89,58,0.35),transparent_45%)]"></div>
+      </div>
+      <div class="flex flex-col gap-4 px-5 pb-6 sm:flex-row sm:items-start sm:gap-5 sm:px-8">
+          <label class="group relative -mt-12 block h-24 w-24 shrink-0 cursor-pointer overflow-hidden rounded-2xl bg-white ring-4 ring-white shadow-raised"
+            title="Change photo">
+            @if (avatarUrl(); as url) {
+              <img [src]="url" alt="Profile photo" class="h-full w-full object-cover" />
+            } @else {
+              <span class="flex h-full w-full items-center justify-center bg-brand-50 font-display text-3xl font-semibold text-brand-700">
+                {{ initials(student) }}
+              </span>
+            }
+            <span class="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-brand-950/60 text-xs font-medium text-white opacity-0 transition group-hover:opacity-100 group-focus-within:opacity-100"
+              [class.opacity-100]="uploading()">
+              <app-icon [name]="uploading() ? 'circle-notch' : 'camera'" [size]="22" [class.animate-spin]="uploading()" />
+              {{ uploading() ? 'Uploading…' : 'Change' }}
+            </span>
+            <input #avatarInput type="file" accept="image/*" class="sr-only" (change)="onAvatarPicked(avatarInput)" />
           </label>
-        </div>
-
-        <!-- student information -->
-        <div class="flow-root mt-5">
-          <h5 class="mb-2 text-2xl mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center">
-            Student Information:
-          </h5>
-          <ul role="list" class="flex flex-col flex-1 px-10">
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Full Name:
-                  </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile[0]?.firstName }}
-                  {{ studentProfile[0]?.lastName }}</span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Student ID:
-                  </p>
-                  <span [ngClass]="{'text-red-500': !studentProfile[0]?.studentId}"
-                    class="text-sm font-normal lg:text-base font-secondary">
-                    {{ studentProfile[0]?.studentId || "Not set" }}
-                  </span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Email:
-                  </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                  studentProfile[0]?.email || "Not set" }}</span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Program:
-                  </p>
-                  <span [ngClass]="{'text-red-500': !studentProfile[0]?.program}"
-                    class="text-sm font-normal lg:text-base font-secondary">
-                    {{ studentProfile[0]?.program || "Not set" }}
-                  </span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Year Level:
-                  </p>
-                  <span [ngClass]="{'text-red-500': !studentProfile[0]?.year}"
-                    class="text-sm font-normal lg:text-base font-secondary">
-                    {{ $safeNavigationMigration(studentProfile[0]?.year) | ordinal }} Year
-                  </span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Class/Block:
-                  </p>
-                  <span [ngClass]="{'text-red-500': !studentProfile[0]?.block}"
-                    class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                  studentProfile[0]?.block || "(You currently have not joined any classes.)" }}</span>
-                </div>
-              </div>
-            </li>
-          </ul>
-
-          <hr class="h-px w-[90%] mx-auto my-3 bg-gray-300 border-0 dark:bg-gray-700" />
-
-          <h5 class="mb-2 text-2xl mt-2 lg:text-xl font-bold text-gray-900 font-primary text-center">
-            Personal Information
-          </h5>
-          <ul role="list" class="flex flex-col flex-1 px-10">
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Phone No.:
-                  </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                  studentProfile[0]?.phoneNumber || "Not Set" }}</span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Address:
-                  </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                  studentProfile[0]?.address || "Not Set" }}</span>
-                </div>
-              </div>
-            </li>
-            <li class="mb-2">
-              <div class="flex items-center">
-                <div class="flex-1 min-w-0 ms-4">
-                  <p
-                    class="inline me-1 text-base lg:text-lg font-medium font-primary text-gray-900 truncate dark:text-white">
-                    Date of Birth:
-                  </p>
-                  <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile[0]?.dateOfBirth ? ($safeNavigationMigration(studentProfile[0]?.dateOfBirth) | date : 'longDate') : 'Not Set'
-                  }}</span>
-                </div>
-              </div>
-            </li>
-          </ul>
-          <div class="flex p-4 justify-end max-lg:p-2">
-            <button (click)="editInfo(studentProfile)" type="button"
-              class="inline-flex items-center py-3 px-4 text-sm font-medium text-center text-white bg-blue-900 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-              <svg class="w-4 h-4 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                width="24" height="24" fill="white" viewBox="0 0 24 24">
-                <path fill-rule="evenodd"
-                  d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z"
-                  clip-rule="evenodd" />
-                </svg>
-
-                <span class="ms-1 max-sm:hidden">Edit Profile</span>
-              </button>
-            </div>
+        <div class="flex flex-1 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:pt-4">
+          <div>
+            <h2 class="font-display text-2xl font-semibold tracking-[-0.02em] text-slate-900">{{ student.firstName }} {{ student.lastName }}</h2>
+            <p class="text-sm text-slate-500">{{ student.email }}</p>
           </div>
-
+          <button type="button" class="btn btn-secondary self-start" (click)="edit()">
+            <app-icon name="pencil-simple" [size]="16" /> Edit profile
+          </button>
         </div>
-
       </div>
     </div>
-  </div>
+
+    <!-- Details -->
+    <div class="grid border-t border-slate-100 md:grid-cols-2">
+      <div class="p-5 sm:px-8 sm:py-6">
+        <h3 class="eyebrow">School</h3>
+        <dl class="mt-4 space-y-4">
+          <div class="flex gap-3">
+            <app-icon name="identification-card" [size]="18" class="mt-0.5 text-slate-400" />
+            <div>
+              <dt class="text-xs text-slate-500">Student ID</dt>
+              <dd class="text-sm font-medium" [class]="student.studentId ? 'text-slate-900' : 'text-amber-700'">{{ student.studentId || 'Not set' }}</dd>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <app-icon name="graduation-cap" [size]="18" class="mt-0.5 text-slate-400" />
+            <div>
+              <dt class="text-xs text-slate-500">Program and year</dt>
+              <dd class="text-sm font-medium" [class]="student.program ? 'text-slate-900' : 'text-amber-700'">
+                @if (student.program) {
+                  {{ student.program }}@if (student.year) { · {{ student.year | ordinal }} year }
+                } @else {
+                  Not set
+                }
+              </dd>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <app-icon name="users-three" [size]="18" class="mt-0.5 text-slate-400" />
+            <div>
+              <dt class="text-xs text-slate-500">Class</dt>
+              <dd class="text-sm font-medium" [class]="student.block ? 'text-slate-900' : 'text-slate-400'">{{ student.block || 'Not in a class yet' }}</dd>
+            </div>
+          </div>
+        </dl>
+      </div>
+
+      <div class="border-t border-slate-100 p-5 sm:px-8 sm:py-6 md:border-l md:border-t-0">
+        <h3 class="eyebrow">Personal</h3>
+        <dl class="mt-4 space-y-4">
+          <div class="flex gap-3">
+            <app-icon name="phone" [size]="18" class="mt-0.5 text-slate-400" />
+            <div>
+              <dt class="text-xs text-slate-500">Phone</dt>
+              <dd class="text-sm font-medium" [class]="student.phoneNumber ? 'text-slate-900' : 'text-slate-400'">{{ student.phoneNumber || 'Not set' }}</dd>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <app-icon name="map-pin" [size]="18" class="mt-0.5 text-slate-400" />
+            <div>
+              <dt class="text-xs text-slate-500">Address</dt>
+              <dd class="text-sm font-medium" [class]="student.address ? 'text-slate-900' : 'text-slate-400'">{{ student.address || 'Not set' }}</dd>
+            </div>
+          </div>
+          <div class="flex gap-3">
+            <app-icon name="cake" [size]="18" class="mt-0.5 text-slate-400" />
+            <div>
+              <dt class="text-xs text-slate-500">Date of birth</dt>
+              <dd class="text-sm font-medium" [class]="student.dateOfBirth ? 'text-slate-900' : 'text-slate-400'">
+                {{ student.dateOfBirth ? (student.dateOfBirth | date: 'MMMM d, y') : 'Not set' }}
+              </dd>
+            </div>
+          </div>
+        </dl>
+      </div>
+    </div>
+  </section>
+} @else {
+  <div class="skeleton h-80 rounded-2xl"></div>
+}
