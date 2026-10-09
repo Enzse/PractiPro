@@ -1,29 +1,41 @@
-# PractiProAngular
+# PractiPro web app
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.1.
+The Angular 22 frontend. See the [root README](../README.md) for setup.
 
-## Development server
+## Layout
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```
+src/app/
+├── app.routes.ts      Every page and the guard that protects it. Pages load on demand.
+├── components/        Pages, grouped by role (page-student, page-coordinator, ...), and popups.
+├── services/
+│   ├── api/           One service per feature area. All HTTP calls live here.
+│   ├── session.service.ts   The logged-in user, read from the login token.
+│   └── sidebar.service.ts   Whether the sidebar is open on small screens.
+├── models/            TypeScript types for what the API sends and accepts.
+├── interceptors/      Adds the login token to API requests; logs out on an expired session.
+├── guard/             Route guards (role checks and student prerequisites).
+├── pipes/, validators/, utils/
+```
 
-## Code scaffolding
+## Calling the API
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Inject the service for the feature and subscribe:
 
-## Build
+```ts
+private readonly dtrApi = inject(DtrService);
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+this.dtrApi.forStudent(studentId).subscribe((res) => {
+  this.records = res.payload; // TimeRecord[]
+});
+```
 
-## Running unit tests
+Most endpoints return `ApiResponse<T>` (`{ status, payload, timestamp }`), defined in `models/api.ts`. The login token is attached automatically by `interceptors/auth.interceptor.ts`.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Commands
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-
-<!-- comment -->
+```sh
+npm start                        # dev server at http://localhost:4200
+npx ng test --watch=false        # unit tests (Vitest)
+npx ng build                     # production build into dist/
+```
