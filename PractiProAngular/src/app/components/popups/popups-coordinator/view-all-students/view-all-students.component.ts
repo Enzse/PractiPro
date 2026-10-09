@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 
 import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { FormBuilder, FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -17,7 +17,7 @@ import { MediaService } from '../../../../services/api/media.service';
 
 @Component({
     selector: 'app-view-all-students',
-    imports: [FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
+    imports: [FilterPipe, FormsModule, MatButtonModule, MatMenuModule],
     templateUrl: './view-all-students.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './view-all-students.component.css'

@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
@@ -20,7 +19,7 @@ import { SubmissionService } from '../../../services/api/submission.service';
 
 @Component({
     selector: 'app-documentation',
-    imports: [NavbarComponent, MatTabsModule, FilterPipe, FormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
+    imports: [MatTabsModule, FilterPipe, FormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
     templateUrl: './documentation.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './documentation.component.css'

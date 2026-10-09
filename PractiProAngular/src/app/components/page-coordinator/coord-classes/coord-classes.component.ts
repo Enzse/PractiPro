@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FilterPipe } from '../../../pipes/filter.pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
@@ -9,7 +8,7 @@ import { ClassService } from '../../../services/api/class.service';
 
 @Component({
     selector: 'app-coord-classes',
-    imports: [MatSelectModule, MatButtonModule, FilterPipe, OrdinalPipe],
+    imports: [MatSelectModule, MatButtonModule, OrdinalPipe],
     templateUrl: './coord-classes.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-classes.component.css'

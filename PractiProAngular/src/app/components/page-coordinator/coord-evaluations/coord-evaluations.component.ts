@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { FinalreportpopupComponent } from '../../popups/popups-coordinator/finalreportpopup/finalreportpopup.component';
@@ -17,7 +16,7 @@ import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-evaluations',
-    imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+    imports: [CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
     templateUrl: './coord-evaluations.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-evaluations.component.css'

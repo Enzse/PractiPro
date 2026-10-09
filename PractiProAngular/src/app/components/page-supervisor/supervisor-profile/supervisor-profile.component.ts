@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
-import { EditinformationpopupComponent } from '../../popups/popups-student/editinformationpopup/editinformationpopup.component';
 import { Subscription } from 'rxjs';
 import { SpvEditCompanyProfileComponent } from '../../popups/popups-supervisor/spv-edit-company-profile/spv-edit-company-profile.component';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
@@ -14,7 +13,7 @@ import { MediaService } from '../../../services/api/media.service';
 
 @Component({
     selector: 'app-supervisor-profile',
-    imports: [CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe],
+    imports: [CommonModule, MatIconModule],
     templateUrl: './supervisor-profile.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./supervisor-profile.component.css']

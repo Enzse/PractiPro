@@ -1,5 +1,4 @@
 import { Component, ElementRef, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +16,7 @@ import { ReportService } from '../../../services/api/report.service';
 
 @Component({
     selector: 'app-exit-poll',
-    imports: [NavbarComponent, MatTabsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
+    imports: [MatTabsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
     templateUrl: './exit-poll.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './exit-poll.component.css'

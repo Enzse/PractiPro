@@ -1,14 +1,14 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { StudentService } from '../../../../services/api/student.service';
 import { MediaService } from '../../../../services/api/media.service';
 @Component({
     selector: 'app-inspectprofilepopup',
-    imports: [CommonModule, MatDialogActions, MatDialogClose],
+    imports: [CommonModule],
     templateUrl: './inspectprofilepopup.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './inspectprofilepopup.component.css'

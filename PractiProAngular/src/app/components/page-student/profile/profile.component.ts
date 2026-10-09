@@ -1,5 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { EditinformationpopupComponent } from '../../popups/popups-student/editinformationpopup/editinformationpopup.component';
@@ -13,7 +12,7 @@ import { MediaService } from '../../../services/api/media.service';
 
 @Component({
     selector: 'app-profile',
-    imports: [NavbarComponent, CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe, OrdinalPipe],
+    imports: [CommonModule, MatIconModule, DatePipe, OrdinalPipe],
     templateUrl: './profile.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './profile.component.css'

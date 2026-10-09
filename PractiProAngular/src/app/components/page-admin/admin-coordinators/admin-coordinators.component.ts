@@ -1,6 +1,4 @@
 import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
-import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 
 import { OnInit } from '@angular/core';
 import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/updatepopup.component';
@@ -20,7 +18,7 @@ import { ClassService } from '../../../services/api/class.service';
 
 @Component({
     selector: 'app-admin-coordinators',
-    imports: [AdminSidebarComponent, MatButtonModule, MatMenuModule, MatTooltipModule, AdminNavbarComponent, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent, NgxPaginationModule],
+    imports: [MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, NgxPaginationModule],
     templateUrl: './admin-coordinators.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-coordinators.component.css'

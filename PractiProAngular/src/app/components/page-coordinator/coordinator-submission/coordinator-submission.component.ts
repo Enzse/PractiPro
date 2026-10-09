@@ -1,10 +1,8 @@
 import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewsubmissionsComponent } from '../../popups/popups-admin/viewsubmissions/viewsubmissions.component';
-import { ReviewsubmissionsComponent } from '../../popups/popups-admin/reviewsubmissions/reviewsubmissions.component';
 import { RequirementspopupComponent } from '../../popups/popups-coordinator/requirementspopup/requirementspopup.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
@@ -20,7 +18,7 @@ import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coordinator-submission',
-    imports: [CoordNavbarComponent, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
+    imports: [FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
     templateUrl: './coordinator-submission.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coordinator-submission.component.css'

@@ -1,8 +1,6 @@
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { DocumentationpopupComponent } from '../../popups/popups-coordinator/documentationpopup/documentationpopup.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { BlockService } from '../../../services/block.service';
@@ -17,7 +15,7 @@ import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-seminars',
-    imports: [CoordNavbarComponent, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+    imports: [FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
     templateUrl: './coord-seminars.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-seminars.component.css'

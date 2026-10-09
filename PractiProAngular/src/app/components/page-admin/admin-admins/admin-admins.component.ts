@@ -16,7 +16,7 @@ import { UserService } from '../../../services/api/user.service';
 
 @Component({
     selector: 'app-admin-admins',
-    imports: [CommonModule, UpdatepopupComponent, MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, NgxPaginationModule],
+    imports: [CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, NgxPaginationModule],
     templateUrl: './admin-admins.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-admins.component.css'

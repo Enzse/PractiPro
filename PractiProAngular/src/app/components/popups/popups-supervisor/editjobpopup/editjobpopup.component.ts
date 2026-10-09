@@ -1,6 +1,6 @@
 import { Component, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
@@ -11,7 +11,7 @@ import { JobAssignment } from '../../../../models/company';
 
 @Component({
     selector: 'app-editjobpopup',
-    imports: [ReactiveFormsModule, MatDialogActions, MatDialogClose],
+    imports: [ReactiveFormsModule],
     templateUrl: './editjobpopup.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './editjobpopup.component.css'

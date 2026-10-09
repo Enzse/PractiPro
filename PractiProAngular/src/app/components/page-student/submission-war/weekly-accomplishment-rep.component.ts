@@ -8,7 +8,6 @@ import { CommentspopupComponent } from '../../popups/shared/commentspopup/commen
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { FilterPipe } from '../../../pipes/filter.pipe';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { TimePipe } from '../../../pipes/time.pipe';
@@ -19,7 +18,7 @@ import { WarService } from '../../../services/api/war.service';
 
 @Component({
     selector: 'app-weekly-accomplishment-rep',
-    imports: [FilterPipe, CommonModule, FormsModule, TimePipe, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, NgxPaginationModule],
+    imports: [CommonModule, FormsModule, TimePipe, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, NgxPaginationModule],
     templateUrl: './weekly-accomplishment-rep.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './weekly-accomplishment-rep.component.css'

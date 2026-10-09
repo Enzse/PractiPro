@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { SessionService } from '../../../../services/session.service';
 import { StudentService } from '../../../../services/api/student.service';
@@ -10,7 +10,7 @@ import { StudentProfileUpdate } from '../../../../models/student';
 
 @Component({
     selector: 'app-editinformationpopup',
-    imports: [ReactiveFormsModule, MatDialogActions, MatDialogClose],
+    imports: [ReactiveFormsModule],
     templateUrl: './editinformationpopup.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './editinformationpopup.component.css'

@@ -1,5 +1,4 @@
 import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,7 +15,7 @@ import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-accomplishment-report',
-    imports: [CoordNavbarComponent, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
+    imports: [FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
     templateUrl: './coord-accomplishment-report.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-accomplishment-report.component.css'

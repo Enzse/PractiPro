@@ -1,5 +1,4 @@
 import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,7 +15,7 @@ import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-dtr',
-    imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+    imports: [CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
     templateUrl: './coord-dtr.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-dtr.component.css'

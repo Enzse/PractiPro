@@ -19,7 +19,7 @@ import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-documentation',
-    imports: [CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
+    imports: [CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
     templateUrl: './coord-documentation.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-documentation.component.css'

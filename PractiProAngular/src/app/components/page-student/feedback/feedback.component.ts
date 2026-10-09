@@ -1,9 +1,8 @@
 import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
     selector: 'app-feedback',
-    imports: [NavbarComponent],
+    imports: [],
     templateUrl: './feedback.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './feedback.component.css'

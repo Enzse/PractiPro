@@ -1,6 +1,4 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { NavbarComponent } from '../navbar/navbar.component';
-import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ViewhiringrequestsComponent } from '../../popups/popups-student/viewhiringrequests/viewhiringrequests.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,7 +11,7 @@ import { CompanyService } from '../../../services/api/company.service';
 
 @Component({
     selector: 'app-dashboard',
-    imports: [NavbarComponent, NavbarComponent, RouterLink, RouterLinkActive, CommonModule, TimePipe, MatTooltipModule],
+    imports: [CommonModule, TimePipe, MatTooltipModule],
     templateUrl: './dashboard.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './dashboard.component.css'

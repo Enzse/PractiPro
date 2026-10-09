@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { UserService } from '../../../../services/api/user.service';
 
 @Component({
     selector: 'app-updatepopup',
-    imports: [ReactiveFormsModule, MatDialogActions, MatDialogClose],
+    imports: [ReactiveFormsModule, MatDialogClose],
     templateUrl: './updatepopup.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './updatepopup.component.css'

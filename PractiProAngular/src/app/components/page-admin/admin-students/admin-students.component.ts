@@ -3,7 +3,6 @@ import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewsubmissionsComponent } from '../../popups/popups-admin/viewsubmissions/viewsubmissions.component';
-import { ReviewsubmissionsComponent } from '../../popups/popups-admin/reviewsubmissions/reviewsubmissions.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
@@ -21,7 +20,7 @@ import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-admin-students',
-    imports: [MatButtonModule, MatMenuModule, MatTooltipModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
+    imports: [MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
     templateUrl: './admin-students.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-students.component.css'

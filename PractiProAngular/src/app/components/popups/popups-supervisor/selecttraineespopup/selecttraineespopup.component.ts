@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +16,7 @@ import { MediaService } from '../../../../services/api/media.service';
 
 @Component({
     selector: 'app-selecttraineespopup',
-    imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
+    imports: [CommonModule, FilterPipe, FormsModule, MatButtonModule, MatMenuModule],
     templateUrl: './selecttraineespopup.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './selecttraineespopup.component.css'

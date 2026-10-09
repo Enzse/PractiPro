@@ -1,10 +1,8 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
-import { DocumentationpopupComponent } from '../../popups/popups-coordinator/documentationpopup/documentationpopup.component';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
-import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { ClassesStudentpopupComponent } from '../../popups/popups-admin/classes-studentpopup/classes-studentpopup.component';
 import { AddclassespopupComponent } from '../../popups/popups-admin/addclassespopup/addclassespopup.component';
 import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
@@ -17,7 +15,7 @@ import { ClassService } from '../../../services/api/class.service';
 
 @Component({
     selector: 'app-admin-classes',
-    imports: [AdminNavbarComponent, MatMenuModule, MatTableModule, MatTooltipModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
+    imports: [MatMenuModule, MatTableModule, MatTooltipModule, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
     templateUrl: './admin-classes.component.html',
     changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-classes.component.css'
