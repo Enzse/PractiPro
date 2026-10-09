@@ -51,7 +51,7 @@ export class CommentspopupComponent implements OnInit {
 
   loadData() {
     this.commentApi.list(this.data.table, this.fileID).subscribe((res) => {
-      this.commentsList = res.payload.sort((a: any, b: any) => {
+      this.commentsList = res.payload.sort((a, b) => {
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       });
     });

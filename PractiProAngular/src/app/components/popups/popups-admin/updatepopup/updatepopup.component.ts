@@ -28,7 +28,7 @@ export class UpdatepopupComponent implements OnInit {
     console.log(this.userrole)
     this.userApi.roles().subscribe((res) => {
       if(this.userrole !== 'superadmin'){
-        this.rolelist = res.payload.filter((role: any) => !role.code.includes('admin'));
+        this.rolelist = res.payload.filter((role) => !role.code.includes('admin'));
       }else{
         this.rolelist = res.payload;
       }

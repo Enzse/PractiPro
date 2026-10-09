@@ -59,7 +59,7 @@ export class CoordFinalreportComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
     this.studentApi.inClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
-      this.studentlist = this.studentlist.filter((student: any) => student.TotalHoursWorked >= 200);
+      this.studentlist = this.studentlist.filter((student) => student.TotalHoursWorked >= 200);
       this.isLoading = false;
       console.log(this.studentlist);
     }, err => {

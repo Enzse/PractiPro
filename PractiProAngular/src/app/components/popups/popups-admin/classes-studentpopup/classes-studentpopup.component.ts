@@ -31,7 +31,7 @@ export class ClassesStudentpopupComponent {
   ngOnInit(): void {
     if (this.data.usercode != null && this.data.usercode != '') {
       this.studentApi.inClass(this.data.usercode).subscribe((res) => {
-          this.datalist = res.payload.map((user: any) => {
+          this.datalist = res.payload.map((user) => {
             return { ...user, avatar: '' };
           });
 

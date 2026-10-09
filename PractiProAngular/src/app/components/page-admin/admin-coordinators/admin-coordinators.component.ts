@@ -59,19 +59,19 @@ export class AdminCoordinatorsComponent implements OnInit, OnDestroy {
         this.userlist = this.origlist;
         break;
       case 'CCS':
-        this.userlist = this.userlist.filter((user: any) => user.department === 'CCS');
+        this.userlist = this.userlist.filter((user) => user.department === 'CCS');
         break;
       case 'CEAS':
-        this.userlist = this.userlist.filter((user: any) => user.department === 'CEAS');
+        this.userlist = this.userlist.filter((user) => user.department === 'CEAS');
         break;
       case 'CHTM':
-        this.userlist = this.userlist.filter((user: any) => user.department === 'CHTM');
+        this.userlist = this.userlist.filter((user) => user.department === 'CHTM');
         break;
       case 'CAHS':
-        this.userlist = this.userlist.filter((user: any) => user.department === 'CAHS');
+        this.userlist = this.userlist.filter((user) => user.department === 'CAHS');
         break;
       case 'CBA':
-        this.userlist = this.userlist.filter((user: any) => user.department === 'CBA');
+        this.userlist = this.userlist.filter((user) => user.department === 'CBA');
         break;
     }
   }

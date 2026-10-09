@@ -47,7 +47,7 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
   loadData() {
     this.subscriptions.add(
       this.submissionApi.list('documentations', this.data.student.id).subscribe((res) => {
-          this.studentSubmissions = res.payload.sort((a: any, b: any) => {
+          this.studentSubmissions = res.payload.sort((a, b) => {
             return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
           });
           this.origlist = this.studentSubmissions;
@@ -68,13 +68,13 @@ export class DocumentationpopupComponent implements OnInit, OnDestroy {
         this.studentSubmissions = this.origlist;
         break;
       case 'approved':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Approved');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.advisor_approval === 'Approved');
         break;
       case 'unapproved':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Unapproved');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.advisor_approval === 'Unapproved');
         break;
       case 'pending':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Pending');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.advisor_approval === 'Pending');
         break;
     }
   }

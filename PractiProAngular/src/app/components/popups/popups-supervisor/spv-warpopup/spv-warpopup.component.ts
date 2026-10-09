@@ -43,8 +43,8 @@ export class SpvWarpopupComponent implements OnInit, OnDestroy {
   loadRecords() {
     this.subscriptions.add(
       this.warApi.records(this.data.student.id, null).subscribe((res) => {
-        this.recordsList = res.payload.filter((record: any) => record.isSubmitted === 1)
-        this.recordsList = this.recordsList.sort((a: any, b: any) => {
+        this.recordsList = res.payload.filter((record) => record.isSubmitted === 1)
+        this.recordsList = this.recordsList.sort((a, b) => {
           return b.week - a.week
         })
         this.isLoading = false;
@@ -58,7 +58,7 @@ export class SpvWarpopupComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.recordsList.forEach(records => {
         this.warApi.activities(records.id).subscribe((res) => {
-          res.payload.forEach((activity: any) => {
+          res.payload.forEach((activity) => {
             this.recordActivities.push(activity)
           });
         })

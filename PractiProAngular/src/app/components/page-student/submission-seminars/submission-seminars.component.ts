@@ -67,7 +67,7 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
   loadData() {
     this.subscriptions.add(
       this.seminarApi.forStudent(this.userId).subscribe((res) => {
-        this.datalist = res.payload.sort((a: any, b: any) => {
+        this.datalist = res.payload.sort((a, b) => {
           return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
         })
         this.origlist = this.datalist;
@@ -82,25 +82,25 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
         this.datalist = this.origlist;
         break;
       case 'seminar':
-        this.datalist = this.datalist.filter((user: any) => user.event_type === 'Seminar');
+        this.datalist = this.datalist.filter((user) => user.event_type === 'Seminar');
         break;
       case 'webinar':
-        this.datalist = this.datalist.filter((user: any) => user.event_type === 'Webinar');
+        this.datalist = this.datalist.filter((user) => user.event_type === 'Webinar');
         break;
       case 'approved':
-        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Approved');
+        this.datalist = this.datalist.filter((user) => user.advisor_approval === 'Approved');
         break;
       case 'unapproved':
-        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Unapproved');
+        this.datalist = this.datalist.filter((user) => user.advisor_approval === 'Unapproved');
         break;
       case 'pending':
-        this.datalist = this.datalist.filter((user: any) => user.advisor_approval === 'Pending');
+        this.datalist = this.datalist.filter((user) => user.advisor_approval === 'Pending');
         break;
       case 'certified':
-        this.datalist = this.datalist.filter((user: any) => user.certified === 1);
+        this.datalist = this.datalist.filter((user) => user.certified === 1);
         break;
       case 'notcertified':
-        this.datalist = this.datalist.filter((user: any) => user.certified === 0);
+        this.datalist = this.datalist.filter((user) => user.certified === 0);
         break;
     }
   }

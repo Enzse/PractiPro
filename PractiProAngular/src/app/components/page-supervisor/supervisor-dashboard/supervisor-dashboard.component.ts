@@ -63,10 +63,10 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
     console.log("Loading Data...");
     this.subscriptions.add(
       this.studentApi.ofSupervisor(this.userId).subscribe((res) => {
-        this.traineesList = res.payload.map((user: any) => {
+        this.traineesList = res.payload.map((user) => {
           return { ...user, avatar: '' };
         });
-        this.traineesList.forEach((student: any) => {
+        this.traineesList.forEach((student) => {
           this.subscriptions.add(
             this.mediaApi.avatar(student.id).subscribe((res) => {
               if (res.size > 0) {

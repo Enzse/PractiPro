@@ -338,7 +338,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.selectedRecordActivities = this.selectedRecordActivities.filter((activity: any) => activity.id !== activityId);
+        this.selectedRecordActivities = this.selectedRecordActivities.filter((activity) => activity.id !== activityId);
         Swal.fire({
           toast: true,
           position: "top-end",

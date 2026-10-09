@@ -52,11 +52,11 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
   loadData() {
     this.subscriptions.add(
       this.studentApi.ofSupervisor(this.userId).subscribe((res) => {
-        this.traineesList = res.payload.map((student: any) => {
+        this.traineesList = res.payload.map((student) => {
           return { ...student, avatar: '' };
         });
-        this.traineesList = this.traineesList.filter((student: any) => student.TotalHoursWorked >= 200);
-        this.traineesList.forEach((student: any) => {
+        this.traineesList = this.traineesList.filter((student) => student.TotalHoursWorked >= 200);
+        this.traineesList.forEach((student) => {
           this.subscriptions.add(
             this.mediaApi.avatar(student.id).subscribe((res) => {
               if (res.size > 0) {

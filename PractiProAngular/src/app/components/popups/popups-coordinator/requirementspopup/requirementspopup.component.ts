@@ -47,7 +47,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
   loadData() {
     this.subscriptions.add(
       this.submissionApi.list('submissions', this.data.student.id).subscribe((res) => {
-          this.studentSubmissions = res.payload.sort((a: any, b: any) => {
+          this.studentSubmissions = res.payload.sort((a, b) => {
             return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
           });
           this.origlist = this.studentSubmissions;
@@ -67,37 +67,37 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
         this.studentSubmissions = this.origlist;
         break;
       case 'resume':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'Resume');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.submission_name === 'Resume');
         break;
       case 'application':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'ApplicationLetter');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.submission_name === 'ApplicationLetter');
         break;
       case 'acceptance':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'AcceptanceLetter');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.submission_name === 'AcceptanceLetter');
         break;
       case 'endorsement':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'EndorsementLetter');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.submission_name === 'EndorsementLetter');
         break;
       case 'parents':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === "Parent's");
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.submission_name === "Parent's");
         break;
       case 'vaccination':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'VaccinationCard');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.submission_name === 'VaccinationCard');
         break;
       case 'barangay':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'BarangayClearance');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.submission_name === 'BarangayClearance');
         break;
       case 'medcert':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.submission_name === 'MedicalCertificate');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.submission_name === 'MedicalCertificate');
         break;
       case 'approved':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Approved');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.advisor_approval === 'Approved');
         break;
       case 'unapproved':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Unapproved');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.advisor_approval === 'Unapproved');
         break;
       case 'pending':
-        this.studentSubmissions = this.studentSubmissions.filter((user: any) => user.advisor_approval === 'Pending');
+        this.studentSubmissions = this.studentSubmissions.filter((user) => user.advisor_approval === 'Pending');
         break;
     }
   }

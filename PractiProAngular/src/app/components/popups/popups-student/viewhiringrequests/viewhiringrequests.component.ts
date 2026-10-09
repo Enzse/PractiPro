@@ -35,11 +35,11 @@ export class ViewhiringrequestsComponent implements OnInit {
   loadData() {
     this.subscriptions.add(
       this.companyApi.hiringRequestsOf(this.data.student_id).subscribe((res) => {
-        this.datalist = res.payload.map((user: any) => {
+        this.datalist = res.payload.map((user) => {
           return { ...user, avatar: '' };
         });
         this.subscriptions.add(
-          this.datalist.forEach((company: any) => {
+          this.datalist.forEach((company) => {
             this.mediaApi.logo(company.company_id).subscribe((res) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);

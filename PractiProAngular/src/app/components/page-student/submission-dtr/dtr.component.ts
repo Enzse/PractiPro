@@ -99,13 +99,13 @@ export class DtrComponent implements OnInit, OnDestroy {
         this.datalist = this.origlist;
         break;
       case 'approved':
-        this.datalist = this.datalist.filter((user: any) => user.status === 'Approved');
+        this.datalist = this.datalist.filter((user) => user.status === 'Approved');
         break;
       case 'unapproved':
-        this.datalist = this.datalist.filter((user: any) => user.status === 'Unapproved');
+        this.datalist = this.datalist.filter((user) => user.status === 'Unapproved');
         break;
       case 'pending':
-        this.datalist = this.datalist.filter((user: any) => user.status === 'Pending');
+        this.datalist = this.datalist.filter((user) => user.status === 'Pending');
         break;
     }
   }
