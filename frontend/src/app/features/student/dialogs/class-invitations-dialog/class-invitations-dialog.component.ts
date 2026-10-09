@@ -1,0 +1,97 @@
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Subscription, map } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import Swal from 'sweetalert2';
+import { DataRefreshService } from '../../../../core/data-refresh.service';
+import { NonNullableFormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
+import { StudentService } from '../../../../core/api/student.service';
+import { ClassJoinService } from '../../../../core/api/class-join.service';
+
+@Component({
+    selector: 'app-class-invitations-dialog',
+    imports: [CommonModule, MatButtonModule, MatMenuModule],
+    templateUrl: './class-invitations-dialog.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
+    styleUrl: './class-invitations-dialog.component.css'
+})
+export class ClassInvitationsDialogComponent implements OnInit, OnDestroy {
+  private readonly studentApi = inject(StudentService);
+  private readonly classJoinApi = inject(ClassJoinService);
+  invitations$ = this.classJoinApi.invitationsOfStudent(this.data.userId).pipe(
+    map((res: any) => res.payload[0])
+  );
+  private subscriptions = new Subscription();
+  constructor(
+    private router: Router,
+    private builder: NonNullableFormBuilder,
+    private changeDetection: DataRefreshService,
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    private dialogref: MatDialogRef<ClassInvitationsDialogComponent>) {
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  joinClass(invitation: any) {
+    const invitationData = this.builder.group({
+      block_name: [invitation.class]
+    })
+    this.subscriptions.add(
+      this.studentApi.joinClass(invitation.student_id, invitationData.getRawValue()).subscribe((res) => {
+        this.dialogref.close();
+        this.router.navigate(['student-dashboard']);
+        Swal.fire({
+          title: `Successfully joined ${invitation.class}!`,
+          text: "You are now able with proceed to your registration process.",
+          icon: "success"
+        });
+      })
+    )
+  }
+
+  cancelInvitation(id: number) {
+    Swal.fire({
+      title: "Are you sure you want to decline this invitation?",
+      text: "Keep in mind that this is only for scenarios where you are sure that this invitation is a mistake.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#233876",
+      confirmButtonText: "Confirm"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.subscriptions.add(
+          this.classJoinApi.cancelInvitationsOfStudent(id).subscribe((res) => {
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              backdrop: false,
+              title: `Successfully declined invitation.`,
+              icon: "success",
+              timer: 2000,
+              timerProgressBar: true,
+              showConfirmButton: false,
+            });
+            this.changeDetection.notifyChange(true);
+            this.dialogref.close();
+          }, error => {
+            Swal.fire({
+              title: "Delete failed",
+              text: "There seemed to be a database error. Please try again later.",
+              icon: "error"
+            });
+          }));
+      }
+    });
+  }
+
+}
