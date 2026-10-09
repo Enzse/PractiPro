@@ -1,6 +1,5 @@
 
-import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -12,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TimePipe } from '../../../../pipes/time.pipe';
+import { DtrService } from '../../../../services/api/dtr.service';
 
 @Component({
     selector: 'app-dtrpopupcomponent',
@@ -21,7 +21,8 @@ import { TimePipe } from '../../../../pipes/time.pipe';
     styleUrl: './dtrpopupcomponent.component.css'
 })
 export class DtrpopupcomponentComponent {
-  constructor(private service: AuthService, private changeDetection: ChangeDetectionService,
+  private readonly dtrApi = inject(DtrService);
+  constructor(private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DtrpopupcomponentComponent>, private dialog2: MatDialog) { }
 
   origlist: any;
@@ -51,7 +52,7 @@ export class DtrpopupcomponentComponent {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getDtrs(this.data.student.id).subscribe((res: any) => {
+      this.dtrApi.forStudent(this.data.student.id).subscribe((res: any) => {
         this.datalist = res.payload;
         this.datalist = this.addWeekNumberToRecords(res.payload, this.data.student.hire_date);
         this.origlist = this.datalist;
@@ -92,7 +93,7 @@ export class DtrpopupcomponentComponent {
   onStatusChange(record: any) {
     const updateData = { status: record.status };
     this.subscriptions.add(
-      this.service.updateDTRStatus(record.id, updateData).subscribe(
+      this.dtrApi.setStatus(record.id, updateData).subscribe(
         res => {
           console.log('Status updated successfully:', res);
           this.changeDetection.notifyChange(true);

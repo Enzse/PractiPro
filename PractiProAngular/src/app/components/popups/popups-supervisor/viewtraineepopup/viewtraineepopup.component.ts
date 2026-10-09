@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EditjobpopupComponent } from '../editjobpopup/editjobpopup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -8,6 +7,7 @@ import { EditschedulespopupComponent } from '../editschedulespopup/editschedules
 import { TimePipe } from '../../../../pipes/time.pipe';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { CompanyService } from '../../../../services/api/company.service';
 
 @Component({
     selector: 'app-viewtraineepopup',
@@ -17,6 +17,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     styleUrl: './viewtraineepopup.component.css'
 })
 export class ViewtraineepopupComponent implements OnInit, OnDestroy {
+  private readonly companyApi = inject(CompanyService);
   studentjob: any
   changeDetected: any;
   schedules = [
@@ -30,7 +31,7 @@ export class ViewtraineepopupComponent implements OnInit, OnDestroy {
   ];
   private subscriptions = new Subscription();
 
-  constructor(private changeDetection: ChangeDetectionService, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewtraineepopupComponent>, private dialog2: MatDialog) {
+  constructor(private changeDetection: ChangeDetectionService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewtraineepopupComponent>, private dialog2: MatDialog) {
     this.changeDetected = [false];
   }
 
@@ -48,7 +49,7 @@ export class ViewtraineepopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getStudentJob(this.data.student.id).subscribe((res: any) => {
+      this.companyApi.jobOf(this.data.student.id).subscribe((res: any) => {
         this.studentjob = res.payload[0];
         console.log(this.studentjob);
       }));
@@ -56,7 +57,7 @@ export class ViewtraineepopupComponent implements OnInit, OnDestroy {
 
   loadSchedules() {
     this.subscriptions.add(
-      this.service.getStudentSchedules(this.data.student.id).subscribe((res: any) => {
+      this.companyApi.schedulesOf(this.data.student.id).subscribe((res: any) => {
         this.schedules = res.payload
         console.log(this.schedules)
       }));

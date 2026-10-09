@@ -1,11 +1,13 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 
 import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { dateRangeValidator } from '../../../../validators/date-range.validator';
+import { SessionService } from '../../../../services/session.service';
+import { CompanyService } from '../../../../services/api/company.service';
+import { JobAssignment } from '../../../../models/company';
 
 @Component({
     selector: 'app-editjobpopup',
@@ -15,18 +17,20 @@ import { dateRangeValidator } from '../../../../validators/date-range.validator'
     styleUrl: './editjobpopup.component.css'
 })
 export class EditjobpopupComponent {
+  private readonly session = inject(SessionService);
+  private readonly companyApi = inject(CompanyService);
   existingdata?: any;
   changeDetected: any;
-  userId: any = this.service.getCurrentUserId();
+  userId: any = this.session.userId();
 
-  constructor(private builder: FormBuilder, private service: AuthService,
+  constructor(private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditjobpopupComponent>, private changeDetection: ChangeDetectionService) {
     this.changeDetected = [false];
   }
 
 
   ngOnInit(): void {
-    this.service.getStudentJob(this.data.student.id).subscribe((res: any) => {
+    this.companyApi.jobOf(this.data.student.id).subscribe((res: any) => {
       this.existingdata = res.payload[0];
       if (this.existingdata) {
         this.jobForm.patchValue({
@@ -54,7 +58,7 @@ export class EditjobpopupComponent {
   editJob() {
     if (this.jobForm.valid) {
       console.log(this.jobForm.value)
-      this.service.assignJobToStudent(this.jobForm.value).subscribe(res => {
+      this.companyApi.assignJob(this.jobForm.value as JobAssignment).subscribe(res => {
         this.changeDetected = true;
         this.changeDetection.notifyChange(true);
         this.dialog.close(this.changeDetected)

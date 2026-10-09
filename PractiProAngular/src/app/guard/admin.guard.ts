@@ -1,14 +1,14 @@
 import { CanActivateChildFn, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { SessionService } from '../services/session.service';
 
 export const adminGuard: CanActivateChildFn = (childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const session = inject(SessionService);
 
   const router: Router = inject(Router);
-  const service: AuthService = inject(AuthService);
 
-  if (service.IsLoggedIn()) {
-    const userRole = service.GetUserRole();
+  if (session.isLoggedIn()) {
+    const userRole = session.role();
     if (userRole === 'admin' || userRole === 'superadmin') {
       return true;
     } else {

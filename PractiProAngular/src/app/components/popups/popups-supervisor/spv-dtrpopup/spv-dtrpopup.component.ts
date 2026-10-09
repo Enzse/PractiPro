@@ -1,6 +1,5 @@
 
-import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -9,6 +8,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 import { Subscription } from 'rxjs';
 import { TimePipe } from '../../../../pipes/time.pipe';
 import Swal from 'sweetalert2';
+import { DtrService } from '../../../../services/api/dtr.service';
 
 @Component({
     selector: 'app-spv-dtrpopup',
@@ -18,7 +18,8 @@ import Swal from 'sweetalert2';
     styleUrl: './spv-dtrpopup.component.css'
 })
 export class SpvDtrpopupComponent implements OnInit, OnDestroy {
-  constructor(private service: AuthService, private changeDetection: ChangeDetectionService,
+  private readonly dtrApi = inject(DtrService);
+  constructor(private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SpvDtrpopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
@@ -48,7 +49,7 @@ export class SpvDtrpopupComponent implements OnInit, OnDestroy {
   loadData() {
     console.log(this.data.student.id)
     this.subscriptions.add(
-      this.service.getDtrs(this.data.student.id).subscribe((res: any) => {
+      this.dtrApi.forStudent(this.data.student.id).subscribe((res: any) => {
         console.log(res)
         this.datalist = res.payload;
         this.datalist = this.addWeekNumberToRecords(res.payload, this.data.student.hire_date);
@@ -70,7 +71,7 @@ export class SpvDtrpopupComponent implements OnInit, OnDestroy {
   onStatusChange(record: any) {
     const updateData = { status: record.status };
     this.subscriptions.add(
-      this.service.updateDTRStatus(record.id, updateData).subscribe(
+      this.dtrApi.setStatus(record.id, updateData).subscribe(
         res => {
           this.changeDetection.notifyChange(true);
           Swal.fire({

@@ -1,7 +1,6 @@
-import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, map } from 'rxjs';
-import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
@@ -9,6 +8,8 @@ import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
+import { StudentService } from '../../../../services/api/student.service';
+import { ClassJoinService } from '../../../../services/api/class-join.service';
 
 @Component({
     selector: 'app-classinvitations',
@@ -18,7 +19,9 @@ import { Router } from '@angular/router';
     styleUrl: './classinvitations.component.css'
 })
 export class ClassinvitationsComponent implements OnInit, OnDestroy {
-  invitations$ = this.service.getClassInvitations(this.data.userId).pipe(
+  private readonly studentApi = inject(StudentService);
+  private readonly classJoinApi = inject(ClassJoinService);
+  invitations$ = this.classJoinApi.invitationsOfStudent(this.data.userId).pipe(
     map((res: any) => res.payload[0])
   );
   private subscriptions = new Subscription();
@@ -26,7 +29,6 @@ export class ClassinvitationsComponent implements OnInit, OnDestroy {
     private router: Router,
     private builder: FormBuilder,
     private changeDetection: ChangeDetectionService,
-    private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogref: MatDialogRef<ClassinvitationsComponent>) {
   }
@@ -44,7 +46,7 @@ export class ClassinvitationsComponent implements OnInit, OnDestroy {
       block_name: [invitation.class]
     })
     this.subscriptions.add(
-      this.service.assignClassToStudent(invitation.student_id, invitationData.value).subscribe((res: any) => {
+      this.studentApi.joinClass(invitation.student_id, invitationData.value as { block_name: string }).subscribe((res: any) => {
         this.dialogref.close();
         this.router.navigate(['student-dashboard']);
         Swal.fire({
@@ -68,7 +70,7 @@ export class ClassinvitationsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.cancelClassInvitation(id).subscribe((res: any) => {
+          this.classJoinApi.cancelInvitationsOfStudent(id).subscribe((res: any) => {
             Swal.fire({
               toast: true,
               position: "top-end",

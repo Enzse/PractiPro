@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -10,6 +9,10 @@ import { FilterPipe } from '../../../pipes/filter.pipe';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 import Swal from 'sweetalert2';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { CompanyService } from '../../../services/api/company.service';
+import { MediaService } from '../../../services/api/media.service';
 
 @Component({
     selector: 'app-supervisor-dashboard',
@@ -19,6 +22,10 @@ import Swal from 'sweetalert2';
     styleUrls: ['./supervisor-dashboard.component.css']
 })
 export class SupervisorDashboardComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly companyApi = inject(CompanyService);
+  private readonly mediaApi = inject(MediaService);
   userId: any;
   user: any;
   traineesList: any[] = [];
@@ -26,10 +33,10 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   searchtext: any;
   private subscriptions = new Subscription();
 
-  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+    this.userId = this.session.userId();
     this.subscriptions.add(
-      this.service.getSupervisors(this.userId).subscribe((res: any) => {
+      this.companyApi.supervisor(this.userId).subscribe((res: any) => {
         this.user = res.payload[0];
       })
     );
@@ -54,13 +61,13 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   loadData() {
     console.log("Loading Data...");
     this.subscriptions.add(
-      this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
+      this.studentApi.ofSupervisor(this.userId).subscribe((res: any) => {
         this.traineesList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
         this.traineesList.forEach((student: any) => {
           this.subscriptions.add(
-            this.service.getAvatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res: any) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -105,7 +112,7 @@ export class SupervisorDashboardComponent implements OnInit, OnDestroy {
   }
 
   removeStudentFromSelection(id: number, firstName: string) {
-    this.service.removeStudentFromSupervisor(id, this.userId).subscribe((res: any) => {
+    this.companyApi.unassignFromSupervisor(id, this.userId).subscribe((res: any) => {
       this.loadData();
       Swal.fire({
         toast: true,

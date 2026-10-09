@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { map } from 'rxjs/operators';
@@ -10,6 +9,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ClassinvitationsComponent } from '../../popups/popups-student/classinvitations/classinvitations.component';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 import { Router } from '@angular/router';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { ClassService } from '../../../services/api/class.service';
+import { ClassJoinService } from '../../../services/api/class-join.service';
 
 @Component({
     selector: 'app-joinclasses',
@@ -19,6 +22,10 @@ import { Router } from '@angular/router';
     styleUrls: ['./joinclasses.component.css'] // Corrected to styleUrls
 })
 export class JoinclassesComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly classApi = inject(ClassService);
+  private readonly classJoinApi = inject(ClassJoinService);
   userId: any;
   student: any;
   classeslist: any;
@@ -28,8 +35,8 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
   joinRequest: FormGroup;
   private subscriptions = new Subscription();
 
-  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService, private dialog: MatDialog) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: FormBuilder, private dialog: MatDialog) {
+    this.userId = this.session.userId();
 
     this.joinRequest = this.builder.group({
       student_id: [this.userId],
@@ -42,7 +49,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
     this.getInvitationsCount();
 
     this.subscriptions.add(
-      this.service.getStudentOjtInfo(this.userId).pipe(
+      this.studentApi.ojtStatus(this.userId).pipe(
         map((res: any) => res.payload[0])
       ).subscribe((student: any) => {
         this.student = student;
@@ -67,7 +74,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
 
   loadExistingRequest() {
     this.subscriptions.add(
-      this.service.getClassJoinRequests(this.userId).pipe(
+      this.classJoinApi.requestsOfStudent(this.userId).pipe(
         map((res: any) => res.payload[0])
       ).subscribe((request: any) => {
         this.existingRequest = request;
@@ -76,14 +83,14 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
   loadClasses(): void {
     if (this.student) {
       this.subscriptions.add(
-        this.service.getClassesByCourseAndYear(this.student.program, this.student.year).subscribe((res: any) => {
+        this.classApi.byCourseAndYear(this.student.program, this.student.year).subscribe((res: any) => {
           this.classeslist = res.payload;
         }));
     }
   }
   getInvitationsCount() {
     this.subscriptions.add(
-      this.service.getClassInvitationCount(this.userId).pipe(
+      this.classJoinApi.invitationCountOfStudent(this.userId).pipe(
         map((res: any) => res.payload[0].invitationCount)
       ).subscribe((count: any) => {
         this.invitationCount = count;
@@ -105,7 +112,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
 
       if (this.joinRequest.valid) {
         this.subscriptions.add(
-          this.service.createClassJoinRequest(this.joinRequest.value).subscribe((res: any) => {
+          this.classJoinApi.requestToJoin(this.joinRequest.value).subscribe((res: any) => {
             Swal.fire({
               title: 'Request to Join Sent!',
               text: 'Please wait for the class advisor to accept you into the class',
@@ -155,7 +162,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.cancelClassJoinRequest(this.existingRequest.student_id).subscribe((res: any) => {
+          this.classJoinApi.cancelRequest(this.existingRequest.student_id).subscribe((res: any) => {
             this.existingRequest = null;
             Swal.fire({
               toast: true,

@@ -1,6 +1,5 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -9,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
+import { ClassService } from '../../../../services/api/class.service';
 
 @Component({
     selector: 'app-assigncoordpopup',
@@ -18,15 +18,16 @@ import Swal from 'sweetalert2';
     styleUrl: './assigncoordpopup.component.css'
 })
 export class AssigncoordpopupComponent {
+  private readonly classApi = inject(ClassService);
   classlist: any;
   coordlist: any;
 
-  constructor(private builder: FormBuilder, private service: AuthService,
+  constructor(private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<AssigncoordpopupComponent>) {
-    this.service.getClasses().subscribe(res => {
+    this.classApi.all().subscribe(res => {
       this.classlist = res.payload;
     });
-    this.service.getAdvisors().subscribe(res => {
+    this.classApi.coordinators().subscribe(res => {
       this.coordlist = res;
     });
   }
@@ -38,7 +39,7 @@ export class AssigncoordpopupComponent {
 
   submitForm() {
     if (this.inputform.valid) {
-      this.service.assignClassCoordinator(this.inputform.value).subscribe(() => {
+      this.classApi.assignCoordinator(this.inputform.value as { coordinator_id: number | string; block_name: string }).subscribe(() => {
         this.dialog.close();
         Swal.fire({
           title: "Request Successful!",

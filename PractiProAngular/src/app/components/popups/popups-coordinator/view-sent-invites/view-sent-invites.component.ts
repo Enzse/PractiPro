@@ -1,5 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -9,6 +8,7 @@ import Swal from 'sweetalert2';
 import { FormBuilder } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { Router } from '@angular/router';
+import { ClassJoinService } from '../../../../services/api/class-join.service';
 
 @Component({
     selector: 'app-view-sent-invites',
@@ -18,12 +18,13 @@ import { Router } from '@angular/router';
     styleUrl: './view-sent-invites.component.css'
 })
 export class ViewSentInvitesComponent {
+  private readonly classJoinApi = inject(ClassJoinService);
   datalist: any;
   currentuser: any;
   isLoading: boolean = true;
   private subscriptions = new Subscription();
 
-  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService, private dialog: MatDialog,
+  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: FormBuilder, private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ViewSentInvitesComponent>) { }
 
 
@@ -40,7 +41,7 @@ export class ViewSentInvitesComponent {
   loadData() {
     this.isLoading = true;
     this.subscriptions.add(
-      this.service.getClassInvitationsForBlock(this.data.block).subscribe(
+      this.classJoinApi.invitationsForClass(this.data.block).subscribe(
         (res: any) => {
           this.datalist = res.payload;
           this.isLoading = false;
@@ -84,7 +85,7 @@ export class ViewSentInvitesComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.cancelClassInvitationByID(id).subscribe((res: any) => {
+          this.classJoinApi.cancelInvitation(id).subscribe((res: any) => {
             this.loadData();
             Swal.fire({
               toast: true,

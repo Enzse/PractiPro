@@ -1,7 +1,6 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -17,8 +16,7 @@ export class CoordInvitestudentsComponent {
 
 
   constructor(
-    private service: AuthService,
-  ) {
+    ) {
 
   }
 

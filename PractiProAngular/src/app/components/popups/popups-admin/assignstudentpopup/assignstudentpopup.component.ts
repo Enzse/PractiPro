@@ -1,6 +1,5 @@
-import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 import { isPlatformBrowser } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +13,8 @@ import { OrdinalPipe } from '../../../../pipes/ordinal.pipe';
 import { initFlowbite } from 'flowbite';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { SelectstudentspopupComponent } from '../selectstudentspopup/selectstudentspopup.component';
+import { StudentService } from '../../../../services/api/student.service';
+import { ClassService } from '../../../../services/api/class.service';
 
 @Component({
     selector: 'app-assignstudentpopup',
@@ -23,18 +24,20 @@ import { SelectstudentspopupComponent } from '../selectstudentspopup/selectstude
     styleUrl: './assignstudentpopup.component.css'
 })
 export class AssignstudentpopupComponent {
+  private readonly studentApi = inject(StudentService);
+  private readonly classApi = inject(ClassService);
   classlist: any;
   studentlist: any;
   selection: any[] = [];
   selectedlist: any[] = [];
   searchtext: any;
 
-  constructor(private builder: FormBuilder, private service: AuthService,
+  constructor(private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, @Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialogRef<AssignstudentpopupComponent>, private dialog2: MatDialog) {
-    this.service.getClasses().subscribe(res => {
+    this.classApi.all().subscribe(res => {
       this.classlist = res.payload;
     });
-    this.service.getStudent().subscribe(res => {
+    this.studentApi.all().subscribe(res => {
 
       this.studentlist = res.payload
 
@@ -54,7 +57,7 @@ export class AssignstudentpopupComponent {
 
   submitForm() {
     if (this.inputform.valid) {
-      // this.service.assignClassCoordinator(this.inputform.value).subscribe(() => {
+      // this.classApi.assignCoordinator(this.inputform.value).subscribe(() => {
       //   this.dialog.close();
       //   Swal.fire({
       //     title: "Request Successful!",
@@ -100,7 +103,7 @@ export class AssignstudentpopupComponent {
   loadData() {
     if (this.selection) {
       this.selection.forEach(data => {
-        this.service.getStudent(data).subscribe((res: any) => {
+        this.studentApi.get(data).subscribe((res: any) => {
           this.selectedlist.push(res.payload[0]);
         })
       });
@@ -121,7 +124,7 @@ export class AssignstudentpopupComponent {
   proceedAssign() {
     if (this.inputform.valid) {
       this.selectedlist.forEach(item => {
-        this.service.assignClassToStudent(item.id, this.inputform.value).subscribe((res: any) => {
+        this.studentApi.joinClass(item.id, this.inputform.value as { block_name: string }).subscribe((res: any) => {
         })
       });
     }

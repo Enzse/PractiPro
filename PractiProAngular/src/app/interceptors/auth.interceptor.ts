@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { SessionService } from '../services/session.service';
 
 /**
  * Attaches the login token to every API request, and sends the user back to
@@ -10,7 +11,8 @@ import { environment } from '../../environments/environment';
  */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  const token = sessionStorage.getItem('token');
+  const session = inject(SessionService);
+  const token = session.token();
 
   const isApiRequest = req.url.startsWith(environment.apiUrl);
   const request = token && isApiRequest
@@ -22,7 +24,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       // The API marks "you need to log in (again)" with WWW-Authenticate. Other
       // 401s, such as an expired join link, are left for the page to handle.
       if (isApiRequest && error.status === 401 && error.headers.get('WWW-Authenticate')) {
-        sessionStorage.removeItem('token');
+        session.clear();
         router.navigate(['login'], { queryParams: { returnUrl: router.url } });
       }
       return throwError(() => error);

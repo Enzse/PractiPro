@@ -1,8 +1,8 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { StudentService } from '../../../../services/api/student.service';
 
 @Component({
     selector: 'app-viewsubmissions',
@@ -12,14 +12,14 @@ import Swal from 'sweetalert2';
     styleUrl: './viewsubmissions.component.css'
 })
 export class ViewsubmissionsComponent implements OnInit {
-  constructor(private service: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewsubmissionsComponent>) { }
+  private readonly studentApi = inject(StudentService);
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewsubmissionsComponent>) { }
 
   studentRequirements: any[] = [];
 
   ngOnInit(): void {
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getStudentRequirements(this.data.usercode).subscribe(
+      this.studentApi.requirements(this.data.usercode).subscribe(
         (res:any) => {
           this.studentRequirements = res.payload;
         },

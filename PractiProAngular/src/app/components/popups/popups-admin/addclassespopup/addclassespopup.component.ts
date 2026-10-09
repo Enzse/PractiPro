@@ -1,6 +1,5 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -9,6 +8,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
+import { ClassService } from '../../../../services/api/class.service';
+import { NewClass } from '../../../../models/class';
 
 
 @Component({
@@ -19,7 +20,8 @@ import Swal from 'sweetalert2';
     styleUrl: './addclassespopup.component.css'
 })
 export class AddclassespopupComponent {
-  constructor(private builder: FormBuilder, private service: AuthService,
+  private readonly classApi = inject(ClassService);
+  constructor(private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<AddclassespopupComponent>) { }
 
 
@@ -32,7 +34,7 @@ export class AddclassespopupComponent {
 
   submitForm() {
     if (this.insertform.valid) {
-      this.service.addClass(this.insertform.value).subscribe(() => {
+      this.classApi.create(this.insertform.value as NewClass).subscribe(() => {
         this.dialog.close();
         Swal.fire({
           title: "Success!",

@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription, switchMap } from 'rxjs';
@@ -9,6 +8,10 @@ import { BlockService } from '../../../../services/block.service';
 import { ViewprofilepopupComponent } from '../../../popups/shared/viewprofilepopup/viewprofilepopup.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SessionService } from '../../../../services/session.service';
+import { StudentService } from '../../../../services/api/student.service';
+import { ClassJoinService } from '../../../../services/api/class-join.service';
+import { MediaService } from '../../../../services/api/media.service';
 
 @Component({
     selector: 'app-invitestudents-by-studentid',
@@ -18,9 +21,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     styleUrl: './invitestudents-by-studentid.component.css'
 })
 export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly classJoinApi = inject(ClassJoinService);
+  private readonly mediaApi = inject(MediaService);
   matchingStudent: any;
   user: any;
-  userID = this.service.getCurrentUserId();
+  userID = this.session.userId();
   invitations: any;
   existingInvitations: any = 0;
   currentBlock: any;
@@ -31,7 +38,6 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
 
   constructor(
     private blockService: BlockService,
-    private service: AuthService,
     private builder: FormBuilder,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog
@@ -54,7 +60,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
   searchForStudentID() {
     if (this.searchForm.valid) {
       this.subscriptions.add(
-        this.service.getStudentsByStudentID(this.searchForm.value.studentId).subscribe((res: any) => {
+        this.studentApi.byStudentNumber(String(this.searchForm.value.studentId)).subscribe((res: any) => {
           if (res.payload.length === 0) {
             Swal.fire({
               title: "No registered student found for this student ID.",
@@ -64,7 +70,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
             this.matchingStudent = res.payload[0];
             this.matchingStudent.avatar = '';
             this.subscriptions.add(
-              this.service.getAvatar(this.matchingStudent.id).subscribe((avatarRes: any) => {
+              this.mediaApi.avatar(this.matchingStudent.id).subscribe((avatarRes: any) => {
                 if (avatarRes.size > 0) {
                   const url = URL.createObjectURL(avatarRes);
                   this.matchingStudent.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -96,7 +102,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
 
   checkExistingInvitationForStudent() {
     this.subscriptions.add(
-      this.service.checkExistingClassInvitationForBlock(this.matchingStudent.id, this.currentBlock).subscribe((res: any) => {
+      this.classJoinApi.invitationCount(this.matchingStudent.id, this.currentBlock).subscribe((res: any) => {
         this.existingInvitations = res.payload[0].invitationCount;
       }));
   }
@@ -104,7 +110,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
   loadInvitations(): void {
     if (this.currentBlock) {
       this.subscriptions.add(
-        this.service.getClassInvitationsForBlock(this.currentBlock).subscribe(
+        this.classJoinApi.invitationsForClass(this.currentBlock).subscribe(
           (res: any) => {
             this.invitations = res.payload;
           },
@@ -127,7 +133,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.cancelClassInvitationByID(id).subscribe((res: any) => {
+          this.classJoinApi.cancelInvitation(id).subscribe((res: any) => {
             this.loadInvitations();
             Swal.fire({
               toast: true,
@@ -170,7 +176,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
       class: [this.currentBlock]
     })
     this.subscriptions.add(
-      this.service.createClassInvitation(invitationForm.value).subscribe((res: any) => {
+      this.classJoinApi.invite(invitationForm.value as { student_id: number; advisor_id: number; class: string }).subscribe((res: any) => {
         this.loadInvitations();
         this.matchingStudent = null;
         this.searchForm.patchValue({
@@ -195,7 +201,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.cancelClassInvitation(student_id).subscribe((res: any) => {
+          this.classJoinApi.cancelInvitationsOfStudent(student_id).subscribe((res: any) => {
             this.loadInvitations();
             this.matchingStudent = null;
             Swal.fire({

@@ -1,7 +1,6 @@
-import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
-import { AuthService } from '../../../services/auth.service';
 
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
@@ -18,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
+import { ClassService } from '../../../services/api/class.service';
 
 @Component({
     selector: 'app-admin-coordinators',
@@ -27,12 +27,13 @@ import { Subscription } from 'rxjs';
     styleUrl: './admin-coordinators.component.css'
 })
 export class AdminCoordinatorsComponent implements OnInit, OnDestroy {
+  private readonly classApi = inject(ClassService);
   userlist: any[] = [];
   origlist: any;
   searchtext: any;
   private subscriptions = new Subscription();
   p: number = 1; /* starting no. of the list */
-  constructor(private service: AuthService, private dialog: MatDialog) {
+  constructor(private dialog: MatDialog) {
 
   }
   ngOnInit(): void {
@@ -45,7 +46,7 @@ export class AdminCoordinatorsComponent implements OnInit, OnDestroy {
 
   Loaduser() {
     this.subscriptions.add(
-    this.service.getAdvisors().subscribe(res => {
+    this.classApi.coordinators().subscribe(res => {
       this.userlist = res.payload;
       this.origlist = this.userlist;
     }));

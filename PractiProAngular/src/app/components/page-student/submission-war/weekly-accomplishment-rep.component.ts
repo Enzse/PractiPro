@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
-import { AuthService } from '../../../services/auth.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,6 +12,9 @@ import { FilterPipe } from '../../../pipes/filter.pipe';
 import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { TimePipe } from '../../../pipes/time.pipe';
+import { SessionService } from '../../../services/session.service';
+import { SubmissionService } from '../../../services/api/submission.service';
+import { WarService } from '../../../services/api/war.service';
 
 
 @Component({
@@ -23,6 +25,9 @@ import { TimePipe } from '../../../pipes/time.pipe';
     styleUrl: './weekly-accomplishment-rep.component.css'
 })
 export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly submissionApi = inject(SubmissionService);
+  private readonly warApi = inject(WarService);
   searchweek: any;
   userId: any;
   datalist: any[] = [];
@@ -39,8 +44,8 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   disableTabChangeEvent: boolean = false;
 
 
-  constructor(private service: AuthService, private dialog: MatDialog) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private dialog: MatDialog) {
+    this.userId = this.session.userId();
   }
 
   ngOnDestroy(): void {
@@ -57,7 +62,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
 
   loadWarRecord() {
     this.subscriptions.add(
-      this.service.getWarRecords(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+      this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res: any) => {
         this.selectedRecord = res.payload[0]
         this.loadWarActivities();
       })
@@ -67,7 +72,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   loadWarActivities() {
     if (this.selectedRecord) {
       this.subscriptions.add(
-        this.service.getWarActivities(this.selectedRecord.id).subscribe((res: any) => {
+        this.warApi.activities(this.selectedRecord.id).subscribe((res: any) => {
           this.selectedRecordActivities = res.payload
           this.initialRecordActivities = JSON.parse(JSON.stringify(res.payload));
           this.checkForUnsaved = true;
@@ -80,7 +85,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
   }
   saveChanges() {
     this.subscriptions.add(
-      this.service.checkIfWeekHasWarRecord(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+      this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res: any) => {
         if (res.payload.length === 0) {
           if (this.selectedRecordActivities.length <= 1 && this.selectedRecordActivities[0].description === '') {
             Swal.fire({
@@ -95,9 +100,9 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
             week: this.selectedTabWeek
           }
           this.subscriptions.add(
-            this.service.createWarRecord(newRecord).subscribe((res: any) => {
+            this.warApi.create(newRecord).subscribe((res: any) => {
               this.subscriptions.add(
-                this.service.getWarRecords(this.userId, this.selectedTabWeek).subscribe((res: any) => {
+                this.warApi.records(this.userId, this.selectedTabWeek).subscribe((res: any) => {
                   this.selectedRecord = res.payload[0]
                   this.saveIteration();
                   Swal.fire({
@@ -123,9 +128,9 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       ...activity,
       war_id: this.selectedRecord?.id
     }));
-    this.service.clearWarActivities(this.selectedRecord.id).subscribe(res => {
+    this.warApi.clearActivities(this.selectedRecord.id).subscribe(res => {
       this.selectedRecordActivities.forEach(activity => {
-        this.service.saveWarActivities(activity).subscribe((res: any) => {
+        this.warApi.addActivity(activity).subscribe((res: any) => {
         }
         )
       })
@@ -178,7 +183,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
           status: 'Pending'
         };
         this.subscriptions.add(
-          this.service.toggleWarRecordSubmission(recordSubmitted).subscribe((res: any) => {
+          this.warApi.setSubmitted(recordSubmitted).subscribe((res: any) => {
             this.loadWarRecord();
             Swal.fire({
               toast: true,
@@ -279,7 +284,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
       status: null
     }
     this.subscriptions.add(
-      this.service.toggleWarRecordSubmission(recordSubmitted).subscribe((res: any) => {
+      this.warApi.setSubmitted(recordSubmitted).subscribe((res: any) => {
         this.loadWarRecord();
         Swal.fire({
           toast: true,
@@ -297,7 +302,7 @@ export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {
 
   loadMaxWeeks() {
     this.subscriptions.add(
-      this.service.getSubmissionMaxWeeks('student_war_records', this.userId).subscribe(
+      this.submissionApi.weekNumbers('student_war_records', this.userId).subscribe(
         res => {
           this.tabWeekNumbers = res;
           // this.selectTabIndex(this.tabWeekNumbers.length);

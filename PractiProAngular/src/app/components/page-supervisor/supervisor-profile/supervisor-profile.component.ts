@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +8,9 @@ import { EditinformationpopupComponent } from '../../popups/popups-student/editi
 import { Subscription } from 'rxjs';
 import { SpvEditCompanyProfileComponent } from '../../popups/popups-supervisor/spv-edit-company-profile/spv-edit-company-profile.component';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
+import { SessionService } from '../../../services/session.service';
+import { CompanyService } from '../../../services/api/company.service';
+import { MediaService } from '../../../services/api/media.service';
 
 @Component({
     selector: 'app-supervisor-profile',
@@ -18,14 +20,17 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     styleUrls: ['./supervisor-profile.component.css']
 })
 export class SupervisorProfileComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly companyApi = inject(CompanyService);
+  private readonly mediaApi = inject(MediaService);
   company: any;
   userId: any;
   user: any;
   file: any;
   subscriptions: Subscription = new Subscription();
 
-  constructor(private authService: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
-    this.userId = this.authService.getCurrentUserId();
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+    this.userId = this.session.userId();
   }
 
   ngOnInit(): void {
@@ -68,8 +73,8 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
         }
 
         const uploadObservable = type === 'avatar'
-          ? this.authService.uploadAvatar(this.userId, this.file)
-          : this.authService.uploadLogo(this.company.id, this.file);
+          ? this.mediaApi.uploadAvatar(this.userId, this.file)
+          : this.mediaApi.uploadLogo(this.company.id, this.file);
 
         this.subscriptions.add(uploadObservable.subscribe((data: any) => {
           console.log("File Uploaded Successfully");
@@ -93,12 +98,12 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
 
   private loadSupervisor() {
     this.subscriptions.add(
-      this.authService.getSupervisors(this.userId).subscribe((res: any) => {
+      this.companyApi.supervisor(this.userId).subscribe((res: any) => {
         this.user = res.payload[0];
         this.user.avatar = '';
 
         this.subscriptions.add(
-          this.authService.getAvatar(this.user.id).subscribe((avatarRes: any) => {
+          this.mediaApi.avatar(this.user.id).subscribe((avatarRes: any) => {
             if (avatarRes.size > 0) {
               const url = URL.createObjectURL(avatarRes);
               this.user.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -113,14 +118,14 @@ export class SupervisorProfileComponent implements OnInit, OnDestroy {
 
   private loadCompany(companyId: any) {
     this.subscriptions.add(
-      this.authService.getCompanies(companyId).subscribe((res: any) => {
+      this.companyApi.get(companyId).subscribe((res: any) => {
         this.company = res.payload[0];
         const itEquipmentArray: string[] = JSON.parse(res.payload[0].it_equipment);
         this.company.it_equipment = itEquipmentArray
         this.company.logo = '';
 
         this.subscriptions.add(
-          this.authService.getLogo(this.company.id).subscribe((logoRes: any) => {
+          this.mediaApi.logo(this.company.id).subscribe((logoRes: any) => {
             if (logoRes.size > 0) {
               const url = URL.createObjectURL(logoRes);
               this.company.logo = this.sanitizer.bypassSecurityTrustUrl(url);

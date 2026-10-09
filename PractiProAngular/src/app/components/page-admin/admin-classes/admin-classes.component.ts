@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentationpopupComponent } from '../../popups/popups-coordinator/documentationpopup/documentationpopup.component';
@@ -14,6 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
+import { ClassService } from '../../../services/api/class.service';
 
 @Component({
     selector: 'app-admin-classes',
@@ -23,7 +23,8 @@ import { Subscription } from 'rxjs';
     styleUrl: './admin-classes.component.css'
 })
 export class AdminClassesComponent implements OnInit, OnDestroy {
-  constructor(private service: AuthService, private dialog: MatDialog) { }
+  private readonly classApi = inject(ClassService);
+  constructor(private dialog: MatDialog) { }
   datalist: any;
   origlist: any;
   coordinatorName: any;
@@ -41,7 +42,7 @@ export class AdminClassesComponent implements OnInit, OnDestroy {
 
   Loaduser() {
     this.subscriptions.add(
-      this.service.getClasses().subscribe(res => {
+      this.classApi.all().subscribe(res => {
         this.datalist = res.payload;
         this.origlist = this.datalist;
       }));

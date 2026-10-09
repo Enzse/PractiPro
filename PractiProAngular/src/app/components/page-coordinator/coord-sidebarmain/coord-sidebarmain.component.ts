@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CoordClassesComponent } from '../coord-classes/coord-classes.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../services/auth.service';
 import { BlockService } from '../../../services/block.service';
 import { Subscription } from 'rxjs';
+import { SessionService } from '../../../services/session.service';
 
 @Component({
     selector: 'app-coord-sidebarmain',
@@ -14,14 +14,15 @@ import { Subscription } from 'rxjs';
     styleUrl: './coord-sidebarmain.component.css'
 })
 export class CoordSidebarmainComponent {
-  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
+  private readonly session = inject(SessionService);
+  constructor(private dialog: MatDialog, private blockService: BlockService) { }
 
   selectedBlock: any;
   coordinatorId: any;
   private subscriptions = new Subscription();
 
   ngOnInit(): void {
-    this.coordinatorId = this.service.getCurrentUserId();
+    this.coordinatorId = this.session.userId();
     console.log("ID: " + this.coordinatorId);
   }
 

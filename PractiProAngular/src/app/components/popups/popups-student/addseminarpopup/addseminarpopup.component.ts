@@ -1,5 +1,4 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,6 +6,8 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SessionService } from '../../../../services/session.service';
+import { SeminarService } from '../../../../services/api/seminar.service';
 
 @Component({
     selector: 'app-addseminarpopup',
@@ -16,6 +17,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     styleUrl: './addseminarpopup.component.css'
 })
 export class AddseminarpopupComponent {
+  private readonly session = inject(SessionService);
+  private readonly seminarApi = inject(SeminarService);
   userId: any;
   seminarRecordForm: FormGroup;
   isUploading = false;
@@ -25,13 +28,12 @@ export class AddseminarpopupComponent {
 
   constructor(
     private builder: FormBuilder,
-    private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AddseminarpopupComponent>,
     private changeDetection: ChangeDetectionService,
     private sanitizer: DomSanitizer) {
 
-    this.userId = this.service.getCurrentUserId();
+    this.userId = this.session.userId();
 
     this.seminarRecordForm = this.builder.group({
       event_name: this.builder.control('', Validators.required),
@@ -43,14 +45,14 @@ export class AddseminarpopupComponent {
 
   submitRecord() {
     if (this.seminarRecordForm.valid) {
-      this.service.uploadSeminarRecord(this.data.id, this.seminarRecordForm.value).subscribe((res: any) => {
+      this.seminarApi.create(this.data.id, this.seminarRecordForm.value).subscribe((res: any) => {
 
         this.isUploading = true;
         const fileInputs = document.querySelectorAll('input[type="file"]');
         fileInputs.forEach((fileInput: any) => {
           const file = fileInput.files[0];
           if (file) {
-            this.service.uploadSeminarCertificate(res.payload.record_id, file).subscribe(
+            this.seminarApi.uploadCertificate(res.payload.record_id, file).subscribe(
               response => {
                 this.changeDetection.notifyChange(true);
                 this.isUploading = false;

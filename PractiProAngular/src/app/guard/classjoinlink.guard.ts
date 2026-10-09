@@ -1,15 +1,15 @@
 import { Router, RouterStateSnapshot, ActivatedRouteSnapshot, CanActivateFn } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import Swal from 'sweetalert2';
+import { SessionService } from '../services/session.service';
 
 export const classjoinlinkGuard: CanActivateFn = (childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const session = inject(SessionService);
 
     const router: Router = inject(Router);
-    const service: AuthService = inject(AuthService);
 
-    if (service.IsLoggedIn()) {
-        if (service.GetUserRole() === 'student') {
+    if (session.isLoggedIn()) {
+        if (session.role() === 'student') {
             return true;
         }
         else {

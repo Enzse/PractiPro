@@ -1,5 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from '../../../../pipes/filter.pipe';
@@ -11,6 +10,9 @@ import { MatButtonModule } from '@angular/material/button';
 import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { Subscription } from 'rxjs';
+import { StudentService } from '../../../../services/api/student.service';
+import { CompanyService } from '../../../../services/api/company.service';
+import { MediaService } from '../../../../services/api/media.service';
 
 @Component({
     selector: 'app-selecttraineespopup',
@@ -20,13 +22,16 @@ import { Subscription } from 'rxjs';
     styleUrl: './selecttraineespopup.component.css'
 })
 export class SelecttraineespopupComponent implements OnInit, OnDestroy {
+  private readonly studentApi = inject(StudentService);
+  private readonly companyApi = inject(CompanyService);
+  private readonly mediaApi = inject(MediaService);
   traineesList: any;
   searchtext: any;
   selectionForm: FormGroup;
   changeDetected: any;
   private subscriptions = new Subscription()
 
-  constructor(private router: Router, private builder: FormBuilder, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelecttraineespopupComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+  constructor(private router: Router, private builder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelecttraineespopupComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
     this.changeDetected = [false];
     this.selectionForm = this.builder.group({
       student_id: [''],
@@ -46,13 +51,13 @@ export class SelecttraineespopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getStudentsByCompany(this.data.company_id).subscribe((res: any) => {
+      this.studentApi.atCompany(this.data.company_id).subscribe((res: any) => {
         this.traineesList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
         this.traineesList.forEach((student: any) => {
           this.subscriptions.add(
-            this.service.getAvatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res: any) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -73,7 +78,7 @@ export class SelecttraineespopupComponent implements OnInit, OnDestroy {
       supervisor_id: this.data.supervisor_id
     });
     this.subscriptions.add(
-      this.service.addStudentToSupervisor(this.selectionForm.value).subscribe((res: any) => {
+      this.companyApi.assignToSupervisor(this.selectionForm.value).subscribe((res: any) => {
         this.changeDetected = true;
         this.dialog.close(this.changeDetected);
       }, error => {
@@ -105,7 +110,7 @@ export class SelecttraineespopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.removeStudentFromCompany(this.data.company_id, id).subscribe((res: any) => {
+          this.companyApi.removeStudent(this.data.company_id, id).subscribe((res: any) => {
             this.changeDetection.notifyChange(true);
             Swal.fire({
               title: "Student Removed!",

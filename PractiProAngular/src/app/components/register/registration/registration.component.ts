@@ -1,6 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import Swal from 'sweetalert2';
@@ -9,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { emailDomainValidator } from '../../../validators/email-domain.validator';
 import { passwordStrengthValidator } from '../../../validators/password-strength.validator';
+import { AuthService } from '../../../services/api/auth.service';
+import { Registration } from '../../../models/user';
 
 @Component({
     selector: 'app-registration',
@@ -18,7 +19,8 @@ import { passwordStrengthValidator } from '../../../validators/password-strength
     styleUrl: './registration.component.css'
 })
 export class RegistrationComponent implements OnInit {
-  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private dialog: MatDialog) { }
+  private readonly authApi = inject(AuthService);
+  constructor(private builder: FormBuilder, private router: Router, private dialog: MatDialog) { }
   registerform = this.builder.group({
     firstName: this.builder.control('', Validators.required),
     lastName: this.builder.control('', Validators.required),
@@ -39,7 +41,7 @@ export class RegistrationComponent implements OnInit {
 
   proceedregistration() {
     if (this.registerform.valid) {
-      this.service.proceedRegister(this.registerform.value).subscribe(() => {
+      this.authApi.register(this.registerform.value as Registration).subscribe(() => {
         this.router.navigate(['login']);
         Swal.fire({
           title: "Email Confirmation Sent!",

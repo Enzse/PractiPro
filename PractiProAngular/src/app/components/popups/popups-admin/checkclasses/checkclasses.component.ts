@@ -1,7 +1,6 @@
 
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -11,6 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import Swal from 'sweetalert2';
+import { ClassService } from '../../../../services/api/class.service';
 
 @Component({
     selector: 'app-checkclasses',
@@ -20,7 +20,8 @@ import Swal from 'sweetalert2';
     styleUrl: './checkclasses.component.css'
 })
 export class CheckclassesComponent {
-  constructor(private builder: FormBuilder, private service: AuthService,
+  private readonly classApi = inject(ClassService);
+  constructor(private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CheckclassesComponent>) { }
 
   datalist: any;
@@ -28,7 +29,7 @@ export class CheckclassesComponent {
 
   ngOnInit(): void {
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getAdvisors(this.data.usercode).subscribe(res => {
+      this.classApi.coordinator(this.data.usercode).subscribe(res => {
         console.log(res);
         this.currentuser = res.payload[0]
         console.log(this.currentuser);
@@ -38,7 +39,7 @@ export class CheckclassesComponent {
   }
 
   loadData() {
-    this.service.getClassesByCoordinator(this.data.usercode).subscribe(
+    this.classApi.ofCoordinator(this.data.usercode).subscribe(
       (res: any) => {
         this.datalist = res?.payload;
         console.log(this.datalist);
@@ -66,7 +67,7 @@ export class CheckclassesComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.dialog.close();
-        this.service.unassignCoordinator(this.data.usercode, block).subscribe(() => {
+        this.classApi.unassignCoordinator(this.data.usercode, block).subscribe(() => {
           
 
         });

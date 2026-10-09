@@ -1,11 +1,11 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
+import { ClassService } from '../../../services/api/class.service';
 
 @Component({
     selector: 'app-coord-classes',
@@ -15,8 +15,8 @@ import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
     styleUrl: './coord-classes.component.css'
 })
 export class CoordClassesComponent {
-  constructor(private service: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CoordClassesComponent>) { }
+  private readonly classApi = inject(ClassService);
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CoordClassesComponent>) { }
 
   datalist: any;
   currentuser: any;
@@ -25,7 +25,7 @@ export class CoordClassesComponent {
 
   ngOnInit(): void {
     if (this.data.coordinatorId != null && this.data.coordinatorId != '') {
-      this.service.getAdvisors(this.data.coordinatorId).subscribe(res => {
+      this.classApi.coordinator(this.data.coordinatorId).subscribe(res => {
         this.currentuser = res.payload[0]
       });
       this.loadData();
@@ -34,7 +34,7 @@ export class CoordClassesComponent {
 
   loadData() {
     this.isLoading = true;
-    this.service.getClassesByCoordinator(this.data.coordinatorId).subscribe(
+    this.classApi.ofCoordinator(this.data.coordinatorId).subscribe(
       (res: any) => {
         this.datalist = res?.payload;
         this.isLoading = false;

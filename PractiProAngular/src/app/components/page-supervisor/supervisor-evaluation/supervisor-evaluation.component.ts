@@ -1,12 +1,15 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../services/auth.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { SpvEvaluationpopupComponent } from '../../popups/popups-supervisor/spv-evaluationpopup/spv-evaluationpopup.component';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { CompanyService } from '../../../services/api/company.service';
+import { MediaService } from '../../../services/api/media.service';
 
 @Component({
     selector: 'app-supervisor-evaluation',
@@ -16,6 +19,10 @@ import { SpvEvaluationpopupComponent } from '../../popups/popups-supervisor/spv-
     styleUrl: './supervisor-evaluation.component.css'
 })
 export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly companyApi = inject(CompanyService);
+  private readonly mediaApi = inject(MediaService);
   userId: any;
   user: any;
   traineesList: any[] = [];
@@ -23,10 +30,10 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
   searchtext: any;
   private subscriptions = new Subscription();
 
-  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
+    this.userId = this.session.userId();
     this.subscriptions.add(
-      this.service.getSupervisors(this.userId).subscribe((res: any) => {
+      this.companyApi.supervisor(this.userId).subscribe((res: any) => {
         this.user = res.payload[0];
       })
     );
@@ -43,14 +50,14 @@ export class SupervisorEvaluationComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getStudentsBySupervisor(this.userId).subscribe((res: any) => {
+      this.studentApi.ofSupervisor(this.userId).subscribe((res: any) => {
         this.traineesList = res.payload.map((student: any) => {
           return { ...student, avatar: '' };
         });
         this.traineesList = this.traineesList.filter((student: any) => student.TotalHoursWorked >= 200);
         this.traineesList.forEach((student: any) => {
           this.subscriptions.add(
-            this.service.getAvatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res: any) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);

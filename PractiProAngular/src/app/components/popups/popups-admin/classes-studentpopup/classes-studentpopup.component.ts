@@ -1,6 +1,5 @@
 
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { StudentService } from '../../../../services/api/student.service';
+import { MediaService } from '../../../../services/api/media.service';
 
 @Component({
     selector: 'app-classes-studentpopup',
@@ -19,7 +20,9 @@ import { Router } from '@angular/router';
     styleUrl: './classes-studentpopup.component.css'
 })
 export class ClassesStudentpopupComponent {
-  constructor(private router: Router, private service: AuthService,
+  private readonly studentApi = inject(StudentService);
+  private readonly mediaApi = inject(MediaService);
+  constructor(private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ClassesStudentpopupComponent>, private sanitizer: DomSanitizer) { }
 
   datalist: any[] = [];
@@ -27,14 +30,14 @@ export class ClassesStudentpopupComponent {
 
   ngOnInit(): void {
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getAllStudentsFromClass(this.data.usercode).subscribe(
+      this.studentApi.inClass(this.data.usercode).subscribe(
         (res: any) => {
           this.datalist = res.payload.map((user: any) => {
             return { ...user, avatar: '' };
           });
 
           this.datalist.forEach(student => {
-            this.service.getAvatar(student.id).subscribe(res => {
+            this.mediaApi.avatar(student.id).subscribe(res => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);

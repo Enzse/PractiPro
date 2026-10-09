@@ -1,6 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Observable, Subscription, map } from 'rxjs';
 import { BlockService } from '../../../services/block.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -12,6 +11,10 @@ import { ChartComponent } from '../../shared/chart/chart.component';
 import { ViewSentInvitesComponent } from '../../popups/popups-coordinator/view-sent-invites/view-sent-invites.component';
 import { RouterLink } from '@angular/router';
 import { ViewStudentsPendingsubmissionsComponent } from '../../popups/popups-coordinator/view-students-pendingsubmissions/view-students-pendingsubmissions.component';
+import { SessionService } from '../../../services/session.service';
+import { ClassService } from '../../../services/api/class.service';
+import { ClassJoinService } from '../../../services/api/class-join.service';
+import { ReportService } from '../../../services/api/report.service';
 
 
 @Component({
@@ -22,6 +25,10 @@ import { ViewStudentsPendingsubmissionsComponent } from '../../popups/popups-coo
     styleUrl: './coord-dashboard.component.css'
 })
 export class CoordDashboardComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly classApi = inject(ClassService);
+  private readonly classJoinApi = inject(ClassJoinService);
+  private readonly reportApi = inject(ReportService);
   userId: any;
   private subscriptions = new Subscription();
   blockData: any;
@@ -43,8 +50,8 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   options: any;
   options2: any;
 
-  constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, @Inject(PLATFORM_ID) private platformId: Object, private service: AuthService, private blockService: BlockService) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, @Inject(PLATFORM_ID) private platformId: Object, private blockService: BlockService) {
+    this.userId = this.session.userId();
 
     this.options = {
       plugins: {
@@ -101,7 +108,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
   loadPendingSubmissions(block: any) {
     this.subscriptions.add(
-      this.service.getPendingSubmissions(block).subscribe((res: any) => {
+      this.reportApi.pendingSubmissions(block).subscribe((res: any) => {
         this.pendingSubmissions = res.payload;
       })
     )
@@ -109,7 +116,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
   loadPendingSubmissionsTotal(block: any) {
     this.subscriptions.add(
-      this.service.getPendingSubmissionsTotal(block).subscribe((res: any) => {
+      this.reportApi.pendingSubmissionTotals(block).subscribe((res: any) => {
         console.log(res);
         this.pendingSubmissionsTotal = res.payload[0];
       })
@@ -118,7 +125,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
   loadClass(block: any) {
     this.subscriptions.add(
-      this.service.getClassData(block).subscribe((res: any) => {
+      this.classApi.profile(block).subscribe((res: any) => {
         this.blockData = res.payload[0];
         this.processChartData(res.payload);
         if (this.blockData) {
@@ -274,7 +281,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
 
   getRequestsCount(block: any) {
     this.subscriptions.add(
-      this.service.getClassJoinRequestCount(block).pipe(
+      this.classJoinApi.requestCountForClass(block).pipe(
         map((res: any) => res.payload[0].requestCount)
       ).subscribe((count: any) => {
         this.requestCount = count;
@@ -282,7 +289,7 @@ export class CoordDashboardComponent implements OnInit, OnDestroy {
   }
   getInvitationCount(block: any) {
     this.subscriptions.add(
-      this.service.getClassInvitationForBlockCount(block).pipe(
+      this.classJoinApi.invitationCountForClass(block).pipe(
         map((res: any) => res.payload[0].invitationCount)
       ).subscribe((count: any) => {
         this.invitationCount = count;

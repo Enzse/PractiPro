@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { DocumentationpopupComponent } from '../../popups/popups-coordinator/documentationpopup/documentationpopup.component';
@@ -16,6 +15,7 @@ import { WarpopupcomponentComponent } from '../../popups/popups-coordinator/warp
 import { CoordEvaluationspopupComponent } from '../../popups/popups-coordinator/coord-evaluationspopup/coord-evaluationspopup.component';
 import { FinalreportpopupComponent } from '../../popups/popups-coordinator/finalreportpopup/finalreportpopup.component';
 import { Subscription } from 'rxjs';
+import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-documentation',
@@ -25,7 +25,8 @@ import { Subscription } from 'rxjs';
     styleUrl: './coord-documentation.component.css'
 })
 export class CoordDocumentationComponent implements OnInit, OnDestroy {
-  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
+  private readonly studentApi = inject(StudentService);
+  constructor(private dialog: MatDialog, private blockService: BlockService) { }
   Coordinator: any;
   students: any;
   studentlist: any;
@@ -56,7 +57,7 @@ export class CoordDocumentationComponent implements OnInit, OnDestroy {
   loadHeldStudents() {
     this.isLoading = true;
     this.subscriptions.add(
-      this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+      this.studentApi.inClass(this.currentBlock).subscribe(res => {
         this.studentlist = res.payload;
         this.studentlist = this.studentlist.filter((student: any) => student.registration_status === 1);
         this.isLoading = false;

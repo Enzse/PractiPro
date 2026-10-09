@@ -1,6 +1,5 @@
-import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
-import { AuthService } from '../../../services/auth.service';
 
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
+import { StudentService } from '../../../services/api/student.service';
 
 
 @Component({
@@ -26,8 +26,9 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     styleUrl: './coordinator-submission.component.css'
 })
 export class CoordinatorSubmissionComponent implements OnInit, OnDestroy {
+  private readonly studentApi = inject(StudentService);
 
-  constructor(private changeDetection: ChangeDetectionService, private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
+  constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, private blockService: BlockService) { }
   students: any;
   studentlist: any;
   searchtext: any;
@@ -59,7 +60,7 @@ export class CoordinatorSubmissionComponent implements OnInit, OnDestroy {
   loadHeldStudents() {
     this.isLoading = true;
     this.subscriptions.add(
-      this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+      this.studentApi.inClass(this.currentBlock).subscribe(res => {
         this.studentlist = res.payload;
         this.isLoading = false;
       }, err => {

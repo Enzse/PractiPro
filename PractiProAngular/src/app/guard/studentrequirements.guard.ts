@@ -1,16 +1,18 @@
 import { CanActivateFn, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
 import { map } from 'rxjs';
 import Swal from 'sweetalert2';
+import { SessionService } from '../services/session.service';
+import { StudentService } from '../services/api/student.service';
 
 
 export const studentrequirementsGuard: CanActivateFn = (childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const session = inject(SessionService);
+  const studentApi = inject(StudentService);
   const router: Router = inject(Router);
-  const service: AuthService = inject(AuthService);
 
-  const userId: any = service.getCurrentUserId();
-  return service.getStudentOjtInfo(userId).pipe(
+  const userId: any = session.userId();
+  return studentApi.ojtStatus(userId).pipe(
     map((res: any) => {
       const student = res.payload[0];
       if (student && student.registration_status === 1) {

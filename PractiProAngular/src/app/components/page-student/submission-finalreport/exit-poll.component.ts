@@ -1,7 +1,6 @@
-import { Component, ElementRef, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -12,6 +11,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SessionService } from '../../../services/session.service';
+import { ReportService } from '../../../services/api/report.service';
 
 
 @Component({
@@ -22,14 +23,16 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
     styleUrl: './exit-poll.component.css'
 })
 export class ExitPollComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly reportApi = inject(ReportService);
   userId: any;
   existingReport: any;
   p: number = 1;
   private subscriptions = new Subscription();
   exitPollForm: any;
 
-  constructor(private service: AuthService, private el: ElementRef, private builder: FormBuilder, private dialog: MatDialog) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private el: ElementRef, private builder: FormBuilder, private dialog: MatDialog) {
+    this.userId = this.session.userId();
     this.exitPollForm = this.builder.group({
       user_id: this.userId,
       p1q1: ['', Validators.required],
@@ -77,7 +80,7 @@ export class ExitPollComponent implements OnInit, OnDestroy {
 
   loadReport() {
     this.subscriptions.add(
-      this.service.getFinalReport(this.userId).subscribe((res: any) => {
+      this.reportApi.finalReportOf(this.userId).subscribe((res: any) => {
         this.existingReport = res.payload[0];
         console.log(this.existingReport);
       })
@@ -114,7 +117,7 @@ export class ExitPollComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.createFinalReport(this.exitPollForm.value).subscribe((res: any) => {
+          this.reportApi.createFinalReport(this.exitPollForm.value).subscribe((res: any) => {
             Swal.fire({
               title: `Successfully submitted record`,
               text: `Please wait for your advisor's feedback.`,

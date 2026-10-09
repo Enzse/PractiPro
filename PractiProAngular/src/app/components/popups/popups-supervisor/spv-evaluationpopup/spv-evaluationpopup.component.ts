@@ -1,11 +1,13 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import { Subscription } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SessionService } from '../../../../services/session.service';
+import { SubmissionService } from '../../../../services/api/submission.service';
+import { ReportService } from '../../../../services/api/report.service';
 
 @Component({
     selector: 'app-spv-evaluationpopup',
@@ -15,6 +17,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
     styleUrl: './spv-evaluationpopup.component.css'
 })
 export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly submissionApi = inject(SubmissionService);
+  private readonly reportApi = inject(ReportService);
   userId: any;
   datalist: any[] = [];
   existingEvaluation: any;
@@ -23,12 +28,11 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
 
   constructor(
     private builder: FormBuilder,
-    private service: AuthService,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogref: MatDialogRef<SpvEvaluationpopupComponent>,
     private el: ElementRef) {
-    this.userId = this.service.getCurrentUserId();
+    this.userId = this.session.userId();
 
     this.evaluationForm = this.builder.group({
       supervisor_id: this.userId,
@@ -87,7 +91,7 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
 
   loadEvaluation() {
     this.subscriptions.add(
-      this.service.getEvaluationForStudent(this.data.student.id).subscribe((res: any) => {
+      this.reportApi.evaluationOf(this.data.student.id).subscribe((res: any) => {
         this.existingEvaluation = res.payload[0];
         console.log(this.existingEvaluation);
         this.evaluationForm.patchValue(this.existingEvaluation);
@@ -125,7 +129,7 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.createStudentEvaluation(this.evaluationForm.value).subscribe((res: any) => {
+          this.reportApi.createEvaluation(this.evaluationForm.value).subscribe((res: any) => {
             Swal.fire({
               title: `Successfully submitted evaluation for ${this.data.student.firstName} ${this.data.student.lastName}`,
               icon: "success",
@@ -152,7 +156,7 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.deleteSubmission(submissionId, 'supervisor_student_evaluations').subscribe((res: any) => {
+        this.submissionApi.delete('supervisor_student_evaluations', submissionId).subscribe((res: any) => {
           Swal.fire({
             title: "Your submission has been deleted",
             icon: "success"

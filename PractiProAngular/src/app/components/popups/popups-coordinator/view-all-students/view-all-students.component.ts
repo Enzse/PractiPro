@@ -1,5 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { FilterPipe } from '../../../../pipes/filter.pipe';
@@ -12,6 +11,9 @@ import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { ViewprofilepopupComponent } from '../../shared/viewprofilepopup/viewprofilepopup.component';
 import { Subscription } from 'rxjs';
+import { StudentService } from '../../../../services/api/student.service';
+import { CompanyService } from '../../../../services/api/company.service';
+import { MediaService } from '../../../../services/api/media.service';
 
 @Component({
     selector: 'app-view-all-students',
@@ -21,12 +23,15 @@ import { Subscription } from 'rxjs';
     styleUrl: './view-all-students.component.css'
 })
 export class ViewAllStudentsComponent implements OnInit, OnDestroy {
+  private readonly studentApi = inject(StudentService);
+  private readonly companyApi = inject(CompanyService);
+  private readonly mediaApi = inject(MediaService);
   studentList: any;
   searchtext: any;
   private subscriptions = new Subscription();
   conditionDisplay: any;
 
-  constructor(private router: Router, private builder: FormBuilder, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewAllStudentsComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+  constructor(private router: Router, private builder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewAllStudentsComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
 
   }
 
@@ -41,7 +46,7 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
   loadData() {
 
     this.subscriptions.add(
-      this.service.getAllStudentsFromClass(this.data.block).subscribe((res: any) => {
+      this.studentApi.inClass(this.data.block).subscribe((res: any) => {
         this.studentList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
@@ -82,7 +87,7 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
 
         this.studentList.forEach((student: any) => {
           this.subscriptions.add(
-            this.service.getAvatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res: any) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -104,7 +109,7 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.removeStudentFromCompany(this.data.company_id, id).subscribe((res: any) => {
+          this.companyApi.removeStudent(this.data.company_id, id).subscribe((res: any) => {
             this.changeDetection.notifyChange(true);
             Swal.fire({
               title: "Student Removed!",

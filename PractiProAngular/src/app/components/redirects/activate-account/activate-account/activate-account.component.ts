@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 import {
   ActivatedRoute,
   Router,
@@ -14,6 +13,7 @@ import {
 import Swal from 'sweetalert2';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../../../services/api/auth.service';
 
 @Component({
     selector: 'app-activate-account',
@@ -28,13 +28,13 @@ import { Subscription } from 'rxjs';
     styleUrl: './activate-account.component.css'
 })
 export class ActivateAccountComponent implements OnInit, OnDestroy {
+  private readonly authApi = inject(AuthService);
   token: string;
   status: any;
   subscriptions = new Subscription();
 
   constructor(
     private builder: FormBuilder,
-    private service: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -47,13 +47,13 @@ export class ActivateAccountComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.service.getAccountActivationToken(this.token).subscribe(
+      this.authApi.checkActivationToken(this.token).subscribe(
         (res: any) => {
           const activationForm = this.builder.group({
             token: this.token,
           })
           this.subscriptions.add(
-            this.service.activateAccount(activationForm.value).subscribe((res: any) => {
+            this.authApi.activate(activationForm.value as { token: string }).subscribe((res: any) => {
               this.status = 'valid';
               Swal.fire({
                 title: 'Account Activated',

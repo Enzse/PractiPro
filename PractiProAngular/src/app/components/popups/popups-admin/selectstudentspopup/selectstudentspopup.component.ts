@@ -1,6 +1,5 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -9,6 +8,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { OrdinalPipe } from '../../../../pipes/ordinal.pipe';
+import { StudentService } from '../../../../services/api/student.service';
+import { ClassService } from '../../../../services/api/class.service';
 
 @Component({
     selector: 'app-selectstudentspopup',
@@ -18,7 +19,9 @@ import { OrdinalPipe } from '../../../../pipes/ordinal.pipe';
     styleUrl: './selectstudentspopup.component.css'
 })
 export class SelectstudentspopupComponent {
-  constructor(private builder: FormBuilder, private service: AuthService,
+  private readonly studentApi = inject(StudentService);
+  private readonly classApi = inject(ClassService);
+  constructor(private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelectstudentspopupComponent>) { }
 
   datalist: any[] = [];
@@ -27,8 +30,8 @@ export class SelectstudentspopupComponent {
 
   ngOnInit(): void {
     console.log(this.data.chosenblock)
-    this.service.getClasses(this.data.chosenblock).subscribe((res: any) => {
-      this.service.getStudentsByCourseAndYear(res.payload[0].course, res.payload[0].year_level).subscribe(
+    this.classApi.get(this.data.chosenblock).subscribe((res: any) => {
+      this.studentApi.byCourseAndYear(res.payload[0].course, res.payload[0].year_level).subscribe(
         (res: any) => {
           this.datalist = res.payload;
           console.log(this.datalist);

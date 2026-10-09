@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { AuthService } from '../../../services/auth.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +15,8 @@ import { Subscription } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SessionService } from '../../../services/session.service';
+import { SubmissionService } from '../../../services/api/submission.service';
 
 @Component({
     selector: 'app-documentation',
@@ -25,6 +26,8 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
     styleUrl: './documentation.component.css'
 })
 export class DocumentationComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly submissionApi = inject(SubmissionService);
   userId: any;
   datalist: any[] = [];
   origlist: any
@@ -36,15 +39,15 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   isUploading = false;
 
-  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
+    this.userId = this.session.userId();
   }
 
 
   ngOnInit() {
     this.loadData();
     this.subscriptions.add(
-      this.service.getSubmissionMaxWeeks('documentations', this.userId).subscribe(
+      this.submissionApi.weekNumbers('documentations', this.userId).subscribe(
         res => {
           this.tabWeekNumbers = res;
         },
@@ -60,7 +63,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getSubmissionsByStudent('documentations', this.userId).subscribe(res => {
+      this.submissionApi.list('documentations', this.userId).subscribe(res => {
         this.datalist = res.payload.sort((a: any, b: any) => {
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         });
@@ -105,7 +108,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       const file = fileInput.files[0];
       if (file) {
         this.subscriptions.add(
-          this.service.uploadSubmission('documentations', this.userId, file, this.selectedTabLabel).subscribe(
+          this.submissionApi.upload('documentations', this.userId, file, this.selectedTabLabel).subscribe(
             response => {
               console.log('File uploaded successfully:', response);
               Swal.fire({
@@ -162,7 +165,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   downloadFile(submissionId: number, fileName: string) {
     this.subscriptions.add(
-      this.service.getSubmissionFile('documentations', submissionId).subscribe(
+      this.submissionApi.download('documentations', submissionId).subscribe(
         (data: any) => {
           saveAs(data, fileName);
         },
@@ -184,7 +187,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.deleteSubmission(submissionId, 'documentations').subscribe((res: any) => {
+          this.submissionApi.delete('documentations', submissionId).subscribe((res: any) => {
             Swal.fire({
               title: "Your submission has been deleted",
               icon: "success"

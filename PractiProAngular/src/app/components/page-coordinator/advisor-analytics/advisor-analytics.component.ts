@@ -1,6 +1,5 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 
-import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
@@ -14,8 +13,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
 export class AdvisorAnalyticsComponent implements OnInit, OnDestroy {
 
   constructor(
-    private service: AuthService,
-  ) {
+    ) {
 
   }
 

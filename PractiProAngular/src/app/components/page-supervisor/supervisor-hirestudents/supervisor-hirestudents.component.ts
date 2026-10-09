@@ -1,9 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { CompanyService } from '../../../services/api/company.service';
+import { MediaService } from '../../../services/api/media.service';
 
 @Component({
     selector: 'app-supervisor-hirestudents',
@@ -13,6 +16,10 @@ import { DomSanitizer } from '@angular/platform-browser';
     styleUrls: ['./supervisor-hirestudents.component.css']
 })
 export class SupervisorHirestudentsComponent implements OnInit {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly companyApi = inject(CompanyService);
+  private readonly mediaApi = inject(MediaService);
     searchtext: any;
     matchingStudent: any;
     user: any;
@@ -22,11 +29,10 @@ export class SupervisorHirestudentsComponent implements OnInit {
     companyForm: FormGroup;
 
     constructor(
-        private service: AuthService,
         private builder: FormBuilder,
         private sanitizer: DomSanitizer
     ) {
-        this.userID = this.service.getCurrentUserId();
+        this.userID = this.session.userId();
         this.searchForm = this.builder.group({
             studentId: ['', Validators.required]
         });
@@ -39,7 +45,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.service.getSupervisors(this.userID).subscribe((res: any) => {
+        this.companyApi.supervisor(this.userID).subscribe((res: any) => {
             this.user = res.payload[0];
             this.companyForm.patchValue({
                 supervisor_id: this.user.id,
@@ -50,7 +56,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
 
     searchForStudentID() {
         if (this.searchForm.valid) {
-            this.service.getStudentsByStudentID(this.searchForm.value.studentId).subscribe((res: any) => {
+            this.studentApi.byStudentNumber(this.searchForm.value.studentId).subscribe((res: any) => {
                 if (res.payload.length === 0) {
                     Swal.fire({
                         title: "No student found for this student ID.",
@@ -59,13 +65,13 @@ export class SupervisorHirestudentsComponent implements OnInit {
                 } else {
                     this.matchingStudent = res.payload[0];
                     this.matchingStudent.avatar = '';
-                    this.service.getAvatar(this.matchingStudent.id).subscribe((avatarRes: any) => {
+                    this.mediaApi.avatar(this.matchingStudent.id).subscribe((avatarRes: any) => {
                         if (avatarRes.size > 0) {
                             const url = URL.createObjectURL(avatarRes);
                             this.matchingStudent.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
                         }
                     });
-                    this.service.checkExistingAssignment('company_hiring_requests', 'company_id', 'student_id', this.user.company_id, this.matchingStudent.id).subscribe((res: any) => {
+                    this.companyApi.assignmentCount('company_hiring_requests', 'company_id', 'student_id', this.user.company_id, this.matchingStudent.id).subscribe((res: any) => {
                         this.existingConfirmations = res.payload[0].assignment_count
                         console.log(this.existingConfirmations)
                     });
@@ -97,7 +103,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
             student_id: student.id,
         });
         if (this.companyForm.valid) {
-            this.service.createHiringRequest(this.companyForm.value).subscribe((res: any) => {
+            this.companyApi.sendHiringRequest(this.companyForm.value).subscribe((res: any) => {
                 Swal.fire({
                     title: "Invitation Sent",
                     text: "Please wait until the student confirms it in their inbox.",

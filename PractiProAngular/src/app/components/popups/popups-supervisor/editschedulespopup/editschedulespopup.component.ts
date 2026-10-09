@@ -1,9 +1,9 @@
-import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { CompanyService } from '../../../../services/api/company.service';
 
 @Component({
     selector: 'app-editschedulespopup.component.ts',
@@ -13,8 +13,9 @@ import Swal from 'sweetalert2';
     styleUrl: './editschedulespopup.component.css'
 })
 export class EditschedulespopupComponent {
+  private readonly companyApi = inject(CompanyService);
   changeDetected: any;
-  constructor(private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditschedulespopupComponent>, private dialog2: MatDialog) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditschedulespopupComponent>, private dialog2: MatDialog) {
     this.changeDetected = [false];
   }
 
@@ -69,7 +70,7 @@ export class EditschedulespopupComponent {
     );
 
     if (hasValidSchedules) {
-      this.service.assignSchedulesToStudent(this.data.student.id, this.schedules).subscribe(res => {
+      this.companyApi.setSchedules(this.data.student.id, this.schedules).subscribe(res => {
         this.changeDetected = true;
         this.dialog.close(this.changeDetected);
         Swal.fire({
@@ -98,7 +99,7 @@ export class EditschedulespopupComponent {
       confirmButtonText: "Confirm"
     }).then((result) => {
       if (result.isConfirmed) {
-        this.service.unassignSchedules(this.data.student.id).subscribe((res: any) => {
+        this.companyApi.clearSchedules(this.data.student.id).subscribe((res: any) => {
           Swal.fire({
             title: "Schedule deleted",
             icon: "success"

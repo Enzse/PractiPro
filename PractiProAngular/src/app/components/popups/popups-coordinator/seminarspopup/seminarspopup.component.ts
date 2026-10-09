@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -13,7 +13,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
-import { AuthService } from '../../../../services/auth.service';
+import { SubmissionService } from '../../../../services/api/submission.service';
+import { SeminarService } from '../../../../services/api/seminar.service';
 
 @Component({
     selector: 'app-seminarspopup',
@@ -23,12 +24,14 @@ import { AuthService } from '../../../../services/auth.service';
     styleUrl: './seminarspopup.component.css'
 })
 export class SeminarspopupComponent {
+  private readonly submissionApi = inject(SubmissionService);
+  private readonly seminarApi = inject(SeminarService);
   datalist: any[] = [];
   origlist: any;
   searchtext: any;
   private subscriptions = new Subscription();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<SeminarspopupComponent>, private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<SeminarspopupComponent>, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
 
   }
 
@@ -51,7 +54,7 @@ export class SeminarspopupComponent {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getSeminarRecords(this.data.student.id).subscribe((res: any) => {
+      this.seminarApi.forStudent(this.data.student.id).subscribe((res: any) => {
         this.datalist = res.payload.sort((a: any, b: any) => {
           return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
         })
@@ -92,7 +95,7 @@ export class SeminarspopupComponent {
 
   viewCertificate(seminar_id: number) {
     this.subscriptions.add(
-      this.service.getSubmissionFile('student_seminar_certificates', seminar_id).subscribe(
+      this.submissionApi.download('student_seminar_certificates', seminar_id).subscribe(
         (data: any) => {
           const popup = this.dialog.open(PdfviewerComponent, {
             enterAnimationDuration: "0ms",
@@ -111,7 +114,7 @@ export class SeminarspopupComponent {
 
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
-    this.service.updateAdvisorApproval('student_seminar_records', record.id, updateData).subscribe(
+    this.submissionApi.setAdvisorApproval('student_seminar_records', record.id, updateData).subscribe(
       res => {
         this.changeDetection.notifyChange(true);
         Swal.fire({
@@ -152,7 +155,7 @@ export class SeminarspopupComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.deletSeminarRecord(id).subscribe((res: any) => {
+          this.seminarApi.delete(id).subscribe((res: any) => {
             Swal.fire({
               title: "Successfully deleted record!",
               icon: "success"

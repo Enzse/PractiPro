@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -16,6 +15,10 @@ import { AddcertificatepopupComponent } from '../../popups/popups-student/addcer
 import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { SubmissionService } from '../../../services/api/submission.service';
+import { SeminarService } from '../../../services/api/seminar.service';
 
 @Component({
     selector: 'app-submission-seminars',
@@ -25,6 +28,10 @@ import { CommentspopupComponent } from '../../popups/shared/commentspopup/commen
     styleUrl: './submission-seminars.component.css'
 })
 export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly submissionApi = inject(SubmissionService);
+  private readonly seminarApi = inject(SeminarService);
   userId: any;
   user$: Observable<any>;
   datalist: any[] = [];
@@ -32,9 +39,9 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
   searchtext: any;
   private subscriptions = new Subscription();
 
-  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
-    this.userId = this.service.getCurrentUserId();
-    this.user$ = this.service.getStudentOjtInfo(this.userId).pipe(
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+    this.userId = this.session.userId();
+    this.user$ = this.studentApi.ojtStatus(this.userId).pipe(
       map((res: any) => res.payload[0])
     );
   }
@@ -45,7 +52,7 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
       this.changeDetection.changeDetected$.subscribe(changeDetected => {
         if (changeDetected) {
           this.loadData();
-          this.user$ = this.service.getStudentOjtInfo(this.userId).pipe(
+          this.user$ = this.studentApi.ojtStatus(this.userId).pipe(
             map((res: any) => res.payload[0])
           );
         }
@@ -59,7 +66,7 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getSeminarRecords(this.userId).subscribe((res: any) => {
+      this.seminarApi.forStudent(this.userId).subscribe((res: any) => {
         this.datalist = res.payload.sort((a: any, b: any) => {
           return new Date(b.event_date).getTime() - new Date(a.event_date).getTime();
         })
@@ -111,7 +118,7 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
 
   viewCertificate(seminar_id: number) {
     this.subscriptions.add(
-      this.service.getSubmissionFile('student_seminar_certificates', seminar_id).subscribe(
+      this.submissionApi.download('student_seminar_certificates', seminar_id).subscribe(
         (data: any) => {
           const popup = this.dialog.open(PdfviewerComponent, {
             enterAnimationDuration: "0ms",
@@ -152,7 +159,7 @@ export class SubmissionSeminarsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.deletSeminarRecord(id).subscribe((res: any) => {
+          this.seminarApi.delete(id).subscribe((res: any) => {
             this.changeDetection.notifyChange(true);
             Swal.fire({
               title: "Successfully deleted record!",

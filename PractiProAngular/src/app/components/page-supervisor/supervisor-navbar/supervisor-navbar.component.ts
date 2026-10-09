@@ -1,9 +1,9 @@
-import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
 import { SupervisorSidebarComponent } from '../supervisor-sidebar/supervisor-sidebar.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { JwtService } from '../../../services/jwt.service';
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
+import { SessionService } from '../../../services/session.service';
 
 @Component({
     selector: 'app-supervisor-navbar',
@@ -13,9 +13,10 @@ import { initFlowbite } from 'flowbite';
     styleUrl: './supervisor-navbar.component.css'
 })
 export class SupervisorNavbarComponent {
+  private readonly session = inject(SessionService);
   data: any;
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private jwt: JwtService) {
-    this.data = this.jwt.getUserName();
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    this.data = this.session.userName();
   }
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) initFlowbite();

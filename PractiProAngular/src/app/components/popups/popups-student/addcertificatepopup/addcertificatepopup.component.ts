@@ -1,5 +1,4 @@
-import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, Inject, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -7,6 +6,8 @@ import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SessionService } from '../../../../services/session.service';
+import { SeminarService } from '../../../../services/api/seminar.service';
 
 @Component({
     selector: 'app-addcertificatepopup',
@@ -16,16 +17,17 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
     styleUrl: './addcertificatepopup.component.css'
 })
 export class AddcertificatepopupComponent {
+  private readonly session = inject(SessionService);
+  private readonly seminarApi = inject(SeminarService);
   userId: any
   file: any;
   pdfPreview?: SafeResourceUrl;
   constructor(
-    private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AddcertificatepopupComponent>,
     private changeDetection: ChangeDetectionService,
     private sanitizer: DomSanitizer) {
-    this.userId = this.service.getCurrentUserId();
+    this.userId = this.session.userId();
   }
 
   onFileChange(event: any) {
@@ -50,7 +52,7 @@ export class AddcertificatepopupComponent {
     fileInputs.forEach((fileInput: any) => {
       const file = fileInput.files[0];
       if (file) {
-        this.service.uploadSeminarCertificate(this.data.id, file).subscribe(
+        this.seminarApi.uploadCertificate(this.data.id, file).subscribe(
           response => {
             this.changeDetection.notifyChange(true);
             Swal.fire({

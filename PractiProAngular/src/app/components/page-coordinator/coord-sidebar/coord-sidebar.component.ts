@@ -1,11 +1,11 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CoordClassesComponent } from '../coord-classes/coord-classes.component';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../services/auth.service';
 import { BlockService } from '../../../services/block.service';
 import { Subscription } from 'rxjs';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SessionService } from '../../../services/session.service';
 
 
 @Component({
@@ -16,14 +16,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     styleUrl: './coord-sidebar.component.css'
 })
 export class CoordSidebarComponent implements OnInit, OnDestroy {
-  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
+  private readonly session = inject(SessionService);
+  constructor(private dialog: MatDialog, private blockService: BlockService) { }
 
   selectedBlock: any;
   coordinatorId: any;
   private subscriptions = new Subscription();
 
   ngOnInit(): void {
-    this.coordinatorId = this.service.getCurrentUserId();
+    this.coordinatorId = this.session.userId();
     this.openClassesPopup();
   }
 

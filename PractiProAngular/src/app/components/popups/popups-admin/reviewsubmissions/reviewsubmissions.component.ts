@@ -1,10 +1,10 @@
 
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { saveAs } from 'file-saver';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
+import { SubmissionService } from '../../../../services/api/submission.service';
 
 @Component({
     selector: 'app-reviewsubmissions',
@@ -14,8 +14,8 @@ import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
     styleUrl: './reviewsubmissions.component.css'
 })
 export class ReviewsubmissionsComponent implements OnInit {
-  constructor(private service: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ReviewsubmissionsComponent>, private dialog2: MatDialog) { }
+  private readonly submissionApi = inject(SubmissionService);
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ReviewsubmissionsComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
 
@@ -25,7 +25,7 @@ export class ReviewsubmissionsComponent implements OnInit {
 
   loadData() {
     console.log(`ID: ${this.data.usercode}`);
-    this.service.getSubmissionsByStudent('submissions', this.data.usercode).subscribe(
+    this.submissionApi.list('submissions', this.data.usercode).subscribe(
       (res: any) => {
         this.studentSubmissions = res.payload;
         console.log(this.studentSubmissions);
@@ -37,7 +37,7 @@ export class ReviewsubmissionsComponent implements OnInit {
   }
 
   downloadFile(submissionId: number, submissionName: string) {
-    this.service.getSubmissionFile('submissions', submissionId).subscribe(
+    this.submissionApi.download('submissions', submissionId).subscribe(
       (data: any) => {
         console.log(data);
         saveAs(data, submissionName);
@@ -49,7 +49,7 @@ export class ReviewsubmissionsComponent implements OnInit {
   }
 
   viewFile(submissionId: number) {
-    this.service.getSubmissionFile('submissions', submissionId).subscribe(
+    this.submissionApi.download('submissions', submissionId).subscribe(
       (data: any) => {
         const popup = this.dialog2.open(PdfviewerComponent, {
           enterAnimationDuration: "0ms",

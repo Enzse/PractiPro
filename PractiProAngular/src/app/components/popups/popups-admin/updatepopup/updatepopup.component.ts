@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { UserService } from '../../../../services/api/user.service';
 
 @Component({
     selector: 'app-updatepopup',
@@ -13,7 +13,8 @@ import Swal from 'sweetalert2';
     styleUrl: './updatepopup.component.css'
 })
 export class UpdatepopupComponent implements OnInit {
-  constructor(private builder: FormBuilder, private service: AuthService,
+  private readonly userApi = inject(UserService);
+  constructor(private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<UpdatepopupComponent>) { }
 
   rolelist: any;
@@ -24,7 +25,7 @@ export class UpdatepopupComponent implements OnInit {
   ngOnInit(): void {
     this.userrole = this.data.userrole;
     console.log(this.userrole)
-    this.service.GetAllRoles().subscribe((res: any) => {
+    this.userApi.roles().subscribe((res: any) => {
       if(this.userrole !== 'superadmin'){
         this.rolelist = res.payload.filter((role: any) => !role.code.includes('admin'));
       }else{
@@ -34,7 +35,7 @@ export class UpdatepopupComponent implements OnInit {
 
 
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getUser(this.data.usercode).subscribe((res: any) => {
+      this.userApi.get(this.data.usercode).subscribe((res: any) => {
         this.editdata = res.payload[0]; // Access data from the payload property
         this.updateform.setValue({
           id: this.editdata.id,
@@ -67,7 +68,7 @@ export class UpdatepopupComponent implements OnInit {
 
   updateUser() {
     if (this.updateform.valid) {
-      this.service.Updateuser(this.updateform.value.id, this.updateform.value).subscribe(res => {
+      this.userApi.update(Number(this.updateform.value.id), this.updateform.value as { role: string; isActive: boolean }).subscribe(res => {
         console.log("Updated successfully.");
         this.dialog.close();
       }, error => {
@@ -92,7 +93,7 @@ export class UpdatepopupComponent implements OnInit {
         this.dialog.close();
         const userId = this.data.usercode;
         console.log('Deleting user with ID:', userId);
-        this.service.deleteUser(userId).subscribe(
+        this.userApi.delete(userId).subscribe(
           res => {
             Swal.fire({
               title: "Deleted!",
@@ -110,7 +111,7 @@ export class UpdatepopupComponent implements OnInit {
     });
   }
 
-  // this.service.Updateuser(this.updateform.value.id, this.updateform.value).subscribe(res => {
+  // this.userApi.update(Number(this.updateform.value.id), this.updateform.value as { role: string; isActive: boolean }).subscribe(res => {
   //   console.log("Updated successfully.");
   //   this.dialog.close();
   // }, error => {

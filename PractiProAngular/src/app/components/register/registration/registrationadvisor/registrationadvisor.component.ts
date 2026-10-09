@@ -1,11 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
   Validators,
   AbstractControl,
 } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import Swal from 'sweetalert2';
@@ -13,6 +12,8 @@ import { TermsofserviceComponent } from '../../../popups/popups-registration/ter
 import { MatDialog } from '@angular/material/dialog';
 import { passwordStrengthValidator } from '../../../../validators/password-strength.validator';
 import { emailDomainValidator } from '../../../../validators/email-domain.validator';
+import { AuthService } from '../../../../services/api/auth.service';
+import { Registration } from '../../../../models/user';
 
 @Component({
     selector: 'app-registrationadvisor',
@@ -22,9 +23,9 @@ import { emailDomainValidator } from '../../../../validators/email-domain.valida
     styleUrl: './registrationadvisor.component.css'
 })
 export class RegistrationadvisorComponent implements OnInit {
+  private readonly authApi = inject(AuthService);
   constructor(
     private builder: FormBuilder,
-    private service: AuthService,
     private router: Router,
     private dialog: MatDialog
   ) {}
@@ -57,7 +58,7 @@ export class RegistrationadvisorComponent implements OnInit {
 
   proceedregistration() {
     if (this.registerform.valid) {
-      this.service.proceedRegister(this.registerform.value).subscribe(
+      this.authApi.register(this.registerform.value as Registration).subscribe(
         () => {
           this.router.navigate(['login']);
           Swal.fire({

@@ -1,7 +1,6 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
-import { AuthService } from '../../../services/auth.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,6 +17,8 @@ import { FilterPipe } from '../../../pipes/filter.pipe';
 import { Subscription } from 'rxjs';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.component';
+import { SessionService } from '../../../services/session.service';
+import { SubmissionService } from '../../../services/api/submission.service';
 
 @Component({
     selector: 'app-submission',
@@ -27,6 +28,8 @@ import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.comp
     styleUrl: './submission.component.css'
 })
 export class SubmissionComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly submissionApi = inject(SubmissionService);
   userId: any;
   searchtext: any;
   students: any;
@@ -39,8 +42,8 @@ export class SubmissionComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   selectedTabLabel: string = 'Resume';
   p: number = 1;
-  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
+    this.userId = this.session.userId();
   }
 
 
@@ -86,7 +89,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
       const file = fileInput.files[0];
       if (file) {
         this.subscriptions.add(
-          this.service.uploadSubmission('submissions', this.userId, file, this.selectedTabLabel).subscribe(
+          this.submissionApi.upload('submissions', this.userId, file, this.selectedTabLabel).subscribe(
             response => {
               console.log('File uploaded successfully:', response);
               Swal.fire({
@@ -119,7 +122,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getSubmissionsByStudent('submissions', this.userId).subscribe(res => {
+      this.submissionApi.list('submissions', this.userId).subscribe(res => {
         if (res) {
           this.datalist = res.payload.sort((a: any, b: any) => {
             return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
@@ -189,7 +192,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
 
   downloadFile(submissionId: number, fileName: string) {
     this.subscriptions.add(
-      this.service.getSubmissionFile('submissions', submissionId).subscribe(
+      this.submissionApi.download('submissions', submissionId).subscribe(
         (data: any) => {
           saveAs(data, fileName);
         },
@@ -212,7 +215,7 @@ export class SubmissionComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.deleteSubmission(submissionId, 'submissions').subscribe((res: any) => {
+          this.submissionApi.delete('submissions', submissionId).subscribe((res: any) => {
             Swal.fire({
               title: "Your submission has been deleted",
               icon: "success"

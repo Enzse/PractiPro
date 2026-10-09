@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { AuthService } from '../../../../services/auth.service';
+import { AuthService } from '../../../../services/api/auth.service';
 
 @Component({
     selector: 'app-forgotpassword',
@@ -12,16 +12,17 @@ import { AuthService } from '../../../../services/auth.service';
     styleUrl: './forgotpassword.component.css'
 })
 export class ForgotpasswordComponent {
+  private readonly authApi = inject(AuthService);
   emailForm = this.builder.group({
     email: ['', Validators.compose([Validators.email, Validators.required])]
   });
 
-  constructor(private service: AuthService, private builder: FormBuilder, private dialogRef: MatDialogRef<ForgotpasswordComponent>) { }
+  constructor(private builder: FormBuilder, private dialogRef: MatDialogRef<ForgotpasswordComponent>) { }
 
 
   submitForm() {
     if (this.emailForm.valid) {
-      this.service.resetPasswordToken(this.emailForm.value).subscribe((res: any) => {
+      this.authApi.requestPasswordReset(this.emailForm.value as { email: string }).subscribe((res: any) => {
         Swal.fire({
           title: "Request Sent!",
           icon: "success"

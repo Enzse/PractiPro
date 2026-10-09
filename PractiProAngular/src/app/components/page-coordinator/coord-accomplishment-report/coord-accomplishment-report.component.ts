@@ -1,6 +1,5 @@
-import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
-import { AuthService } from '../../../services/auth.service';
 
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
 import { Subscription } from 'rxjs';
+import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-accomplishment-report',
@@ -22,7 +22,8 @@ import { Subscription } from 'rxjs';
     styleUrl: './coord-accomplishment-report.component.css'
 })
 export class CoordAccomplishmentReportComponent implements OnInit, OnDestroy {
-  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {}
+  private readonly studentApi = inject(StudentService);
+  constructor(private dialog: MatDialog, private blockService: BlockService) {}
   Coordinator: any;
   students: any;  
   studentlist: any;
@@ -46,7 +47,7 @@ export class CoordAccomplishmentReportComponent implements OnInit, OnDestroy {
   loadHeldStudents() {
     this.isLoading = true;
     this.subscriptions.add(
-    this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+    this.studentApi.inClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
       this.studentlist = this.studentlist.filter((student: any) => student.registration_status === 1);
       this.isLoading = false;

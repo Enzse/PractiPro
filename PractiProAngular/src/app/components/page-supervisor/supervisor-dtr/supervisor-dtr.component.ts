@@ -1,14 +1,16 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../services/auth.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subscription, forkJoin, of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { SpvDtrpopupComponent } from '../../popups/popups-supervisor/spv-dtrpopup/spv-dtrpopup.component';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { MediaService } from '../../../services/api/media.service';
 
 @Component({
     selector: 'app-supervisor-dtr',
@@ -18,18 +20,20 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     styleUrls: ['./supervisor-dtr.component.css']
 })
 export class SupervisorDtrComponent implements OnInit {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly mediaApi = inject(MediaService);
   userId: any;
   traineesList$: Observable<any[]>;
   searchtext: any;
   private subscriptions = new Subscription();
 
   constructor(
-    private service: AuthService,
     private dialog: MatDialog,
     private sanitizer: DomSanitizer,
     private changeDetection: ChangeDetectionService
   ) {
-    this.userId = this.service.getCurrentUserId();
+    this.userId = this.session.userId();
     this.traineesList$ = this.loadTraineesWithAvatars();
   }
 
@@ -48,7 +52,7 @@ export class SupervisorDtrComponent implements OnInit {
   }
 
   private loadTraineesWithAvatars(): Observable<any> {
-    return this.service.getStudentsBySupervisor(this.userId).pipe(
+    return this.studentApi.ofSupervisor(this.userId).pipe(
       switchMap((res: any) => {
         if (!res.payload || res.payload.length === 0) {
           return of([]);
@@ -63,7 +67,7 @@ export class SupervisorDtrComponent implements OnInit {
         // Create an array of observables for avatars and pending counts
         const avatarObservables = trainees.map((student: any) => {
           return forkJoin({
-            avatar: this.service.getAvatar(student.id).pipe(
+            avatar: this.mediaApi.avatar(student.id).pipe(
               map((res: any) => {
                 if (res.size > 0) {
                   const url = URL.createObjectURL(res);
@@ -73,7 +77,7 @@ export class SupervisorDtrComponent implements OnInit {
               }),
               catchError(() => of(student))
             ),
-            pendingCount: this.service.checkIfStudentHasPendingSubmission(student.id).pipe(
+            pendingCount: this.studentApi.pendingSubmissions(student.id).pipe(
               map((res: any) => {
                 if (res.payload && res.payload.length > 0) {
                   student.pending_dtr_count = res.payload[0].pending_dtr_count;

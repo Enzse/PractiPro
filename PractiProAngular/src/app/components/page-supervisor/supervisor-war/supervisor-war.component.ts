@@ -1,12 +1,14 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { MatDialog } from '@angular/material/dialog';
-import { AuthService } from '../../../services/auth.service';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Observable, Subscription, catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { SpvWarpopupComponent } from '../../popups/popups-supervisor/spv-warpopup/spv-warpopup.component';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { MediaService } from '../../../services/api/media.service';
 
 @Component({
     selector: 'app-supervisor-war',
@@ -16,12 +18,15 @@ import { SpvWarpopupComponent } from '../../popups/popups-supervisor/spv-warpopu
     styleUrl: './supervisor-war.component.css'
 })
 export class SupervisorWarComponent {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly mediaApi = inject(MediaService);
   userId: any;
   traineesList$: Observable<any[]>;
   searchtext: any;
 
-  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
+    this.userId = this.session.userId();
     this.traineesList$ = this.loadTraineesWithAvatars()
 
     this.traineesList$.subscribe(trainees => {
@@ -33,7 +38,7 @@ export class SupervisorWarComponent {
   }
 
   private loadTraineesWithAvatars(): Observable<any> {
-    return this.service.getStudentsBySupervisor(this.userId).pipe(
+    return this.studentApi.ofSupervisor(this.userId).pipe(
       switchMap((res: any) => {
         if (!res.payload || res.payload.length === 0) {
           return of([]);
@@ -48,7 +53,7 @@ export class SupervisorWarComponent {
         // Create an array of observables for avatars and pending counts
         const avatarObservables = trainees.map((student: any) => {
           return forkJoin({
-            avatar: this.service.getAvatar(student.id).pipe(
+            avatar: this.mediaApi.avatar(student.id).pipe(
               map((res: any) => {
                 if (res.size > 0) {
                   const url = URL.createObjectURL(res);
@@ -58,7 +63,7 @@ export class SupervisorWarComponent {
               }),
               catchError(() => of(student))
             ),
-            pendingCount: this.service.checkIfStudentHasPendingSubmission(student.id).pipe(
+            pendingCount: this.studentApi.pendingSubmissions(student.id).pipe(
               map((res: any) => {
                 if (res.payload && res.payload.length > 0) {
                   student.pending_war_count = res.payload[0].pending_war_count_supervisor;
@@ -86,7 +91,7 @@ export class SupervisorWarComponent {
 
   checkForPending(trainees: any[]) {
     trainees.forEach((trainee: any) => {
-      this.service.checkIfStudentHasPendingSubmission(trainee.id).subscribe((res: any) => {
+      this.studentApi.pendingSubmissions(trainee.id).subscribe((res: any) => {
         // Check if payload exists and access pending_war_count
         if (res.payload && res.payload.length > 0) {
           const pendingCount = res.payload[0].pending_war_count;

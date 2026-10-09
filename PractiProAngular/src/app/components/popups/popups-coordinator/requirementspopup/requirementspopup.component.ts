@@ -1,7 +1,6 @@
 
-import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,6 +13,7 @@ import { FilterPipe } from '../../../../pipes/filter.pipe';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { SubmissionService } from '../../../../services/api/submission.service';
 
 @Component({
     selector: 'app-requirementspopup',
@@ -23,7 +23,8 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     styleUrl: './requirementspopup.component.css'
 })
 export class RequirementspopupComponent implements OnInit, OnDestroy {
-  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService,
+  private readonly submissionApi = inject(SubmissionService);
+  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<RequirementspopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
@@ -45,7 +46,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getSubmissionsByStudent('submissions', this.data.student.id).subscribe(
+      this.submissionApi.list('submissions', this.data.student.id).subscribe(
         (res: any) => {
           this.studentSubmissions = res.payload.sort((a: any, b: any) => {
             return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
@@ -107,7 +108,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
 
   viewFile(submissionId: number) {
     this.subscriptions.add(
-      this.service.getSubmissionFile('submissions', submissionId).subscribe(
+      this.submissionApi.download('submissions', submissionId).subscribe(
         (data: any) => {
           const popup = this.dialog2.open(PdfviewerComponent, {
             enterAnimationDuration: "0ms",
@@ -127,7 +128,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
 
   downloadFile(submissionId: number, submissionName: string) {
     this.subscriptions.add(
-      this.service.getSubmissionFile('submissions', submissionId).subscribe(
+      this.submissionApi.download('submissions', submissionId).subscribe(
         (data: any) => {
           saveAs(data, submissionName);
         },
@@ -149,7 +150,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.deleteSubmission(submissionId, 'submissions').subscribe((res: any) => {
+          this.submissionApi.delete('submissions', submissionId).subscribe((res: any) => {
             Swal.fire({
               title: "The submission has been deleted",
               icon: "success"
@@ -187,7 +188,7 @@ export class RequirementspopupComponent implements OnInit, OnDestroy {
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-      this.service.updateAdvisorApproval('submissions', record.id, updateData).subscribe(
+      this.submissionApi.setAdvisorApproval('submissions', record.id, updateData).subscribe(
         res => {
           this.changeDetection.notifyChange(true);
           Swal.fire({

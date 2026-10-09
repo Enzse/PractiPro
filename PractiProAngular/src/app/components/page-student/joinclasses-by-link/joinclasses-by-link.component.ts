@@ -1,10 +1,12 @@
 
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../../services/auth.service';
 import { FormBuilder } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { ClassJoinService } from '../../../services/api/class-join.service';
 
 @Component({
     selector: 'app-joinclasses-by-link',
@@ -14,16 +16,18 @@ import Swal from 'sweetalert2';
     styleUrl: './joinclasses-by-link.component.css'
 })
 export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly classJoinApi = inject(ClassJoinService);
   private subscriptions = new Subscription();
   token: any;
   status: any;
-  userID: any = this.service.getCurrentUserId();
+  userID: any = this.session.userId();
   tokenData: any;
   student: any;
 
   constructor(
     private builder: FormBuilder,
-    private service: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -37,7 +41,7 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     this.subscriptions.add(
-      this.service.getStudent(this.userID).subscribe((res: any) => {
+      this.studentApi.get(this.userID).subscribe((res: any) => {
         this.student = res.payload[0];
 
         if (this.student.block) {
@@ -45,7 +49,7 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
         }
         else {
           this.subscriptions.add(
-            this.service.getClassJoinToken(this.token).subscribe(
+            this.classJoinApi.checkLink(this.token).subscribe(
               (res: any) => {
                 this.tokenData = res.payload;
                 const joinForm = this.builder.group({
@@ -53,7 +57,7 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
                   token: this.token, // proves the student was given the link
                 })
                 this.subscriptions.add(
-                  this.service.assignClassToStudent(this.userID, joinForm.value).subscribe((res: any) => {
+                  this.studentApi.joinClass(this.userID, joinForm.value as { block_name: string; token: string }).subscribe((res: any) => {
                     this.status = 'valid';
                     Swal.fire({
                       title: `Successfully joined ${this.tokenData.class}!`,

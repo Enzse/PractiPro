@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, FormsModule } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +9,8 @@ import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { SubmissionService } from '../../../../services/api/submission.service';
+import { ReportService } from '../../../../services/api/report.service';
 
 
 @Component({
@@ -20,7 +21,9 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     styleUrl: './finalreportpopup.component.css'
 })
 export class FinalreportpopupComponent implements OnInit, OnDestroy {
-  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService,
+  private readonly submissionApi = inject(SubmissionService);
+  private readonly reportApi = inject(ReportService);
+  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<FinalreportpopupComponent>, private dialog2: MatDialog) { }
 
   submittedReport: any;
@@ -41,7 +44,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getFinalReport(this.data.student.id).subscribe((res: any) => {
+      this.reportApi.finalReportOf(this.data.student.id).subscribe((res: any) => {
         this.submittedReport = res.payload[0];
         this.isLoading = false;
         console.log(this.submittedReport);
@@ -51,7 +54,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-      this.service.updateAdvisorApproval('student_final_reports', record.id, updateData).subscribe(
+      this.submissionApi.setAdvisorApproval('student_final_reports', record.id, updateData).subscribe(
         res => {
           this.changeDetection.notifyChange(true);
           Swal.fire({
@@ -92,7 +95,7 @@ export class FinalreportpopupComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.deleteSubmission(submissionId, 'finalreports').subscribe((res: any) => {
+          this.submissionApi.delete('finalreports', submissionId).subscribe((res: any) => {
             Swal.fire({
               title: "The submission has been deleted",
               icon: "success"

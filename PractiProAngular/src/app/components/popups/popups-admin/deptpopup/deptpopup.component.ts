@@ -1,6 +1,5 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -8,6 +7,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { UserService } from '../../../../services/api/user.service';
+import { ClassService } from '../../../../services/api/class.service';
 
 @Component({
     selector: 'app-deptpopup',
@@ -17,18 +18,20 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     styleUrl: './deptpopup.component.css'
 })
 export class DeptpopupComponent implements OnInit {
-  constructor(private builder: FormBuilder, private service: AuthService,
+  private readonly userApi = inject(UserService);
+  private readonly classApi = inject(ClassService);
+  constructor(private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DeptpopupComponent>) { }
 
   deptlist: any;  
   editdata: any;
 
   ngOnInit(): void {    
-    this.service.getAllDepartments().subscribe(res => {
+    this.userApi.departments().subscribe(res => {
       this.deptlist = res;
     });
     if (this.data.usercode != null && this.data.usercode != '') {
-      this.service.getAdvisors(this.data.usercode).subscribe((res: any) => {
+      this.classApi.coordinator(this.data.usercode).subscribe((res: any) => {
         console.log(this.data.usercode);
         console.log(res.payload);
 
@@ -39,7 +42,7 @@ export class DeptpopupComponent implements OnInit {
         });
       })
 
-      this.service.getUser(this.data.usercode).subscribe((res: any) => {
+      this.userApi.get(this.data.usercode).subscribe((res: any) => {
         this.editdata = res.payload[0]; // Access data from the payload property
         console.log('user:' + this.editdata);
       })
@@ -54,7 +57,7 @@ export class DeptpopupComponent implements OnInit {
 
   updateUser() {
     if (this.departmentform.valid) {
-      this.service.UpdateCoordinator(this.data.usercode, this.departmentform.value).subscribe(res => {
+      this.userApi.updateCoordinatorDepartment(this.data.usercode, this.departmentform.value as { department: string }).subscribe(res => {
         console.log("Updated successfully.");
         this.dialog.close();
       }, error => {

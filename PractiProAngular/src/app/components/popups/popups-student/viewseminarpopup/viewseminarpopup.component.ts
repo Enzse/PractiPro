@@ -1,9 +1,9 @@
-import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { DomSanitizer } from '@angular/platform-browser';
+import { SubmissionService } from '../../../../services/api/submission.service';
 
 @Component({
     selector: 'app-viewseminarpopup',
@@ -13,11 +13,11 @@ import { DomSanitizer } from '@angular/platform-browser';
     styleUrls: ['./viewseminarpopup.component.css']
 })
 export class ViewseminarpopupComponent implements OnInit, OnDestroy {
+  private readonly submissionApi = inject(SubmissionService);
   private subscriptions: Subscription = new Subscription();
   pdfUrl: any;
 
   constructor(
-    private service: AuthService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<ViewseminarpopupComponent>,
     private sanitizer: DomSanitizer
@@ -33,7 +33,7 @@ export class ViewseminarpopupComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getSubmissionFile('student_seminar_certificates', this.data.id).subscribe(
+      this.submissionApi.download('student_seminar_certificates', this.data.id).subscribe(
         (res: Blob) => {
           const url = URL.createObjectURL(res);
           this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);

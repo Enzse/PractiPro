@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
-import { AuthService } from '../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { DocumentationpopupComponent } from '../../popups/popups-coordinator/documentationpopup/documentationpopup.component';
@@ -14,6 +13,7 @@ import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/
 import { SeminarspopupComponent } from '../../popups/popups-coordinator/seminarspopup/seminarspopup.component';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
+import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-seminars',
@@ -23,7 +23,8 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     styleUrl: './coord-seminars.component.css'
 })
 export class CoordSeminarsComponent implements OnInit, OnDestroy {
-  constructor(private changeDetection: ChangeDetectionService, private service: AuthService, private dialog: MatDialog, private blockService: BlockService) { }
+  private readonly studentApi = inject(StudentService);
+  constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, private blockService: BlockService) { }
 
   Coordinator: any;
   students: any;
@@ -57,7 +58,7 @@ export class CoordSeminarsComponent implements OnInit, OnDestroy {
   loadHeldStudents() {
     this.isLoading = true;
     this.subscriptions.add(
-    this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+    this.studentApi.inClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
       this.studentlist = this.studentlist.filter((student: any) => student.registration_status === 1);
       this.isLoading = false;

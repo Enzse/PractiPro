@@ -1,12 +1,12 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
-import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import Swal from 'sweetalert2';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { passwordStrengthValidator } from '../../../validators/password-strength.validator';
 import { passwordMatchValidator } from '../../../validators/password-match.validator';
+import { AuthService } from '../../../services/api/auth.service';
 @Component({
     selector: 'app-reset-password-form',
     imports: [ReactiveFormsModule, RouterLink, RouterLinkActive, MatTooltipModule],
@@ -15,6 +15,7 @@ import { passwordMatchValidator } from '../../../validators/password-match.valid
     styleUrl: './reset-password-form.component.css'
 })
 export class ResetPasswordFormComponent implements OnInit {
+  private readonly authApi = inject(AuthService);
   passwordForm = this.builder.group({
     password: this.builder.control('', [Validators.required, passwordStrengthValidator]),
     repeatPassword: this.builder.control('', [Validators.required, passwordMatchValidator]),
@@ -23,7 +24,7 @@ export class ResetPasswordFormComponent implements OnInit {
   token: string;
   status: any;
 
-  constructor(private builder: FormBuilder, private service: AuthService, private router: Router, private route: ActivatedRoute) {
+  constructor(private builder: FormBuilder, private router: Router, private route: ActivatedRoute) {
     this.token = this.route.snapshot.queryParams['token'];    
     // alert(this.token);
     // Swal.fire({
@@ -32,7 +33,7 @@ export class ResetPasswordFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.getResetPasswordToken(this.token).subscribe((res: any) => {
+    this.authApi.checkResetToken(this.token).subscribe((res: any) => {
       this.status = 'valid';
       this.passwordForm.patchValue({
         token: this.token
@@ -53,7 +54,7 @@ export class ResetPasswordFormComponent implements OnInit {
 
   proceedReset() {
     if (this.passwordForm.valid) {
-      this.service.resetPassword(this.passwordForm.value).subscribe(() => {
+      this.authApi.resetPassword(this.passwordForm.value as { token: string; password: string }).subscribe(() => {
         this.router.navigate(['login']);
         Swal.fire({
           title: "Password Reset Successful!",

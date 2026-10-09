@@ -1,6 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { AuthService } from '../../../services/auth.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { EditinformationpopupComponent } from '../../popups/popups-student/editinformationpopup/editinformationpopup.component';
@@ -8,6 +7,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { MediaService } from '../../../services/api/media.service';
 
 @Component({
     selector: 'app-profile',
@@ -17,12 +19,15 @@ import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
     styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly mediaApi = inject(MediaService);
   studentProfile: any[] = [];
-  userId = this.service.getCurrentUserId();
+  userId = this.session.userId();
   avatarUrl?: SafeUrl;
 
-  constructor(private service: AuthService, private dialog: MatDialog, private sanitizer: DomSanitizer) {
-    this.userId = this.service.getCurrentUserId();    
+  constructor(private dialog: MatDialog, private sanitizer: DomSanitizer) {
+    this.userId = this.session.userId();    
   }
 
 
@@ -55,7 +60,7 @@ export class ProfileComponent implements OnInit {
         }
   
         console.log(this.file);
-        this.service.uploadAvatar(this.userId, this.file).subscribe((data: any) => {
+        this.mediaApi.uploadAvatar(this.userId, this.file).subscribe((data: any) => {
           console.log("File Uploaded Successfully");
           this.loadAvatar();
           this.resetInput();
@@ -76,7 +81,7 @@ export class ProfileComponent implements OnInit {
   loadAvatar() {
     console.log("Loading Avatar...");
     if (this.userId) {
-      this.service.getAvatar(this.userId).subscribe(
+      this.mediaApi.avatar(this.userId).subscribe(
         blob => {          
           if (blob.size > 0) { 
             const url = URL.createObjectURL(blob);
@@ -100,7 +105,7 @@ export class ProfileComponent implements OnInit {
 
   loadInfo() {
     if (this.userId) {
-      this.service.getStudentProfile(this.userId).subscribe(
+      this.studentApi.get(this.userId).subscribe(
         (res: any) => {
           this.studentProfile = res.payload;
         },

@@ -1,6 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
-import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
+import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-finalreport',
@@ -23,8 +23,9 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     styleUrl: './coord-finalreport.component.css'
 })
 export class CoordFinalreportComponent implements OnInit, OnDestroy {
+  private readonly studentApi = inject(StudentService);
 
-  constructor(private changeDetection: ChangeDetectionService, private service: AuthService, private dialog: MatDialog, private blockService: BlockService) {
+  constructor(private changeDetection: ChangeDetectionService, private dialog: MatDialog, private blockService: BlockService) {
   }
 
   Coordinator: any;
@@ -57,7 +58,7 @@ export class CoordFinalreportComponent implements OnInit, OnDestroy {
   loadHeldStudents() {
     this.isLoading = true;
     this.subscriptions.add(
-    this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+    this.studentApi.inClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
       this.studentlist = this.studentlist.filter((student: any) => student.TotalHoursWorked >= 200);
       this.isLoading = false;

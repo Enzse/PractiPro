@@ -1,6 +1,5 @@
 
-import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
@@ -12,6 +11,8 @@ import { WarAccordionComponent } from '../../../widgets/accordion/war-accordion/
 import { TimePipe } from '../../../../pipes/time.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { SubmissionService } from '../../../../services/api/submission.service';
+import { WarService } from '../../../../services/api/war.service';
 
 
 
@@ -23,7 +24,9 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     styleUrl: './warpopupcomponent.component.css'
 })
 export class WarpopupcomponentComponent implements OnInit, OnDestroy {
-  constructor(private service: AuthService, private changeDetection: ChangeDetectionService,
+  private readonly submissionApi = inject(SubmissionService);
+  private readonly warApi = inject(WarService);
+  constructor(private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<WarpopupcomponentComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
@@ -43,7 +46,7 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
 
   loadRecords() {
     this.subscriptions.add(
-      this.service.getWarRecords(this.data.student.id, null).subscribe((res: any) => {
+      this.warApi.records(this.data.student.id, null).subscribe((res: any) => {
         this.recordsList = res.payload.filter((record: any) => record.isSubmitted === 1 && record.supervisor_approval === 'Approved')
         this.recordsList = this.recordsList.sort((a: any, b: any) => {
           return b.week - a.week
@@ -58,7 +61,7 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
   loadWarActivities() {
     this.subscriptions.add(
       this.recordsList.forEach(records => {
-        this.service.getWarActivities(records.id).subscribe((res: any) => {
+        this.warApi.activities(records.id).subscribe((res: any) => {
           res.payload.forEach((activity: any) => {
             this.recordActivities.push(activity)
           });
@@ -75,7 +78,7 @@ export class WarpopupcomponentComponent implements OnInit, OnDestroy {
   onStatusChange(record: any) {
     const updateData = { advisor_approval: record.advisor_approval };
     this.subscriptions.add(
-      this.service.updateAdvisorApproval('student_war_records', record.id, updateData).subscribe(
+      this.submissionApi.setAdvisorApproval('student_war_records', record.id, updateData).subscribe(
         res => {
           this.changeDetection.notifyChange(true);
           Swal.fire({

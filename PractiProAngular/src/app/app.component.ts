@@ -1,12 +1,10 @@
-import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
 import { LoginComponent } from './components/login/login.component';
 import { Router } from '@angular/router';
-import { AuthService } from './services/auth.service';
 import { isPlatformBrowser } from '@angular/common';
-import { JwtService } from './services/jwt.service';
 
 
 @Component({
@@ -18,8 +16,8 @@ import { JwtService } from './services/jwt.service';
 })
 export class AppComponent implements OnInit {
   title = 'PractiProAngular';
-  constructor(private router: Router, private service: AuthService, 
-    @Inject(PLATFORM_ID) private platformId: Object, private jwtservice: JwtService) {
+  constructor(private router: Router, 
+    @Inject(PLATFORM_ID) private platformId: Object) {
 
   }
 

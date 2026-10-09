@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
+import { SessionService } from '../../../services/session.service';
 
 @Component({
     selector: 'app-supervisor-sidebar',
@@ -10,13 +10,14 @@ import { AuthService } from '../../../services/auth.service';
     styleUrl: './supervisor-sidebar.component.css'
 })
 export class SupervisorSidebarComponent {
-  constructor(private service: AuthService) { }
+  private readonly session = inject(SessionService);
+  constructor() { }
 
   selectedStudent: any;
   supervisorId: any;
 
   ngOnInit(): void {
-    this.supervisorId = this.service.getCurrentUserId();
+    this.supervisorId = this.session.userId();
     console.log("ID: " + this.supervisorId);
   }
   

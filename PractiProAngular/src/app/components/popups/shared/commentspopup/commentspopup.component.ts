@@ -1,9 +1,11 @@
-import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../../../services/auth.service';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { SessionService } from '../../../../services/session.service';
+import { UserService } from '../../../../services/api/user.service';
+import { CommentService } from '../../../../services/api/comment.service';
 
 @Component({
     selector: 'app-commentspopup',
@@ -13,6 +15,9 @@ import Swal from 'sweetalert2';
     styleUrl: './commentspopup.component.css'
 })
 export class CommentspopupComponent implements OnInit {
+  private readonly session = inject(SessionService);
+  private readonly userApi = inject(UserService);
+  private readonly commentApi = inject(CommentService);
 
   fileID: number;
   fileName: string;
@@ -21,7 +26,7 @@ export class CommentspopupComponent implements OnInit {
   userName: any;
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private builder: FormBuilder, private dialog: MatDialogRef<CommentspopupComponent>, private service: AuthService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private builder: FormBuilder, private dialog: MatDialogRef<CommentspopupComponent>) {
     console.log(data);
     this.fileID = data.submissionID;
     this.fileName = data.fileName;
@@ -32,8 +37,8 @@ export class CommentspopupComponent implements OnInit {
   ngOnInit(): void {
     this.loadData();
 
-    const currentUser = this.service.getCurrentUserId();
-    this.service.getUser(currentUser).subscribe((res: any) => {
+    const currentUser = this.session.requireUserId();
+    this.userApi.get(currentUser).subscribe((res: any) => {
       this.user = res.payload[0];
       this.userName = `${this.user.firstName} ${this.user.lastName}`;
       this.commentForm.patchValue({
@@ -43,7 +48,7 @@ export class CommentspopupComponent implements OnInit {
   }
 
   loadData() {
-    this.service.getSubmissionComments(this.data.table, this.fileID).subscribe((res: any) => {
+    this.commentApi.list(this.data.table, this.fileID).subscribe((res: any) => {
       this.commentsList = res.payload.sort((a: any, b: any) => {
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       });
@@ -57,7 +62,7 @@ export class CommentspopupComponent implements OnInit {
 
   submitComment() {
     if (this.commentForm.valid) {
-      this.service.addComment(this.data.table, this.fileID, this.commentForm.value).subscribe((res: any) => {
+      this.commentApi.add(this.data.table, this.fileID, this.commentForm.value as { comments: string }).subscribe((res: any) => {
         Swal.fire({
           title: "Comment Submitted!",
           icon: "success"

@@ -1,9 +1,11 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
+import { SessionService } from '../../../../services/session.service';
+import { StudentService } from '../../../../services/api/student.service';
+import { StudentProfileUpdate } from '../../../../models/student';
 
 
 @Component({
@@ -14,9 +16,11 @@ import Swal from 'sweetalert2';
     styleUrl: './editinformationpopup.component.css'
 })
 export class EditinformationpopupComponent implements OnInit {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
 
   //Constructor
-  constructor(private builder: FormBuilder, private service: AuthService,
+  constructor(private builder: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditinformationpopupComponent>) { }
 
 
@@ -24,9 +28,9 @@ export class EditinformationpopupComponent implements OnInit {
   //This dynamically displays the data according to changes.
   editdata?: any;
   ngOnInit(): void {
-    const userId = this.service.getCurrentUserId();
+    const userId = this.session.userId();
     if (userId) {
-      this.service.getStudent(userId).subscribe((res: any) => {
+      this.studentApi.get(userId).subscribe((res: any) => {
         this.editdata = res.payload[0];
         this.editForm.setValue({
           firstName: this.editdata.firstName,
@@ -58,7 +62,7 @@ export class EditinformationpopupComponent implements OnInit {
   //This is for the Submit button functionality.
   editInformation() {
     if (this.editForm.valid) {
-      this.service.editStudentInfo(this.service.getCurrentUserId(), this.editForm.value).subscribe(res => {
+      this.studentApi.update(this.session.requireUserId(), this.editForm.value as StudentProfileUpdate).subscribe(res => {
         console.log("Updated successfully.");
         this.dialog.close();
       })

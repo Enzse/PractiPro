@@ -1,6 +1,5 @@
 
-import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
@@ -10,6 +9,8 @@ import { Subscription } from 'rxjs';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { WarAccordionComponent } from '../../../widgets/accordion/war-accordion/war-accordion.component';
 import { TimePipe } from '../../../../pipes/time.pipe';
+import { SubmissionService } from '../../../../services/api/submission.service';
+import { WarService } from '../../../../services/api/war.service';
 
 
 @Component({
@@ -20,8 +21,9 @@ import { TimePipe } from '../../../../pipes/time.pipe';
     styleUrl: './spv-warpopup.component.css'
 })
 export class SpvWarpopupComponent implements OnInit, OnDestroy {
-  constructor(private service: AuthService,
-    @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SpvWarpopupComponent>, private dialog2: MatDialog) { }
+  private readonly submissionApi = inject(SubmissionService);
+  private readonly warApi = inject(WarService);
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SpvWarpopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];
   isLoading: boolean = true;
@@ -40,7 +42,7 @@ export class SpvWarpopupComponent implements OnInit, OnDestroy {
 
   loadRecords() {
     this.subscriptions.add(
-      this.service.getWarRecords(this.data.student.id, null).subscribe((res: any) => {
+      this.warApi.records(this.data.student.id, null).subscribe((res: any) => {
         this.recordsList = res.payload.filter((record: any) => record.isSubmitted === 1)
         this.recordsList = this.recordsList.sort((a: any, b: any) => {
           return b.week - a.week
@@ -55,7 +57,7 @@ export class SpvWarpopupComponent implements OnInit, OnDestroy {
   loadWarActivities() {
     this.subscriptions.add(
       this.recordsList.forEach(records => {
-        this.service.getWarActivities(records.id).subscribe((res: any) => {
+        this.warApi.activities(records.id).subscribe((res: any) => {
           res.payload.forEach((activity: any) => {
             this.recordActivities.push(activity)
           });
@@ -72,7 +74,7 @@ export class SpvWarpopupComponent implements OnInit, OnDestroy {
   onStatusChange(record: any) {
     const updateData = { supervisor_approval: record.supervisor_approval };
     this.subscriptions.add(
-      this.service.updateSupervisorApproval('student_war_records', record.id, updateData).subscribe(
+      this.submissionApi.setSupervisorApproval('student_war_records', record.id, updateData).subscribe(
         res => {
           Swal.fire({
             toast: true,

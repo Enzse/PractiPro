@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -12,6 +11,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { FormsModule } from '@angular/forms';
 import { TimePipe } from '../../../pipes/time.pipe';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { DtrService } from '../../../services/api/dtr.service';
 
 @Component({
     selector: 'app-dtr',
@@ -21,6 +23,9 @@ import { TimePipe } from '../../../pipes/time.pipe';
     styleUrl: './dtr.component.css'
 })
 export class DtrComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly dtrApi = inject(DtrService);
   searchtext: any;
   public time$: Observable<Date>;
   public dateToday$: Observable<string>;
@@ -33,8 +38,8 @@ export class DtrComponent implements OnInit, OnDestroy {
   itemsPerPage: number = 7
 
 
-  constructor(private service: AuthService, private dialog: MatDialog) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private dialog: MatDialog) {
+    this.userId = this.session.userId();
     this.time$ = timer(0, 1000).pipe(
       map(() => new Date()),
       shareReplay(1)
@@ -61,9 +66,9 @@ export class DtrComponent implements OnInit, OnDestroy {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getDtrs(this.userId).subscribe((res: any) => {
+      this.dtrApi.forStudent(this.userId).subscribe((res: any) => {
         this.datalist = res.payload;
-        this.service.getStudentOjtInfo(this.userId).subscribe((res: any) => {
+        this.studentApi.ojtStatus(this.userId).subscribe((res: any) => {
           const hireDate = res.payload[0].hire_date
           this.datalist = this.addWeekNumberToRecords(this.datalist, hireDate);
           this.origlist = this.datalist;
@@ -110,7 +115,7 @@ export class DtrComponent implements OnInit, OnDestroy {
 
   clockIn() {
     this.subscriptions.add(
-      this.service.dtrClockIn(this.userId, null).subscribe((res: any) => {
+      this.dtrApi.clockIn(this.userId).subscribe((res: any) => {
         this.loadData();
         Swal.fire({
           title: "Successfully clocked in for today!",
@@ -130,9 +135,9 @@ export class DtrComponent implements OnInit, OnDestroy {
 
   clockOut() {
     this.subscriptions.add(
-      this.service.dtrClockOut(this.userId, null).subscribe((res: any) => {
+      this.dtrApi.clockOut(this.userId).subscribe((res: any) => {
         this.subscriptions.add(
-          this.service.clearObsoleteDtrs(this.userId).subscribe((res: any) => {
+          this.dtrApi.clearShortRecords(this.userId).subscribe((res: any) => {
             console.log(res);
             if (res.status.message.includes("Successfully deleted")) {
               Swal.fire({

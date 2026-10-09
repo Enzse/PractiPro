@@ -1,5 +1,4 @@
-import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +17,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
 import { RequirementspopupComponent } from '../../popups/popups-coordinator/requirementspopup/requirementspopup.component';
+import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-admin-students',
@@ -27,12 +27,13 @@ import { RequirementspopupComponent } from '../../popups/popups-coordinator/requ
     styleUrl: './admin-students.component.css'
 })
 export class AdminStudentsComponent implements OnInit, OnDestroy {
+  private readonly studentApi = inject(StudentService);
   studentlist: any;
   origlist: any;
   searchtext: any;
   p: number = 1; /* starting no. of the list */
   private subscription = new Subscription();
-  constructor(private service: AuthService, private router: Router, private dialog: MatDialog) { }
+  constructor(private router: Router, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.Loaduser();
@@ -43,7 +44,7 @@ export class AdminStudentsComponent implements OnInit, OnDestroy {
 
   Loaduser() {
     this.subscription.add(
-      this.service.getStudent().subscribe(res => {
+      this.studentApi.all().subscribe(res => {
         this.studentlist = res.payload.sort((a: any, b: any) => b.id - a.id);
         this.origlist = this.studentlist;
       }));

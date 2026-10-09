@@ -1,14 +1,14 @@
 import { CanActivateChildFn, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { SessionService } from '../services/session.service';
 
 export const coordGuard: CanActivateChildFn = (childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
+  const session = inject(SessionService);
 
   const router: Router = inject(Router);
-  const service: AuthService = inject(AuthService);
 
-  if (service.IsLoggedIn()) {
-    if (service.GetUserRole() === 'advisor') {
+  if (session.isLoggedIn()) {
+    if (session.role() === 'advisor') {
       return true;
     }
     else {

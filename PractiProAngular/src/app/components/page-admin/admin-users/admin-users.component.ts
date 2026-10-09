@@ -1,5 +1,4 @@
-import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../services/auth.service';
+import { Component, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { UpdatepopupComponent } from '../../popups/popups-admin/updatepopup/updatepopup.component';
@@ -12,6 +11,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
+import { SessionService } from '../../../services/session.service';
+import { UserService } from '../../../services/api/user.service';
 
 @Component({
     selector: 'app-admin-users',
@@ -21,6 +22,8 @@ import { Subscription } from 'rxjs';
     styleUrl: './admin-users.component.css'
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly userApi = inject(UserService);
   private subscription = new Subscription();
   userId: any;
   searchtext: any; //FOR SEARCH FILTER
@@ -28,8 +31,8 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   origlist: any;
   userrole: any; //ROLE OF USER THE IS LOGGED IN (to check if admin / superadmin)
   p: number = 1; /* starting no. of the list */
-  constructor(private service: AuthService, private dialog: MatDialog) {
-    this.userId = this.service.getCurrentUserId();
+  constructor(private dialog: MatDialog) {
+    this.userId = this.session.userId();
   }
 
 
@@ -37,7 +40,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   //This block executes upon opening this page:
   ngOnInit(): void {
     this.loadUsers();
-    this.userrole = this.service.GetUserRole();
+    this.userrole = this.session.role();
   }
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -45,7 +48,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   //This block fetches ALL users from the database:
   loadUsers() {
-    this.service.getAllUsers().subscribe((res: any) => {
+    this.userApi.all().subscribe((res: any) => {
       //The "res" variable automatically contains an object that contains the payload(payload contains fetched data).
       this.userlist = res.payload
       .filter((user: any) => user.id !== this.userId && user.role !== "admin" && user.role !== "superadmin")
@@ -84,7 +87,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
   // Self-registered coordinators and supervisors can't log in until approved.
   approveUser(user: any) {
     this.subscription.add(
-      this.service.approveUser(user.id).subscribe(() => {
+      this.userApi.approve(user.id).subscribe(() => {
         Swal.fire({ title: `${user.firstName} ${user.lastName} can now log in.`, icon: "success" });
         this.loadUsers();
       }));
@@ -100,7 +103,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscription.add(
-          this.service.deleteUser(user.id).subscribe(() => this.loadUsers()));
+          this.userApi.delete(user.id).subscribe(() => this.loadUsers()));
       }
     });
   }
@@ -134,7 +137,7 @@ export class AdminUsersComponent implements OnInit, OnDestroy {
 
   //"Update" button restriction
   isUpdateButtonVisible(userRole: string): boolean {
-    const currentUserRole = this.service.GetUserRole();
+    const currentUserRole = this.session.role();
     return (currentUserRole === 'superadmin' && userRole !== 'superadmin') || (currentUserRole === 'admin' && userRole !== 'admin' && userRole !== 'superadmin');
   }
 

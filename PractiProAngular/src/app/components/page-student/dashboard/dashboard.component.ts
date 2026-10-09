@@ -1,13 +1,15 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { ViewhiringrequestsComponent } from '../../popups/popups-student/viewhiringrequests/viewhiringrequests.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { TimePipe } from '../../../pipes/time.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SessionService } from '../../../services/session.service';
+import { StudentService } from '../../../services/api/student.service';
+import { CompanyService } from '../../../services/api/company.service';
 
 @Component({
     selector: 'app-dashboard',
@@ -17,8 +19,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+  private readonly session = inject(SessionService);
+  private readonly studentApi = inject(StudentService);
+  private readonly companyApi = inject(CompanyService);
 
-  constructor(private service: AuthService, private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog) { }
   registrationStatus: any;
   studentRequirements: any[] = [];
   student: any;
@@ -26,7 +31,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   hiringRequests: any[] = [];
   isCompleted: boolean = false;
   private subscriptions = new Subscription();
-  userId: any = this.service.getCurrentUserId();
+  userId: any = this.session.userId();
   schedules = [
     { day_of_week: 'Monday', start_time: '', end_time: '' },
     { day_of_week: 'Tuesday', start_time: '', end_time: '' },
@@ -49,7 +54,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   loadSchedules() {
     this.subscriptions.add(
-      this.service.getStudentSchedules(this.userId).subscribe((res: any) => {
+      this.companyApi.schedulesOf(this.userId).subscribe((res: any) => {
         this.schedules = res.payload
       }));
   }
@@ -58,7 +63,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     if (this.userId) {
       this.subscriptions.add(
-        this.service.getStudentOjtInfo(this.userId).subscribe(
+        this.studentApi.ojtStatus(this.userId).subscribe(
           (res: any) => {
             this.registrationStatus = res.payload[0].registration_status;
             this.student = res.payload[0];
@@ -72,7 +77,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
             if (!this.registrationStatus)
               this.subscriptions.add(
-                this.service.getStudentRequirements(this.userId).subscribe(
+                this.studentApi.requirements(this.userId).subscribe(
                   (res: any) => {
                     this.studentRequirements = res.payload;
                   },
@@ -82,7 +87,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
                 ));
             if (this.registrationStatus && !this.student.company_id)
               this.subscriptions.add(
-                this.service.getHiringRequests(this.userId).subscribe(
+                this.companyApi.hiringRequestsOf(this.userId).subscribe(
                   (res: any) => {
                     this.hiringRequests = res.payload;
                   }
@@ -90,7 +95,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             if (this.registrationStatus && this.student.company_id)
               console.log(this.userId);
             this.subscriptions.add(
-              this.service.getStudentJob(this.userId).subscribe((res: any) => {
+              this.companyApi.jobOf(this.userId).subscribe((res: any) => {
                 this.studentjob = res.payload[0];
               }
               ));

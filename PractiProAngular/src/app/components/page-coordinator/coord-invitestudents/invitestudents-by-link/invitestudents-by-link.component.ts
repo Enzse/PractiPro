@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { BlockService } from '../../../../services/block.service';
 import { Subscription } from 'rxjs';
 
 import Swal from 'sweetalert2';
+import { ClassJoinService } from '../../../../services/api/class-join.service';
 
 @Component({
     selector: 'app-invitestudents-by-link',
@@ -14,11 +14,11 @@ import Swal from 'sweetalert2';
     styleUrl: './invitestudents-by-link.component.css'
 })
 export class InvitestudentsByLinkComponent implements OnInit, OnDestroy {
+  private readonly classJoinApi = inject(ClassJoinService);
   link: any;
   private subscriptions = new Subscription();
   constructor(
     private builder: FormBuilder,
-    private service: AuthService,
     private blockService: BlockService
   ) { }
 
@@ -40,7 +40,7 @@ export class InvitestudentsByLinkComponent implements OnInit, OnDestroy {
       class: block
     })
     this.subscriptions.add(
-      this.service.createClassJoinLink(classForm.value).subscribe((res: any) => {
+      this.classJoinApi.createLink(classForm.value as { class: string }).subscribe((res: any) => {
         this.link = res.payload;
       }))
   }

@@ -1,15 +1,16 @@
-import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 
-import { JwtService } from '../../services/jwt.service';
 import Swal from 'sweetalert2';
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
 import { MatDialog } from '@angular/material/dialog';
 import { ChooseRolePopupComponent } from '../popups/popups-registration/choose-role-popup/choose-role-popup.component';
 import { ForgotpasswordComponent } from '../popups/popups-registration/forgotpassword/forgotpassword.component';
+import { SessionService } from '../../services/session.service';
+import { AuthService } from '../../services/api/auth.service';
+import { Credentials } from '../../models/user';
 
 @Component({
     selector: 'app-login',
@@ -19,10 +20,12 @@ import { ForgotpasswordComponent } from '../popups/popups-registration/forgotpas
     styleUrl: './login.component.css'
 })
 export class LoginComponent {
+  private readonly session = inject(SessionService);
+  private readonly authApi = inject(AuthService);
   returnUrl: any
-  constructor(private route: ActivatedRoute, private builder: FormBuilder, private service: AuthService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private jwtservice: JwtService, private dialog: MatDialog) {
+  constructor(private route: ActivatedRoute, private builder: FormBuilder, private router: Router, @Inject(PLATFORM_ID) private platformId: Object, private dialog: MatDialog) {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
-    sessionStorage.clear();
+    this.session.clear();
   }
 
   ngOnInit(): void {
@@ -38,15 +41,15 @@ export class LoginComponent {
 
   onLogin2() {
 
-    this.service.proceedLogin(this.loginform.value).subscribe((res: any) => {
+    this.authApi.login(this.loginform.value as Credentials).subscribe((res: any) => {
       if (res.token) {
-        sessionStorage.setItem('token', res.token);
+        this.session.saveToken(res.token);
 
         if (this.returnUrl) {
           this.router.navigateByUrl(this.returnUrl);
         }
         else {
-          switch (this.jwtservice.getUserRole()) {
+          switch (this.session.role()) {
             case 'admin':
             case 'superadmin':
               this.router.navigate(['admin-users']);

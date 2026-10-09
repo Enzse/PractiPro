@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
-import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { FinalreportpopupComponent } from '../../popups/popups-coordinator/finalreportpopup/finalreportpopup.component';
@@ -14,6 +13,7 @@ import { CoordEvaluationspopupComponent } from '../../popups/popups-coordinator/
 import { ChangeDetectionService } from '../../../services/shared/change-detection.service';
 import { Subscription } from 'rxjs';
 import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/viewprofilepopup.component';
+import { StudentService } from '../../../services/api/student.service';
 
 @Component({
     selector: 'app-coord-evaluations',
@@ -23,8 +23,9 @@ import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/
     styleUrl: './coord-evaluations.component.css'
 })
 export class CoordEvaluationsComponent implements OnInit, OnDestroy {
+  private readonly studentApi = inject(StudentService);
 
-  constructor(private service: AuthService, private dialog: MatDialog, private blockService: BlockService, private changeDetection: ChangeDetectionService) {
+  constructor(private dialog: MatDialog, private blockService: BlockService, private changeDetection: ChangeDetectionService) {
   }
 
   Coordinator: any;
@@ -57,7 +58,7 @@ export class CoordEvaluationsComponent implements OnInit, OnDestroy {
   loadHeldStudents() {
     this.isLoading = true;
     this.subscriptions.add(
-    this.service.getAllStudentsFromClass(this.currentBlock).subscribe(res => {
+    this.studentApi.inClass(this.currentBlock).subscribe(res => {
       this.studentlist = res.payload;
       this.studentlist = this.studentlist.filter((student: any) => student.TotalHoursWorked >= 200);
       this.isLoading = false;

@@ -1,10 +1,10 @@
 
-import { Component, OnDestroy, OnInit, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ChartComponent } from '../../../shared/chart/chart.component';
 import { ChartOptions } from 'chart.js';
-import { AuthService } from '../../../../services/auth.service';
 import { Subscription, map } from 'rxjs';
 import { BlockService } from '../../../../services/block.service';
+import { ReportService } from '../../../../services/api/report.service';
 
 @Component({
     selector: 'app-analytics-performanceevaluation',
@@ -14,6 +14,7 @@ import { BlockService } from '../../../../services/block.service';
     styleUrl: './analytics-performanceevaluation.component.css'
 })
 export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestroy {
+  private readonly reportApi = inject(ReportService);
   studentlist: any[] = [];
   data: any;
   private subscriptions = new Subscription();
@@ -119,7 +120,7 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
   p4q1: any;
 
   currentBlock: any;
-  constructor(private service: AuthService, private blockService: BlockService) {
+  constructor(private blockService: BlockService) {
   }
 
   ngOnInit() {
@@ -138,7 +139,7 @@ export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestro
 
   getPerformanceEvaluationAnalytics(block: any) {
     this.subscriptions.add(
-      this.service.getPerformanceEvaluationAnalytics(block).subscribe((res: any) => {
+      this.reportApi.evaluationAnalytics(block).subscribe((res: any) => {
         this.responseData = res.payload[0];
         console.log(this.responseData)
 

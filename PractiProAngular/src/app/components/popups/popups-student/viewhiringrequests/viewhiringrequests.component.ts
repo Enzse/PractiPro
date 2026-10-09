@@ -1,11 +1,12 @@
-import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, Inject, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 import { Subscription } from 'rxjs';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { CompanyService } from '../../../../services/api/company.service';
+import { MediaService } from '../../../../services/api/media.service';
 
 @Component({
     selector: 'app-viewhiringrequests',
@@ -15,9 +16,11 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     styleUrl: './viewhiringrequests.component.css'
 })
 export class ViewhiringrequestsComponent implements OnInit {
+  private readonly companyApi = inject(CompanyService);
+  private readonly mediaApi = inject(MediaService);
   datalist: any[] = []
   private subscriptions = new Subscription();
-  constructor(private changeDetection: ChangeDetectionService, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewhiringrequestsComponent>, private sanitizer: DomSanitizer) {
+  constructor(private changeDetection: ChangeDetectionService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewhiringrequestsComponent>, private sanitizer: DomSanitizer) {
 
   }
 
@@ -31,13 +34,13 @@ export class ViewhiringrequestsComponent implements OnInit {
 
   loadData() {
     this.subscriptions.add(
-      this.service.getHiringRequests(this.data.student_id).subscribe((res: any) => {
+      this.companyApi.hiringRequestsOf(this.data.student_id).subscribe((res: any) => {
         this.datalist = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
         this.subscriptions.add(
           this.datalist.forEach((company: any) => {
-            this.service.getLogo(company.company_id).subscribe((res: any) => {
+            this.mediaApi.logo(company.company_id).subscribe((res: any) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 company.avatar = this.sanitizer.bypassSecurityTrustUrl(url);
@@ -59,11 +62,11 @@ export class ViewhiringrequestsComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.addStudentToCompany(request).subscribe((res: any) => {
+          this.companyApi.addStudent(request).subscribe((res: any) => {
             this.changeDetection.notifyChange(true);
             Swal.fire("Success", "You have successfully joined the company", "success");
             this.subscriptions.add(
-              this.service.deleteHiringRequest(request.id).subscribe((res: any) => {
+              this.companyApi.deleteHiringRequest(request.id).subscribe((res: any) => {
                 this.dialog.close();
               }));
           }, error => {
@@ -84,7 +87,7 @@ export class ViewhiringrequestsComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.deleteHiringRequest(id).subscribe((res: any) => {
+          this.companyApi.deleteHiringRequest(id).subscribe((res: any) => {
             this.loadData();
           }));
       }

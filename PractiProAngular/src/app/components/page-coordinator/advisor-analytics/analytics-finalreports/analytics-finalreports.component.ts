@@ -1,10 +1,10 @@
 
-import { Component, OnDestroy, OnInit, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ChartComponent } from '../../../shared/chart/chart.component';
 import { ChartOptions } from 'chart.js';
-import { AuthService } from '../../../../services/auth.service';
 import { Subscription, map } from 'rxjs';
 import { BlockService } from '../../../../services/block.service';
+import { ReportService } from '../../../../services/api/report.service';
 
 @Component({
     selector: 'app-analytics-finalreports',
@@ -14,6 +14,7 @@ import { BlockService } from '../../../../services/block.service';
     styleUrl: './analytics-finalreports.component.css'
 })
 export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
+  private readonly reportApi = inject(ReportService);
   studentlist: any[] = [];
   data: any;
   private subscriptions = new Subscription();
@@ -100,7 +101,7 @@ export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
   p3q1: any;
 
   currentBlock: any;
-  constructor(private service: AuthService, private blockService: BlockService) {
+  constructor(private blockService: BlockService) {
   }
 
   ngOnInit() {
@@ -119,7 +120,7 @@ export class AnalyticsFinalreportsComponent implements OnInit, OnDestroy {
 
   getFinalReportsAnalytics(block: any) {
     this.subscriptions.add(
-      this.service.getFinalReportsAnalytics(block).subscribe((res: any) => {
+      this.reportApi.finalReportAnalytics(block).subscribe((res: any) => {
         this.responseData = res.payload[0];
         console.log(this.responseData)
 

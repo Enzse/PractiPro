@@ -1,10 +1,10 @@
-import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { CompanyService } from '../../../../services/api/company.service';
 @Component({
     selector: 'app-spv-edit-company-profile',
     imports: [ReactiveFormsModule, MatDialogActions, MatDialogClose],
@@ -13,6 +13,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     styleUrl: './spv-edit-company-profile.component.css'
 })
 export class SpvEditCompanyProfileComponent implements OnInit {
+  private readonly companyApi = inject(CompanyService);
 
   companyData: any;
   editForm: any;
@@ -23,7 +24,7 @@ export class SpvEditCompanyProfileComponent implements OnInit {
     'cabling', 'other'
   ];
 
-  constructor(private builder: FormBuilder, private service: AuthService, private changeDetection: ChangeDetectionService,
+  constructor(private builder: FormBuilder, private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SpvEditCompanyProfileComponent>) {
     this.editForm = this.builder.group({
       id: this.builder.control(this.data.company.id),
@@ -72,7 +73,7 @@ export class SpvEditCompanyProfileComponent implements OnInit {
   saveChanges() {
     if (this.editForm.valid) {
       console.log(this.editForm.value)
-      this.service.editCompanyProfile(this.editForm.value).subscribe(res => {
+      this.companyApi.update(this.editForm.value).subscribe(res => {
         console.log("Updated successfully.");
         this.changeDetection.notifyChange(true);
         this.dialog.close();

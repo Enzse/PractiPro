@@ -1,5 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { FilterPipe } from '../../../../pipes/filter.pipe';
@@ -16,6 +15,8 @@ import { SeminarspopupComponent } from '../seminarspopup/seminarspopup.component
 import { WarpopupcomponentComponent } from '../warpopupcomponent/warpopupcomponent.component';
 import { CoordEvaluationsComponent } from '../../../page-coordinator/coord-evaluations/coord-evaluations.component';
 import { FinalreportpopupComponent } from '../finalreportpopup/finalreportpopup.component';
+import { MediaService } from '../../../../services/api/media.service';
+import { ReportService } from '../../../../services/api/report.service';
 
 @Component({
     selector: 'app-view-students-pendingsubmissions',
@@ -25,12 +26,14 @@ import { FinalreportpopupComponent } from '../finalreportpopup/finalreportpopup.
     styleUrl: './view-students-pendingsubmissions.component.css'
 })
 export class ViewStudentsPendingsubmissionsComponent implements OnInit, OnDestroy {
+  private readonly mediaApi = inject(MediaService);
+  private readonly reportApi = inject(ReportService);
   studentList: any;
   searchtext: any;
   private subscriptions = new Subscription();
   conditionDisplay: any;
 
-  constructor(private router: Router, private service: AuthService, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewStudentsPendingsubmissionsComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+  constructor(private router: Router, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewStudentsPendingsubmissionsComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
 
   }
 
@@ -55,14 +58,14 @@ export class ViewStudentsPendingsubmissionsComponent implements OnInit, OnDestro
 
   loadData() {
     this.subscriptions.add(
-      this.service.getStudentsWithPendingSubmissions(this.data.block, this.data.condition).subscribe((res: any) => {
+      this.reportApi.studentsWithPendingSubmissions(this.data.block, this.data.condition).subscribe((res: any) => {
         this.studentList = res.payload.map((user: any) => {
           return { ...user, avatar: '' };
         });
 
         this.studentList.forEach((student: any) => {
           this.subscriptions.add(
-            this.service.getAvatar(student.id).subscribe((res: any) => {
+            this.mediaApi.avatar(student.id).subscribe((res: any) => {
               if (res.size > 0) {
                 const url = URL.createObjectURL(res);
                 student.avatar = this.sanitizer.bypassSecurityTrustUrl(url);

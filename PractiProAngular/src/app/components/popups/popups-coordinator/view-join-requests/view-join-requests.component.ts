@@ -1,5 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -8,6 +7,8 @@ import { ViewprofilepopupComponent } from '../../shared/viewprofilepopup/viewpro
 import Swal from 'sweetalert2';
 import { FormBuilder } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
+import { StudentService } from '../../../../services/api/student.service';
+import { ClassJoinService } from '../../../../services/api/class-join.service';
 
 @Component({
     selector: 'app-view-join-requests',
@@ -17,12 +18,14 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     styleUrl: './view-join-requests.component.css'
 })
 export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
+  private readonly studentApi = inject(StudentService);
+  private readonly classJoinApi = inject(ClassJoinService);
   datalist: any;
   currentuser: any;
   isLoading: boolean = true;
   private subscriptions = new Subscription();
 
-  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private service: AuthService, private dialog: MatDialog,
+  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ViewJoinRequestsComponent>) { }
 
 
@@ -40,7 +43,7 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
   loadData() {
     this.isLoading = true;
     this.subscriptions.add(
-      this.service.getClassJoinRequestsAdvisor(this.data.block).subscribe(
+      this.classJoinApi.requestsForClass(this.data.block).subscribe(
         (res: any) => {
           this.datalist = res.payload;
           this.isLoading = false;
@@ -73,7 +76,7 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
       block_name: [request.class]
     })
     this.subscriptions.add(
-      this.service.assignClassToStudent(request.student_id, invitationData.value).subscribe((res: any) => {
+      this.studentApi.joinClass(request.student_id, invitationData.value as { block_name: string }).subscribe((res: any) => {
         this.datalist = this.datalist.filter((requests: any) => requests.id !== request.id);
         this.changeDetection.notifyChange(true);
         Swal.fire({
@@ -101,7 +104,7 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.subscriptions.add(
-          this.service.rejectClassJoinRequest(requestId).subscribe((res: any) => {
+          this.classJoinApi.rejectRequest(requestId).subscribe((res: any) => {
             this.datalist = this.datalist.filter((request: any) => request.id !== requestId);
             this.changeDetection.notifyChange(true);
             Swal.fire({
