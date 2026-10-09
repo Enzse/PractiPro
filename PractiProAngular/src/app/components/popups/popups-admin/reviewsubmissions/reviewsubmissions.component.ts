@@ -2,7 +2,7 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { saveAs } from 'file-saver';
+import { saveAs } from '../../../../utils/save-file';
 import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
 import { SubmissionService } from '../../../../services/api/submission.service';
 

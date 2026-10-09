@@ -3,7 +3,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { CommonModule } from '@angular/common';
 import { MatTableDataSource } from '@angular/material/table';
-import saveAs from 'file-saver';
+import { saveAs } from '../../../utils/save-file';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { CommentspopupComponent } from '../../popups/shared/commentspopup/commentspopup.component';
