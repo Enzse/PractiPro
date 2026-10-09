@@ -33,10 +33,13 @@ final class SeminarRepository extends Repository
      */
     public function attachCertificate(int $recordId, array $file): void
     {
-        $this->db->execute(
-            'INSERT INTO student_seminar_certificates (record_id, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?)',
-            [$recordId, $file['name'], $file['type'], $file['size'], $file['data']],
-        );
+        $this->db->transaction(function () use ($recordId, $file) {
+            $this->db->execute(
+                'INSERT INTO student_seminar_certificates (record_id, file_name, file_type, file_size, file_data) VALUES (?, ?, ?, ?, ?)',
+                [$recordId, $file['name'], $file['type'], $file['size'], $file['data']],
+            );
+            $this->db->execute('UPDATE student_seminar_records SET certified = 1 WHERE id = ?', [$recordId]);
+        });
     }
 
     public function delete(int $id): int

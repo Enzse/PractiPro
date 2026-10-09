@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace PractiPro\Repositories;
 
+use PractiPro\Auth\Role;
+
 /**
- * Accounts (the `user` table) and the role-specific profile rows that the
- * database triggers create alongside them.
+ * Accounts (the `user` table) and their role-specific profile rows
+ * (students, coordinators, supervisors), which share the account's id.
  */
 final class UserRepository extends Repository
 {
@@ -60,10 +62,9 @@ final class UserRepository extends Repository
     }
 
     /**
-     * Inserts the account. Database triggers then create the matching
-     * students / coordinators / supervisors row with the same id.
-     */
-    /**
+     * Inserts the account and, for students, coordinators and supervisors,
+     * the matching profile row, which shares the account's id.
+     *
      * @param bool     $approved   False leaves the account waiting for an admin's approval.
      * @param int|null $approvedBy The admin creating the account, if any.
      */
@@ -77,11 +78,48 @@ final class UserRepository extends Repository
         bool $approved,
         ?int $approvedBy = null,
     ): int {
-        return $this->db->insert(
-            'INSERT INTO user (firstName, lastName, email, password, role, account_activation_hash, approved_at, approved_by)
-             VALUES (?, ?, ?, ?, ?, ?, ' . ($approved ? 'NOW()' : 'NULL') . ', ?)',
-            [$firstName, $lastName, $email, $passwordHash, $role, $activationHash, $approvedBy],
-        );
+        return $this->db->transaction(function () use ($firstName, $lastName, $email, $passwordHash, $role, $activationHash, $approved, $approvedBy) {
+            $id = $this->db->insert(
+                'INSERT INTO user (firstName, lastName, email, password, role, account_activation_hash, approved_at, approved_by)
+                 VALUES (?, ?, ?, ?, ?, ?, ' . ($approved ? 'NOW()' : 'NULL') . ', ?)',
+                [$firstName, $lastName, $email, $passwordHash, $role, $activationHash, $approvedBy],
+            );
+            $this->ensureProfile($id, $role);
+
+            return $id;
+        });
+    }
+
+    /**
+     * Profile tables per role. Each profile row has the same id as its account.
+     */
+    private const PROFILE_SQL = [
+        Role::STUDENT => 'INSERT IGNORE INTO students (id, firstName, lastName, email) SELECT id, firstName, lastName, email FROM user WHERE id = ?',
+        Role::ADVISOR => 'INSERT IGNORE INTO coordinators (id, first_name, last_name, email) SELECT id, firstName, lastName, email FROM user WHERE id = ?',
+        Role::SUPERVISOR => 'INSERT IGNORE INTO supervisors (id, firstName, lastName, email) SELECT id, firstName, lastName, email FROM user WHERE id = ?',
+    ];
+
+    private const PROFILE_TABLES = [
+        Role::STUDENT => 'students',
+        Role::ADVISOR => 'coordinators',
+        Role::SUPERVISOR => 'supervisors',
+    ];
+
+    /**
+     * Creates the role's profile row if the account doesn't have one yet.
+     */
+    private function ensureProfile(int $id, string $role): void
+    {
+        if (isset(self::PROFILE_SQL[$role])) {
+            $this->db->execute(self::PROFILE_SQL[$role], [$id]);
+        }
+    }
+
+    private function removeProfile(int $id, string $role): void
+    {
+        if (isset(self::PROFILE_TABLES[$role])) {
+            $this->db->execute('DELETE FROM ' . self::PROFILE_TABLES[$role] . ' WHERE id = ?', [$id]);
+        }
     }
 
     /**
@@ -135,9 +173,26 @@ final class UserRepository extends Repository
         );
     }
 
+    /**
+     * Changing role swaps the old role's profile row for the new one's.
+     *
+     * If the old profile still has records attached (a student's submissions,
+     * a supervisor's hires, ...) the foreign keys refuse the delete, and the
+     * whole change is rolled back rather than leaving those records orphaned.
+     */
     public function update(int $id, string $role, bool $isActive): int
     {
-        return $this->db->execute('UPDATE user SET role = ?, isActive = ? WHERE id = ?', [$role, (int) $isActive, $id]);
+        return $this->db->transaction(function () use ($id, $role, $isActive) {
+            $previousRole = $this->roleOf($id);
+            $changed = $this->db->execute('UPDATE user SET role = ?, isActive = ? WHERE id = ?', [$role, (int) $isActive, $id]);
+
+            if ($previousRole !== null && $previousRole !== $role) {
+                $this->removeProfile($id, $previousRole);
+                $this->ensureProfile($id, $role);
+            }
+
+            return $changed;
+        });
     }
 
     public function delete(int $id): int

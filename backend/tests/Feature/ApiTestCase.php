@@ -14,6 +14,7 @@ use PractiPro\Database\Migrator;
 use PractiPro\Database\SqlFile;
 use PractiPro\Http\Request;
 use PractiPro\Http\Response;
+use PractiPro\Repositories\UserRepository;
 use PractiPro\Support\Mailer;
 use PractiPro\Tests\Support\FakeMailer;
 
@@ -70,10 +71,11 @@ abstract class ApiTestCase extends TestCase
     {
         $email = $email ?: $role . '.' . bin2hex(random_bytes(4)) . '@practipro.test';
 
-        return $this->db()->insert(
-            'INSERT INTO user (firstName, lastName, email, password, role, isActive, approved_at) VALUES (?, ?, ?, ?, ?, 1, NOW())',
-            [$firstName, $lastName, $email, password_hash(self::PASSWORD, PASSWORD_DEFAULT), $role],
-        );
+        $users = $this->app->container()->get(UserRepository::class);
+        $id = $users->create($firstName, $lastName, $email, password_hash(self::PASSWORD, PASSWORD_DEFAULT), $role, bin2hex(random_bytes(16)), true);
+        $this->db()->execute('UPDATE user SET isActive = 1, account_activation_hash = NULL WHERE id = ?', [$id]);
+
+        return $id;
     }
 
     /**
