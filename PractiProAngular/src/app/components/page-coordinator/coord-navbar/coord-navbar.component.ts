@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { CoordSidebarComponent } from '../coord-sidebar/coord-sidebar.component';
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
@@ -9,6 +9,7 @@ import { JwtService } from '../../../services/jwt.service';
     selector: 'app-coord-navbar',
     imports: [CoordSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
     templateUrl: './coord-navbar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-navbar.component.css'
 })
 export class CoordNavbarComponent {

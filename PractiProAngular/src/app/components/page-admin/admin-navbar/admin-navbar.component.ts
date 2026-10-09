@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
 import { isPlatformBrowser } from '@angular/common';
 import { initFlowbite } from 'flowbite';
@@ -9,6 +9,7 @@ import { JwtService } from '../../../services/jwt.service';
     selector: 'app-admin-navbar',
     imports: [AdminSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
     templateUrl: './admin-navbar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-navbar.component.css'
 })
 export class AdminNavbarComponent implements OnInit {

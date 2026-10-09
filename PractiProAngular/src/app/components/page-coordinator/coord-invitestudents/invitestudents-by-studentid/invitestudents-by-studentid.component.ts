@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
@@ -14,6 +14,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     selector: 'app-invitestudents-by-studentid',
     imports: [ReactiveFormsModule, CommonModule, MatTooltipModule],
     templateUrl: './invitestudents-by-studentid.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './invitestudents-by-studentid.component.css'
 })
 export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {

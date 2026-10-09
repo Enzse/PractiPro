@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
     selector: 'app-coord-classes',
     imports: [MatSelectModule, MatButtonModule, FilterPipe, OrdinalPipe],
     templateUrl: './coord-classes.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-classes.component.css'
 })
 export class CoordClassesComponent {

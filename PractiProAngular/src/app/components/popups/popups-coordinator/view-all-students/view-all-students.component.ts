@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-view-all-students',
     imports: [FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
     templateUrl: './view-all-students.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './view-all-students.component.css'
 })
 export class ViewAllStudentsComponent implements OnInit, OnDestroy {

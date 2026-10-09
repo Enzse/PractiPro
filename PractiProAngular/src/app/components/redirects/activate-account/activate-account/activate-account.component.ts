@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -24,6 +24,7 @@ import { Subscription } from 'rxjs';
     MatTooltipModule
 ],
     templateUrl: './activate-account.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './activate-account.component.css'
 })
 export class ActivateAccountComponent implements OnInit, OnDestroy {

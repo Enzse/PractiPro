@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialogActions, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { dateRangeValidator } from '../../../../validators/date-range.validator'
     selector: 'app-editjobpopup',
     imports: [ReactiveFormsModule, MatDialogActions, MatDialogClose],
     templateUrl: './editjobpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './editjobpopup.component.css'
 })
 export class EditjobpopupComponent {

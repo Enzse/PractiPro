@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CoordClassesComponent } from '../coord-classes/coord-classes.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-coord-sidebarmain',
     imports: [RouterLink, RouterLinkActive, RouterOutlet],
     templateUrl: './coord-sidebarmain.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-sidebarmain.component.css'
 })
 export class CoordSidebarmainComponent {

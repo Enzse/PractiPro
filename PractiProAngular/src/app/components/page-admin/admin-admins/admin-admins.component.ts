@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
@@ -17,6 +17,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     selector: 'app-admin-admins',
     imports: [CommonModule, UpdatepopupComponent, MatButtonModule, MatMenuModule, MatTooltipModule, FormsModule, FilterPipe, NgxPaginationModule],
     templateUrl: './admin-admins.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-admins.component.css'
 })
 export class AdminAdminsComponent implements OnInit, OnDestroy {

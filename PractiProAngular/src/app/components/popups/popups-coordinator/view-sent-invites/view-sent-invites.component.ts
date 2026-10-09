@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
     selector: 'app-view-sent-invites',
     imports: [CommonModule],
     templateUrl: './view-sent-invites.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './view-sent-invites.component.css'
 })
 export class ViewSentInvitesComponent {

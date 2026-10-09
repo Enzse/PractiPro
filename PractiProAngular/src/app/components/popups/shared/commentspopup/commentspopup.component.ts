@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../services/auth.service';
@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
     selector: 'app-commentspopup',
     imports: [ReactiveFormsModule, CommonModule],
     templateUrl: './commentspopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './commentspopup.component.css'
 })
 export class CommentspopupComponent implements OnInit {

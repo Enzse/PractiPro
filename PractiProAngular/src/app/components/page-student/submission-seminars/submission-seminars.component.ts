@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,6 +21,7 @@ import { CommentspopupComponent } from '../../popups/shared/commentspopup/commen
     selector: 'app-submission-seminars',
     imports: [CommonModule, DatePipe, FormsModule, FilterPipe, MatButtonModule, MatMenuModule, MatTooltipModule],
     templateUrl: './submission-seminars.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './submission-seminars.component.css'
 })
 export class SubmissionSeminarsComponent implements OnInit, OnDestroy {

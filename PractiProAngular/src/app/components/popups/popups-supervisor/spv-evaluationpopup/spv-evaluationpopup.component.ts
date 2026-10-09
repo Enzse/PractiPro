@@ -1,4 +1,4 @@
-import { Component, ElementRef, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
     selector: 'app-spv-evaluationpopup',
     imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './spv-evaluationpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './spv-evaluationpopup.component.css'
 })
 export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {

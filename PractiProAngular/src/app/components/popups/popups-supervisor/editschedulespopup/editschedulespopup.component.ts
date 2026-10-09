@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
     selector: 'app-editschedulespopup.component.ts',
     imports: [FormsModule],
     templateUrl: './editschedulespopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './editschedulespopup.component.css'
 })
 export class EditschedulespopupComponent {

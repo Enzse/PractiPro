@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -19,6 +19,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     selector: 'app-warpopupcomponent',
     imports: [WarAccordionComponent, CommonModule, TimePipe, FormsModule, NgxPaginationModule, MatTooltipModule],
     templateUrl: './warpopupcomponent.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './warpopupcomponent.component.css'
 })
 export class WarpopupcomponentComponent implements OnInit, OnDestroy {

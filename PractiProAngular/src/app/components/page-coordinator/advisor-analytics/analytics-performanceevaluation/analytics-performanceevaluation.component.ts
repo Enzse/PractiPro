@@ -1,5 +1,5 @@
 
-import { Component, OnDestroy, OnInit, TemplateRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { ChartComponent } from '../../../shared/chart/chart.component';
 import { ChartOptions } from 'chart.js';
 import { AuthService } from '../../../../services/auth.service';
@@ -10,6 +10,7 @@ import { BlockService } from '../../../../services/block.service';
     selector: 'app-analytics-performanceevaluation',
     imports: [ChartComponent],
     templateUrl: './analytics-performanceevaluation.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './analytics-performanceevaluation.component.css'
 })
 export class AnalyticsPerformanceevaluationComponent implements OnInit, OnDestroy {

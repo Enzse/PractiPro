@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     selector: 'app-dashboard',
     imports: [NavbarComponent, NavbarComponent, RouterLink, RouterLinkActive, CommonModule, TimePipe, MatTooltipModule],
     templateUrl: './dashboard.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent implements OnInit, OnDestroy {

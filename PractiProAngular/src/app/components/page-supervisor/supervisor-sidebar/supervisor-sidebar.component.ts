@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
@@ -6,6 +6,7 @@ import { AuthService } from '../../../services/auth.service';
     selector: 'app-supervisor-sidebar',
     imports: [RouterLink, RouterLinkActive],
     templateUrl: './supervisor-sidebar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './supervisor-sidebar.component.css'
 })
 export class SupervisorSidebarComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
     selector: 'app-inspectprofilepopup',
     imports: [CommonModule, MatDialogActions, MatDialogClose],
     templateUrl: './inspectprofilepopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './inspectprofilepopup.component.css'
 })
 export class InspectprofilepopupComponent {

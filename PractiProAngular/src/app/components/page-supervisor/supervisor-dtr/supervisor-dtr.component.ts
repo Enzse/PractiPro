@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
@@ -14,6 +14,7 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     selector: 'app-supervisor-dtr',
     imports: [CommonModule, FormsModule, FilterPipe],
     templateUrl: './supervisor-dtr.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./supervisor-dtr.component.css']
 })
 export class SupervisorDtrComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { CoordClassesComponent } from '../coord-classes/coord-classes.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     selector: 'app-coord-sidebar',
     imports: [RouterLink, RouterLinkActive, RouterOutlet, MatTooltipModule],
     templateUrl: './coord-sidebar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-sidebar.component.css'
 })
 export class CoordSidebarComponent implements OnInit, OnDestroy {

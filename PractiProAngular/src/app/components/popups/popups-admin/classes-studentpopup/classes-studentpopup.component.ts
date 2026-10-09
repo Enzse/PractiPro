@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
     selector: 'app-classes-studentpopup',
     imports: [MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
     templateUrl: './classes-studentpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './classes-studentpopup.component.css'
 })
 export class ClassesStudentpopupComponent {

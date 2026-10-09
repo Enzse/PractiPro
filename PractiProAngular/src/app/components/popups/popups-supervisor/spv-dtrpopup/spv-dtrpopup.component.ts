@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
     selector: 'app-spv-dtrpopup',
     imports: [CommonModule, NgxPaginationModule, FormsModule, TimePipe],
     templateUrl: './spv-dtrpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './spv-dtrpopup.component.css'
 })
 export class SpvDtrpopupComponent implements OnInit, OnDestroy {

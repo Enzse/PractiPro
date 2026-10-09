@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -15,6 +15,7 @@ import { ForgotpasswordComponent } from '../popups/popups-registration/forgotpas
     selector: 'app-login',
     imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
     templateUrl: './login.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './login.component.css'
 })
 export class LoginComponent {

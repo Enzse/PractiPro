@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -11,6 +11,7 @@ import { passwordMatchValidator } from '../../../validators/password-match.valid
     selector: 'app-reset-password-form',
     imports: [ReactiveFormsModule, RouterLink, RouterLinkActive, MatTooltipModule],
     templateUrl: './reset-password-form.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './reset-password-form.component.css'
 })
 export class ResetPasswordFormComponent implements OnInit {

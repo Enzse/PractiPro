@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 
@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-coord-accomplishment-report',
     imports: [CoordNavbarComponent, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
     templateUrl: './coord-accomplishment-report.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-accomplishment-report.component.css'
 })
 export class CoordAccomplishmentReportComponent implements OnInit, OnDestroy {

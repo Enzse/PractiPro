@@ -16,7 +16,7 @@
         <div class="-ml-24 max-sm:-ml-0">
           <div class="avatar-container mx-auto p-3">
             @if (user?.avatar) {
-              <img [src]="user?.avatar" class="image-container" alt="Avatar" />
+              <img [src]="$safeNavigationMigration(user?.avatar)" class="image-container" alt="Avatar" />
             } @else {
               <div class="image-container avatar-placeholder"></div>
             }
@@ -83,7 +83,7 @@
           <div class="col-span-2 max-sm:col-span-5 border border-gray-200 p-5">
             <div class="avatar-container my-auto p-3 mb-4 mx-auto">
               @if (company?.logo) {
-                <img [src]="company?.logo" class="image-container-2" alt="Avatar" />
+                <img [src]="$safeNavigationMigration(company?.logo)" class="image-container-2" alt="Avatar" />
               } @else {
                 <div class="image-container avatar-placeholder"></div>
               }

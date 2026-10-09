@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -18,6 +18,7 @@ import { emailDomainValidator } from '../../../../validators/email-domain.valida
     selector: 'app-registrationadvisor',
     imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
     templateUrl: './registrationadvisor.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './registrationadvisor.component.css'
 })
 export class RegistrationadvisorComponent implements OnInit {

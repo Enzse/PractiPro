@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 
@@ -9,6 +9,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     selector: 'app-spv-edit-company-profile',
     imports: [ReactiveFormsModule, MatDialogActions, MatDialogClose],
     templateUrl: './spv-edit-company-profile.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './spv-edit-company-profile.component.css'
 })
 export class SpvEditCompanyProfileComponent implements OnInit {

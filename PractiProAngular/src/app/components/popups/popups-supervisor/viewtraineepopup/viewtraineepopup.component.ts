@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { EditjobpopupComponent } from '../editjobpopup/editjobpopup.component';
@@ -13,6 +13,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     selector: 'app-viewtraineepopup',
     imports: [CommonModule, FormsModule, ReactiveFormsModule, TimePipe],
     templateUrl: './viewtraineepopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './viewtraineepopup.component.css'
 })
 export class ViewtraineepopupComponent implements OnInit, OnDestroy {

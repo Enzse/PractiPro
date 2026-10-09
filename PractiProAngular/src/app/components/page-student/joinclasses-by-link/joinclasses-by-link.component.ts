@@ -1,5 +1,5 @@
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
     selector: 'app-joinclasses-by-link',
     imports: [RouterLink],
     templateUrl: './joinclasses-by-link.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './joinclasses-by-link.component.css'
 })
 export class JoinclassesByLinkComponent implements OnInit, OnDestroy {

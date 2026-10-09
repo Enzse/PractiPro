@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -17,6 +17,7 @@ import { TimePipe } from '../../../../pipes/time.pipe';
     selector: 'app-dtrpopupcomponent',
     imports: [CommonModule, MatButtonModule, MatMenuModule, TimePipe, MatTooltipModule, NgxPaginationModule, FilterPipe, FormsModule],
     templateUrl: './dtrpopupcomponent.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './dtrpopupcomponent.component.css'
 })
 export class DtrpopupcomponentComponent {

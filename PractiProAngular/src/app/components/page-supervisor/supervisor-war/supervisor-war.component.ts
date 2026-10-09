@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
@@ -12,6 +12,7 @@ import { SpvWarpopupComponent } from '../../popups/popups-supervisor/spv-warpopu
     selector: 'app-supervisor-war',
     imports: [CommonModule, FormsModule, FilterPipe],
     templateUrl: './supervisor-war.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './supervisor-war.component.css'
 })
 export class SupervisorWarComponent {

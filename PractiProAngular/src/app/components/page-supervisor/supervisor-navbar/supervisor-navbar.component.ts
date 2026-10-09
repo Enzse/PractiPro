@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { SupervisorSidebarComponent } from '../supervisor-sidebar/supervisor-sidebar.component';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { JwtService } from '../../../services/jwt.service';
@@ -9,6 +9,7 @@ import { initFlowbite } from 'flowbite';
     selector: 'app-supervisor-navbar',
     imports: [SupervisorSidebarComponent, RouterOutlet, RouterLink, RouterLinkActive],
     templateUrl: './supervisor-navbar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './supervisor-navbar.component.css'
 })
 export class SupervisorNavbarComponent {

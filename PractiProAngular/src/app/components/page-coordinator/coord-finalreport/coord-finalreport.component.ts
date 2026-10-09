@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,7 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     selector: 'app-coord-finalreport',
     imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
     templateUrl: './coord-finalreport.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-finalreport.component.css'
 })
 export class CoordFinalreportComponent implements OnInit, OnDestroy {

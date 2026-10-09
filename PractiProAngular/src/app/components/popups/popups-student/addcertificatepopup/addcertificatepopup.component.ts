@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
     selector: 'app-addcertificatepopup',
     imports: [CommonModule],
     templateUrl: './addcertificatepopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './addcertificatepopup.component.css'
 })
 export class AddcertificatepopupComponent {

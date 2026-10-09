@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -13,6 +13,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     selector: 'app-view-join-requests',
     imports: [CommonModule, MatTooltipModule],
     templateUrl: './view-join-requests.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './view-join-requests.component.css'
 })
 export class ViewJoinRequestsComponent implements OnInit, OnDestroy {

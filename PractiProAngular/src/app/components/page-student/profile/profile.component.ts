@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule, DatePipe } from '@angular/common';
@@ -13,6 +13,7 @@ import { OrdinalPipe } from '../../../pipes/ordinal.pipe';
     selector: 'app-profile',
     imports: [NavbarComponent, CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe, OrdinalPipe],
     templateUrl: './profile.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 
@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
     selector: 'app-addclassespopup',
     imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule],
     templateUrl: './addclassespopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './addclassespopup.component.css'
 })
 export class AddclassespopupComponent {

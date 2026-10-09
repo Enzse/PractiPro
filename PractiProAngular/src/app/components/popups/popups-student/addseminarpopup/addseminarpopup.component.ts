@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -12,6 +12,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     selector: 'app-addseminarpopup',
     imports: [FormsModule, ReactiveFormsModule, CommonModule, MatTooltipModule],
     templateUrl: './addseminarpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './addseminarpopup.component.css'
 })
 export class AddseminarpopupComponent {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { Subscription } from 'rxjs';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     selector: 'app-viewseminarpopup',
     imports: [],
     templateUrl: './viewseminarpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./viewseminarpopup.component.css']
 })
 export class ViewseminarpopupComponent implements OnInit, OnDestroy {

@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -16,6 +16,7 @@ import { TimePipe } from '../../../../pipes/time.pipe';
     selector: 'app-spv-warpopup',
     imports: [WarAccordionComponent, CommonModule, TimePipe, FormsModule, NgxPaginationModule],
     templateUrl: './spv-warpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './spv-warpopup.component.css'
 })
 export class SpvWarpopupComponent implements OnInit, OnDestroy {

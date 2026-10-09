@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,6 +17,7 @@ import { TimePipe } from '../../../pipes/time.pipe';
     selector: 'app-dtr',
     imports: [CommonModule, FormsModule, FilterPipe, TimePipe, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule, MatTooltipModule],
     templateUrl: './dtr.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './dtr.component.css'
 })
 export class DtrComponent implements OnInit, OnDestroy {

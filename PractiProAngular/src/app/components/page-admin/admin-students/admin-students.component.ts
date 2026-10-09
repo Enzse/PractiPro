@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 
 import { OnInit } from '@angular/core';
@@ -23,6 +23,7 @@ import { RequirementspopupComponent } from '../../popups/popups-coordinator/requ
     selector: 'app-admin-students',
     imports: [MatButtonModule, MatMenuModule, MatTooltipModule, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
     templateUrl: './admin-students.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-students.component.css'
 })
 export class AdminStudentsComponent implements OnInit, OnDestroy {

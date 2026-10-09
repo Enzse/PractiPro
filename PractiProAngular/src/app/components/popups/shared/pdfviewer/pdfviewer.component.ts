@@ -1,5 +1,5 @@
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
@@ -7,6 +7,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
     selector: 'app-pdfviewer',
     imports: [],
     templateUrl: './pdfviewer.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './pdfviewer.component.css'
 })
 export class PdfviewerComponent implements OnInit {

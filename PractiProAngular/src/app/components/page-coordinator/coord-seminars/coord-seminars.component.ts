@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 
@@ -19,6 +19,7 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     selector: 'app-coord-seminars',
     imports: [CoordNavbarComponent, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
     templateUrl: './coord-seminars.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-seminars.component.css'
 })
 export class CoordSeminarsComponent implements OnInit, OnDestroy {

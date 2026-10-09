@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-admin-users',
     imports: [MatMenuModule, MatButtonModule, MatTooltipModule, CommonModule, UpdatepopupComponent, FormsModule, FilterPipe, NgxPaginationModule],
     templateUrl: './admin-users.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-users.component.css'
 })
 export class AdminUsersComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
     selector: 'app-viewsubmissions',
     imports: [],
     templateUrl: './viewsubmissions.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './viewsubmissions.component.css'
 })
 export class ViewsubmissionsComponent implements OnInit {

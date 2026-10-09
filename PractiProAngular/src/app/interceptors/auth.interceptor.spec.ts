@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpHeaders, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HttpClient, HttpHeaders, provideHttpClient, withInterceptors, withXhr } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Router } from '@angular/router';
 import { authInterceptor } from './auth.interceptor';
@@ -14,7 +14,7 @@ describe('authInterceptor', () => {
     router = jasmine.createSpyObj<Router>('Router', ['navigate'], { url: '/student-dashboard' });
     TestBed.configureTestingModule({
       providers: [
-        provideHttpClient(withInterceptors([authInterceptor])),
+        provideHttpClient(withXhr(), withInterceptors([authInterceptor])),
         provideHttpClientTesting(),
         { provide: Router, useValue: router },
       ],

@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
   PLATFORM_ID,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { initFlowbite } from 'flowbite';
@@ -17,6 +18,7 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     selector: 'app-sidebar',
     imports: [RouterLink, RouterLinkActive, MatTooltipModule],
     templateUrl: './sidebar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
@@ -18,6 +18,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
     selector: 'app-exit-poll',
     imports: [NavbarComponent, MatTabsModule, ReactiveFormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
     templateUrl: './exit-poll.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './exit-poll.component.css'
 })
 export class ExitPollComponent implements OnInit, OnDestroy {

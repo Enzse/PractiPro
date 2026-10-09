@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -19,6 +19,7 @@ import { TimePipe } from '../../../pipes/time.pipe';
     selector: 'app-weekly-accomplishment-rep',
     imports: [FilterPipe, CommonModule, FormsModule, TimePipe, MatTabsModule, CommonModule, MatButtonModule, MatMenuModule, NgxPaginationModule],
     templateUrl: './weekly-accomplishment-rep.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './weekly-accomplishment-rep.component.css'
 })
 export class WeeklyAccomplishmentRepComponent implements OnInit, OnDestroy {

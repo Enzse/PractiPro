@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
@@ -23,6 +23,7 @@ import { PdfviewerComponent } from '../../popups/shared/pdfviewer/pdfviewer.comp
     selector: 'app-submission',
     imports: [NavbarComponent, MatTabsModule, FilterPipe, CommonModule, FormsModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
     templateUrl: './submission.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './submission.component.css'
 })
 export class SubmissionComponent implements OnInit, OnDestroy {

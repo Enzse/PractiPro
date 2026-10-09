@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { FormBuilder } from '@angular/forms';
 import { BlockService } from '../../../../services/block.service';
@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
     selector: 'app-invitestudents-by-link',
     imports: [],
     templateUrl: './invitestudents-by-link.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './invitestudents-by-link.component.css'
 })
 export class InvitestudentsByLinkComponent implements OnInit, OnDestroy {

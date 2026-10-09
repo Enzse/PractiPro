@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,7 @@ import { ViewprofilepopupComponent } from '../../popups/shared/viewprofilepopup/
     selector: 'app-coord-evaluations',
     imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
     templateUrl: './coord-evaluations.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-evaluations.component.css'
 })
 export class CoordEvaluationsComponent implements OnInit, OnDestroy {

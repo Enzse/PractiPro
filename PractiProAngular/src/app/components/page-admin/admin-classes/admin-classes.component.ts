@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 
 import { MatDialog } from '@angular/material/dialog';
@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-admin-classes',
     imports: [AdminNavbarComponent, MatMenuModule, MatTableModule, MatTooltipModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, OrdinalPipe, NgxPaginationModule],
     templateUrl: './admin-classes.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-classes.component.css'
 })
 export class AdminClassesComponent implements OnInit, OnDestroy {

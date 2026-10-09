@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { isPlatformBrowser } from '@angular/common';
@@ -19,6 +19,7 @@ import { SelectstudentspopupComponent } from '../selectstudentspopup/selectstude
     selector: 'app-assignstudentpopup',
     imports: [NgSelectModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, FilterPipe, OrdinalPipe],
     templateUrl: './assignstudentpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './assignstudentpopup.component.css'
 })
 export class AssignstudentpopupComponent {

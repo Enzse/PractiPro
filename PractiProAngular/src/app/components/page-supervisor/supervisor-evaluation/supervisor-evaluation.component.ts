@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FilterPipe } from '../../../pipes/filter.pipe';
@@ -12,6 +12,7 @@ import { SpvEvaluationpopupComponent } from '../../popups/popups-supervisor/spv-
     selector: 'app-supervisor-evaluation',
     imports: [CommonModule, FormsModule, FilterPipe],
     templateUrl: './supervisor-evaluation.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './supervisor-evaluation.component.css'
 })
 export class SupervisorEvaluationComponent implements OnInit, OnDestroy {

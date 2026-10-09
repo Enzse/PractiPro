@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -19,6 +19,7 @@ import { AuthService } from '../../../../services/auth.service';
     selector: 'app-seminarspopup',
     imports: [CommonModule, DatePipe, FormsModule, FilterPipe, MatButtonModule, MatMenuModule, MatTooltipModule],
     templateUrl: './seminarspopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './seminarspopup.component.css'
 })
 export class SeminarspopupComponent {

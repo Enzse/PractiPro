@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnDestroy, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { Chart, ChartData, ChartOptions, ChartType } from 'chart.js/auto';
 
 /**
@@ -9,6 +9,7 @@ import { Chart, ChartData, ChartOptions, ChartType } from 'chart.js/auto';
   selector: 'app-chart',
   standalone: true,
   template: '<div class="relative"><canvas #canvas role="img"></canvas></div>',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: ':host { display: block; }',
 })
 export class ChartComponent implements AfterViewInit, OnChanges, OnDestroy {

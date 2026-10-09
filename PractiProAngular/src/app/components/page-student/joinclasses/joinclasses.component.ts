@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { FilterPipe } from '../../../pipes/filter.pipe';
 import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
     selector: 'app-joinclasses',
     imports: [CommonModule, FilterPipe, FormsModule],
     templateUrl: './joinclasses.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./joinclasses.component.css'] // Corrected to styleUrls
 })
 export class JoinclassesComponent implements OnInit, OnDestroy {

@@ -105,7 +105,7 @@
                   </p>
                   <span [ngClass]="{'text-red-500': !studentProfile[0]?.year}"
                     class="text-sm font-normal lg:text-base font-secondary">
-                    {{ studentProfile[0]?.year | ordinal }} Year
+                    {{ $safeNavigationMigration(studentProfile[0]?.year) | ordinal }} Year
                   </span>
                 </div>
               </div>
@@ -163,7 +163,7 @@
                     Date of Birth:
                   </p>
                   <span class="text-sm font-normal lg:text-base font-secondary text-gray-900">{{
-                    studentProfile[0]?.dateOfBirth ? (studentProfile[0]?.dateOfBirth | date : 'longDate') : 'Not Set'
+                    studentProfile[0]?.dateOfBirth ? ($safeNavigationMigration(studentProfile[0]?.dateOfBirth) | date : 'longDate') : 'Not Set'
                   }}</span>
                 </div>
               </div>

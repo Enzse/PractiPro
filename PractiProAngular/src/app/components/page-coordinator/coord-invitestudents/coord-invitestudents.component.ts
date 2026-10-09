@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
@@ -10,6 +10,7 @@ import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/rou
     selector: 'app-coord-invitestudents',
     imports: [ReactiveFormsModule, RouterOutlet, RouterLinkActive, RouterLink],
     templateUrl: './coord-invitestudents.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-invitestudents.component.css'
 })
 export class CoordInvitestudentsComponent {

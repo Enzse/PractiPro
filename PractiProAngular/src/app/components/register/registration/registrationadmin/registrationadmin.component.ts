@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import {
   FormBuilder,
   ReactiveFormsModule,
@@ -17,6 +17,7 @@ import { passwordStrengthValidator } from '../../../../validators/password-stren
     selector: 'app-registrationadmin',
     imports: [ReactiveFormsModule, RouterLink, RouterLinkActive],
     templateUrl: './registrationadmin.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './registrationadmin.component.css'
 })
 export class RegistrationadminComponent implements OnInit {

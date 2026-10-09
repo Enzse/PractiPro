@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -8,6 +8,7 @@ import { AuthService } from '../../../../services/auth.service';
     selector: 'app-forgotpassword',
     imports: [ReactiveFormsModule],
     templateUrl: './forgotpassword.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './forgotpassword.component.css'
 })
 export class ForgotpasswordComponent {

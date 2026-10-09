@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,6 +14,7 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     selector: 'app-supervisor-profile',
     imports: [CommonModule, EditinformationpopupComponent, MatIconModule, DatePipe],
     templateUrl: './supervisor-profile.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./supervisor-profile.component.css']
 })
 export class SupervisorProfileComponent implements OnInit, OnDestroy {

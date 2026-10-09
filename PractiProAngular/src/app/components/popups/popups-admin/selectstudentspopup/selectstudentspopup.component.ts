@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -14,6 +14,7 @@ import { OrdinalPipe } from '../../../../pipes/ordinal.pipe';
     selector: 'app-selectstudentspopup',
     imports: [ReactiveFormsModule, CommonModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, OrdinalPipe],
     templateUrl: './selectstudentspopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './selectstudentspopup.component.css'
 })
 export class SelectstudentspopupComponent {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
@@ -14,6 +14,7 @@ import { passwordStrengthValidator } from '../../../validators/password-strength
     selector: 'app-registration',
     imports: [ReactiveFormsModule, RouterLink, RouterLinkActive, MatTooltipModule],
     templateUrl: './registration.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './registration.component.css'
 })
 export class RegistrationComponent implements OnInit {

@@ -1,5 +1,5 @@
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { initAccordions } from 'flowbite';
 
 
@@ -7,6 +7,7 @@ import { initAccordions } from 'flowbite';
     selector: 'app-war-accordion',
     imports: [],
     templateUrl: './war-accordion.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './war-accordion.component.css'
 })
 export class WarAccordionComponent implements OnInit {

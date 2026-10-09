@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-selecttraineespopup',
     imports: [CommonModule, FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
     templateUrl: './selecttraineespopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './selecttraineespopup.component.css'
 })
 export class SelecttraineespopupComponent implements OnInit, OnDestroy {

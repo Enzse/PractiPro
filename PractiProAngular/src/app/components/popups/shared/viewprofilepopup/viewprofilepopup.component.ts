@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-viewprofilepopup',
     imports: [CommonModule, MatDialogActions, MatDialogClose],
     templateUrl: './viewprofilepopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './viewprofilepopup.component.css'
 })
 export class ViewprofilepopupComponent implements OnInit, OnDestroy {

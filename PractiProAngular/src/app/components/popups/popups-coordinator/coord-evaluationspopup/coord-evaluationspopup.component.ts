@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -16,6 +16,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     selector: 'app-coord-evaluationspopup',
     imports: [CommonModule, MatButtonModule, MatMenuModule, FormsModule, ReactiveFormsModule],
     templateUrl: './coord-evaluationspopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-evaluationspopup.component.css'
 })
 export class CoordEvaluationspopupComponent {

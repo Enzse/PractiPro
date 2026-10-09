@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AdminSidebarComponent } from '../admin-sidebar/admin-sidebar.component';
 import { AdminNavbarComponent } from '../admin-navbar/admin-navbar.component';
 import { AuthService } from '../../../services/auth.service';
@@ -23,6 +23,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-admin-coordinators',
     imports: [AdminSidebarComponent, MatButtonModule, MatMenuModule, MatTooltipModule, AdminNavbarComponent, UpdatepopupComponent, FormsModule, FilterPipe, CheckclassesComponent, NgxPaginationModule],
     templateUrl: './admin-coordinators.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './admin-coordinators.component.css'
 })
 export class AdminCoordinatorsComponent implements OnInit, OnDestroy {

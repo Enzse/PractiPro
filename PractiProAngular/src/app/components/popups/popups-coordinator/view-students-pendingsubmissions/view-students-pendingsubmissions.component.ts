@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
@@ -21,6 +21,7 @@ import { FinalreportpopupComponent } from '../finalreportpopup/finalreportpopup.
     selector: 'app-view-students-pendingsubmissions',
     imports: [FilterPipe, FormsModule, RouterLink, RouterLinkActive, MatButtonModule, MatMenuModule],
     templateUrl: './view-students-pendingsubmissions.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './view-students-pendingsubmissions.component.css'
 })
 export class ViewStudentsPendingsubmissionsComponent implements OnInit, OnDestroy {

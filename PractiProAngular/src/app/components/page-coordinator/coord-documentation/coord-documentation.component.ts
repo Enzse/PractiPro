@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -21,6 +21,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-coord-documentation',
     imports: [CommonModule, DocumentationpopupComponent, DocumentationpopupComponent, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
     templateUrl: './coord-documentation.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-documentation.component.css'
 })
 export class CoordDocumentationComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import Swal from 'sweetalert2';
     selector: 'app-supervisor-dashboard',
     imports: [CommonModule, DatePipe, FormsModule, FilterPipe],
     templateUrl: './supervisor-dashboard.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./supervisor-dashboard.component.css']
 })
 export class SupervisorDashboardComponent implements OnInit, OnDestroy {

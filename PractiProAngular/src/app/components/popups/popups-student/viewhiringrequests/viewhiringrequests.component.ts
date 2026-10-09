@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     selector: 'app-viewhiringrequests',
     imports: [CommonModule],
     templateUrl: './viewhiringrequests.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './viewhiringrequests.component.css'
 })
 export class ViewhiringrequestsComponent implements OnInit {

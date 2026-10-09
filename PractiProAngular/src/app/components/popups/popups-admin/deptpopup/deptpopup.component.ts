@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 
@@ -13,6 +13,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     selector: 'app-deptpopup',
     imports: [ReactiveFormsModule, MatCardModule, MatFormFieldModule, MatSelectModule, MatButtonModule, MatCheckboxModule, MatDialogActions, MatDialogClose],
     templateUrl: './deptpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './deptpopup.component.css'
 })
 export class DeptpopupComponent implements OnInit {

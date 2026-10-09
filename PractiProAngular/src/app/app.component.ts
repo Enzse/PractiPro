@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { initFlowbite } from 'flowbite';
@@ -13,6 +13,7 @@ import { JwtService } from './services/jwt.service';
     selector: 'app-root',
     imports: [RouterOutlet, LoginComponent],
     templateUrl: './app.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {

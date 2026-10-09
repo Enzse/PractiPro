@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 
@@ -22,6 +22,7 @@ import { ChangeDetectionService } from '../../../services/shared/change-detectio
     selector: 'app-coordinator-submission',
     imports: [CoordNavbarComponent, ViewsubmissionsComponent, ReviewsubmissionsComponent, FormsModule, FilterPipe, NgxPaginationModule, MatButtonModule, MatMenuModule],
     templateUrl: './coordinator-submission.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coordinator-submission.component.css'
 })
 export class CoordinatorSubmissionComponent implements OnInit, OnDestroy {

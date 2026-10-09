@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../../services/auth.service';
 
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -10,6 +10,7 @@ import { PdfviewerComponent } from '../../shared/pdfviewer/pdfviewer.component';
     selector: 'app-reviewsubmissions',
     imports: [],
     templateUrl: './reviewsubmissions.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './reviewsubmissions.component.css'
 })
 export class ReviewsubmissionsComponent implements OnInit {

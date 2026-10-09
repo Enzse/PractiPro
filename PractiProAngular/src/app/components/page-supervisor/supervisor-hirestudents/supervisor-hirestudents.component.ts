@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
     selector: 'app-supervisor-hirestudents',
     imports: [ReactiveFormsModule, CommonModule],
     templateUrl: './supervisor-hirestudents.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./supervisor-hirestudents.component.css']
 })
 export class SupervisorHirestudentsComponent implements OnInit {

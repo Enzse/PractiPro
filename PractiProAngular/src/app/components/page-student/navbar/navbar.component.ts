@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 import { AuthService } from '../../../services/auth.service';
@@ -11,6 +11,7 @@ import { JwtService } from '../../../services/jwt.service';
     selector: 'app-navbar',
     imports: [SidebarComponent, RouterLink, RouterLinkActive, RouterOutlet],
     templateUrl: './navbar.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {

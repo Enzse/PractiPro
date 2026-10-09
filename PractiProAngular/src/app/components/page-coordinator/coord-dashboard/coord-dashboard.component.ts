@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { Observable, Subscription, map } from 'rxjs';
 import { BlockService } from '../../../services/block.service';
@@ -18,6 +18,7 @@ import { ViewStudentsPendingsubmissionsComponent } from '../../popups/popups-coo
     selector: 'app-coord-dashboard',
     imports: [RouterLink, CommonModule, MatTooltipModule, ChartComponent],
     templateUrl: './coord-dashboard.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-dashboard.component.css'
 })
 export class CoordDashboardComponent implements OnInit, OnDestroy {

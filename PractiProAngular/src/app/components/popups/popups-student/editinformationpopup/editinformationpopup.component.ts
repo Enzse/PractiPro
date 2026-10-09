@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 
@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
     selector: 'app-editinformationpopup',
     imports: [ReactiveFormsModule, MatDialogActions, MatDialogClose],
     templateUrl: './editinformationpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './editinformationpopup.component.css'
 })
 export class EditinformationpopupComponent implements OnInit {

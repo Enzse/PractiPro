@@ -1,5 +1,5 @@
 
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,7 @@ import { ChangeDetectionService } from '../../../../services/shared/change-detec
     selector: 'app-documentationpopup',
     imports: [ReactiveFormsModule, FilterPipe, CommonModule, FormsModule, MatButtonModule, MatMenuModule, FormsModule, NgxPaginationModule],
     templateUrl: './documentationpopup.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './documentationpopup.component.css'
 })
 export class DocumentationpopupComponent implements OnInit, OnDestroy {

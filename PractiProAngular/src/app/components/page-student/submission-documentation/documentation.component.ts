@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from '../../../services/auth.service';
@@ -21,6 +21,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
     selector: 'app-documentation',
     imports: [NavbarComponent, MatTabsModule, FilterPipe, FormsModule, CommonModule, MatButtonModule, MatMenuModule, MatTooltipModule, NgxPaginationModule],
     templateUrl: './documentation.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './documentation.component.css'
 })
 export class DocumentationComponent implements OnInit, OnDestroy {

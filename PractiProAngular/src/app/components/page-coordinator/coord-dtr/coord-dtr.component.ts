@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { CoordNavbarComponent } from '../coord-navbar/coord-navbar.component';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs';
     selector: 'app-coord-dtr',
     imports: [CoordNavbarComponent, CommonModule, FormsModule, FilterPipe, NgxPaginationModule, MatMenuModule, MatButtonModule],
     templateUrl: './coord-dtr.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './coord-dtr.component.css'
 })
 export class CoordDtrComponent implements OnInit, OnDestroy {

@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription, map } from 'rxjs';
 import { AuthService } from '../../../../services/auth.service';
@@ -14,6 +14,7 @@ import { Router } from '@angular/router';
     selector: 'app-classinvitations',
     imports: [CommonModule, MatButtonModule, MatMenuModule],
     templateUrl: './classinvitations.component.html',
+    changeDetection: ChangeDetectionStrategy.Eager,
     styleUrl: './classinvitations.component.css'
 })
 export class ClassinvitationsComponent implements OnInit, OnDestroy {
