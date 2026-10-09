@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, NonNullableFormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { SessionService } from '../../../../services/session.service';
 import { UserService } from '../../../../services/api/user.service';
@@ -26,7 +26,7 @@ export class CommentspopupComponent implements OnInit {
   userName: any;
 
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private builder: FormBuilder, private dialog: MatDialogRef<CommentspopupComponent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any, private builder: NonNullableFormBuilder, private dialog: MatDialogRef<CommentspopupComponent>) {
     console.log(data);
     this.fileID = data.submissionID;
     this.fileName = data.fileName;
@@ -62,7 +62,7 @@ export class CommentspopupComponent implements OnInit {
 
   submitComment() {
     if (this.commentForm.valid) {
-      this.commentApi.add(this.data.table, this.fileID, this.commentForm.value as { comments: string }).subscribe((res: any) => {
+      this.commentApi.add(this.data.table, this.fileID, this.commentForm.getRawValue()).subscribe((res: any) => {
         Swal.fire({
           title: "Comment Submitted!",
           icon: "success"

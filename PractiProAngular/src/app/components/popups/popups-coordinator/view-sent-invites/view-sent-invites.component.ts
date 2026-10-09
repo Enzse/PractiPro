@@ -5,7 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 import { ViewprofilepopupComponent } from '../../shared/viewprofilepopup/viewprofilepopup.component';
 import Swal from 'sweetalert2';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { Router } from '@angular/router';
 import { ClassJoinService } from '../../../../services/api/class-join.service';
@@ -24,7 +24,7 @@ export class ViewSentInvitesComponent {
   isLoading: boolean = true;
   private subscriptions = new Subscription();
 
-  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: FormBuilder, private dialog: MatDialog,
+  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: NonNullableFormBuilder, private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ViewSentInvitesComponent>) { }
 
 

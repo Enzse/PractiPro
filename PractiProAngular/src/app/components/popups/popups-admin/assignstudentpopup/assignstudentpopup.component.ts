@@ -1,5 +1,5 @@
 import { Component, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -30,7 +30,7 @@ export class AssignstudentpopupComponent {
   selectedlist: any[] = [];
   searchtext: any;
 
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<AssignstudentpopupComponent>, private dialog2: MatDialog) {
     this.classApi.all().subscribe(res => {
       this.classlist = res.payload;
@@ -121,7 +121,7 @@ export class AssignstudentpopupComponent {
   proceedAssign() {
     if (this.inputform.valid) {
       this.selectedlist.forEach(item => {
-        this.studentApi.joinClass(item.id, this.inputform.value as { block_name: string }).subscribe((res: any) => {
+        this.studentApi.joinClass(item.id, this.inputform.getRawValue()).subscribe((res: any) => {
         })
       });
     }

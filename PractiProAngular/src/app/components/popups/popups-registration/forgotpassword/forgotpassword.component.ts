@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../../services/api/auth.service';
@@ -14,15 +14,15 @@ import { AuthService } from '../../../../services/api/auth.service';
 export class ForgotpasswordComponent {
   private readonly authApi = inject(AuthService);
   emailForm = this.builder.group({
-    email: ['', Validators.compose([Validators.email, Validators.required])]
+    email: ['', [Validators.email, Validators.required]]
   });
 
-  constructor(private builder: FormBuilder, private dialogRef: MatDialogRef<ForgotpasswordComponent>) { }
+  constructor(private builder: NonNullableFormBuilder, private dialogRef: MatDialogRef<ForgotpasswordComponent>) { }
 
 
   submitForm() {
     if (this.emailForm.valid) {
-      this.authApi.requestPasswordReset(this.emailForm.value as { email: string }).subscribe((res: any) => {
+      this.authApi.requestPasswordReset(this.emailForm.getRawValue()).subscribe((res: any) => {
         Swal.fire({
           title: "Request Sent!",
           icon: "success"

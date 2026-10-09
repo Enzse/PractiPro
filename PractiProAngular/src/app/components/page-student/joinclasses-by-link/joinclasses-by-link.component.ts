@@ -2,7 +2,7 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { SessionService } from '../../../services/session.service';
 import { StudentService } from '../../../services/api/student.service';
@@ -27,7 +27,7 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
   student: any;
 
   constructor(
-    private builder: FormBuilder,
+    private builder: NonNullableFormBuilder,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -52,12 +52,11 @@ export class JoinclassesByLinkComponent implements OnInit, OnDestroy {
             this.classJoinApi.checkLink(this.token).subscribe(
               (res: any) => {
                 this.tokenData = res.payload;
-                const joinForm = this.builder.group({
-                  block_name: this.tokenData.class,
-                  token: this.token, // proves the student was given the link
-                })
                 this.subscriptions.add(
-                  this.studentApi.joinClass(this.userID, joinForm.value as { block_name: string; token: string }).subscribe((res: any) => {
+                  this.studentApi.joinClass(this.userID, {
+                    block_name: this.tokenData.class,
+                    token: this.token, // proves the student was given the link
+                  }).subscribe((res: any) => {
                     this.status = 'valid';
                     Swal.fire({
                       title: `Successfully joined ${this.tokenData.class}!`,

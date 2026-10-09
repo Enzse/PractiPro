@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import Swal from 'sweetalert2';
 import { CommentspopupComponent } from '../../shared/commentspopup/commentspopup.component';
 import { Subscription } from 'rxjs';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SessionService } from '../../../../services/session.service';
 import { SubmissionService } from '../../../../services/api/submission.service';
 import { ReportService } from '../../../../services/api/report.service';
@@ -27,7 +27,7 @@ export class SpvEvaluationpopupComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   constructor(
-    private builder: FormBuilder,
+    private builder: NonNullableFormBuilder,
     private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogref: MatDialogRef<SpvEvaluationpopupComponent>,

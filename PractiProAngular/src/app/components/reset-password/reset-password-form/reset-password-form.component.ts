@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import Swal from 'sweetalert2';
@@ -24,7 +24,7 @@ export class ResetPasswordFormComponent implements OnInit {
   token: string;
   status: any;
 
-  constructor(private builder: FormBuilder, private router: Router, private route: ActivatedRoute) {
+  constructor(private builder: NonNullableFormBuilder, private router: Router, private route: ActivatedRoute) {
     this.token = this.route.snapshot.queryParams['token'];    
     // alert(this.token);
     // Swal.fire({
@@ -54,7 +54,7 @@ export class ResetPasswordFormComponent implements OnInit {
 
   proceedReset() {
     if (this.passwordForm.valid) {
-      this.authApi.resetPassword(this.passwordForm.value as { token: string; password: string }).subscribe(() => {
+      this.authApi.resetPassword(this.passwordForm.getRawValue()).subscribe(() => {
         this.router.navigate(['login']);
         Swal.fire({
           title: "Password Reset Successful!",

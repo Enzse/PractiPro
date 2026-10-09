@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -21,7 +21,7 @@ import { ClassService } from '../../../../services/api/class.service';
 export class SelectstudentspopupComponent {
   private readonly studentApi = inject(StudentService);
   private readonly classApi = inject(ClassService);
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelectstudentspopupComponent>) { }
 
   datalist: any[] = [];

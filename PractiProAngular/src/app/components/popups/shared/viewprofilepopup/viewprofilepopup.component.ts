@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, } from '@angular/forms';
+import { NonNullableFormBuilder, } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -26,7 +26,7 @@ export class ViewprofilepopupComponent implements OnInit, OnDestroy {
   companyView = false;
   company: any;
 
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewprofilepopupComponent>, private sanitizer: DomSanitizer, private dialog2: MatDialog) { }
 
   ngOnInit(): void {

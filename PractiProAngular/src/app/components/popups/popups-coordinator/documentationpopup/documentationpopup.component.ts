@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Inject, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -24,7 +24,7 @@ import { SubmissionService } from '../../../../services/api/submission.service';
 })
 export class DocumentationpopupComponent implements OnInit, OnDestroy {
   private readonly submissionApi = inject(SubmissionService);
-  constructor(private builder: FormBuilder, private changeDetection: ChangeDetectionService,
+  constructor(private builder: NonNullableFormBuilder, private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DocumentationpopupComponent>, private dialog2: MatDialog) { }
 
   studentSubmissions: any[] = [];

@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
 import { SessionService } from '../../../services/session.service';
@@ -29,7 +29,7 @@ export class SupervisorHirestudentsComponent implements OnInit {
     companyForm: FormGroup;
 
     constructor(
-        private builder: FormBuilder,
+        private builder: NonNullableFormBuilder,
         private sanitizer: DomSanitizer
     ) {
         this.userID = this.session.userId();

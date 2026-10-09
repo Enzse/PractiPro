@@ -5,7 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Subscription } from 'rxjs';
 import { ViewprofilepopupComponent } from '../../shared/viewprofilepopup/viewprofilepopup.component';
 import Swal from 'sweetalert2';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { StudentService } from '../../../../services/api/student.service';
 import { ClassJoinService } from '../../../../services/api/class-join.service';
@@ -25,7 +25,7 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
   isLoading: boolean = true;
   private subscriptions = new Subscription();
 
-  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder, private dialog: MatDialog,
+  constructor(private changeDetection: ChangeDetectionService, private builder: NonNullableFormBuilder, private dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialogRef: MatDialogRef<ViewJoinRequestsComponent>) { }
 
 
@@ -76,7 +76,7 @@ export class ViewJoinRequestsComponent implements OnInit, OnDestroy {
       block_name: [request.class]
     })
     this.subscriptions.add(
-      this.studentApi.joinClass(request.student_id, invitationData.value as { block_name: string }).subscribe((res: any) => {
+      this.studentApi.joinClass(request.student_id, invitationData.getRawValue()).subscribe((res: any) => {
         this.datalist = this.datalist.filter((requests: any) => requests.id !== request.id);
         this.changeDetection.notifyChange(true);
         Swal.fire({

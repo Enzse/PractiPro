@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import {
-  FormBuilder,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
 import {
@@ -34,7 +34,7 @@ export class ActivateAccountComponent implements OnInit, OnDestroy {
   subscriptions = new Subscription();
 
   constructor(
-    private builder: FormBuilder,
+    private builder: NonNullableFormBuilder,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -53,7 +53,7 @@ export class ActivateAccountComponent implements OnInit, OnDestroy {
             token: this.token,
           })
           this.subscriptions.add(
-            this.authApi.activate(activationForm.value as { token: string }).subscribe((res: any) => {
+            this.authApi.activate(activationForm.getRawValue()).subscribe((res: any) => {
               this.status = 'valid';
               Swal.fire({
                 title: 'Account Activated',

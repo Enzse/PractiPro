@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import {
-  FormBuilder,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
   AbstractControl,
@@ -13,6 +13,7 @@ import { TermsofserviceComponent } from '../../../popups/popups-registration/ter
 import { passwordStrengthValidator } from '../../../../validators/password-strength.validator';
 import { AuthService } from '../../../../services/api/auth.service';
 import { Registration } from '../../../../models/user';
+import { Role } from '../../../../models/user';
 
 @Component({
     selector: 'app-registrationadmin',
@@ -24,7 +25,7 @@ import { Registration } from '../../../../models/user';
 export class RegistrationadminComponent implements OnInit {
   private readonly authApi = inject(AuthService);
   constructor(
-    private builder: FormBuilder,
+    private builder: NonNullableFormBuilder,
     private router: Router,
     private dialog: MatDialog
   ) {}
@@ -47,12 +48,12 @@ export class RegistrationadminComponent implements OnInit {
       passwordStrengthValidator,
     ]),
     terms: this.builder.control('', Validators.requiredTrue),
-    role: this.builder.control('', Validators.required),
+    role: this.builder.control<Role>('admin', Validators.required),
   });
 
   proceedregistration() {
     if (this.registerform.valid) {
-      this.authApi.register(this.registerform.value as Registration).subscribe(
+      this.authApi.register(this.registerform.getRawValue()).subscribe(
         () => {
           this.router.navigate(['login']);
           Swal.fire({

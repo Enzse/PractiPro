@@ -9,7 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Subscription } from 'rxjs';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators, FormControl } from '@angular/forms';
 import { SessionService } from '../../../services/session.service';
 import { ReportService } from '../../../services/api/report.service';
 
@@ -30,7 +30,7 @@ export class ExitPollComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   exitPollForm: any;
 
-  constructor(private el: ElementRef, private builder: FormBuilder, private dialog: MatDialog) {
+  constructor(private el: ElementRef, private builder: NonNullableFormBuilder, private dialog: MatDialog) {
     this.userId = this.session.userId();
     this.exitPollForm = this.builder.group({
       user_id: this.userId,
@@ -41,8 +41,10 @@ export class ExitPollComponent implements OnInit, OnDestroy {
       p1q5: ['', Validators.required],
       p1q6: ['', Validators.required],
       p1q7: ['', Validators.required],
-      p1q7x1: [''],
-      p1q7x2: [''],
+      // Nullable on purpose: answering "no" to p1q7 resets these to null, which the
+      // final-report analytics count as "None".
+      p1q7x1: new FormControl<string | null>(''),
+      p1q7x2: new FormControl<string | null>(''),
 
       p2q1: ['', Validators.required],
       p2q1x1: ['', Validators.required],

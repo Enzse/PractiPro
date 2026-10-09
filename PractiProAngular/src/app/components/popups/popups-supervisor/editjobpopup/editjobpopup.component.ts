@@ -1,5 +1,5 @@
 import { Component, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import Swal from 'sweetalert2';
@@ -23,7 +23,7 @@ export class EditjobpopupComponent {
   changeDetected: any;
   userId: any = this.session.userId();
 
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditjobpopupComponent>, private changeDetection: ChangeDetectionService) {
     this.changeDetected = [false];
   }
@@ -45,8 +45,6 @@ export class EditjobpopupComponent {
   }
 
   jobForm = this.builder.group({
-    student_id: this.data.student.id,
-    supervisor_id: this.userId,
     job_title: this.builder.control('', Validators.required),
     start_date: this.builder.control('', Validators.required),
     end_date: this.builder.control('', Validators.required),
@@ -58,7 +56,11 @@ export class EditjobpopupComponent {
   editJob() {
     if (this.jobForm.valid) {
       console.log(this.jobForm.value)
-      this.companyApi.assignJob(this.jobForm.value as JobAssignment).subscribe(res => {
+      this.companyApi.assignJob({
+        ...this.jobForm.getRawValue(),
+        student_id: this.data.student.id,
+        supervisor_id: this.session.requireUserId(),
+      }).subscribe(res => {
         this.changeDetected = true;
         this.changeDetection.notifyChange(true);
         this.dialog.close(this.changeDetected)

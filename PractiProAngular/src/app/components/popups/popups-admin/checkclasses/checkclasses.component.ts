@@ -1,6 +1,6 @@
 
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -20,7 +20,7 @@ import { ClassService } from '../../../../services/api/class.service';
 })
 export class CheckclassesComponent {
   private readonly classApi = inject(ClassService);
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CheckclassesComponent>) { }
 
   datalist: any;

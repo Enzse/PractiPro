@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,7 +27,7 @@ export class CoordEvaluationspopupComponent {
   private subscriptions = new Subscription();
   evaluationForm: any;
   existingForm: any;
-  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder,
+  constructor(private changeDetection: ChangeDetectionService, private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<CoordEvaluationspopupComponent>, private dialog2: MatDialog) {
 
     this.evaluationForm = this.builder.group({

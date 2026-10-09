@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -22,7 +22,7 @@ export class AssigncoordpopupComponent {
   classlist: any;
   coordlist: any;
 
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<AssigncoordpopupComponent>) {
     this.classApi.all().subscribe(res => {
       this.classlist = res.payload;
@@ -39,7 +39,7 @@ export class AssigncoordpopupComponent {
 
   submitForm() {
     if (this.inputform.valid) {
-      this.classApi.assignCoordinator(this.inputform.value as { coordinator_id: number | string; block_name: string }).subscribe(() => {
+      this.classApi.assignCoordinator(this.inputform.getRawValue()).subscribe(() => {
         this.dialog.close();
         Swal.fire({
           title: "Request Successful!",

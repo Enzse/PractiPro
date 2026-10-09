@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -14,7 +14,7 @@ import { UserService } from '../../../../services/api/user.service';
 })
 export class UpdatepopupComponent implements OnInit {
   private readonly userApi = inject(UserService);
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<UpdatepopupComponent>) { }
 
   rolelist: any;
@@ -68,7 +68,7 @@ export class UpdatepopupComponent implements OnInit {
 
   updateUser() {
     if (this.updateform.valid) {
-      this.userApi.update(Number(this.updateform.value.id), this.updateform.value as { role: string; isActive: boolean }).subscribe(res => {
+      this.userApi.update(Number(this.updateform.value.id), this.updateform.getRawValue()).subscribe(res => {
         console.log("Updated successfully.");
         this.dialog.close();
       }, error => {
@@ -111,7 +111,7 @@ export class UpdatepopupComponent implements OnInit {
     });
   }
 
-  // this.userApi.update(Number(this.updateform.value.id), this.updateform.value as { role: string; isActive: boolean }).subscribe(res => {
+  // this.userApi.update(Number(this.updateform.value.id), this.updateform.getRawValue()).subscribe(res => {
   //   console.log("Updated successfully.");
   //   this.dialog.close();
   // }, error => {

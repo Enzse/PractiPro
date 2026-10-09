@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -20,7 +20,7 @@ import { ClassService } from '../../../../services/api/class.service';
 export class DeptpopupComponent implements OnInit {
   private readonly userApi = inject(UserService);
   private readonly classApi = inject(ClassService);
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<DeptpopupComponent>) { }
 
   deptlist: any;  
@@ -57,7 +57,7 @@ export class DeptpopupComponent implements OnInit {
 
   updateUser() {
     if (this.departmentform.valid) {
-      this.userApi.updateCoordinatorDepartment(this.data.usercode, this.departmentform.value as { department: string }).subscribe(res => {
+      this.userApi.updateCoordinatorDepartment(this.data.usercode, this.departmentform.getRawValue()).subscribe(res => {
         console.log("Updated successfully.");
         this.dialog.close();
       }, error => {

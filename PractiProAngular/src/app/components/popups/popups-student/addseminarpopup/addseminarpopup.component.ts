@@ -1,7 +1,7 @@
 import { Component, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -27,7 +27,7 @@ export class AddseminarpopupComponent {
   pdfPreview?: SafeResourceUrl;
 
   constructor(
-    private builder: FormBuilder,
+    private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogRef: MatDialogRef<AddseminarpopupComponent>,
     private changeDetection: ChangeDetectionService,

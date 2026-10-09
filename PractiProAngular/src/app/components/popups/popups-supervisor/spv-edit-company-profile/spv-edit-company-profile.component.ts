@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -24,7 +24,7 @@ export class SpvEditCompanyProfileComponent implements OnInit {
     'cabling', 'other'
   ];
 
-  constructor(private builder: FormBuilder, private changeDetection: ChangeDetectionService,
+  constructor(private builder: NonNullableFormBuilder, private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SpvEditCompanyProfileComponent>) {
     this.editForm = this.builder.group({
       id: this.builder.control(this.data.company.id),
@@ -33,7 +33,7 @@ export class SpvEditCompanyProfileComponent implements OnInit {
       company_size: this.builder.control(this.data.company.company_size),
       industry: this.builder.control(this.data.company.industry),
       scope_of_business: this.builder.control(this.data.company.scope_of_business),
-      itEquipment: this.builder.control([])
+      itEquipment: this.builder.control<string[]>([])
     });
   }
 

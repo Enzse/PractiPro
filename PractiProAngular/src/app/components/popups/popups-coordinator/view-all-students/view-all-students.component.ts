@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject }
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 import { FilterPipe } from '../../../../pipes/filter.pipe';
-import { FormBuilder, FormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
@@ -31,7 +31,7 @@ export class ViewAllStudentsComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   conditionDisplay: any;
 
-  constructor(private router: Router, private builder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewAllStudentsComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+  constructor(private router: Router, private builder: NonNullableFormBuilder, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<ViewAllStudentsComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
 
   }
 

@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import Swal from 'sweetalert2';
 import { ChangeDetectionService } from '../../../../services/shared/change-detection.service';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { StudentService } from '../../../../services/api/student.service';
 import { ClassJoinService } from '../../../../services/api/class-join.service';
@@ -27,7 +27,7 @@ export class ClassinvitationsComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   constructor(
     private router: Router,
-    private builder: FormBuilder,
+    private builder: NonNullableFormBuilder,
     private changeDetection: ChangeDetectionService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dialogref: MatDialogRef<ClassinvitationsComponent>) {
@@ -46,7 +46,7 @@ export class ClassinvitationsComponent implements OnInit, OnDestroy {
       block_name: [invitation.class]
     })
     this.subscriptions.add(
-      this.studentApi.joinClass(invitation.student_id, invitationData.value as { block_name: string }).subscribe((res: any) => {
+      this.studentApi.joinClass(invitation.student_id, invitationData.getRawValue()).subscribe((res: any) => {
         this.dialogref.close();
         this.router.navigate(['student-dashboard']);
         Swal.fire({

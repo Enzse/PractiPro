@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { NonNullableFormBuilder } from '@angular/forms';
 import { BlockService } from '../../../../services/block.service';
 import { Subscription } from 'rxjs';
 
@@ -18,7 +18,7 @@ export class InvitestudentsByLinkComponent implements OnInit, OnDestroy {
   link: any;
   private subscriptions = new Subscription();
   constructor(
-    private builder: FormBuilder,
+    private builder: NonNullableFormBuilder,
     private blockService: BlockService
   ) { }
 
@@ -40,7 +40,7 @@ export class InvitestudentsByLinkComponent implements OnInit, OnDestroy {
       class: block
     })
     this.subscriptions.add(
-      this.classJoinApi.createLink(classForm.value as { class: string }).subscribe((res: any) => {
+      this.classJoinApi.createLink(classForm.getRawValue()).subscribe((res: any) => {
         this.link = res.payload;
       }))
   }

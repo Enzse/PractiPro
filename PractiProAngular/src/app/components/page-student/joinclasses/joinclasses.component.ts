@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { FilterPipe } from '../../../pipes/filter.pipe';
-import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -35,7 +35,7 @@ export class JoinclassesComponent implements OnInit, OnDestroy {
   joinRequest: FormGroup;
   private subscriptions = new Subscription();
 
-  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: FormBuilder, private dialog: MatDialog) {
+  constructor(private router: Router, private changeDetection: ChangeDetectionService, private builder: NonNullableFormBuilder, private dialog: MatDialog) {
     this.userId = this.session.userId();
 
     this.joinRequest = this.builder.group({

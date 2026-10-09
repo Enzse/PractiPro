@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import Swal from 'sweetalert2';
@@ -21,7 +21,7 @@ export class LoginComponent {
   private readonly session = inject(SessionService);
   private readonly authApi = inject(AuthService);
   returnUrl: any
-  constructor(private route: ActivatedRoute, private builder: FormBuilder, private router: Router, private dialog: MatDialog) {
+  constructor(private route: ActivatedRoute, private builder: NonNullableFormBuilder, private router: Router, private dialog: MatDialog) {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
     this.session.clear();
   }
@@ -36,7 +36,7 @@ export class LoginComponent {
 
   onLogin2() {
 
-    this.authApi.login(this.loginform.value as Credentials).subscribe((res: any) => {
+    this.authApi.login(this.loginform.getRawValue()).subscribe((res: any) => {
       if (res.token) {
         this.session.saveToken(res.token);
 

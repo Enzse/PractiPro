@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Subscription, switchMap } from 'rxjs';
@@ -27,7 +27,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
   private readonly mediaApi = inject(MediaService);
   matchingStudent: any;
   user: any;
-  userID = this.session.userId();
+  userID = this.session.requireUserId();
   invitations: any;
   existingInvitations: any = 0;
   currentBlock: any;
@@ -38,7 +38,7 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
 
   constructor(
     private blockService: BlockService,
-    private builder: FormBuilder,
+    private builder: NonNullableFormBuilder,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog
   ) {
@@ -170,13 +170,8 @@ export class InvitestudentsByStudentidComponent implements OnInit, OnDestroy {
   }
 
   sendClassInvite(student_id: any) {
-    const invitationForm = this.builder.group({
-      student_id: [student_id],
-      advisor_id: [this.userID],
-      class: [this.currentBlock]
-    })
     this.subscriptions.add(
-      this.classJoinApi.invite(invitationForm.value as { student_id: number; advisor_id: number; class: string }).subscribe((res: any) => {
+      this.classJoinApi.invite({ student_id: Number(student_id), advisor_id: this.userID, class: this.currentBlock }).subscribe((res: any) => {
         this.loadInvitations();
         this.matchingStudent = null;
         this.searchForm.patchValue({

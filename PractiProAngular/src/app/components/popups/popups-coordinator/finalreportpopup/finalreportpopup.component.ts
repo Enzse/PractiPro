@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, OnDestroy, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, FormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,7 +23,7 @@ import { ReportService } from '../../../../services/api/report.service';
 export class FinalreportpopupComponent implements OnInit, OnDestroy {
   private readonly submissionApi = inject(SubmissionService);
   private readonly reportApi = inject(ReportService);
-  constructor(private changeDetection: ChangeDetectionService, private builder: FormBuilder,
+  constructor(private changeDetection: ChangeDetectionService, private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<FinalreportpopupComponent>, private dialog2: MatDialog) { }
 
   submittedReport: any;

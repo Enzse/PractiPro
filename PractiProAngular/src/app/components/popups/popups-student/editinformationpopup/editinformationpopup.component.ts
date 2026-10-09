@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
@@ -20,7 +20,7 @@ export class EditinformationpopupComponent implements OnInit {
   private readonly studentApi = inject(StudentService);
 
   //Constructor
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<EditinformationpopupComponent>) { }
 
 
@@ -62,7 +62,7 @@ export class EditinformationpopupComponent implements OnInit {
   //This is for the Submit button functionality.
   editInformation() {
     if (this.editForm.valid) {
-      this.studentApi.update(this.session.requireUserId(), this.editForm.value as StudentProfileUpdate).subscribe(res => {
+      this.studentApi.update(this.session.requireUserId(), this.editForm.getRawValue()).subscribe(res => {
         console.log("Updated successfully.");
         this.dialog.close();
       })

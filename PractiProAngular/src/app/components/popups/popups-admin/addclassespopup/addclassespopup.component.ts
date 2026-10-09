@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
@@ -21,7 +21,7 @@ import { NewClass } from '../../../../models/class';
 })
 export class AddclassespopupComponent {
   private readonly classApi = inject(ClassService);
-  constructor(private builder: FormBuilder,
+  constructor(private builder: NonNullableFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<AddclassespopupComponent>) { }
 
 
@@ -34,7 +34,7 @@ export class AddclassespopupComponent {
 
   submitForm() {
     if (this.insertform.valid) {
-      this.classApi.create(this.insertform.value as NewClass).subscribe(() => {
+      this.classApi.create(this.insertform.getRawValue()).subscribe(() => {
         this.dialog.close();
         Swal.fire({
           title: "Success!",

@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy, inject } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 import Swal from 'sweetalert2';
@@ -10,6 +10,7 @@ import { emailDomainValidator } from '../../../validators/email-domain.validator
 import { passwordStrengthValidator } from '../../../validators/password-strength.validator';
 import { AuthService } from '../../../services/api/auth.service';
 import { Registration } from '../../../models/user';
+import { Role } from '../../../models/user';
 
 @Component({
     selector: 'app-registration',
@@ -20,14 +21,14 @@ import { Registration } from '../../../models/user';
 })
 export class RegistrationComponent implements OnInit {
   private readonly authApi = inject(AuthService);
-  constructor(private builder: FormBuilder, private router: Router, private dialog: MatDialog) { }
+  constructor(private builder: NonNullableFormBuilder, private router: Router, private dialog: MatDialog) { }
   registerform = this.builder.group({
     firstName: this.builder.control('', Validators.required),
     lastName: this.builder.control('', Validators.required),
     email: this.builder.control('', Validators.compose([Validators.required, Validators.email, emailDomainValidator('gordoncollege.edu.ph')])),
     password: this.builder.control('', [Validators.required, passwordStrengthValidator]),
     terms: [false, Validators.requiredTrue],
-    role: this.builder.control('', [Validators.required]),
+    role: this.builder.control<Role>('student', Validators.required),
     studentId: this.builder.control('', [Validators.required, Validators.minLength(9), Validators.maxLength(9)]),
     program: this.builder.control('', [Validators.required]),
     year: this.builder.control('', [Validators.required]),
@@ -41,7 +42,7 @@ export class RegistrationComponent implements OnInit {
 
   proceedregistration() {
     if (this.registerform.valid) {
-      this.authApi.register(this.registerform.value as Registration).subscribe(() => {
+      this.authApi.register(this.registerform.getRawValue()).subscribe(() => {
         this.router.navigate(['login']);
         Swal.fire({
           title: "Email Confirmation Sent!",

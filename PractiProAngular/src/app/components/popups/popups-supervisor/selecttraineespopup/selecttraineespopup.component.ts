@@ -2,7 +2,7 @@ import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy, inject }
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { FilterPipe } from '../../../../pipes/filter.pipe';
-import { FormBuilder, FormGroup, FormsModule } from '@angular/forms';
+import { NonNullableFormBuilder, FormGroup, FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatMenuModule } from '@angular/material/menu';
@@ -31,7 +31,7 @@ export class SelecttraineespopupComponent implements OnInit, OnDestroy {
   changeDetected: any;
   private subscriptions = new Subscription()
 
-  constructor(private router: Router, private builder: FormBuilder, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelecttraineespopupComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
+  constructor(private router: Router, private builder: NonNullableFormBuilder, @Inject(MAT_DIALOG_DATA) public data: any, private dialog: MatDialogRef<SelecttraineespopupComponent>, private dialog2: MatDialog, private sanitizer: DomSanitizer, private changeDetection: ChangeDetectionService) {
     this.changeDetected = [false];
     this.selectionForm = this.builder.group({
       student_id: [''],
